@@ -2,33 +2,44 @@
   "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
   "corpus": {
     "state": "CURRENT",
-    "last_successful_sync": "2026-09-21T17:22:25.734460Z",
+    "last_successful_sync": "2026-09-21T17:43:39.160137Z",
     "latest_run": {
       "status": "COMPLETED",
-      "repository_source_count": 124,
-      "chunk_count": 133,
-      "current_reference_count": 135
+      "repository_source_count": 130,
+      "chunk_count": 200,
+      "current_reference_count": 202
     }
   },
   "queries": {
     "Definition of Done": {
       "paths": [
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/mcp-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/mcp-proof.json",
+        ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
         "docs/project-brain/15-DEFINITION-OF-DONE.md",
-        "scripts/validate_governance.py",
-        "AGENTS.md",
-        ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
-        "docs/project-brain/00-README-UPLOAD-ORDER.md"
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        "scripts/validate_governance.py"
       ],
       "canonical_paths": [
-        "docs/project-brain/00-README-UPLOAD-ORDER.md",
         "docs/project-brain/15-DEFINITION-OF-DONE.md"
-      ]
+      ],
+      "canonical_ranks": [
+        7
+      ],
+      "first_canonical_rank": 7
     },
     "Godot engine foundation": {
       "paths": [
         "docs/project-brain/05-INTEGRATION-CONTRACTS.md",
+        ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         ".engineering/github/repository-settings.json",
         "README.md",
         "docs/project-brain/01-PROJECT-OVERVIEW.md",
@@ -37,11 +48,15 @@
       "canonical_paths": [
         "docs/project-brain/01-PROJECT-OVERVIEW.md",
         "docs/project-brain/05-INTEGRATION-CONTRACTS.md"
-      ]
+      ],
+      "canonical_ranks": [
+        0,
+        8
+      ],
+      "first_canonical_rank": 0
     }
   },
   "canonical_paths": [
-    "docs/project-brain/00-README-UPLOAD-ORDER.md",
     "docs/project-brain/01-PROJECT-OVERVIEW.md",
     "docs/project-brain/05-INTEGRATION-CONTRACTS.md",
     "docs/project-brain/15-DEFINITION-OF-DONE.md"

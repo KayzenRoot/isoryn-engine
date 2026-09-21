@@ -1,0 +1,19 @@
+{
+  "repository": "KayzenRoot/isoryn-engine",
+  "branch": "isoryn-wo-0001-foundation",
+  "localHead": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+  "remoteHead": "bd73ecd41e11b21e29678c1a0830ba5895c74b35",
+  "observations": [
+    {
+      "head": "bd73ecd41e11b21e29678c1a0830ba5895c74b35",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35632133365/job/106440622755",
+      "detail": "GitHub check-run for the pushed branch head, read through the API"
+    }
+  ],
+  "raw": null,
+  "note": "Every observation names the exact commit GitHub evaluated. The local head differs from the pushed head whenever this capture writes a follow-up evidence commit, so the newest run for this tree is reported in the pull request thread rather than asserted from a run of a different commit."
+}

@@ -16,7 +16,7 @@
   "mcp_checkpoint_read": "PASS",
   "mcp_context_search_canonical": "PASS",
   "mcp_launcher_no_npx_proxy": "PASS",
-  "governance_ci": "NOT_AVAILABLE",
+  "governance_ci": "PASS",
   "toolchain_build": "DEFERRED_BY_WO",
   "performance_benchmark": "DEFERRED_BY_WO",
   "third_party_dependency_scan": "NOT_AVAILABLE"
