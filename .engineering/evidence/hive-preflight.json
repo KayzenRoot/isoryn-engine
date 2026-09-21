@@ -1,0 +1,23 @@
+{
+  "api": "http://127.0.0.1:8000",
+  "result": "PASS",
+  "attempts": [
+    {
+      "attempt": 1,
+      "result": "PASS",
+      "detail": "COMPLETED"
+    }
+  ],
+  "pipeline": {
+    "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+    "relative_path": "isoryn-engine",
+    "git_branch": "isoryn-wo-0001-foundation",
+    "git_head_sha": "ac858e0c4c67c5eb3dc21697cbfe3f2e13f0b54a",
+    "state": "READY",
+    "working_tree_clean": true,
+    "index_status": "COMPLETED",
+    "corpus_status": "COMPLETED"
+  },
+  "classification": null,
+  "note": "Derived state only: Git and the canonical checkpoint outrank HIVE. working_tree_clean is reported as observed and never edited into a true value."
+}

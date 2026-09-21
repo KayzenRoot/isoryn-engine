@@ -1,0 +1,1051 @@
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... FAIL
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ERROR
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+======================================================================
+ERROR: test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 18, in test_full_tree_passes
+    self.assertEqual(vg.main(), 0)
+                     ^^^^^^^^^
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 346, in main
+    check_governance_namespaces()
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 285, in check_governance_namespaces
+    fail("missing Evidence Bundle for " + wo_id)
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 69, in fail
+    raise SystemExit("GOVERNANCE VALIDATION FAILED: " + m)
+SystemExit: GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+======================================================================
+FAIL: test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 121, in test_governance_namespaces_exist_for_every_work_order
+    self.assertTrue(bundle.is_file(), wo_id)
+AssertionError: False is not true : ISORYN-WO-0001
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.181s
+
+FAILED (failures=1, errors=1)
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+# secret_scan over 13 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T16:38:08.502835Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "relative_path": "isoryn-engine",
+  "git_branch": "isoryn-wo-0001-foundation",
+  "git_head_sha": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+  "state": "READY",
+  "working_tree_clean": true,
+  "index_status": "COMPLETED",
+  "corpus_status": "COMPLETED"
+}
+
+# hive retrieval: corpus=CURRENT canonical=[]
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.
+# --- attempt 1 artifacts below were captured with the receipts written inside the working tree; HIVE refused that snapshot as dirty, so the retrieval/MCP proofs were re-executed with artifacts outside the repository ---
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... FAIL
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ERROR
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+======================================================================
+ERROR: test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 18, in test_full_tree_passes
+    self.assertEqual(vg.main(), 0)
+                     ^^^^^^^^^
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 346, in main
+    check_governance_namespaces()
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 285, in check_governance_namespaces
+    fail("missing Evidence Bundle for " + wo_id)
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 69, in fail
+    raise SystemExit("GOVERNANCE VALIDATION FAILED: " + m)
+SystemExit: GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+======================================================================
+FAIL: test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 121, in test_governance_namespaces_exist_for_every_work_order
+    self.assertTrue(bundle.is_file(), wo_id)
+AssertionError: False is not true : ISORYN-WO-0001
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.446s
+
+FAILED (failures=1, errors=1)
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+$ git status --porcelain
+
+
+# secret_scan over 13 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T16:42:13.392265Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "relative_path": "isoryn-engine",
+  "git_branch": "isoryn-wo-0001-foundation",
+  "git_head_sha": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+  "state": "READY",
+  "working_tree_clean": true,
+  "index_status": "COMPLETED",
+  "corpus_status": "COMPLETED"
+}
+
+# hive retrieval: corpus=CURRENT canonical=['docs/project-brain/00-README-UPLOAD-ORDER.md', 'docs/project-brain/01-PROJECT-OVERVIEW.md', 'docs/project-brain/05-INTEGRATION-CONTRACTS.md', 'docs/project-brain/15-DEFINITION-OF-DONE.md']
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... FAIL
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ERROR
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+======================================================================
+ERROR: test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 18, in test_full_tree_passes
+    self.assertEqual(vg.main(), 0)
+                     ^^^^^^^^^
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 346, in main
+    check_governance_namespaces()
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 285, in check_governance_namespaces
+    fail("missing Evidence Bundle for " + wo_id)
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 69, in fail
+    raise SystemExit("GOVERNANCE VALIDATION FAILED: " + m)
+SystemExit: GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+======================================================================
+FAIL: test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 121, in test_governance_namespaces_exist_for_every_work_order
+    self.assertTrue(bundle.is_file(), wo_id)
+AssertionError: False is not true : ISORYN-WO-0001
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.421s
+
+FAILED (failures=1, errors=1)
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+# secret_scan over 13 commits; 0 hits
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... FAIL
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ERROR
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+======================================================================
+ERROR: test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 18, in test_full_tree_passes
+    self.assertEqual(vg.main(), 0)
+                     ^^^^^^^^^
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 346, in main
+    check_governance_namespaces()
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 285, in check_governance_namespaces
+    fail("missing Evidence Bundle for " + wo_id)
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 69, in fail
+    raise SystemExit("GOVERNANCE VALIDATION FAILED: " + m)
+SystemExit: GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+======================================================================
+FAIL: test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 121, in test_governance_namespaces_exist_for_every_work_order
+    self.assertTrue(bundle.is_file(), wo_id)
+AssertionError: False is not true : ISORYN-WO-0001
+
+----------------------------------------------------------------------
+Ran 24 tests in 1.074s
+
+FAILED (failures=1, errors=1)
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+$ git status --porcelain
+
+
+# secret_scan over 13 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T16:53:38.919532Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+
+HIVE bootstrap failed: ISORYN indexing did not complete: {'run_id': '254df903-00f3-4ada-a6a2-7a626bde61a6', 'project_id': '8696b773-8554-4f27-9cb0-77ddfaf98deb', 'repository_head_sha': None, 'git_branch': None, 'status': 'FAILED', 'started_at': '2026-09-21T16:53:58.922195Z', 'completed_at': '2026-09-21T16:54:02.474375Z', 'discovered_file_count': 0, 'indexed_file_count': 0, 'reused_file_count': 0, 'changed_file_count': 0, 'added_file_count': 0, 'removed_file_count': 0, 'unchanged_file_count': 0, 'parsed_file_count': 0, 'symbol_count': 56, 'error': 'git_status_unavailable'}
+
+# hive retrieval: corpus=CURRENT canonical=['docs/project-brain/00-README-UPLOAD-ORDER.md', 'docs/project-brain/01-PROJECT-OVERVIEW.md', 'docs/project-brain/05-INTEGRATION-CONTRACTS.md', 'docs/project-brain/15-DEFINITION-OF-DONE.md']
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... FAIL
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ERROR
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+======================================================================
+ERROR: test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 18, in test_full_tree_passes
+    self.assertEqual(vg.main(), 0)
+                     ^^^^^^^^^
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 346, in main
+    check_governance_namespaces()
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 285, in check_governance_namespaces
+    fail("missing Evidence Bundle for " + wo_id)
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 69, in fail
+    raise SystemExit("GOVERNANCE VALIDATION FAILED: " + m)
+SystemExit: GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+======================================================================
+FAIL: test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 121, in test_governance_namespaces_exist_for_every_work_order
+    self.assertTrue(bundle.is_file(), wo_id)
+AssertionError: False is not true : ISORYN-WO-0001
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.664s
+
+FAILED (failures=1, errors=1)
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+$ git status --porcelain
+
+
+# secret_scan over 13 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T17:00:01.738328Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "relative_path": "isoryn-engine",
+  "git_branch": "isoryn-wo-0001-foundation",
+  "git_head_sha": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+  "state": "READY",
+  "working_tree_clean": true,
+  "index_status": "COMPLETED",
+  "corpus_status": "COMPLETED"
+}
+
+# hive retrieval: corpus=CURRENT canonical=['docs/project-brain/00-README-UPLOAD-ORDER.md', 'docs/project-brain/01-PROJECT-OVERVIEW.md', 'docs/project-brain/05-INTEGRATION-CONTRACTS.md', 'docs/project-brain/15-DEFINITION-OF-DONE.md']
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... FAIL
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ERROR
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+======================================================================
+ERROR: test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 18, in test_full_tree_passes
+    self.assertEqual(vg.main(), 0)
+                     ^^^^^^^^^
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 346, in main
+    check_governance_namespaces()
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 285, in check_governance_namespaces
+    fail("missing Evidence Bundle for " + wo_id)
+  File "D:\HIVE\projects\isoryn-engine\scripts\validate_governance.py", line 69, in fail
+    raise SystemExit("GOVERNANCE VALIDATION FAILED: " + m)
+SystemExit: GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001
+
+======================================================================
+FAIL: test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "D:\HIVE\projects\isoryn-engine\tests\test_governance.py", line 121, in test_governance_namespaces_exist_for_every_work_order
+    self.assertTrue(bundle.is_file(), wo_id)
+AssertionError: False is not true : ISORYN-WO-0001
+
+----------------------------------------------------------------------
+Ran 24 tests in 1.262s
+
+FAILED (failures=1, errors=1)
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+$ git status --porcelain
+
+
+# secret_scan over 13 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T17:02:33.083336Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+
+HIVE bootstrap failed: ISORYN is not READY in HIVE: {'project_id': '8696b773-8554-4f27-9cb0-77ddfaf98deb', 'name': 'ISORYN', 'relative_path': 'isoryn-engine', 'git_branch': None, 'git_head_sha': None, 'detached_head': False, 'repository_accessible': False, 'working_tree_clean': None, 'language_stack': [], 'state': 'DEGRADED', 'inspection_error': 'git_timeout', 'created_at': '2026-09-21T15:16:24.460494Z', 'updated_at': '2026-09-21T17:02:37.135432Z', 'last_inspected_at': '2026-09-21T17:02:37.135432Z'}
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T17:03:16.987322Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+
+HIVE bootstrap failed: ISORYN is not READY in HIVE: {'project_id': '8696b773-8554-4f27-9cb0-77ddfaf98deb', 'name': 'ISORYN', 'relative_path': 'isoryn-engine', 'git_branch': None, 'git_head_sha': None, 'detached_head': False, 'repository_accessible': False, 'working_tree_clean': None, 'language_stack': [], 'state': 'DEGRADED', 'inspection_error': 'git_timeout', 'created_at': '2026-09-21T15:16:24.460494Z', 'updated_at': '2026-09-21T17:03:21.537076Z', 'last_inspected_at': '2026-09-21T17:03:21.537076Z'}
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T17:03:52.568746Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "relative_path": "isoryn-engine",
+  "git_branch": "isoryn-wo-0001-foundation",
+  "git_head_sha": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+  "state": "READY",
+  "working_tree_clean": true,
+  "index_status": "COMPLETED",
+  "corpus_status": "COMPLETED"
+}
+
+# hive retrieval: corpus=CURRENT canonical=['docs/project-brain/00-README-UPLOAD-ORDER.md', 'docs/project-brain/01-PROJECT-OVERVIEW.md', 'docs/project-brain/05-INTEGRATION-CONTRACTS.md', 'docs/project-brain/15-DEFINITION-OF-DONE.md']
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+ISORYN governance validation: PASS
+GEF: v1.0.0 @ 866fe3af8cccc65c929aaf6a47a924401fa448b3
+HIVE: v1.0.0 @ a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf
+Required artifacts: 54
+Governed MCP tools: 7
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... ok
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ok
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.213s
+
+OK
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+# secret_scan over 13 commits; 0 hits
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+ISORYN governance validation: PASS
+GEF: v1.0.0 @ 866fe3af8cccc65c929aaf6a47a924401fa448b3
+HIVE: v1.0.0 @ a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf
+Required artifacts: 54
+Governed MCP tools: 7
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... ok
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ok
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.429s
+
+OK
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+$ git status --porcelain
+?? .engineering/evidence/ISORYN-WO-0001-EVIDENCE.md
+?? .engineering/evidence/checks.json
+?? .engineering/evidence/hive-preflight.json
+?? .engineering/evidence/hive-retrieval-proof.json
+?? .engineering/evidence/matrix.log
+?? .engineering/evidence/mcp-proof.json
+
+# secret_scan over 13 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T17:07:22.704659Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "relative_path": "isoryn-engine",
+  "git_branch": "isoryn-wo-0001-foundation",
+  "git_head_sha": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+  "state": "READY",
+  "working_tree_clean": true,
+  "index_status": "COMPLETED",
+  "corpus_status": "COMPLETED"
+}
+
+# hive retrieval: corpus=CURRENT canonical=['docs/project-brain/00-README-UPLOAD-ORDER.md', 'docs/project-brain/01-PROJECT-OVERVIEW.md', 'docs/project-brain/05-INTEGRATION-CONTRACTS.md', 'docs/project-brain/15-DEFINITION-OF-DONE.md']
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+ISORYN governance validation: PASS
+GEF: v1.0.0 @ 866fe3af8cccc65c929aaf6a47a924401fa448b3
+HIVE: v1.0.0 @ a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf
+Required artifacts: 54
+Governed MCP tools: 7
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... ok
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ok
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.335s
+
+OK
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+$ git status --porcelain
+?? .engineering/evidence/ISORYN-WO-0001-EVIDENCE.md
+?? .engineering/evidence/checks.json
+?? .engineering/evidence/hive-preflight.json
+?? .engineering/evidence/hive-retrieval-proof.json
+?? .engineering/evidence/matrix.log
+?? .engineering/evidence/mcp-proof.json
+
+# secret_scan over 13 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T17:08:44.247896Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "relative_path": "isoryn-engine",
+  "git_branch": "isoryn-wo-0001-foundation",
+  "git_head_sha": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+  "state": "READY",
+  "working_tree_clean": true,
+  "index_status": "COMPLETED",
+  "corpus_status": "COMPLETED"
+}
+
+# hive retrieval: corpus=CURRENT canonical=['docs/project-brain/00-README-UPLOAD-ORDER.md', 'docs/project-brain/01-PROJECT-OVERVIEW.md', 'docs/project-brain/05-INTEGRATION-CONTRACTS.md', 'docs/project-brain/15-DEFINITION-OF-DONE.md']
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+ISORYN governance validation: PASS
+GEF: v1.0.0 @ 866fe3af8cccc65c929aaf6a47a924401fa448b3
+HIVE: v1.0.0 @ a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf
+Required artifacts: 54
+Governed MCP tools: 7
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... ok
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ok
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.284s
+
+OK
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+$ git status --porcelain=v1 --untracked-files=no
+
+
+# untracked paths observed during capture (6):
+?? .engineering/evidence/ISORYN-WO-0001-EVIDENCE.md
+?? .engineering/evidence/checks.json
+?? .engineering/evidence/hive-preflight.json
+?? .engineering/evidence/hive-retrieval-proof.json
+?? .engineering/evidence/matrix.log
+?? .engineering/evidence/mcp-proof.json
+
+# secret_scan over 14 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T17:16:01.467954Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "relative_path": "isoryn-engine",
+  "git_branch": "isoryn-wo-0001-foundation",
+  "git_head_sha": "ac858e0c4c67c5eb3dc21697cbfe3f2e13f0b54a",
+  "state": "READY",
+  "working_tree_clean": true,
+  "index_status": "COMPLETED",
+  "corpus_status": "COMPLETED"
+}
+
+# hive retrieval: corpus=CURRENT canonical=['docs/project-brain/00-README-UPLOAD-ORDER.md', 'docs/project-brain/01-PROJECT-OVERVIEW.md', 'docs/project-brain/05-INTEGRATION-CONTRACTS.md', 'docs/project-brain/15-DEFINITION-OF-DONE.md']
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+ISORYN governance validation: PASS
+GEF: v1.0.0 @ 866fe3af8cccc65c929aaf6a47a924401fa448b3
+HIVE: v1.0.0 @ a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf
+Required artifacts: 54
+Governed MCP tools: 7
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... ok
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ok
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.472s
+
+OK
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+$ git status --porcelain=v1 --untracked-files=no
+
+
+# untracked paths observed during capture (6):
+?? .engineering/evidence/ISORYN-WO-0001-EVIDENCE.md
+?? .engineering/evidence/checks.json
+?? .engineering/evidence/hive-preflight.json
+?? .engineering/evidence/hive-retrieval-proof.json
+?? .engineering/evidence/matrix.log
+?? .engineering/evidence/mcp-proof.json
+
+# secret_scan over 14 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T17:20:16.229845Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "relative_path": "isoryn-engine",
+  "git_branch": "isoryn-wo-0001-foundation",
+  "git_head_sha": "ac858e0c4c67c5eb3dc21697cbfe3f2e13f0b54a",
+  "state": "READY",
+  "working_tree_clean": true,
+  "index_status": "COMPLETED",
+  "corpus_status": "COMPLETED"
+}
+
+# hive_inspection_head_matches_local_head: PASS - HIVE inspected ac858e0c4c67c5eb3dc21697cbfe3f2e13f0b54a; local HEAD is ac858e0c4c67c5eb3dc21697cbfe3f2e13f0b54a
+
+# hive retrieval: corpus=CURRENT canonical=['docs/project-brain/00-README-UPLOAD-ORDER.md', 'docs/project-brain/01-PROJECT-OVERVIEW.md', 'docs/project-brain/05-INTEGRATION-CONTRACTS.md', 'docs/project-brain/15-DEFINITION-OF-DONE.md']
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/validate_governance.py
+ISORYN governance validation: PASS
+GEF: v1.0.0 @ 866fe3af8cccc65c929aaf6a47a924401fa448b3
+HIVE: v1.0.0 @ a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf
+Required artifacts: 54
+Governed MCP tools: 7
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe -m unittest discover -s tests -p test_*.py -v
+test_governance_namespaces_exist_for_every_work_order (test_governance.DesiredStateTests.test_governance_namespaces_exist_for_every_work_order) ... ok
+test_ruleset_manifest_shape (test_governance.DesiredStateTests.test_ruleset_manifest_shape) ... ok
+test_workflow_emits_the_required_status_context (test_governance.DesiredStateTests.test_workflow_emits_the_required_status_context) ... ok
+test_agents_md_does_not_advertise_unsupported_tools (test_governance.McpContractTests.test_agents_md_does_not_advertise_unsupported_tools) ... ok
+test_codex_config_allowlist_matches (test_governance.McpContractTests.test_codex_config_allowlist_matches) ... ok
+test_documented_surface_is_the_pinned_core_surface (test_governance.McpContractTests.test_documented_surface_is_the_pinned_core_surface) ... ok
+test_launcher_targets_the_pinned_module_and_no_proxy_binary (test_governance.McpContractTests.test_launcher_targets_the_pinned_module_and_no_proxy_binary) ... ok
+test_autonomy_rule_does_not_authorize_destructive_actions (test_governance.PolicyPreservationTests.test_autonomy_rule_does_not_authorize_destructive_actions) ... ok
+test_pdf_prompt_policy_survives (test_governance.PolicyPreservationTests.test_pdf_prompt_policy_survives) ... ok
+test_review_autofix_policy_is_canonical (test_governance.PolicyPreservationTests.test_review_autofix_policy_is_canonical) ... ok
+test_machine_path_pattern (test_governance.PortableConfigTests.test_machine_path_pattern) ... ok
+test_no_machine_path_in_scripts_or_env_example (test_governance.PortableConfigTests.test_no_machine_path_in_scripts_or_env_example) ... ok
+test_checkpoint_bridge_drift_is_detected (test_governance.ValidatorGateTests.test_checkpoint_bridge_drift_is_detected) ... ok
+test_empty_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_empty_checkpoint_heading_fails_closed) ... ok
+test_every_required_artifact_resolves_to_a_file (test_governance.ValidatorGateTests.test_every_required_artifact_resolves_to_a_file) ... ok
+test_full_tree_passes (test_governance.ValidatorGateTests.test_full_tree_passes) ... ok
+test_missing_checkpoint_heading_fails_closed (test_governance.ValidatorGateTests.test_missing_checkpoint_heading_fails_closed) ... ok
+test_required_list_has_no_duplicates (test_governance.ValidatorGateTests.test_required_list_has_no_duplicates) ... ok
+test_working_tree_is_container_readable (test_governance.ValidatorGateTests.test_working_tree_is_container_readable) ... ok
+test_absent_returns_none (test_hive_bootstrap.HiveProjectResolutionTests.test_absent_returns_none) ... ok
+test_exact_relative_path_wins (test_hive_bootstrap.HiveProjectResolutionTests.test_exact_relative_path_wins) ... ok
+test_name_collision_fails (test_hive_bootstrap.HiveProjectResolutionTests.test_name_collision_fails) ... ok
+test_command_is_stable_stdio_server (test_hive_mcp.HiveMcpTests.test_command_is_stable_stdio_server) ... ok
+test_configured_hive_checkout_resolves (test_hive_mcp.HiveMcpTests.test_configured_hive_checkout_resolves) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 0.519s
+
+OK
+
+$ git diff --check HEAD
+
+
+$ git diff --quiet HEAD
+
+
+$ git status --porcelain=v1 --untracked-files=no
+
+
+# untracked paths observed during capture (6):
+?? .engineering/evidence/ISORYN-WO-0001-EVIDENCE.md
+?? .engineering/evidence/checks.json
+?? .engineering/evidence/hive-preflight.json
+?? .engineering/evidence/hive-retrieval-proof.json
+?? .engineering/evidence/matrix.log
+?? .engineering/evidence/mcp-proof.json
+
+# secret_scan over 14 commits; 0 hits
+
+
+$ C:\Users\csn19\AppData\Local\Programs\Python\Python312\python.exe scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-21T17:21:45.574222Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}
+Resolved existing ISORYN registration by exact relative path.
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "relative_path": "isoryn-engine",
+  "git_branch": "isoryn-wo-0001-foundation",
+  "git_head_sha": "ac858e0c4c67c5eb3dc21697cbfe3f2e13f0b54a",
+  "state": "READY",
+  "working_tree_clean": true,
+  "index_status": "COMPLETED",
+  "corpus_status": "COMPLETED"
+}
+
+# hive_inspection_head_matches_local_head: PASS - HIVE inspected ac858e0c4c67c5eb3dc21697cbfe3f2e13f0b54a; local HEAD is ac858e0c4c67c5eb3dc21697cbfe3f2e13f0b54a
+
+# hive retrieval: corpus=CURRENT canonical=['docs/project-brain/00-README-UPLOAD-ORDER.md', 'docs/project-brain/01-PROJECT-OVERVIEW.md', 'docs/project-brain/05-INTEGRATION-CONTRACTS.md', 'docs/project-brain/15-DEFINITION-OF-DONE.md']
+
+$ git grep -q npx -- scripts/hive_mcp.py
+
+
+# governance_ci: NOT_AVAILABLE - evaluated on the pull request head; see the PR checks receipt.
+
+# toolchain_build: DEFERRED_BY_WO - ISORYN-WO-0001 out of scope: 'Godot fork/toolchain freeze'.
+
+# performance_benchmark: DEFERRED_BY_WO - ISORYN-WO-0001: 'Do not implement engine/product features.'
+
+# third_party_dependency_scan: NOT_AVAILABLE - no dependency manifest exists yet; the executed equivalent is the full-history secret scan.

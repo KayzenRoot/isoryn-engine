@@ -1,0 +1,49 @@
+{
+  "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "corpus": {
+    "state": "CURRENT",
+    "last_successful_sync": "2026-09-21T17:22:25.734460Z",
+    "latest_run": {
+      "status": "COMPLETED",
+      "repository_source_count": 124,
+      "chunk_count": 133,
+      "current_reference_count": 135
+    }
+  },
+  "queries": {
+    "Definition of Done": {
+      "paths": [
+        ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
+        "docs/project-brain/15-DEFINITION-OF-DONE.md",
+        "scripts/validate_governance.py",
+        "AGENTS.md",
+        ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+        "docs/project-brain/00-README-UPLOAD-ORDER.md"
+      ],
+      "canonical_paths": [
+        "docs/project-brain/00-README-UPLOAD-ORDER.md",
+        "docs/project-brain/15-DEFINITION-OF-DONE.md"
+      ]
+    },
+    "Godot engine foundation": {
+      "paths": [
+        "docs/project-brain/05-INTEGRATION-CONTRACTS.md",
+        ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+        ".engineering/github/repository-settings.json",
+        "README.md",
+        "docs/project-brain/01-PROJECT-OVERVIEW.md",
+        ".engineering/evidence/github/after-repository.json"
+      ],
+      "canonical_paths": [
+        "docs/project-brain/01-PROJECT-OVERVIEW.md",
+        "docs/project-brain/05-INTEGRATION-CONTRACTS.md"
+      ]
+    }
+  },
+  "canonical_paths": [
+    "docs/project-brain/00-README-UPLOAD-ORDER.md",
+    "docs/project-brain/01-PROJECT-OVERVIEW.md",
+    "docs/project-brain/05-INTEGRATION-CONTRACTS.md",
+    "docs/project-brain/15-DEFINITION-OF-DONE.md"
+  ]
+}
