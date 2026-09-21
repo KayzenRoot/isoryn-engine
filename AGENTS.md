@@ -25,3 +25,7 @@ Do not vendor HIVE, CORE, IRIS or GEF workspaces into ISORYN without an explicit
 Verdicts: APPROVED, CORRECTION REQUIRED, BLOCKED. No known HIGH/CRITICAL defect may be promoted. Reviewers directly fix small, causal, in-scope defects when current tools can implement and validate them safely; delegate only residual work requiring broader execution, local state, dependency/architecture/scope/security admission, or unavailable assurance. Any direct fix creates a new exact head.
 
 Reviews are in Brazilian Portuguese unless a Work Order explicitly requires another language.
+
+
+## Prompt artifact policy
+All executor prompts for ISORYN must be delivered to the user as downloadable PDF artifacts, not as copyable prompt boxes. Repository Work Orders remain Markdown as canonical version-controlled sources; when a Work Order is handed to Codex, Coder, Qoder or another CLI executor, the user-facing handoff artifact must also be rendered as PDF. Reviews remain in Brazilian Portuguese. This policy applies across all chats working on KayzenRoot/isoryn-engine.
