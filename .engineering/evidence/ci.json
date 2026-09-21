@@ -1,9 +1,27 @@
 {
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0001-foundation",
-  "localHead": "d5de04c5ac157236de55875bb530f81d3d02ce86",
-  "remoteHead": "bd73ecd41e11b21e29678c1a0830ba5895c74b35",
+  "localHead": "dfd8745e607a529197a806ce15ec2003aa073114",
+  "remoteHead": "dfd8745e607a529197a806ce15ec2003aa073114",
   "observations": [
+    {
+      "head": "dfd8745e607a529197a806ce15ec2003aa073114",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35635555729/job/106451985978",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "72b2d3a06fb70d240784d945680741f623eccabd",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35634056578/job/106446985162",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
     {
       "head": "bd73ecd41e11b21e29678c1a0830ba5895c74b35",
       "context": "Governance",
@@ -11,9 +29,45 @@
       "conclusion": "success",
       "result": "PASS",
       "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35632133365/job/106440622755",
-      "detail": "GitHub check-run for the pushed branch head, read through the API"
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "failure",
+      "result": "FAIL",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35627653055/job/106425847441",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35613159283/job/106377088615",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "6584b7aae7546d33e8d747feff2265ba3d3eff67",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35612910958/job/106376255435",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "5725fa60aedf97f78f6c3146e81422d3ee54716d",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35612553946/job/106375052514",
+      "detail": "GitHub check-run for this exact commit, read through the API"
     }
   ],
   "raw": null,
-  "note": "Every observation names the exact commit GitHub evaluated. The local head differs from the pushed head whenever this capture writes a follow-up evidence commit, so the newest run for this tree is reported in the pull request thread rather than asserted from a run of a different commit."
+  "note": "ci-only refresh; checks.json is untouched and remains bound to its capture head."
 }

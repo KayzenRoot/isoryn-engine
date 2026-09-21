@@ -1,6 +1,6 @@
 # ISORYN-WO-0001 - Evidence Bundle
 
-Generated 2026-09-21T17:44:47Z by the executor of `ISORYN-WO-0001` (GEF v1.0.0 adoption, HIVE v1.0.0
+Generated 2026-09-21T18:19:32Z by the executor of `ISORYN-WO-0001` (GEF v1.0.0 adoption, HIVE v1.0.0
 integration, professional GitHub foundation) for pull request
 [ISORYN-WO-0001/#2](https://github.com/KayzenRoot/isoryn-engine/pull/2) at exact head `d5de04c5ac157236de55875bb530f81d3d02ce86`.
 
@@ -14,11 +14,14 @@ This bundle is machine-readable: the JSON block at the end is the payload
 | Admission base (origin/main at WO admission) | `dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362` |
 | PR base (`main` at branch cut) | `5fb0179b9c0a9a8f94f170dc299f199a7c7c883d` |
 | Head executed against | `d5de04c5ac157236de55875bb530f81d3d02ce86` |
+| Head this bundle was written against | `dfd8745e607a529197a806ce15ec2003aa073114` |
 | Branch | `isoryn-wo-0001-foundation` |
 | GEF pin | v1.0.0 `866fe3af8cccc65c929aaf6a47a924401fa448b3` |
 | HIVE pin | v1.0.0 `a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf` |
 
 Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations.
+
+headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against - the commit that actually carries this file is its descendant, because no commit can contain its own SHA, and it is named by the newest ciObservations entry once pushed. The runtime section records what could and could not be re-executed between headSha and that commit.
 
 The 11 commits between the admission base and the PR base are the earlier
 direct-to-`main` bootstrap of this same Work Order, permitted before branch protection existed;
@@ -81,6 +84,11 @@ commit is the Actions run on the head that contains this file.
 still true but not solved, and `errorsFoundAndCorrected` each defect this Work Order found,
 including the ones that initially produced false or missing evidence here.
 
+`environmentDrift` records that the pinned HIVE v1.0.0 runtime stopped serving `127.0.0.1:8000`
+while this chain was being closed - including the verbatim failed re-capture receipt - so every
+HIVE and MCP proof here is read as bound to `d5de04c5ac15` rather than to the commit that carries
+this file.
+
 ## Stop condition
 
 `READY_FOR_BOOTSTRAP_AUDIT` - AWAITING_INDEPENDENT_REVIEW. The Work Order forbids merging and forbids starting engine implementation;
@@ -91,7 +99,7 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
   "schemaVersion": "isoryn-gef-evidence-bundle-v1",
   "workOrder": "ISORYN-WO-0001",
   "role": "EXECUTOR_DELIVERY",
-  "generatedAt": "2026-09-21T17:44:47Z",
+  "generatedAt": "2026-09-21T18:19:32Z",
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0001-foundation",
   "pr": {
@@ -99,7 +107,7 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
     "url": "https://github.com/KayzenRoot/isoryn-engine/pull/2",
     "state": "OPEN",
     "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
-    "headSha": "bd73ecd41e11b21e29678c1a0830ba5895c74b35",
+    "headSha": "dfd8745e607a529197a806ce15ec2003aa073114",
     "mergedAt": null,
     "merged": false,
     "autoMergeRequest": null,
@@ -109,6 +117,8 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
   "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
   "headSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
   "candidateHeadSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+  "bundleCommitHead": "dfd8745e607a529197a806ce15ec2003aa073114",
+  "proofsBindNote": "headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against - the commit that actually carries this file is its descendant, because no commit can contain its own SHA, and it is named by the newest ciObservations entry once pushed. The runtime section records what could and could not be re-executed between headSha and that commit.",
   "headBindingNote": "Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations.",
   "admissionBaseSha": "dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362",
   "priorWorkOrderCommits": [
@@ -193,6 +203,7 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
     ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
     ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
     ".engineering/evidence/checks.json",
+    ".engineering/evidence/ci.json",
     ".engineering/evidence/github/after-repository.json",
     ".engineering/evidence/github/after-ruleset.json",
     ".engineering/evidence/github/before-repository.json",
@@ -844,7 +855,7 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
         "isoryn"
       ],
       "has_issues": true,
-      "has_projects": true,
+      "has_projects": false,
       "has_wiki": false,
       "has_downloads": false,
       "has_pages": false,
@@ -879,7 +890,7 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
       ".engineering/evidence/github/before-repository.json",
       ".engineering/evidence/github/after-repository.json"
     ],
-    "repositoryReceiptsIdentical": true,
+    "repositoryReceiptsIdentical": false,
     "codeownersBefore": "* @KayzenRoot\n",
     "codeownersAfter": "# ISORYN review routing metadata.\n#\n# Ownership here records who a change should be routed to. It is deliberately NOT an approval gate:\n# the main-governance ruleset sets require_code_owner_review=false and required_approving_review_count=0,\n# because this repository has a single owner who is also the pull request author. GitHub does not accept a\n# review from the author, so enforcing code-owner approval here would make main permanently unmergeable.\n#\n# Add a team or second maintainer, then enable require_code_owner_review in\n# .engineering/github/ruleset-main-governance.json, before treating this file as a required gate.\n* @KayzenRoot\n",
     "rulesetManifest": {
@@ -982,12 +993,35 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
               "squash"
             ]
           }
+        },
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Governance"
+              }
+            ]
+          }
         }
       ]
     },
-    "rulesetCheckMain": "5 rules apply to branch main in repo KayzenRoot/isoryn-engine\n\n- deletion\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- non_fast_forward\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- required_linear_history\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- update\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n",
-    "rulesetView": "\nmain-governance\nID: 23776080\nSource: KayzenRoot/isoryn-engine (Repository)\nEnforcement: Active\nYou can bypass: never\n\nBypass List\nThis ruleset cannot be bypassed\n\nConditions\n- ref_name: [exclude: []] [include: [refs/heads/main]] \n\nRules\n- deletion\n- non_fast_forward\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n- required_linear_history\n- update\n",
-    "securityEndpointProbe": "vulnerability_alerts => gh api --method PUT repos/KayzenRoot/isoryn-engine/vulnerability_alerts failed with exit 1\nNo D:\\HIVE\\projects\\isoryn-engine\\scripts\\configure-github.ps1:41 caractere:30\n+ ... DE -ne 0) { throw \"gh $($CliArgs -join ' ') failed with exit $LASTEXI ...\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : OperationStopped: (gh api --method...led with exit 1:String) [], RuntimeException\n    + FullyQualifiedErrorId : gh api --method PUT repos/KayzenRoot/isoryn-engine/vulnerability_alerts failed with exit \n    1\nautomated_security_fixes => gh api --method PUT repos/KayzenRoot/isoryn-engine/automated_security_fixes failed with exit 1\nNo D:\\HIVE\\projects\\isoryn-engine\\scripts\\configure-github.ps1:41 caractere:30\n+ ... DE -ne 0) { throw \"gh $($CliArgs -join ' ') failed with exit $LASTEXI ...\n+                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    + CategoryInfo          : OperationStopped: (gh api --method...led with exit 1:String) [], RuntimeException\n    + FullyQualifiedErrorId : gh api --method PUT repos/KayzenRoot/isoryn-engine/automated_security_fixes failed with  \n   exit 1\n",
+    "requiredStatusChecks": {
+      "strict_required_status_checks_policy": true,
+      "do_not_enforce_on_create": false,
+      "required_status_checks": [
+        {
+          "context": "Governance"
+        }
+      ]
+    },
+    "rulesetCheckMain": "6 rules apply to branch main in repo KayzenRoot/isoryn-engine\n\n- deletion\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- non_fast_forward\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- required_linear_history\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true] \n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- update\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n",
+    "statusChecksSequencing": "required_status_checks was withheld from the first application because a required context that has never reported leaves a protected branch permanently unmergeable. It was applied from the checked-in manifest only after the 'Governance' context was observed green on real runs, and this receipt is the read-back of the applied state rather than a description of intent.",
+    "rulesetView": "\nmain-governance\nID: 23776080\nSource: KayzenRoot/isoryn-engine (Repository)\nEnforcement: Active\nYou can bypass: never\n\nBypass List\nThis ruleset cannot be bypassed\n\nConditions\n- ref_name: [exclude: []] [include: [refs/heads/main]] \n\nRules\n- deletion\n- non_fast_forward\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n- required_linear_history\n- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true] \n- update\n",
+    "securityEndpointProbe": "vulnerability_alerts => NOT_AVAILABLE (exit=1) gh.exe : gh: Not Found (HTTP 404)\nautomated_security_fixes => NOT_AVAILABLE (exit=1) gh.exe : gh: Not Found (HTTP 404)\n",
+    "enforcementProofMethod": "The applied state is proved by read-back: GET on the ruleset id and 'gh ruleset check main' listing all six rules against refs/heads/main. No destructive push, force-push or branch-deletion test was run against main to 'show' the protection, because the Work Order forbids force-push and destructive cleanup and such a probe cannot be undone if the guard fails.",
     "receipts": [
       "after-repository.json",
       "after-ruleset.json",
@@ -1001,11 +1035,22 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
   },
   "ciObservations": [
     {
-      "head": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+      "head": "dfd8745e607a529197a806ce15ec2003aa073114",
       "context": "Governance",
-      "result": "FAIL",
-      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35627653055",
-      "detail": "GOVERNANCE VALIDATION FAILED: missing Evidence Bundle for ISORYN-WO-0001. This bundle is the gate's own subject, so it cannot exist in the code head it evidences; the failing run is kept visible instead of being hidden by rewriting history."
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35635555729/job/106451985978",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "72b2d3a06fb70d240784d945680741f623eccabd",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35634056578/job/106446985162",
+      "detail": "GitHub check-run for this exact commit, read through the API"
     },
     {
       "head": "bd73ecd41e11b21e29678c1a0830ba5895c74b35",
@@ -1014,9 +1059,90 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
       "conclusion": "success",
       "result": "PASS",
       "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35632133365/job/106440622755",
-      "detail": "GitHub check-run for the pushed branch head, read through the API"
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "failure",
+      "result": "FAIL",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35627653055/job/106425847441",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35613159283/job/106377088615",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "6584b7aae7546d33e8d747feff2265ba3d3eff67",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35612910958/job/106376255435",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "5725fa60aedf97f78f6c3146e81422d3ee54716d",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35612553946/job/106375052514",
+      "detail": "GitHub check-run for this exact commit, read through the API"
     }
   ],
+  "ciObservationContext": "Each entry names the commit GitHub evaluated. The failing run is the structural one this bundle exists to resolve: the validator's Evidence Bundle gate cannot be satisfied by the code head it evidences, so the run before any bundle existed reports FAIL and is kept visible instead of being smoothed over by a later pass.",
+  "environmentDrift": {
+    "observedAt": "2026-09-21T17:54:00Z",
+    "summary": "While the evidence chain was being closed, 127.0.0.1:8000 stopped being served by the pinned HIVE v1.0.0 stack and started being served by a different local HIVE checkout at version 1.0.1, whose projects root does not contain ISORYN.",
+    "pinnedSourceStillCorrect": "C:\\Users\\csn19\\AppData\\Local\\HIVE\\app is still at release commit a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf (git describe v1.0.0), so the pin this Work Order adopted is intact; the runtime answering the port is not that stack.",
+    "servingStack": "docker compose project dir D:\\Projetos Codex\\hive, VERSION 1.0.1, HEAD f96901f (v1.0.0-11-gf96901f), mounting D:\\Projetos Codex\\hive\\.hive-projects as /workspace/projects and its own .hive-data as the data root.",
+    "symptoms": [
+      "GET /api/v1/health reports version 1.0.1 where every proof in this bundle recorded 1.0.0",
+      "the ISORYN registration visible there is state OFFLINE with inspection_error path_unavailable, because that stack's projects root has no isoryn-engine",
+      "a machine-level HIVE_PROJECTS_ROOT now resolves to D:/Projetos Codex instead of the canonical D:\\Hive\\projects documented in docs/HIVE-INTEGRATION.md"
+    ],
+    "failedReCapture": {
+      "api": "http://127.0.0.1:8000",
+      "result": "FAIL",
+      "attempts": [
+        {
+          "attempt": 1,
+          "result": "FAIL",
+          "detail": "HIVE bootstrap failed: ISORYN is not READY in HIVE: {'project_id': '1e4aaa02-d268-4ab3-88e5-d956203177fb', 'name': 'ISORYN', 'relative_path': 'isoryn-engine', 'git_branch': None, 'git_head_sha': None, 'detached_head': False, 'repository_accessible': False, 'working_tree_clean': None, 'language_stack': [], 'state': 'OFFLINE', 'inspection_error': 'path_unavailable', 'created_at': '2026-09-21T17:54:0"
+        },
+        {
+          "attempt": 2,
+          "result": "FAIL",
+          "detail": "HIVE bootstrap failed: GET /api/v1/health -> HTTP 503: {\"status\":\"degraded\",\"version\":\"1.0.1\",\"environment\":\"development\",\"timestamp\":\"2026-09-21T17:54:29.721168Z\",\"data_root\":\"/var/lib/hive\",\"checks\":{\"postgres\":{\"status\":\"ok\",\"details\":{\"pgvector\":true}},\"redis\":{\"status\":\"degraded\",\"details\":{\"reason\":\"connection failed (ConnectionError)\"}},\"storage\":{\"status\":\"ok\",\"details\":{\"configured\":true,"
+        },
+        {
+          "attempt": 3,
+          "result": "FAIL",
+          "detail": "HIVE bootstrap failed: ISORYN is not READY in HIVE: {'project_id': '1e4aaa02-d268-4ab3-88e5-d956203177fb', 'name': 'ISORYN', 'relative_path': 'isoryn-engine', 'git_branch': None, 'git_head_sha': None, 'detached_head': False, 'repository_accessible': False, 'working_tree_clean': None, 'language_stack': [], 'state': 'OFFLINE', 'inspection_error': 'path_unavailable', 'created_at': '2026-09-21T17:54:0"
+        }
+      ],
+      "pipeline": {
+        "unparsed_output": "HIVE health: {'status': 'ok', 'version': '1.0.1', 'environment': 'development', 'timestamp': '2026-09-21T17:54:50.050805Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}\nResolved existing ISORYN registration by exact relative path.\n\nHIVE bootstrap failed: ISORYN is not READY in HIVE: {'project_id': '1e4aaa02-d268-4ab3-88e5-d956203177fb', 'name': 'ISORYN', 'relative_path': 'isoryn-engine', 'git_branch': None, 'git_head_sha': None, 'detached_head': False, 'repository_accessible': False, 'working_tree_clean': None, 'language_stack': [], 'state': 'OFFLINE', 'inspection_error': 'path_unavailable', 'created_at': '2026-09-21T17:54:01.070201Z', 'updated_at': '2026-09-21T17:54:50.283374Z', 'last_inspected_at': '2026-09-21T17:54:50.283374Z'}"
+      },
+      "classification": "HIVE_UNAVAILABLE",
+      "note": "Derived state only: Git and the canonical checkpoint outrank HIVE. working_tree_clean is reported as observed and never edited into a true value."
+    },
+    "notDoneOnPurpose": [
+      "No container, volume, port or environment of the other workspace was stopped, restarted or re-pointed to reclaim the proofs: that stack belongs to concurrent work and ISORYN's rules put stopping shared runtime state outside this Work Order.",
+      "DELETE is not offered by the HIVE API (405), so the registration a bootstrap attempt created in that stack at 17:54Z (project 1e4aaa02-d268-4ab3-88e5-d956203177fb, state OFFLINE) remains, and is named here rather than quietly cleaned up in a database this Work Order does not own."
+    ],
+    "consequence": "HIVE and MCP re-proofs at heads after the capture head could not be executed against the pinned runtime, so no receipt in this bundle was regenerated for them. The checks that do not need HIVE - the governance validator, the unit suite and the CI job - are green at every pushed head, which is what the ciObservations chain shows.",
+    "pinnedContainersAbsent": "Verified at 18:09Z: `docker ps -a` lists no container of the pinned stack and `docker volume ls` holds a single anonymous volume belonging to the concurrent one, so the pinned v1.0.0 images and its data root were removed with the runtime, not just stopped. The receipts in this bundle are therefore the only surviving record of that runtime's behaviour.",
+    "recovery": "With the operator's decision: bring the pinned v1.0.0 stack back (its source at C:\\Users\\csn19\\AppData\\Local\\HIVE\\app still builds; nothing to restore from, it must be re-upped) either on its own host port or after the concurrent stack is released, point HIVE_PROJECTS_ROOT at D:\\Hive\\projects, then run python scripts/hive_bootstrap.py --relative-path isoryn-engine and re-capture. Nothing in the repository has to change for that; the proofs are re-runnable, not lost."
+  },
   "unsupportedPlatformFeatures": [
     {
       "capability": "ruleset enforcement level 'evaluate'",
@@ -1044,6 +1170,11 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
       "detail": "Encoded as the pull_request rule with required_review_thread_resolution=true and dismiss_stale_reviews_on_push=true, the supported non-deadlocking form."
     },
     {
+      "capability": "use_squash_pr_title_as_default",
+      "result": "NOT_AVAILABLE",
+      "detail": "PATCH /repos/KayzenRoot/isoryn-engine returns HTTP 200 with the field still false, both in the response body and on read-back, even though .engineering/github/repository-settings.json asks for true. On a User-owned repository the platform ignores this key, so the squash-title default stays a reviewer choice rather than an enforced setting. Every other governed key reads back at its target state - this run's only delta was has_projects true to false, because the rest (merge methods, delete_branch_on_merge, allow_update_branch, secret scanning, push protection, dependabot security updates) was already at target from earlier applications, which is what an idempotent script is expected to report."
+    },
+    {
       "capability": "HIVE semantic retrieval and reranking",
       "result": "NOT_AVAILABLE",
       "detail": "context.search and context.build answered hybrid_state 'LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE', semantic_state 'UNAVAILABLE', rerank_state 'RERANK_FALLBACK_DISABLED'. HIVE v1.0.0 raises SemanticConfigurationError 'embedding_base_url_missing' when no OpenAI-compatible endpoint is configured, and this local deployment sets no HIVE_EMBEDDING_BASE_URL. pgvector is healthy, so the storage path exists; the embedding provider is an operator choice outside this repository and no HIVE configuration was changed to make a proof pass. Every retrieval claim in this bundle is therefore about the lexical path, which is what the runtime actually served."
@@ -1067,6 +1198,7 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
     ".env.example and the default parameter of scripts/bootstrap-local.ps1 committed absolute machine paths, violating GEF PC-08 and the Work Order rule that machine paths stay documentation. Both are now operator configuration; scripts/validate_governance.py enforces it.",
     "The governance validator checked 27 artifacts and none of the repository-governance layer it is supposed to gate (README/CONTRIBUTING/SECURITY/.gitignore/.github, CI, tests, tooling, Work Orders, Context Locks, Evidence Bundles). Coverage was extended and semantic assertions added without removing any prior check.",
     "Two validator assertions were wrong in ways that would have produced false signals: the checkpoint gate required the literal word 'IN PROGRESS' inside its own section, and the machine-path pattern matched the 'p:/' inside https:// URLs. Both now assert what was meant, with unit tests on the pattern itself.",
+    "scripts/configure-github.ps1 wrote its .txt receipts with CRLF, which re-created the exact container-read failure .gitattributes exists to prevent: the working tree read as modified and HIVE's reads would have gone stale behind a passing test suite. The writer now normalises to LF and the line-ending gate caught it the same run it was introduced in.",
     "ISORYN-WO-0001 omitted the EVIDENCE, HIVE PREFLIGHT, CANONICAL BASIS, CONTEXT BUDGET and RISK/ASSURANCE sections that GEF-EXECUTION-PROTOCOL.md requires of every implementation Work Order.",
     "CONTRIBUTING.md still described the one-time direct-to-main bootstrap as available after the ruleset would make it impossible, and its branch convention contradicted the branch this Work Order designates.",
     "No test exercised scripts/validate_governance.py, so the governance gate itself was unverified.",
@@ -1075,13 +1207,13 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
     "MCP responses were keyed by request id rather than tool name, so mcp-proof.json would have published {\"3\": null} in place of the calls it claimed to prove; the launcher thread also awaited without a bound. Receipts now carry each tool's raw response behind its name under a per-call timeout.",
     "The preflight receipt was built by slicing between the first '{' and the last '}' of the bootstrap script's stdout. That text opens with a Python-repr health line, so nothing parsed and every successful run was filed under an 'error' key with its proof truncated to the last 800 characters - including the head HIVE had inspected. The summary is now parsed as the trailing JSON object it is, and the captured head is compared with the local HEAD under its own check.",
     "governance_ci was a hard-coded NOT_AVAILABLE line, and the failing Actions run was recorded against whatever the local head happened to be at generation time - which misattributed a real run to a commit it never evaluated. The capture now reads the check-run for the pushed head through the GitHub API and each observation names the exact commit GitHub checked.",
-    "clean_worktree_for_hive asserted a fully empty 'git status', which the Evidence Bundle's own untracked artifacts violate, and it was written from an assumption rather than HIVE's rule. The guard HIVE actually applies is 'git status --porcelain=v1 --untracked-files=no': modified tracked paths fail its reads, untracked paths do not - confirmed in this run, where every HIVE/MCP check passed with the receipts untracked. The check now mirrors that contract and logs the untracked set as an observation."
+    "clean_worktree_for_hive asserted a fully empty 'git status', which the Evidence Bundle's own untracked artifacts violate, and it was written from an assumption rather than HIVE's rule. The guard HIVE actually applies is 'git status --porcelain=v1 --untracked-files=no': modified tracked paths fail its reads, untracked paths do not - confirmed in this run, where every HIVE/MCP check passed with the receipts untracked. The check now mirrors that contract and logs the untracked set as an observation.",
+    "The generator resolved the proof head as 'the head HIVE recorded, or else the local HEAD'. After the runtime drift that fallback fired: the capture directory held a failed v1.0.1 preflight with no head, so the next run bound every HIVE and MCP proof to a commit it had never measured. Reading the receipts from the installed tree instead of the scratch directory, and refusing to generate when the runtime receipt names no head, removes that path; the failed attempt is now carried verbatim under environmentDrift instead of overwriting the receipt that proves the pinned runtime worked."
   ],
   "residualRisks": [
     "One sibling workspace could not be relinked at its previous path because an unrelated service holds a lock on the empty directory. No data was lost: the working tree, index and history all live at the new canonical path, and the leftover is an empty directory. Retrying the link needs the owning process to release it.",
     "The sibling project registrations predate this Work Order; one reports an inspection head older than its current head. Refreshing them is outside ISORYN's scope and is recorded rather than silently done.",
     "This Work Order's own evidence artifacts are keyword-dense and quote canonical headings, which displaced docs/project-brain/15-DEFINITION-OF-DONE.md from a six-row lexical window (it resolves at rank 7 of 10). Nothing was excluded from the probe to restore the pass: the window is 10 and every canonical rank is recorded in hiveRetrievalProof, so further displacement shows up as a number instead of a silent FAIL.",
-    "required_status_checks is applied only after the exact 'Governance' context has been observed on a real check run for this head. Until then the ruleset is complete except for that rule, and this is stated, not hidden.",
     "allow_auto_merge is enabled at the repository level as a capability. It is not enabled on the pull request (autoMergeRequest is null) and the Work Order forbids merging.",
     "Canonical documentation keeps the absolute workspace path by explicit Work Order allowance ('machine paths stay configuration/documentation'), so documentation is not a portability guarantee; executable config is.",
     "The Evidence Bundle is committed after the code it evidences because a commit cannot contain its own SHA and cannot name a pull request that does not exist yet. headBindingNote and ciObservations carry that precisely; any later evidence-only commit must append its own observed result.",
