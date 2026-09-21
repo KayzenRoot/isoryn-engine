@@ -1,0 +1,17 @@
+# ISORYN Source Pack Read Order
+
+Status: BOOTSTRAP_FROZEN
+
+1. 13-CHECKPOINT.md
+2. 16-DECISIONS-LEDGER.md
+3. 03-SCOPE.md
+4. 15-DEFINITION-OF-DONE.md
+5. 04-ARCHITECTURE.md
+6. 02-REQUIREMENTS.md
+7. 10-SECURITY-GOVERNANCE.md
+8. 11-TEST-PLAN.md
+9. 12-LOCAL-DEPLOYMENT.md
+10. 05-INTEGRATION-CONTRACTS.md
+11. 14-BACKLOG.md
+
+Git is canonical. HIVE and GEF derived views never silently supersede these sources.

@@ -1,32 +1,18 @@
 # HIVE v1.0.0 Integration
 
-ISORYN is prepared for stable HIVE v1.0.0 at commit a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf.
+ISORYN targets stable HIVE v1.0.0 at commit a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf.
 
-## Architecture
-HIVE remains a separate local-first runtime. ISORYN is mounted/read by HIVE beneath HIVE_PROJECTS_ROOT. Do not copy the HIVE backend, database or Docker stack into this repository.
+HIVE remains a separate local-first runtime. Do not copy HIVE backend/database/Docker stack into ISORYN.
 
-HIVE v1.0.0 expects these tracked governance paths:
-- docs/project-brain/13-CHECKPOINT.md
-- docs/project-brain/03-SCOPE.md
-- docs/project-brain/15-DEFINITION-OF-DONE.md
-- docs/project-brain/04-ARCHITECTURE.md
-- docs/project-brain/16-DECISIONS-LEDGER.md
+Canonical workspace: D:\Hive\Projects\isoryn-engine
+Recommended HIVE_PROJECTS_ROOT for that layout: D:\Hive\Projects
+Set HIVE_REPO_PATH to the actual stable HIVE checkout when it is not discoverable automatically.
 
-ISORYN materializes all five.
-
-## Local workspace
-Canonical user workspace: D:\Hive\Projects\isoryn-engine
-
-Recommended HIVE projects root for that layout: D:\Hive\Projects
-
-Recommended separate HIVE checkout: D:\Hive\hive or configure HIVE_REPO_PATH to the actual stable HIVE checkout.
+HIVE v1.0.0 reads these canonical paths: docs/project-brain/13-CHECKPOINT.md, 03-SCOPE.md, 15-DEFINITION-OF-DONE.md, 04-ARCHITECTURE.md and 16-DECISIONS-LEDGER.md.
 
 After HIVE is running:
 python scripts/hive_bootstrap.py --relative-path isoryn-engine
 
-The bootstrap verifies HIVE health, resolves/registers ISORYN, reinspects Git state, indexes the repository and synchronizes the retrieval corpus.
+The script verifies health, resolves/registers ISORYN, inspects Git state, indexes the repository and synchronizes the retrieval corpus.
 
-## Codex MCP
-.codex/config.toml requires a project-scoped STDIO server named hive using scripts/hive_mcp.py. The launcher resolves HIVE from HIVE_REPO_PATH first and then common nearby layouts, and starts the MCP server through HIVE's running Docker Compose API service.
-
-HIVE memory and retrieval are derived context. Tracked canonical Git files remain authoritative.
+.codex/config.toml requires the project-scoped HIVE MCP launcher scripts/hive_mcp.py. HIVE retrieval/memory is derived context; tracked Git remains canonical.

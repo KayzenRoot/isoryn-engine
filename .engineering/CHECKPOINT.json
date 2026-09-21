@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "isoryn-gef-checkpoint-bridge-v1",
+  "viewStatus": "DERIVED_VIEW",
+  "canonicalCheckpoint": "docs/project-brain/13-CHECKPOINT.md",
+  "status": "BOOTSTRAP ACTIVE",
+  "version": "ISORYN 0.0 - Clean Foundation",
+  "phase": "0 - GEF/HIVE Repository Foundation",
+  "nextStep": "Validate local HIVE registration from D:\\Hive\\Projects\\isoryn-engine, configure professional main ruleset, collect exact-head CI/evidence, audit, then promote this checkpoint before engine module discovery."
+}
