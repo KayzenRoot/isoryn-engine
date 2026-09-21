@@ -1,6 +1,6 @@
 # ISORYN-WO-0001 - Evidence Bundle
 
-Generated 2026-09-21T18:19:32Z by the executor of `ISORYN-WO-0001` (GEF v1.0.0 adoption, HIVE v1.0.0
+Generated 2026-09-21T18:23:38Z by the executor of `ISORYN-WO-0001` (GEF v1.0.0 adoption, HIVE v1.0.0
 integration, professional GitHub foundation) for pull request
 [ISORYN-WO-0001/#2](https://github.com/KayzenRoot/isoryn-engine/pull/2) at exact head `d5de04c5ac157236de55875bb530f81d3d02ce86`.
 
@@ -14,14 +14,14 @@ This bundle is machine-readable: the JSON block at the end is the payload
 | Admission base (origin/main at WO admission) | `dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362` |
 | PR base (`main` at branch cut) | `5fb0179b9c0a9a8f94f170dc299f199a7c7c883d` |
 | Head executed against | `d5de04c5ac157236de55875bb530f81d3d02ce86` |
-| Head this bundle was written against | `dfd8745e607a529197a806ce15ec2003aa073114` |
+| Head this bundle was written against | `b8b5e90940356c69e85511e29c940f1f093977fc` |
 | Branch | `isoryn-wo-0001-foundation` |
 | GEF pin | v1.0.0 `866fe3af8cccc65c929aaf6a47a924401fa448b3` |
 | HIVE pin | v1.0.0 `a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf` |
 
 Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations.
 
-headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against - the commit that actually carries this file is its descendant, because no commit can contain its own SHA, and it is named by the newest ciObservations entry once pushed. The runtime section records what could and could not be re-executed between headSha and that commit.
+headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against, and ciObservations is complete through it. The commit that actually carries this file is its descendant - no commit can observe its own Actions run - so that run is read from GitHub on the pull request instead of being claimed here, and environmentDrift states what could not be re-executed between headSha and the bundle head.
 
 The 11 commits between the admission base and the PR base are the earlier
 direct-to-`main` bootstrap of this same Work Order, permitted before branch protection existed;
@@ -99,7 +99,7 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
   "schemaVersion": "isoryn-gef-evidence-bundle-v1",
   "workOrder": "ISORYN-WO-0001",
   "role": "EXECUTOR_DELIVERY",
-  "generatedAt": "2026-09-21T18:19:32Z",
+  "generatedAt": "2026-09-21T18:23:38Z",
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0001-foundation",
   "pr": {
@@ -107,7 +107,7 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
     "url": "https://github.com/KayzenRoot/isoryn-engine/pull/2",
     "state": "OPEN",
     "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
-    "headSha": "dfd8745e607a529197a806ce15ec2003aa073114",
+    "headSha": "b8b5e90940356c69e85511e29c940f1f093977fc",
     "mergedAt": null,
     "merged": false,
     "autoMergeRequest": null,
@@ -117,8 +117,8 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
   "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
   "headSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
   "candidateHeadSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
-  "bundleCommitHead": "dfd8745e607a529197a806ce15ec2003aa073114",
-  "proofsBindNote": "headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against - the commit that actually carries this file is its descendant, because no commit can contain its own SHA, and it is named by the newest ciObservations entry once pushed. The runtime section records what could and could not be re-executed between headSha and that commit.",
+  "bundleCommitHead": "b8b5e90940356c69e85511e29c940f1f093977fc",
+  "proofsBindNote": "headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against, and ciObservations is complete through it. The commit that actually carries this file is its descendant - no commit can observe its own Actions run - so that run is read from GitHub on the pull request instead of being claimed here, and environmentDrift states what could not be re-executed between headSha and the bundle head.",
   "headBindingNote": "Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations.",
   "admissionBaseSha": "dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362",
   "priorWorkOrderCommits": [
@@ -1035,6 +1035,15 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
   },
   "ciObservations": [
     {
+      "head": "b8b5e90940356c69e85511e29c940f1f093977fc",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35637778291/job/106459349626",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
       "head": "dfd8745e607a529197a806ce15ec2003aa073114",
       "context": "Governance",
       "status": "completed",
@@ -1086,15 +1095,6 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
       "conclusion": "success",
       "result": "PASS",
       "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35612910958/job/106376255435",
-      "detail": "GitHub check-run for this exact commit, read through the API"
-    },
-    {
-      "head": "5725fa60aedf97f78f6c3146e81422d3ee54716d",
-      "context": "Governance",
-      "status": "completed",
-      "conclusion": "success",
-      "result": "PASS",
-      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35612553946/job/106375052514",
       "detail": "GitHub check-run for this exact commit, read through the API"
     }
   ],

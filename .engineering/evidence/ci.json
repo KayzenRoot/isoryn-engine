@@ -1,9 +1,18 @@
 {
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0001-foundation",
-  "localHead": "dfd8745e607a529197a806ce15ec2003aa073114",
-  "remoteHead": "dfd8745e607a529197a806ce15ec2003aa073114",
+  "localHead": "b8b5e90940356c69e85511e29c940f1f093977fc",
+  "remoteHead": "b8b5e90940356c69e85511e29c940f1f093977fc",
   "observations": [
+    {
+      "head": "b8b5e90940356c69e85511e29c940f1f093977fc",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35637778291/job/106459349626",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
     {
       "head": "dfd8745e607a529197a806ce15ec2003aa073114",
       "context": "Governance",
@@ -56,15 +65,6 @@
       "conclusion": "success",
       "result": "PASS",
       "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35612910958/job/106376255435",
-      "detail": "GitHub check-run for this exact commit, read through the API"
-    },
-    {
-      "head": "5725fa60aedf97f78f6c3146e81422d3ee54716d",
-      "context": "Governance",
-      "status": "completed",
-      "conclusion": "success",
-      "result": "PASS",
-      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35612553946/job/106375052514",
       "detail": "GitHub check-run for this exact commit, read through the API"
     }
   ],
