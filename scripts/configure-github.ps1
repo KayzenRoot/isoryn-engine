@@ -25,7 +25,9 @@ function Write-TextFile {
   param([string]$Path, [string]$Content)
   $dir = Split-Path -Parent $Path
   if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
-  [System.IO.File]::WriteAllText($Path, $Content, $Utf8NoBom)
+  # PowerShell joins pipeline output with CRLF. HIVE's container reads this working tree without any
+  # line-ending conversion, so a CRLF receipt would make the whole snapshot read as modified.
+  [System.IO.File]::WriteAllText($Path, ($Content -replace "`r`n", "`n"), $Utf8NoBom)
 }
 
 function Save-Receipt {
