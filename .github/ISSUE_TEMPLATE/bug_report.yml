@@ -1,0 +1,32 @@
+name: Bug report
+description: Report a reproducible ISORYN defect
+title: "[BUG] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+    validations:
+      required: true
+  - type: textarea
+    id: basis
+    attributes:
+      label: Exact basis
+      description: Commit SHA, branch, OS/hardware and relevant versions.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence / logs
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact / severity
