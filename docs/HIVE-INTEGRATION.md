@@ -65,3 +65,12 @@ The MCP cold start goes through Docker, so a client with a ~5s startup timeout r
 failure; `.codex/config.toml` raises `startup_timeout_sec` to 120. Configuring a launcher is not proof:
 reload the CLI session and show an executed `tools/list` plus one read-only call, as
 `.engineering/evidence/<WO-ID>-EVIDENCE.md` does.
+
+## What the local runtime actually answers
+
+Without `HIVE_EMBEDDING_BASE_URL` the pinned runtime has no embedding provider, so `context.search` and
+`context.build` answer `semantic_state: UNAVAILABLE` with `hybrid_state:
+LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE` and rerank disabled — lexical recall only. Point that variable at
+an OpenAI-compatible endpoint (operator configuration, never repository configuration) to light up the
+semantic path, then re-index and re-prove. Read a lexical hit list as what it is: do not describe a
+fallback response as semantic retrieval.
