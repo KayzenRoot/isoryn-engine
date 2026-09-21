@@ -1,0 +1,19 @@
+
+main-governance
+ID: 23776080
+Source: KayzenRoot/isoryn-engine (Repository)
+Enforcement: Active
+You can bypass: never
+
+Bypass List
+This ruleset cannot be bypassed
+
+Conditions
+- ref_name: [exclude: []] [include: [refs/heads/main]] 
+
+Rules
+- deletion
+- non_fast_forward
+- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] 
+- required_linear_history
+- update

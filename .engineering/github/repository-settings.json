@@ -1,0 +1,18 @@
+{
+  "allow_auto_merge": true,
+  "allow_merge_commit": false,
+  "allow_rebase_merge": false,
+  "allow_squash_merge": true,
+  "allow_update_branch": true,
+  "delete_branch_on_merge": true,
+  "has_projects": false,
+  "description": "ISORYN engine program: clean governed foundation (GEF v1.0.0 + HIVE v1.0.0). Godot 4.x is the accepted foundation direction pending evidence-backed discovery.",
+  "has_wiki": false,
+  "security_and_analysis": {
+    "secret_scanning": { "status": "enabled" },
+    "secret_scanning_push_protection": { "status": "enabled" }
+  },
+  "squash_merge_commit_message": "COMMIT_MESSAGES",
+  "topics": ["engine-development", "game-engine", "governance", "godot", "isoryn"],
+  "use_squash_pr_title_as_default": true
+}

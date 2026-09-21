@@ -21,6 +21,23 @@ HIVE owns derived project intelligence/retrieval/memory. CORE is a reference for
 
 Do not vendor HIVE, CORE, IRIS or GEF workspaces into ISORYN without an explicit ADR.
 
+## Autonomous Work Order execution
+An attached or admitted Work Order is the complete scope authorization for every chat working on
+`KayzenRoot/isoryn-engine`. Execute that scope end to end without pausing to ask the user for
+permission on individual steps, and never hand an in-scope item back as a pending question or leave
+it partially done.
+
+This standing authorization covers, inside the admitted Work Order scope: reading and editing
+repository files, running local validators/tests/builds, calling HIVE through its read-only MCP
+surface, Git operations on the Work Order branch, pushing that branch, and creating or updating the
+single pull request the Work Order designates.
+
+This authorization never overrides a hard stop, and a stop is reported, not asked about: merging a
+pull request, force-push or history rewrite, deleting or overwriting uncommitted user work,
+adopting/amending/reversing an approved decision, promoting a checkpoint, paid or third-party
+actions, and shared or production infrastructure changes. Product/engine implementation still
+requires an admitted Work Order (Authority item 5).
+
 ## Review
 Verdicts: APPROVED, CORRECTION REQUIRED, BLOCKED. No known HIGH/CRITICAL defect may be promoted. Reviewers directly fix small, causal, in-scope defects when current tools can implement and validate them safely; delegate only residual work requiring broader execution, local state, dependency/architecture/scope/security admission, or unavailable assurance. Any direct fix creates a new exact head.
 

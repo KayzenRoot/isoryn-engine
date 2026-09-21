@@ -3,11 +3,11 @@ import argparse, json, os, sys, urllib.error, urllib.request
 from pathlib import Path
 from typing import Any
 
-def request(base_url:str, method:str, path:str, payload:dict[str,Any]|None=None)->Any:
+def request(base_url:str, method:str, path:str, payload:dict[str,Any]|None=None, timeout:float=180.0)->Any:
     data=None if payload is None else json.dumps(payload).encode()
     req=urllib.request.Request(base_url.rstrip("/")+path,data=data,method=method,headers={"Content-Type":"application/json"})
     try:
-        with urllib.request.urlopen(req,timeout=15) as response:
+        with urllib.request.urlopen(req,timeout=timeout) as response:
             raw=response.read()
             return json.loads(raw.decode()) if raw else None
     except urllib.error.HTTPError as exc:
@@ -26,28 +26,39 @@ def resolve_registered_project(projects:list[dict[str,Any]],*,name:str,relative_
 
 def main()->int:
     p=argparse.ArgumentParser(description="Register and prepare ISORYN in HIVE v1.0.0")
-    p.add_argument("--base-url",default=os.getenv("HIVE_API_URL","http://localhost:8000"))
+    p.add_argument("--base-url",default=os.getenv("HIVE_API_URL","http://127.0.0.1:8000"))
     p.add_argument("--name",default="ISORYN")
     p.add_argument("--relative-path",default=os.getenv("HIVE_ISORYN_RELATIVE_PATH") or Path.cwd().name)
+    p.add_argument("--timeout",type=float,default=float(os.getenv("HIVE_REQUEST_TIMEOUT","180")),
+                   help="Seconds per HIVE request; inspect/index/corpus run inside the container and are slow.")
     a=p.parse_args()
-    print("HIVE health:",request(a.base_url,"GET","/api/v1/health"))
-    projects=request(a.base_url,"GET","/api/v1/projects")
+    def call(method,path,payload=None):
+        return request(a.base_url,method,path,payload,a.timeout)
+    print("HIVE health:",call("GET","/api/v1/health"))
+    projects=call("GET","/api/v1/projects")
     if not isinstance(projects,list): raise RuntimeError("HIVE project list returned unexpected payload")
     target=resolve_registered_project(projects,name=a.name,relative_path=a.relative_path)
     if target is None:
-        target=request(a.base_url,"POST","/api/v1/projects",{"name":a.name,"relative_path":a.relative_path})
+        target=call("POST","/api/v1/projects",{"name":a.name,"relative_path":a.relative_path})
         print("Registered ISORYN in HIVE.")
     else: print("Resolved existing ISORYN registration by exact relative path.")
     project_id=target.get("project_id")
     if not project_id: raise RuntimeError("HIVE did not return project_id")
-    inspected=request(a.base_url,"POST",f"/api/v1/projects/{project_id}/inspect")
+    inspected=call("POST",f"/api/v1/projects/{project_id}/inspect")
     if inspected.get("state")!="READY": raise RuntimeError(f"ISORYN is not READY in HIVE: {inspected}")
     if inspected.get("relative_path")!=a.relative_path: raise RuntimeError("HIVE inspection resolved a different canonical path.")
-    index=request(a.base_url,"POST",f"/api/v1/projects/{project_id}/index")
+    index=call("POST",f"/api/v1/projects/{project_id}/index")
     if index.get("status")!="COMPLETED": raise RuntimeError(f"ISORYN indexing did not complete: {index}")
-    corpus=request(a.base_url,"POST",f"/api/v1/projects/{project_id}/retrieval/corpus/sync")
+    corpus=call("POST",f"/api/v1/projects/{project_id}/retrieval/corpus/sync")
     if corpus.get("status") not in {"COMPLETED","CURRENT"}: raise RuntimeError(f"ISORYN retrieval corpus is not current: {corpus}")
-    print(json.dumps({"project_id":project_id,"relative_path":inspected.get("relative_path"),"git_head_sha":inspected.get("git_head_sha"),"state":inspected.get("state"),"index_status":index.get("status"),"corpus_status":corpus.get("status")},indent=2))
+    summary={"project_id":project_id,"relative_path":inspected.get("relative_path"),"git_branch":inspected.get("git_branch"),
+             "git_head_sha":inspected.get("git_head_sha"),"state":inspected.get("state"),
+             "working_tree_clean":inspected.get("working_tree_clean"),"index_status":index.get("status"),
+             "corpus_status":corpus.get("status")}
+    print(json.dumps(summary,indent=2))
+    if summary["working_tree_clean"] is not True:
+        print("HIVE preflight truth: working_tree_clean is not true, so derived retrieval may lag the local tree. "
+              "Commit or restore, then re-inspect before treating HIVE context as current.",file=sys.stderr)
     return 0
 
 if __name__=="__main__":

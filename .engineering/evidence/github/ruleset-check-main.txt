@@ -1,0 +1,16 @@
+5 rules apply to branch main in repo KayzenRoot/isoryn-engine
+
+- deletion
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+- non_fast_forward
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] 
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+- required_linear_history
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+- update
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)

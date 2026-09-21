@@ -5,8 +5,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def resolve_hive_repo() -> Path:
     candidates=[]
-    configured=os.getenv("HIVE_REPO_PATH")
-    if configured: candidates.append(Path(configured).expanduser())
+    for var in ("HIVE_REPO_PATH", "HIVE_HOME"):
+        configured=os.getenv(var)
+        if configured:
+            base=Path(configured).expanduser()
+            candidates.extend((base, base / "app"))
     candidates.extend((ROOT.parents[1] / "hive", ROOT.parent / "hive", ROOT.parent / "Hive"))
     seen=set()
     for candidate in candidates:
@@ -16,7 +19,7 @@ def resolve_hive_repo() -> Path:
         seen.add(resolved)
         if (resolved/"docker-compose.yml").is_file() and (resolved/"backend").is_dir():
             return resolved
-    raise RuntimeError("HIVE v1.0.0 checkout not found. Set HIVE_REPO_PATH to the stable HIVE checkout.")
+    raise RuntimeError("HIVE v1.0.0 checkout not found. Set HIVE_REPO_PATH or HIVE_HOME to the stable HIVE checkout.")
 
 def build_mcp_command():
     return resolve_hive_repo(), ["docker","compose","exec","-T","api","python","-m","app.mcp_server"]
