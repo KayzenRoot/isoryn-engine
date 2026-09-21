@@ -42,6 +42,16 @@ A stale inspection head makes HIVE answer `source_not_current` with an empty res
 serving old content. Treat an empty retrieval as the enforced signal it is: re-inspect, re-index and
 re-sync, then re-prove. Never cache around it or describe a stale read as a live one.
 
+The guard tests modified tracked paths (`git status --porcelain=v1 --untracked-files=no`), so an
+untracked scratch file does not fail HIVE's reads while any dirty tracked file does. Because a corpus
+left CURRENT by an earlier sync still answers retrieval for a head that was never indexed, a retrieval
+proof is only meaningful together with the inspect/index/sync result for that same head.
+
+Windows git rewrites `.git/index` at the same time the container reads it through the mount, so a
+single status read can fail with `git_status_unavailable` at a genuinely clean head and the next call
+then reports `source_not_current`. Re-run the pipeline before believing it: the runbook retries with a
+recorded attempt count so a transient race is never published as a result.
+
 ## MCP surface
 
 `.codex/config.toml` (project-scoped) and `.mcp.json` require the launcher `scripts/hive_mcp.py`, which
