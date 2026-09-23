@@ -242,6 +242,9 @@ def check_desired_state():
                     "required_status_checks"):
         if missing not in rules:
             fail("main-governance is missing the " + missing + " rule")
+    if "update" in rules:
+        fail("main-governance must not use the restrict-updates rule without an approved bypass actor; "
+             "that combination blocks pull-request merges into main")
     pr = rules["pull_request"]
     if pr.get("required_review_thread_resolution") is not True:
         fail("main-governance must require resolved review threads")
