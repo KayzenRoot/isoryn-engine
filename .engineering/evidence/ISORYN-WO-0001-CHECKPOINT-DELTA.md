@@ -1,47 +1,37 @@
-# ISORYN-WO-0001 Checkpoint Promotion Record
+# ISORYN-WO-0001 Checkpoint Correction Record
 
-Status: PROMOTED_AFTER_INDEPENDENT_AUDIT
+Status: PROMOTION_REVOKED_CORRECTION_REQUIRED
 
-Independent audit head: `74f443f3d83c8bb1642314ab28632342fcf0b50f`
-Audit verdict: **APPROVED**
-Promotion authority: reviewer/chat under the GEF review-first policy. The executor proposed the delta but did not self-promote it.
+The C02 independent review at `74f443f3d83c8bb1642314ab28632342fcf0b50f` correctly closed
+`CANONICAL_WORKSPACE_MISMATCH`. The reviewer then promoted the checkpoint and obtained a green Governance run on
+`a4c1aa6ee241d9d021483a79a2c8ed57b7d9bbf4`.
 
-## Promotion basis
+A real squash-merge attempt immediately exposed a separate governance defect that the static desired-state checks
+had encoded instead of detecting:
 
-Correction C02 closed the final blocker, `CANONICAL_WORKSPACE_MISMATCH`, by materializing the canonical
-workspace at `D:\Hive\Projects\isoryn-engine` as a real directory and re-running the isolated pinned HIVE
-v1.0.0 registration/index/corpus/retrieval/MCP proof against that path. The exact HIVE/MCP proof head is
-`d749accc68be408ae79d06e25946128b9cf7bdc3`; subsequent commits through the independent audit head are
-evidence-only and Governance passed on the exact audit head.
+- GitHub response: HTTP 405, `Repository rule violations found / Cannot update this protected ref.`
+- live rule: branch ruleset `main-governance` includes `update`
+- bypass state: `bypass_actors: []`
+- effect: GitHub's restrict-updates rule allows only bypass actors to update the matching ref, so the protected
+  `main` branch is not mergeable even through an otherwise valid pull request
 
-No adopted decision was amended, no engine/product implementation entered WO-0001, and no HIGH/CRITICAL
-finding remains open.
+## Reviewer direct correction
 
-## Promoted canonical checkpoint
+The repository desired state removes the `update` rule. The governance validator and unit tests now reject any
+future desired state that combines restrict-updates with no approved bypass actor. `scripts/configure-github.ps1`
+also fails closed before applying such a manifest.
 
-`docs/project-brain/13-CHECKPOINT.md` is the canonical state source. Its promoted values are:
+## Residual EXECUTOR_REQUIRED work
 
-- STATUS: `BOOTSTRAP APPROVED`
-- PHASE: `0 - GEF/HIVE Repository Foundation`
-- IN PROGRESS: none; WO-0001 is approved
-- BLOCKERS: none for the bootstrap gate
-- NEXT STEP: merge PR #2 by squash, confirm the resulting `main` head, then admit
-  `ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY` from that exact base
+The available chat GitHub connection does not expose repository-ruleset administration writes. An executor with the
+already-authorized local `gh` session must therefore:
 
-`.engineering/CHECKPOINT.md` and `.engineering/CHECKPOINT.json` are regenerated derived views of the same
-promoted state.
+1. synchronize the current PR branch;
+2. apply `scripts/configure-github.ps1` so live ruleset id 23776080 matches the corrected manifest;
+3. capture BEFORE/AFTER ruleset receipts and `gh ruleset check main`;
+4. prove the live ruleset no longer contains `update` while retaining deletion, non-fast-forward, linear history,
+   pull-request and required `Governance` protections;
+5. refresh the WO-0001 Evidence Bundle and exact-head CI evidence;
+6. stop for independent review without merging.
 
-## DoD reconciliation
-
-| Definition of Done element | Result |
-| --- | --- |
-| Source Pack deterministic validation | PASS |
-| GEF target-project artifacts | PASS |
-| HIVE MCP/registration tooling and tests | PASS |
-| Exact-head Governance on independent audit head | PASS |
-| Canonical local HIVE registration/index/corpus/retrieval | PASS |
-| Professional main protection/ruleset evidence | PASS with documented platform gaps |
-| Independent audit | APPROVED |
-| Checkpoint promotion after audit | PROMOTED |
-
-Product/engine implementation remains outside WO-0001. The next increment is architecture/toolchain discovery.
+The prior promotion is revoked until C03 is independently approved. Product/engine implementation remains blocked.
