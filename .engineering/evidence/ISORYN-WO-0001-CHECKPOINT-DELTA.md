@@ -17,7 +17,7 @@ APPROVED at the exact candidate head.
 | PHASE | `0 - GEF/HIVE Repository Foundation` | unchanged | phase 0 is still the active phase until the audit promotes it |
 | IN PROGRESS | `ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.` | `NONE. ISORYN-WO-0001 delivered and awaiting independent audit.` | Work Order: stop for independent review, do not advance to the next increment |
 | NEXT STEP | validate local HIVE registration, configure professional main ruleset, collect exact-head CI/evidence, audit, promote | `Audit ISORYN-WO-0001 at the exact PR head; on APPROVED, promote this delta and open the architecture/toolchain discovery Work Order` | Definition of Done and the review-first policy |
-| BLOCKERS | as recorded | `NONE for Work Order scope. Product/engine implementation remains unauthorized; deferred gates are toolchain, benchmark and performance evidence (see Evidence Bundle checks)` | Work Order out-of-scope clauses |
+| BLOCKERS | as recorded | `HIVE_RUNTIME_DRIFT: current machine runtime serving 127.0.0.1:8000 is HIVE 1.0.1 from another checkout and reports ISORYN OFFLINE/path_unavailable. Historical v1.0.0 HIVE/MCP proofs remain valid only for d5de04c5ac157236de55875bb530f81d3d02ce86. Bootstrap cannot be promoted until current local HIVE registration/index/corpus/MCP is re-proved without disrupting concurrent work. Product/engine implementation remains unauthorized.` | Evidence Bundle environmentDrift + bootstrap DoD current-functionality requirement |
 
 ## Explicitly not changed
 - No adopted decision is amended, superseded or reversed; `docs/project-brain/16-DECISIONS-LEDGER.md` is untouched.
@@ -34,7 +34,7 @@ APPROVED at the exact candidate head.
 | GEF target-project artifacts exist | PASS | `.engineering/gef/`, Work Order, Context Lock, Evidence Bundle |
 | HIVE MCP/registration tooling exists and is unit-tested | PASS | `scripts/hive_mcp.py`, `scripts/hive_bootstrap.py`, `tests/` |
 | Exact-head governance CI passes | recorded per head | `.engineering/evidence/ISORYN-WO-0001-EVIDENCE.md` `checks` and `followUpHeads` |
-| Local HIVE registration/index/corpus sync evidenced | PASS | `.engineering/evidence/hive-preflight.json` |
+| Local HIVE registration/index/corpus sync evidenced | CORRECTION REQUIRED | Historical PASS exists for `d5de04c5ac157236de55875bb530f81d3d02ce86`, but current active runtime reports ISORYN `OFFLINE/path_unavailable`; see Evidence Bundle `environmentDrift` |
 | Main protection/ruleset evidenced or gap recorded | PASS with recorded gaps | `.engineering/evidence/github/`, `unsupportedPlatformFeatures` |
-| Audit returns APPROVED | PENDING | independent review of the open pull request |
+| Audit returns APPROVED | CORRECTION REQUIRED | independent review found current-runtime HIVE drift; re-proof is required before approval |
 | Checkpoint promoted after audit | NOT DONE (correct) | this file is a proposal only |
