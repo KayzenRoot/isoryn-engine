@@ -19,6 +19,29 @@ HIVE holds derived index state only.
 Start HIVE with its own supported procedure (`hive-up`, or `docker compose up -d` in the HIVE
 checkout) and confirm `GET /api/v1/health` before bootstrapping.
 
+## Canonical workspace materialization
+
+`README.md`, `docs/project-brain/12-LOCAL-DEPLOYMENT.md` and `docs/project-brain/13-CHECKPOINT.md` fix the
+canonical local workspace at `D:\Hive\Projects\isoryn-engine`. A proof run in any other directory is bound
+to that directory, not to that authority, so the workspace has to exist before it can be proven.
+
+That path sits inside HIVE's own data area, so everything already beside it - the other registered
+worktrees and every directory under `D:\Hive` - belongs to other work. Create the missing directory; do
+not replace, rename, move, clean or reuse what is already there. Once the canonical copy exists, an older
+copy elsewhere stays untouched and is recorded as non-canonical rather than deleted.
+
+```
+git -c core.autocrlf=false clone https://github.com/KayzenRoot/isoryn-engine.git D:\Hive\Projects\isoryn-engine
+```
+
+The `-c core.autocrlf=false` is not cosmetic. Git for Windows ships `core.autocrlf=true` in its system
+config, and a plain network clone with that setting writes CRLF into the working tree even though every
+blob is LF; `check_line_endings` in `scripts/validate_governance.py` then fails the tree and HIVE reports
+the source as not current. Keep that setting in the workspace's own config so later checkouts cannot
+reintroduce it, and materialize the directory itself rather than a junction or symlink for the reason the
+next section gives. Verify the result with `git status --porcelain=v1` empty and
+`python scripts/validate_governance.py` passing before registering anything in HIVE.
+
 ## Running the pinned baseline beside another HIVE stack
 
 A machine that already runs a newer HIVE cannot prove the pinned baseline by reusing that runtime, and
