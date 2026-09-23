@@ -228,7 +228,7 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
     "url": "https://github.com/KayzenRoot/isoryn-engine/pull/2",
     "state": "OPEN",
     "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
-    "headSha": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+    "headSha": "56559d387a9431c67795c194ddecd750ccca49ef",
     "mergedAt": null,
     "merged": false,
     "autoMergeRequest": null,
@@ -238,7 +238,7 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
   "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
   "headSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
   "candidateHeadSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
-  "bundleCommitHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+  "bundleCommitHead": "56559d387a9431c67795c194ddecd750ccca49ef",
   "proofsBindNote": "headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against, and ciObservations is complete through it. The commit that actually carries this file is its descendant - no commit can observe its own Actions run - so that run is read from GitHub on the pull request instead of being claimed here, and environmentDrift states what could not be re-executed between headSha and the bundle head.",
   "headBindingNote": "Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations. C02 adds one more binding: the HIVE and MCP receipts under c02Recovery are bound to d749accc68be, the head they were re-executed against and the head that carries them, while every earlier record above keeps the head it was produced at.",
   "admissionBaseSha": "dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362",
@@ -1156,6 +1156,15 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
   },
   "ciObservations": [
     {
+      "head": "56559d387a9431c67795c194ddecd750ccca49ef",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35876788786/job/107234662512",
+      "detail": "GitHub check-run for this exact commit, read through the API. The head that carries the re-bound C02 receipts."
+    },
+    {
       "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
       "context": "Governance",
       "status": "completed",
@@ -1919,7 +1928,13 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
       "No deletion of the non-canonical D:\\Projects\\isoryn-engine copy.",
       "No ADR was written, because none was needed: the canonical authority was followed rather than changed.",
       "Nothing was registered in, or pointed at, the concurrent 1.0.2 runtime."
-    ]
+    ],
+    "carrierHead": {
+      "head": "56559d387a9431c67795c194ddecd750ccca49ef",
+      "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35876788786/job/107234662512",
+      "deltaFromProofHead": "evidence-only: this commit changes nothing under scripts/, docs/ or tests/, so the validator, unittest suite and the canonical workspace facts re-run identically here.",
+      "limit": "The HIVE and MCP receipts stay bound to d749acc on purpose. Re-running them here would move the proof head to a commit that then cannot carry its own receipt, which is the loop this record already states once instead of hiding behind a matching SHA."
+    }
   }
 }
 ```
