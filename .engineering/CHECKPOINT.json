@@ -5,5 +5,5 @@
   "status": "BOOTSTRAP APPROVED",
   "version": "ISORYN 0.0 - Clean Foundation",
   "phase": "0 - GEF/HIVE Repository Foundation",
-  "nextStep": "Merge approved PR #2 by squash, confirm the resulting main head and then admit ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY from that exact base. Freeze architecture/toolchain decisions only from measured evidence before engine implementation begins."
+  "nextStep": "Merge approved PR #2 by squash, confirm the resulting `main` head and then admit `ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY` from that exact base. Freeze architecture/toolchain decisions only from measured evidence before engine implementation begins."
 }
