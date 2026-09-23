@@ -11,12 +11,39 @@ HIVE holds derived index state only.
 | --- | --- |
 | `HIVE_API_URL` | Local API base. Use `http://127.0.0.1:8000`, not `localhost`: HIVE binds IPv4 only, and `localhost` can resolve to `::1`. |
 | `HIVE_REPO_PATH` | HIVE checkout providing `docker-compose.yml` and `backend/`. Set only when auto-discovery fails. |
+| `HIVE_COMPOSE_PROJECT` | Docker Compose project owning the `api` container the MCP launcher execs into. Unset means "whatever the checkout's compose file names", which is correct on a single-stack machine. |
 | `HIVE_HOME` | Exported by a standard local HIVE install (`<install>\app`). `scripts/hive_mcp.py` honours it, so the MCP launcher works with no per-machine setting. |
 | `HIVE_ISORYN_RELATIVE_PATH` | This repository's path relative to HIVE's `HIVE_PROJECTS_ROOT` (`isoryn-engine`). |
 | `HIVE_REQUEST_TIMEOUT` | Per-request seconds. Registration, indexing and corpus sync exceed the 15s default on a cold corpus; the runbook uses 600. |
 
 Start HIVE with its own supported procedure (`hive-up`, or `docker compose up -d` in the HIVE
 checkout) and confirm `GET /api/v1/health` before bootstrapping.
+
+## Running the pinned baseline beside another HIVE stack
+
+A machine that already runs a newer HIVE cannot prove the pinned baseline by reusing that runtime, and
+must not take its port or its data root away. Bring the pinned checkout up as a second, isolated
+stack instead. Every collision domain below has to differ, and the pinned compose file supports each
+one without editing it: distinct Compose project name (which also derives the network and container
+names), `HIVE_API_PORT`, `HIVE_DATA_ROOT`, and a `HIVE_PROJECTS_ROOT` of its own. Postgres and Redis
+publish no host port, so they collide on nothing.
+
+Two behaviours make this easy to get wrong, so they are stated rather than assumed:
+
+1. **Docker Compose resolves variables from the process environment before the `--env-file`.** If the
+   operator's shell exports `COMPOSE_PROJECT_NAME` or `HIVE_DATA_ROOT` for the stack it installed,
+   an `--env-file` alone silently keeps pointing the new stack at the live one — including its
+   database directory. Pass the overrides for the same process (`env VAR=... docker compose ...`) and
+   confirm the target with `docker compose config` before anything starts.
+2. **`docker compose exec` selects containers by project label, not by working directory.** The
+   checkout a launcher runs in does not constrain which stack it enters, so
+   `scripts/hive_mcp.py` passes `-p` when `HIVE_COMPOSE_PROJECT` is set; without an explicit project
+   an ambient `COMPOSE_PROJECT_NAME` wins over the compose file's own `name:`.
+
+`HIVE_PROJECTS_ROOT` must contain the registered directory as a real directory: HIVE mounts it
+read-only and the container filesystem does not traverse a nested junction, so a link standing in for
+the repository resolves to a missing path. Keep the mount narrow — the projects root is visible to
+the container read-only, and registration is still by exact relative path.
 
 ## Bootstrap and proof
 

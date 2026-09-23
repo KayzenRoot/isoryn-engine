@@ -1,7 +1,7 @@
 [mcp_servers.hive]
 command = "python"
 args = ["scripts/hive_mcp.py"]
-env_vars = ["HIVE_REPO_PATH"]
+env_vars = ["HIVE_REPO_PATH", "HIVE_COMPOSE_PROJECT"]
 enabled = true
 required = true
 startup_timeout_sec = 120
