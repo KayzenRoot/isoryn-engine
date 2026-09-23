@@ -1,5 +1,6 @@
 {
-  "proofHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
+  "proofHead": "8eba7b4ef6258d708fdf24554822310531f151f3",
+  "correction": "ISORYN-WO-0001-C02",
   "checks": {
     "py_compile": "PASS",
     "governance_validator": "PASS",
@@ -8,6 +9,10 @@
     "no_uncommitted_tracked_changes": "PASS",
     "clean_worktree_for_hive": "PASS",
     "secret_scan": "PASS",
+    "canonical_workspace_materialized": "PASS",
+    "canonical_workspace_uses_no_junction": "PASS",
+    "working_tree_matches_blobs_byte_for_byte": "PASS",
+    "canonical_projects_root_mounted": "PASS",
     "hive_bootstrap_pipeline": "PASS",
     "hive_inspection_head_matches_local_head": "PASS",
     "hive_corpus_current": "PASS",
@@ -20,16 +25,15 @@
     "mcp_launcher_no_npx_proxy": "PASS",
     "mcp_launcher_targets_pinned_project": "PASS",
     "concurrent_hive_untouched": "PASS",
-    "governance_ci": "PASS",
+    "governance_ci": "UNKNOWN",
     "toolchain_build": "DEFERRED_BY_WO",
     "performance_benchmark": "DEFERRED_BY_WO",
     "third_party_dependency_scan": "NOT_AVAILABLE"
   },
   "governanceRun": {
-    "head": "47838e4d102e17ee35a5068443091b91e40a23b9",
+    "head": null,
     "context": "Governance",
-    "result": "PASS",
-    "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35866516664/job/107199374162",
-    "requiredChecksCommand": "gh pr checks 2 --required"
+    "result": "UNKNOWN",
+    "note": "Read from GitHub after this commit is pushed; a commit cannot observe its own run."
   }
 }

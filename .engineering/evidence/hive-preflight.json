@@ -1,42 +1,102 @@
 {
-  "api": "http://127.0.0.1:18099",
+  "api": "http://127.0.0.1:18199",
   "result": "PASS",
-  "capturedAt": "2026-09-23T13:14:41Z",
-  "proofHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
+  "capturedAt": "2026-09-23T14:22:41Z",
+  "proofHead": "8eba7b4ef6258d708fdf24554822310531f151f3",
+  "correction": "ISORYN-WO-0001-C02",
   "supersedes": {
-    "head": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
-    "reason": "HIVE_RUNTIME_DRIFT closed by C01"
+    "head": "f293fabfd4cde0a202d917b75eee590567b2027e",
+    "reason": "CANONICAL_WORKSPACE_MISMATCH closed by C02"
   },
+  "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
+  "canonicalProjectsRoot": "D:\\Hive\\Projects",
   "runtime": {
     "baseline": "HIVE v1.0.0",
     "sourceCommit": "a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf",
+    "versionFile": "1.0.0",
     "versionReportedByHealth": "1.0.0",
-    "composeProject": "isoryn-c01-v100",
-    "apiPort": 18099,
-    "apiUrl": "http://127.0.0.1:18099",
-    "dataRoot": "D:/isoryn-c01-hive-proof/data",
-    "projectsRoot": "D:/Projects",
+    "composeProject": "isoryn-c02-v100",
+    "apiPort": 18199,
+    "apiUrl": "http://127.0.0.1:18199",
+    "dashboardPort": 13199,
+    "dataRoot": "D:/isoryn-c02-hive-proof/data",
+    "projectsRoot": "D:/Hive/Projects",
     "projectsRootInContainer": "/workspace/projects",
-    "checkoutProvidedBy": "git clone --no-hardlinks --branch v1.0.0 from the operator's existing HIVE object store"
+    "projectsRootMountMode": "read-only bind of the real host directory",
+    "checkoutProvidedBy": "copy of the C01 pinned v1.0.0 checkout, still at tag v1.0.0 commit a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf",
+    "publishedPorts": [
+      "127.0.0.1:18199 (api)",
+      "127.0.0.1:13199 (dashboard)"
+    ],
+    "postgresAndRedisPublishNoHostPort": true
   },
-  "attempts": [
-    {
-      "attempt": 1,
-      "result": "PASS",
-      "detail": "COMPLETED"
-    }
-  ],
+  "workspaceMaterialization": {
+    "method": "git -c core.autocrlf=false clone https://github.com/KayzenRoot/isoryn-engine.git D:\\Hive\\Projects\\isoryn-engine",
+    "firstAttempt": "A plain network clone on this machine writes CRLF into 31 of the 75 tracked files even though every blob is LF, because Git for Windows ships core.autocrlf=true in its system config. python scripts/validate_governance.py failed that tree with 'working tree carries CRLF' and the workspace was rebuilt from the same commit with core.autocrlf=false.",
+    "verified": {
+      "realDirectoryNotJunctionOrSymlink": true,
+      "trackedFiles": 75,
+      "crlfFiles": 0,
+      "filesWhoseBytesDifferFromTheirBlob": 0,
+      "gitStatusPorcelain": "",
+      "localCoreAutocrlf": "false"
+    },
+    "oldWorkspaceDisposition": "D:\\Projects\\isoryn-engine is left in place, untouched and non-canonical: still origin KayzenRoot/isoryn-engine, still branch isoryn-wo-0001-foundation, clean, at the reviewer head 8d4a76052869df276c34ec56c217a4595ae00425 (it does not carry the C02 commits). All C02 edits, commits and proofs were taken from D:\\Hive\\Projects\\isoryn-engine instead."
+  },
   "pipeline": {
-    "project_id": "76ee3c9b-d539-4020-a010-cb956cf4254a",
+    "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
     "relative_path": "isoryn-engine",
     "git_branch": "isoryn-wo-0001-foundation",
-    "git_head_sha": "f293fabfd4cde0a202d917b75eee590567b2027e",
+    "git_head_sha": "8eba7b4ef6258d708fdf24554822310531f151f3",
     "state": "READY",
     "working_tree_clean": true,
     "index_status": "COMPLETED",
-    "corpus_status": "COMPLETED"
+    "corpus_status": "COMPLETED",
+    "repository_accessible": true,
+    "registrationResolvesBy": "exact relative path isoryn-engine under the mounted projects root",
+    "rawStdout": "HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-23T14:16:55.734458Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}\nResolved existing ISORYN registration by exact relative path.\n{\n  \"project_id\": \"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\n  \"relative_path\": \"isoryn-engine\",\n  \"git_branch\": \"isoryn-wo-0001-foundation\",\n  \"git_head_sha\": \"8eba7b4ef6258d708fdf24554822310531f151f3\",\n  \"state\": \"READY\",\n  \"working_tree_clean\": true,\n  \"index_status\": \"COMPLETED\",\n  \"corpus_status\": \"COMPLETED\"\n}\n"
   },
   "classification": null,
-  "workspaceNote": "The Work Order names D:\\Hive\\Projects\\isoryn-engine as the canonical local workspace. That directory does not exist on this machine: D:\\Hive is the data root of the operator's newer HIVE stack, and the ISORYN working copy the reviewer corrected on is D:\\Projects\\isoryn-engine (origin KayzenRoot/isoryn-engine, branch isoryn-wo-0001-foundation, head 4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b at capture start). The proof was therefore taken against that real directory rather than recreating a path that would collide with concurrent work.",
-  "note": "Derived state only: Git and the canonical checkpoint outrank HIVE. working_tree_clean is reported as observed and never edited into a true value."
+  "concurrentRuntimeNote": "D:\\Hive is also the read-write data root of the operator's newer HIVE 1.0.2 stack (it mounts D:/HIVE at /var/lib/hive and its projects root is D:/Projects). Creating D:\\Hive\\Projects\\isoryn-engine added one directory inside that tree: no existing entry under D:\\Hive was deleted, renamed, moved or overwritten, and the sibling worktrees core and nexlabs-web are at the same heads and equally clean before and after. ISORYN is not registered in the 1.0.2 runtime and no call in this correction was made against it.",
+  "note": "Derived state only: Git and the canonical checkpoint outrank HIVE. working_tree_clean is reported as observed and never edited into a true value.",
+  "beforeAfterReceipts": {
+    "beforeCapturedAt": "2026-09-23T13:52:33.682594+00:00",
+    "afterCapturedAt": "2026-09-23T14:18:52.269077+00:00",
+    "concurrentContainersIdentical": 19,
+    "concurrentContainersChanged": {
+      "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-api-1": [
+        "started_at: 2026-09-23T13:51:23.664072179Z -> 2026-09-23T14:18:40.758516949Z"
+      ],
+      "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-migration-1": [
+        "started_at: 2026-09-23T13:42:19.382253199Z -> 2026-09-23T14:16:04.921159561Z"
+      ],
+      "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-redis-1": [
+        "started_at: 2026-09-23T13:51:56.812763102Z -> 2026-09-23T14:17:10.850870909Z",
+        "state: running -> exited",
+        "health: healthy -> unhealthy"
+      ],
+      "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-storage-init-1": [
+        "started_at: 2026-09-23T13:42:18.819908545Z -> 2026-09-23T14:16:04.153990022Z"
+      ]
+    },
+    "changedAttribution": "Every changed container belongs to the hive-wo031-fast-159ac90 stack, which no command in this session names; its own owner restarted it during the C02 window (its api/redis/migration/storage-init StartedAt values move forward and its health answers 503 between the two snapshots). All commands this correction ran against Docker were 'docker compose -p isoryn-c02-v100 ...', plus read-only docker ps/inspect.",
+    "dHiveTopLevelBefore": [
+      "cas",
+      "data",
+      "legacy-backup-20260919",
+      "postgres",
+      "projects",
+      "redis",
+      "tmp"
+    ],
+    "dHiveTopLevelAfter": [
+      "cas",
+      "data",
+      "legacy-backup-20260919",
+      "postgres",
+      "projects",
+      "redis",
+      "tmp"
+    ]
+  }
 }
