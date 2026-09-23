@@ -1,9 +1,27 @@
 {
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0001-foundation",
-  "localHead": "b8b5e90940356c69e85511e29c940f1f093977fc",
-  "remoteHead": "b8b5e90940356c69e85511e29c940f1f093977fc",
+  "localHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
+  "remoteHead": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
   "observations": [
+    {
+      "head": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35854318100/job/107159087105",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "9f5dd767e9bd9972b2e98fed46abbae90202cd46",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35638179286/job/106460697408",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
     {
       "head": "b8b5e90940356c69e85511e29c940f1f093977fc",
       "context": "Governance",
@@ -69,5 +87,5 @@
     }
   ],
   "raw": null,
-  "note": "ci-only refresh; checks.json is untouched and remains bound to its capture head."
+  "note": "Chain read from the GitHub API on 2026-09-23 through the reviewer correction head 4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b. Each observation is bound to the head it names; a run for one head is not evidence for another."
 }

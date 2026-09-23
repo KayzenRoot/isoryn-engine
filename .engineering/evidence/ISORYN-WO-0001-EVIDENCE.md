@@ -15,6 +15,8 @@ This bundle is machine-readable: the JSON block at the end is the payload
 | PR base (`main` at branch cut) | `5fb0179b9c0a9a8f94f170dc299f199a7c7c883d` |
 | Head executed against | `d5de04c5ac157236de55875bb530f81d3d02ce86` |
 | Head this bundle was written against | `b8b5e90940356c69e85511e29c940f1f093977fc` |
+| Reviewer correction head | `4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b` |
+| C01 HIVE recovery proof head | `f293fabfd4cde0a202d917b75eee590567b2027e` |
 | Branch | `isoryn-wo-0001-foundation` |
 | GEF pin | v1.0.0 `866fe3af8cccc65c929aaf6a47a924401fa448b3` |
 | HIVE pin | v1.0.0 `a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf` |
@@ -62,6 +64,49 @@ the code head alone; the first push therefore shows a red `Governance` run, quot
 `ciObservations` with its run URL instead of being smoothed over. The authority for the reviewed
 commit is the Actions run on the head that contains this file.
 
+## C01 - HIVE runtime recovery at `f293fabfd4cde0a202d917b75eee590567b2027e`
+
+Independent review found that the proofs above bound to a runtime that no longer served the machine,
+and blocked promotion on `HIVE_RUNTIME_DRIFT`. Correction C01 re-establishes the pinned baseline as a
+current proof instead of restating the old one. Nothing here edits the `d5de04c5ac15` records: they
+stay valid for that head, and the four heads are named separately in `c01Recovery.proofLineage`.
+
+The pinned v1.0.0 source was cloned read-only from the operator's existing HIVE object store at tag
+`v1.0.0` (`a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf`, `VERSION` 1.0.0) and brought up as its own
+Compose project `isoryn-c01-v100` on `127.0.0.1:18099`, with its own data root and its own projects
+root. Postgres and Redis publish no host port, and the network and container names derive from the
+project, so the stack shares no collision domain with the runtimes already on this machine.
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Health reports the pinned baseline | PASS | `/api/v1/health` returns `"version":"1.0.0"` on 18099 while 8000 answers `"version":"1.0.2"` |
+| `HIVE_PROJECTS_ROOT` maps `isoryn-engine` to the real working copy | PASS | container sees `/workspace/projects/isoryn-engine`, mounted read-only |
+| ISORYN resolves uniquely, no ambiguous identity | PASS | `project.list` returns exactly one project |
+| Inspection `repository_accessible=true`, state `READY` | PASS | `hive-preflight.json`, `mcp-proof.json` `project.status` |
+| Inspection binds to the C01 head, not `d5de04c5ac15` | PASS | `git_head_sha` = `f293fabfd4cde0a202d917b75eee590567b2027e` |
+| `working_tree_clean` truthfully reported | PASS | `true`, captured after the code correction was committed |
+| Repository index completes | PASS | `index_status` COMPLETED |
+| Retrieval corpus syncs and reports CURRENT | PASS | 135 sources, 218 chunks/references |
+| Canonical retrieval resolves | PASS | `13-CHECKPOINT.md` rank 2, `04-ARCHITECTURE.md` rank 2, `15-DEFINITION-OF-DONE.md` rank 11 of 20 |
+| Real MCP session through the repository launcher | PASS | `mcp-proof.json`: initialize, tools/list, four executed calls, exit 0, empty stderr |
+| `tools/list` is exactly the governed surface | PASS | the seven read-only tools, `allReadOnly` true |
+| Launcher targets the pinned stack, not the concurrent one | PASS | `c01Recovery.isolation` - ambient `COMPOSE_PROJECT_NAME` was left pointing at the live stack for the whole session |
+| Concurrent HIVE workspaces untouched | PASS | `c01Recovery.concurrentRuntimeBeforeAfter` |
+
+The drift itself moved again while C01 was being executed: the runtime on `127.0.0.1:8000` is no
+longer the HIVE 1.0.1 checkout the review recorded but HIVE **1.0.2** from
+`C:\Users\csn19\AppData\Local\HIVE\app`, which is also where the evidence had pinned v1.0.0. That
+checkout is now at `8db3d244a679898f0e08d1898bc87e6a6a89326e` (`v1.0.2`), so the pinned release commit
+survives only as a tagged object in its store. The correction records that instead of quieting it: the
+pin was re-materialised from the tag rather than adopted from whatever the machine happens to run, and
+the canonical pin stays v1.0.0 - moving it to 1.0.1 or 1.0.2 needs an ADR, which this is not.
+
+Two behaviours of the local environment made the old launcher unsafe here, and both are now tested:
+Docker Compose resolves `COMPOSE_PROJECT_NAME` and `HIVE_DATA_ROOT` from the process environment
+before any `--env-file`, and `docker compose exec` selects containers by project label rather than by
+working directory. Left alone, a launcher running in the pinned checkout entered the 1.0.2 container,
+and an isolated stack mounted the live database directory instead of its own.
+
 ## What is proved, not asserted
 
 - **HIVE** (`hivePreflight`): health, exact-relative-path resolution without name collision, inspect
@@ -87,12 +132,16 @@ including the ones that initially produced false or missing evidence here.
 `environmentDrift` records that the pinned HIVE v1.0.0 runtime stopped serving `127.0.0.1:8000`
 while this chain was being closed - including the verbatim failed re-capture receipt - so every
 HIVE and MCP proof here is read as bound to `d5de04c5ac15` rather than to the commit that carries
-this file.
+this file. That record is kept as written. `c01Recovery` closes it: the pinned baseline is running
+again, isolated, and re-proved against `f293fabfd4cd`, so the drift is closed by a new correction
+rather than by editing the drift out.
 
 ## Stop condition
 
-`READY_FOR_BOOTSTRAP_AUDIT` - AWAITING_INDEPENDENT_REVIEW. The Work Order forbids merging and forbids starting engine implementation;
-the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent audit.
+`READY_FOR_C01_REVIEW` - the HIVE runtime drift that blocked promotion is closed by current,
+re-executed proof at `f293fabfd4cde0a202d917b75eee590567b2027e`, and `verdict` stays
+`AWAITING_INDEPENDENT_REVIEW`. The Work Order forbids merging and forbids starting engine
+implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent audit.
 
 ```json
 {
@@ -1141,7 +1190,14 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
     ],
     "consequence": "HIVE and MCP re-proofs at heads after the capture head could not be executed against the pinned runtime, so no receipt in this bundle was regenerated for them. The checks that do not need HIVE - the governance validator, the unit suite and the CI job - are green at every pushed head, which is what the ciObservations chain shows.",
     "pinnedContainersAbsent": "Verified at 18:09Z: `docker ps -a` lists no container of the pinned stack and `docker volume ls` holds a single anonymous volume belonging to the concurrent one, so the pinned v1.0.0 images and its data root were removed with the runtime, not just stopped. The receipts in this bundle are therefore the only surviving record of that runtime's behaviour.",
-    "recovery": "With the operator's decision: bring the pinned v1.0.0 stack back (its source at C:\\Users\\csn19\\AppData\\Local\\HIVE\\app still builds; nothing to restore from, it must be re-upped) either on its own host port or after the concurrent stack is released, point HIVE_PROJECTS_ROOT at D:\\Hive\\projects, then run python scripts/hive_bootstrap.py --relative-path isoryn-engine and re-capture. Nothing in the repository has to change for that; the proofs are re-runnable, not lost."
+    "recovery": "With the operator's decision: bring the pinned v1.0.0 stack back (its source at C:\\Users\\csn19\\AppData\\Local\\HIVE\\app still builds; nothing to restore from, it must be re-upped) either on its own host port or after the concurrent stack is released, point HIVE_PROJECTS_ROOT at D:\\Hive\\projects, then run python scripts/hive_bootstrap.py --relative-path isoryn-engine and re-capture. Nothing in the repository has to change for that; the proofs are re-runnable, not lost.",
+    "closedBy": {
+      "correction": "C01",
+      "proofHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
+      "record": "c01Recovery",
+      "result": "HIVE_RUNTIME_DRIFT CLOSED for the governed v1.0.0 baseline: the pinned runtime runs isolated and re-proves health, registration, READY, index, corpus, canonical retrieval and MCP at the C01 head.",
+      "stillTrueAfterClosure": "The machine-level default runtime on 127.0.0.1:8000 is HIVE 1.0.2 and has no ISORYN registration. Integrations that follow the ambient environment still reach it, so every ISORYN HIVE call has to name the pinned stack explicitly."
+    }
   },
   "unsupportedPlatformFeatures": [
     {
@@ -1208,7 +1264,10 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
     "The preflight receipt was built by slicing between the first '{' and the last '}' of the bootstrap script's stdout. That text opens with a Python-repr health line, so nothing parsed and every successful run was filed under an 'error' key with its proof truncated to the last 800 characters - including the head HIVE had inspected. The summary is now parsed as the trailing JSON object it is, and the captured head is compared with the local HEAD under its own check.",
     "governance_ci was a hard-coded NOT_AVAILABLE line, and the failing Actions run was recorded against whatever the local head happened to be at generation time - which misattributed a real run to a commit it never evaluated. The capture now reads the check-run for the pushed head through the GitHub API and each observation names the exact commit GitHub checked.",
     "clean_worktree_for_hive asserted a fully empty 'git status', which the Evidence Bundle's own untracked artifacts violate, and it was written from an assumption rather than HIVE's rule. The guard HIVE actually applies is 'git status --porcelain=v1 --untracked-files=no': modified tracked paths fail its reads, untracked paths do not - confirmed in this run, where every HIVE/MCP check passed with the receipts untracked. The check now mirrors that contract and logs the untracked set as an observation.",
-    "The generator resolved the proof head as 'the head HIVE recorded, or else the local HEAD'. After the runtime drift that fallback fired: the capture directory held a failed v1.0.1 preflight with no head, so the next run bound every HIVE and MCP proof to a commit it had never measured. Reading the receipts from the installed tree instead of the scratch directory, and refusing to generate when the runtime receipt names no head, removes that path; the failed attempt is now carried verbatim under environmentDrift instead of overwriting the receipt that proves the pinned runtime worked."
+    "The generator resolved the proof head as 'the head HIVE recorded, or else the local HEAD'. After the runtime drift that fallback fired: the capture directory held a failed v1.0.1 preflight with no head, so the next run bound every HIVE and MCP proof to a commit it had never measured. Reading the receipts from the installed tree instead of the scratch directory, and refusing to generate when the runtime receipt names no head, removes that path; the failed attempt is now carried verbatim under environmentDrift instead of overwriting the receipt that proves the pinned runtime worked.",
+    "scripts/hive_mcp.py resolved a HIVE checkout by path but let Docker Compose pick the stack, so on a machine whose environment exports COMPOSE_PROJECT_NAME for a different HIVE it execed into that other runtime while reporting a clean launch. It now passes -p when HIVE_COMPOSE_PROJECT is set and rejects a value that could inject compose arguments.",
+    "An isolated pinned stack first rendered its data root from the ambient HIVE_DATA_ROOT rather than from its own env file, which would have pointed a v1.0.0 migration at the live 1.0.2 database directory. Caught by reading `docker compose config` back before any container started; the recorded stack runs with per-process overrides.",
+    "The canonical workspace path carried by the Work Order and the runbook (D:\\Hive\\Projects\\isoryn-engine) no longer exists: D:\\Hive is now the newer stack's data root and the ISORYN working copy is at D:\\Projects\\isoryn-engine. Proved by directory listing rather than recreated, because recreating it would have collided with concurrent work."
   ],
   "residualRisks": [
     "One sibling workspace could not be relinked at its previous path because an unrelated service holds a lock on the empty directory. No data was lost: the working tree, index and history all live at the new canonical path, and the leftover is an empty directory. Retrying the link needs the owning process to release it.",
@@ -1229,7 +1288,180 @@ the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent 
     "path": ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
     "note": "The executor may not self-approve promotion."
   },
-  "stopCondition": "READY_FOR_BOOTSTRAP_AUDIT",
-  "verdict": "AWAITING_INDEPENDENT_REVIEW"
+  "stopCondition": "READY_FOR_C01_REVIEW",
+  "verdict": "AWAITING_INDEPENDENT_REVIEW",
+  "c01GeneratedAt": "2026-09-23T13:17:22Z",
+  "c01Recovery": {
+    "trigger": "Independent review of PR #2 returned CORRECTION REQUIRED and blocked promotion on HIVE_RUNTIME_DRIFT.",
+    "proofLineage": {
+      "historicalHiveProofHead": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+      "reviewerCorrectionHead": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
+      "c01ExecutionProofHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
+      "finalEvidenceCarryingHead": "recorded in .engineering/evidence/ci.json once Governance runs on the pushed head",
+      "note": "The d5de04c5ac15 records are left exactly as written and remain valid only for that head. C01 adds a current proof at f293fabfd4cd rather than restating the old one."
+    },
+    "runtime": {
+      "baseline": "HIVE v1.0.0",
+      "sourceCommit": "a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf",
+      "versionReportedByHealth": "1.0.0",
+      "composeProject": "isoryn-c01-v100",
+      "apiPort": 18099,
+      "apiUrl": "http://127.0.0.1:18099",
+      "dataRoot": "D:/isoryn-c01-hive-proof/data",
+      "projectsRoot": "D:/Projects",
+      "projectsRootInContainer": "/workspace/projects",
+      "postgresPublishedPort": null,
+      "redisPublishedPort": null,
+      "network": "isoryn-c01-v100_hive",
+      "materialisation": "git clone --no-hardlinks --branch v1.0.0 from the operator's existing HIVE object store. The clone step read the source repository only; no container, volume, network, .env or Git state of any pre-existing stack was modified.",
+      "secrets": "POSTGRES_PASSWORD is generated per machine in the operator-local compose env file and is not recorded here."
+    },
+    "isolation": {
+      "collisionDomainsSeparated": [
+        "Compose project name, which also derives container and network names",
+        "host API port",
+        "HIVE_DATA_ROOT",
+        "HIVE_PROJECTS_ROOT",
+        "compose env file"
+      ],
+      "ambientEnvironmentHazard": "Docker Compose resolves variables from the process environment before --env-file. This machine exports COMPOSE_PROJECT_NAME, HIVE_DATA_ROOT, HIVE_PROJECTS_ROOT, HIVE_HOME and HIVE_REPO_PATH for the operator's live stack, so a stack configured only with --env-file rendered HIVE_DATA_ROOT as the live database directory and would have migrated it with a v1.0.0 schema. `docker compose config` was read back with per-process overrides before anything started, and that is what the recorded mounts reflect.",
+      "launcherHazard": "docker compose exec chooses containers by project label, not by working directory. From inside the pinned v1.0.0 checkout with the ambient COMPOSE_PROJECT_NAME left at the live value, `docker compose ps` listed hive-v102-api-1 and its siblings; with -p isoryn-c01-v100 it listed isoryn-c01-v100-api-1. scripts/hive_mcp.py now passes -p when HIVE_COMPOSE_PROJECT is set.",
+      "targetedPinnedStackNotConcurrent": true
+    },
+    "concurrentRuntimeBeforeAfter": {
+      "policy": "The concurrent stacks are not owned by this correction; none was stopped, deleted, reconfigured or entered.",
+      "hiveProjectAtD-Projetos-Codex": {
+        "role": "the HIVE 1.0.1 workspace the review named",
+        "before": "api Exited(3), dashboard Created, migration/storage-init Exited(0), redis and postgres Exited(127)",
+        "after": "identical container set and identical recorded states and timestamps",
+        "mutatedByThisCorrection": false
+      },
+      "hiveV102Project": {
+        "role": "the runtime actually serving 127.0.0.1:8000 during C01",
+        "before": "api/postgres/redis up and healthy, dashboard up, StartedAt 2026-09-22T22:57:17Z, restartcount 0",
+        "after": "unchanged StartedAt, restartcount 0, same image id, /api/v1/health still ok at version 1.0.2",
+        "mutatedByThisCorrection": false,
+        "dataRootStillExclusive": "D:/HIVE/postgres is mounted only in hive-v102-postgres-1"
+      },
+      "outsideThisCorrection": "A third stack, compose project hive-wo031-final-159ac90-retry-02 on 127.0.0.1:18041, was running at the first snapshot and gone at the second. No command in this session named that project, and its images are still present, which is a normal down-without-rmi by its own owner. Recorded rather than assumed away, because a before/after claim has to name what actually moved."
+    },
+    "results": {
+      "health": {
+        "version": "1.0.0",
+        "status": "ok",
+        "postgres": "ok with pgvector",
+        "redis": "ok",
+        "storage": "ok"
+      },
+      "project": {
+        "project_id": "76ee3c9b-d539-4020-a010-cb956cf4254a",
+        "relative_path": "isoryn-engine",
+        "git_branch": "isoryn-wo-0001-foundation",
+        "git_head_sha": "f293fabfd4cde0a202d917b75eee590567b2027e",
+        "state": "READY",
+        "repository_accessible": true,
+        "working_tree_clean": true,
+        "registrationIsUnique": true,
+        "projectListReturnedCount": 1
+      },
+      "index": {
+        "status": "COMPLETED"
+      },
+      "corpus": {
+        "state": "CURRENT",
+        "repository_source_count": 135,
+        "chunk_count": 218,
+        "reference_count": 218
+      },
+      "canonicalRetrieval": {
+        "docs/project-brain/13-CHECKPOINT.md": {
+          "firstRank": 2,
+          "withinTop10": true
+        },
+        "docs/project-brain/15-DEFINITION-OF-DONE.md": {
+          "firstRank": 11,
+          "withinTop10": false,
+          "window": 20
+        },
+        "docs/project-brain/04-ARCHITECTURE.md": {
+          "firstRank": 2,
+          "withinTop10": true
+        },
+        "note": "The DoD page ranks behind this Work Order's own evidence bundle for its own name because the bundle repeats the phrase far more often. Reported at rank 11 of a 20-wide window rather than re-queried until it surfaced in one."
+      },
+      "mcp": {
+        "transport": "stdio JSON-RPC through scripts/hive_mcp.py",
+        "toolsListed": [
+          "checkpoint.read",
+          "context.build",
+          "context.search",
+          "memory.get",
+          "memory.search",
+          "project.list",
+          "project.status"
+        ],
+        "toolsListMatchesGovernedSurface": true,
+        "allReadOnly": true,
+        "callsExecuted": [
+          "project.list",
+          "project.status",
+          "checkpoint.read",
+          "context.search"
+        ],
+        "launcherExitCode": 0,
+        "launcherStderr": "",
+        "semanticState": "UNAVAILABLE",
+        "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+        "rerankState": "RERANK_FALLBACK_DISABLED"
+      }
+    },
+    "checks": {
+      "py_compile": "PASS",
+      "governance_validator": "PASS",
+      "unittest_suite": "PASS",
+      "git_diff_check": "PASS",
+      "no_uncommitted_tracked_changes": "PASS",
+      "clean_worktree_for_hive": "PASS",
+      "secret_scan": "PASS",
+      "hive_bootstrap_pipeline": "PASS",
+      "hive_inspection_head_matches_local_head": "PASS",
+      "hive_corpus_current": "PASS",
+      "hive_retrieval_canonical": "PASS",
+      "mcp_handshake": "PASS",
+      "mcp_readonly_call": "PASS",
+      "mcp_project_status": "PASS",
+      "mcp_checkpoint_read": "PASS",
+      "mcp_context_search_canonical": "PASS",
+      "mcp_launcher_no_npx_proxy": "PASS",
+      "mcp_launcher_targets_pinned_project": "PASS",
+      "concurrent_hive_untouched": "PASS",
+      "governance_ci": "UNKNOWN",
+      "toolchain_build": "DEFERRED_BY_WO",
+      "performance_benchmark": "DEFERRED_BY_WO",
+      "third_party_dependency_scan": "NOT_AVAILABLE"
+    },
+    "filesChanged": [
+      "scripts/hive_mcp.py",
+      "tests/test_hive_mcp.py",
+      ".codex/config.toml",
+      ".env.example",
+      "docs/HIVE-INTEGRATION.md",
+      ".engineering/evidence/hive-preflight.json",
+      ".engineering/evidence/hive-retrieval-proof.json",
+      ".engineering/evidence/mcp-proof.json",
+      ".engineering/evidence/checks.json",
+      ".engineering/evidence/ci.json",
+      ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+      ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md"
+    ],
+    "testCounts": {
+      "unittest": "27 tests, 0 failures (was 24 before the isolation tests)"
+    },
+    "notDone": [
+      "The canonical HIVE pin stays v1.0.0; it was not raised to 1.0.1 or 1.0.2 to make the drift disappear, because a baseline change needs its own ADR.",
+      "No engine or product implementation was introduced.",
+      "PR #2 is not merged and the checkpoint is not promoted."
+    ]
+  }
 }
 ```

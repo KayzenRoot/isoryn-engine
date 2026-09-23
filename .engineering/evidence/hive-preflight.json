@@ -1,6 +1,24 @@
 {
-  "api": "http://127.0.0.1:8000",
+  "api": "http://127.0.0.1:18099",
   "result": "PASS",
+  "capturedAt": "2026-09-23T13:14:41Z",
+  "proofHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
+  "supersedes": {
+    "head": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
+    "reason": "HIVE_RUNTIME_DRIFT closed by C01"
+  },
+  "runtime": {
+    "baseline": "HIVE v1.0.0",
+    "sourceCommit": "a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf",
+    "versionReportedByHealth": "1.0.0",
+    "composeProject": "isoryn-c01-v100",
+    "apiPort": 18099,
+    "apiUrl": "http://127.0.0.1:18099",
+    "dataRoot": "D:/isoryn-c01-hive-proof/data",
+    "projectsRoot": "D:/Projects",
+    "projectsRootInContainer": "/workspace/projects",
+    "checkoutProvidedBy": "git clone --no-hardlinks --branch v1.0.0 from the operator's existing HIVE object store"
+  },
   "attempts": [
     {
       "attempt": 1,
@@ -9,15 +27,16 @@
     }
   ],
   "pipeline": {
-    "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+    "project_id": "76ee3c9b-d539-4020-a010-cb956cf4254a",
     "relative_path": "isoryn-engine",
     "git_branch": "isoryn-wo-0001-foundation",
-    "git_head_sha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+    "git_head_sha": "f293fabfd4cde0a202d917b75eee590567b2027e",
     "state": "READY",
     "working_tree_clean": true,
     "index_status": "COMPLETED",
     "corpus_status": "COMPLETED"
   },
   "classification": null,
+  "workspaceNote": "The Work Order names D:\\Hive\\Projects\\isoryn-engine as the canonical local workspace. That directory does not exist on this machine: D:\\Hive is the data root of the operator's newer HIVE stack, and the ISORYN working copy the reviewer corrected on is D:\\Projects\\isoryn-engine (origin KayzenRoot/isoryn-engine, branch isoryn-wo-0001-foundation, head 4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b at capture start). The proof was therefore taken against that real directory rather than recreating a path that would collide with concurrent work.",
   "note": "Derived state only: Git and the canonical checkpoint outrank HIVE. working_tree_clean is reported as observed and never edited into a true value."
 }
