@@ -1,0 +1,26 @@
+# C03 final-head verification: the delivered head's own required check, read from GitHub after it completed.
+# Deliberately a new file. pr-verification-c03.txt recorded the state at a77e1e16bae1 and stays as captured,
+# because the disclosed C03 defect was a BEFORE receipt that a later run silently replaced.
+# captured: 2026-09-23T16:23:53Z  repo: KayzenRoot/isoryn-engine  ruleset: 23776080  head: 12e2148e5353e6424639d1afdf26954e0abc6531
+
+$ gh api repos/KayzenRoot/isoryn-engine/rulesets/23776080 --jq {bypass_actors,can_bypass:.current_user_can_bypass,enforcement,name,rules:[.rules[].type],updated_at}
+{"bypass_actors":[],"can_bypass":"never","enforcement":"active","name":"main-governance","rules":["non_fast_forward","deletion","required_linear_history","pull_request","required_status_checks"],"updated_at":"2026-09-23T12:28:10.071-03:00"}
+exit=0
+
+$ gh ruleset check main --repo KayzenRoot/isoryn-engine | head -3
+5 rules apply to branch main in repo KayzenRoot/isoryn-engine
+
+- deletion
+exit=0
+
+$ gh pr view 2 --json number,state,headRefOid,baseRefName,mergeable,mergeStateStatus,mergedAt,isDraft
+{"baseRefName":"main","headRefOid":"12e2148e5353e6424639d1afdf26954e0abc6531","isDraft":false,"mergeStateStatus":"CLEAN","mergeable":"MERGEABLE","mergedAt":null,"number":2,"state":"OPEN"}
+exit=0
+
+$ gh pr checks 2 --required
+Governance	pass	7s	https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887776564/job/107272233729	
+exit=0
+
+$ gh api repos/KayzenRoot/isoryn-engine/commits/12e2148e5353e6424639d1afdf26954e0abc6531/check-runs --jq '.check_runs[] | {name, status, conclusion, html_url}'
+{"conclusion":"success","html_url":"https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887776564/job/107272233729","name":"Governance","status":"completed"}
+exit=0

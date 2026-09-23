@@ -1,0 +1,181 @@
+{
+  "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+  "proofHead": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+  "api": "http://127.0.0.1:18199",
+  "correction": "ISORYN-WO-0001-C03",
+  "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
+  "canonicalProjectsRoot": "D:\\Hive\\Projects",
+  "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+  "corpus": {
+    "state": "CURRENT",
+    "last_successful_sync": "2026-09-23T16:08:29.124356Z",
+    "latest_run": {
+      "run_id": "228e8919-3faf-458a-bf61-bb00d579f481",
+      "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+      "repository_index_run_id": "a6278af8-3abc-4186-8c26-5db775584bb8",
+      "repository_source_fingerprint": "05ee7878b3fd4fb04b7cd99ab5cfb7a45d93d55a899f83d155838de590d1f9c5",
+      "task_source_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_fingerprint": "e2efe544fec40d60fce32a53d784163f6554ddd2963e819f428335620056d916",
+      "status": "COMPLETED",
+      "started_at": "2026-09-23T16:08:23.680455Z",
+      "completed_at": "2026-09-23T16:08:29.124356Z",
+      "repository_source_count": 141,
+      "task_source_count": 0,
+      "chunk_count": 246,
+      "reference_count": 248,
+      "repository_reference_count": 248,
+      "task_reference_count": 0,
+      "new_chunk_count": 76,
+      "reused_chunk_count": 170,
+      "new_reference_count": 154,
+      "reused_reference_count": 94,
+      "removed_reference_count": 93,
+      "current_reference_count": 248,
+      "skipped_binary_count": 0,
+      "skipped_decode_count": 0,
+      "error": null
+    },
+    "raw": {
+      "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+      "state": "CURRENT",
+      "last_successful_sync": "2026-09-23T16:08:29.124356Z",
+      "latest_run": {
+        "run_id": "228e8919-3faf-458a-bf61-bb00d579f481",
+        "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+        "repository_index_run_id": "a6278af8-3abc-4186-8c26-5db775584bb8",
+        "repository_source_fingerprint": "05ee7878b3fd4fb04b7cd99ab5cfb7a45d93d55a899f83d155838de590d1f9c5",
+        "task_source_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_fingerprint": "e2efe544fec40d60fce32a53d784163f6554ddd2963e819f428335620056d916",
+        "status": "COMPLETED",
+        "started_at": "2026-09-23T16:08:23.680455Z",
+        "completed_at": "2026-09-23T16:08:29.124356Z",
+        "repository_source_count": 141,
+        "task_source_count": 0,
+        "chunk_count": 246,
+        "reference_count": 248,
+        "repository_reference_count": 248,
+        "task_reference_count": 0,
+        "new_chunk_count": 76,
+        "reused_chunk_count": 170,
+        "new_reference_count": 154,
+        "reused_reference_count": 94,
+        "removed_reference_count": 93,
+        "current_reference_count": 248,
+        "skipped_binary_count": 0,
+        "skipped_decode_count": 0,
+        "error": null
+      },
+      "chunk_count": 246,
+      "reference_count": 248,
+      "repository_reference_count": 248,
+      "task_reference_count": 0
+    }
+  },
+  "queries": {
+    "checkpoint status phase objective": {
+      "target": "docs/project-brain/13-CHECKPOINT.md",
+      "topK": 20,
+      "paths": [
+        ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/mcp-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/mcp-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        "docs/project-brain/13-CHECKPOINT.md",
+        "scripts/validate_governance.py"
+      ],
+      "canonical_paths": [
+        "docs/project-brain/13-CHECKPOINT.md"
+      ],
+      "canonical_ranks": [
+        7
+      ],
+      "first_canonical_rank": 7,
+      "ranks_within_top_20": [
+        7
+      ],
+      "first_canonical_rank_within_top_20": 7,
+      "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+      "semantic_state": "UNAVAILABLE",
+      "fallback_reason": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+      "rerank_state": null
+    },
+    "Definition of Done": {
+      "target": "docs/project-brain/15-DEFINITION-OF-DONE.md",
+      "topK": 20,
+      "paths": [
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        "docs/project-brain/15-DEFINITION-OF-DONE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        "scripts/validate_governance.py",
+        "AGENTS.md",
+        ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        "docs/project-brain/00-README-UPLOAD-ORDER.md",
+        ".engineering/context-locks/ISORYN-WO-0001.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md"
+      ],
+      "canonical_paths": [
+        "docs/project-brain/15-DEFINITION-OF-DONE.md"
+      ],
+      "canonical_ranks": [
+        9
+      ],
+      "first_canonical_rank": 9,
+      "ranks_within_top_20": [
+        9
+      ],
+      "first_canonical_rank_within_top_20": 9,
+      "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+      "semantic_state": "UNAVAILABLE",
+      "fallback_reason": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+      "rerank_state": null
+    },
+    "Godot engine foundation architecture": {
+      "target": "docs/project-brain/04-ARCHITECTURE.md",
+      "topK": 20,
+      "paths": [
+        ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        "README.md",
+        "docs/project-brain/01-PROJECT-OVERVIEW.md",
+        "docs/project-brain/04-ARCHITECTURE.md",
+        ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+        "AGENTS.md",
+        ".engineering/context-locks/ISORYN-WO-0001.json"
+      ],
+      "canonical_paths": [
+        "docs/project-brain/04-ARCHITECTURE.md"
+      ],
+      "canonical_ranks": [
+        5
+      ],
+      "first_canonical_rank": 5,
+      "ranks_within_top_20": [
+        5
+      ],
+      "first_canonical_rank_within_top_20": 5,
+      "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+      "semantic_state": "UNAVAILABLE",
+      "fallback_reason": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+      "rerank_state": null
+    }
+  },
+  "canonical_paths": [
+    "docs/project-brain/04-ARCHITECTURE.md",
+    "docs/project-brain/13-CHECKPOINT.md",
+    "docs/project-brain/15-DEFINITION-OF-DONE.md"
+  ],
+  "rankNote": "Ranks are reported exactly as the runtime returned them for each canonical target inside a 20-result window. The pinned v1.0.0 runtime has no embedding provider configured, so these are lexical-path results, not semantic ones."
+}

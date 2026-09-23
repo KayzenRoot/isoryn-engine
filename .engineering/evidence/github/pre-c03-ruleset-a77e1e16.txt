@@ -1,0 +1,49 @@
+# Verbatim pre-C03 live ruleset state, from the receipts the reviewer committed at a77e1e16bae1551d8a87e79d657d79813fbe318e.
+# Reproduce with: git show a77e1e16bae1551d8a87e79d657d79813fbe318e:.engineering/evidence/github/ruleset-check-main.txt
+# This is the immutable BEFORE record: the self-locking restrict-updates rule was live on main.
+
+### git show a77e1e16:.engineering/evidence/github/ruleset-check-main.txt
+6 rules apply to branch main in repo KayzenRoot/isoryn-engine
+
+- deletion
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+- non_fast_forward
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] 
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+- required_linear_history
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true] 
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+- update
+  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
+
+### git show a77e1e16:.engineering/evidence/github/ruleset-view.txt
+
+main-governance
+ID: 23776080
+Source: KayzenRoot/isoryn-engine (Repository)
+Enforcement: Active
+You can bypass: never
+
+Bypass List
+This ruleset cannot be bypassed
+
+Conditions
+- ref_name: [exclude: []] [include: [refs/heads/main]] 
+
+Rules
+- deletion
+- non_fast_forward
+- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] 
+- required_linear_history
+- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true] 
+- update
+
+### git show a77e1e16:.engineering/evidence/github/ruleset-list.json
+23776080	main-governance	KayzenRoot/isoryn-engine (repo)	active	6

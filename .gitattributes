@@ -1,0 +1,33 @@
+# HIVE indexes this repository from inside a Linux container that applies no line-ending
+# conversion, so a CRLF working tree is read as every tracked file being modified and its
+# staleness guard then refuses canonical retrieval. Text is LF on every platform, and the
+# working tree must match the blobs byte for byte.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.wav binary
+*.ogg binary
+*.mp3 binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.glb binary
+*.fbx binary
+*.mesh binary
+*.anim binary
+*.pdf binary
+*.zip binary
+*.dll binary
+*.exe binary
+*.pdb binary
+*.res binary
+*.dylib binary
+*.so binary
+*.a binary
+*.mov binary
+*.mp4 binary
+*.node binary

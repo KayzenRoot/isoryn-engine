@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "isoryn-gef-context-lock-v1",
+  "workOrder": "ISORYN-WO-0001",
+  "status": "CURRENT",
+  "admittedAt": "2026-09-21",
+  "repository": "KayzenRoot/isoryn-engine",
+  "baseSha": "dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362",
+  "prBaseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
+  "baseNote": "baseSha is origin/main at admission; prBaseSha is origin/main when the governed branch was cut, after the pre-protection bootstrap commits of this same Work Order landed on main.",
+  "branch": "isoryn-wo-0001-foundation",
+  "workspaceReference": "canonical local workspace documented in docs/HIVE-INTEGRATION.md",
+  "hiveProjectId": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+  "upstreamPins": {
+    "gef": { "version": "1.0.0", "releaseCommit": "866fe3af8cccc65c929aaf6a47a924401fa448b3", "vendored": false },
+    "hive": { "version": "1.0.0", "releaseCommit": "a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf", "vendored": false }
+  },
+  "canonicalSources": [
+    "AGENTS.md",
+    ".engineering/SOURCE-HIERARCHY.md",
+    ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+    "docs/project-brain/13-CHECKPOINT.md",
+    "docs/project-brain/16-DECISIONS-LEDGER.md",
+    "docs/project-brain/03-SCOPE.md",
+    "docs/project-brain/15-DEFINITION-OF-DONE.md",
+    "docs/project-brain/04-ARCHITECTURE.md",
+    "docs/project-brain/02-REQUIREMENTS.md",
+    "docs/GEF-BOOTSTRAP.md",
+    "docs/HIVE-INTEGRATION.md"
+  ],
+  "inScope": [
+    "local synchronization of the canonical workspace",
+    "Source Pack and governance artifact audit",
+    "GEF target-project contract validation against GEF v1.0.0",
+    "HIVE MCP launcher, project-scoped CLI configuration, registration/index/corpus proof",
+    "governance validator, tests and CI",
+    "professional GitHub settings and the main-governance ruleset",
+    "Evidence Bundle, one governed branch and one pull request"
+  ],
+  "outOfScope": [
+    "production engine implementation",
+    "Godot version, fork topology, toolchain or build-pipeline freeze",
+    "renderer, runtime, editor, packaging, simulation or benchmark code",
+    "any change to an adopted decision",
+    "merging the pull request"
+  ],
+  "staleWhen": [
+    "baseSha is no longer an ancestor of the candidate head",
+    "any canonical source changes incompatibly",
+    "an upstream pin changes",
+    "the checkpoint is promoted"
+  ],
+  "stalenessEvidence": "HIVE reports source_not_current for retrieval until the repository is re-inspected at the new head; that response is the enforced staleness signal, not an error to hide."
+}

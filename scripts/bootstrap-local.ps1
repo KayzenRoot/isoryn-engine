@@ -1,5 +1,5 @@
 param(
-  [string]$Workspace = "D:\Hive\Projects\isoryn-engine",
+  [string]$Workspace = $env:ISORYN_WORKSPACE,
   [string]$Repository = "https://github.com/KayzenRoot/isoryn-engine.git",
   [string]$HiveRepoPath = $env:HIVE_REPO_PATH,
   [switch]$StartHive
@@ -8,10 +8,18 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
+if (-not $Workspace) {
+  throw "Set -Workspace (or ISORYN_WORKSPACE) to the canonical local workspace path named in docs/HIVE-INTEGRATION.md."
+}
+
 function Assert-Command([string]$Name) {
   if (-not (Get-Command $Name -ErrorAction SilentlyContinue)) {
     throw "Required command not found on PATH: $Name"
   }
+}
+
+function Test-HiveCheckout([string]$Path) {
+  return (Test-Path (Join-Path $Path "docker-compose.yml")) -and (Test-Path (Join-Path $Path "backend"))
 }
 
 Assert-Command git
@@ -39,19 +47,17 @@ if (-not (Test-Path $Workspace)) {
 }
 
 if (-not $HiveRepoPath) {
-  $candidates = @("D:\Hive\hive", "D:\Hive\Projects\hive", (Join-Path $parent "hive"))
+  $grandparent = Split-Path -Parent $parent
+  $candidates = @((Join-Path $parent "hive"), (Join-Path $grandparent "hive"), (Join-Path $grandparent "Hive"))
   foreach ($candidate in $candidates) {
-    if ((Test-Path (Join-Path $candidate "docker-compose.yml")) -and (Test-Path (Join-Path $candidate "backend"))) {
-      $HiveRepoPath = $candidate
-      break
-    }
+    if (Test-HiveCheckout $candidate) { $HiveRepoPath = $candidate; break }
   }
 }
 if (-not $HiveRepoPath) { throw "HIVE checkout not found. Pass -HiveRepoPath or set HIVE_REPO_PATH." }
 
 $env:HIVE_REPO_PATH = (Resolve-Path $HiveRepoPath).Path
-$env:HIVE_API_URL = "http://localhost:8000"
-$env:HIVE_ISORYN_RELATIVE_PATH = "isoryn-engine"
+if (-not $env:HIVE_API_URL) { $env:HIVE_API_URL = "http://127.0.0.1:8000" }
+$env:HIVE_ISORYN_RELATIVE_PATH = Split-Path -Leaf $Workspace
 
 if ($StartHive) {
   Assert-Command docker
@@ -64,7 +70,7 @@ Push-Location $Workspace
 try {
   python scripts/validate_governance.py
   python -m unittest discover -s tests -p "test_*.py" -v
-  python scripts/hive_bootstrap.py --relative-path isoryn-engine
+  python scripts/hive_bootstrap.py --relative-path $env:HIVE_ISORYN_RELATIVE_PATH
   Write-Host ""
   Write-Host "ISORYN local bootstrap: READY" -ForegroundColor Green
   Write-Host "Workspace: $Workspace"

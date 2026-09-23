@@ -1,0 +1,499 @@
+{
+  "launcher": "python scripts/hive_mcp.py",
+  "proofHead": "70996f5322990010a171c46b9e4f0288f3e585d0",
+  "correction": "ISORYN-WO-0001-C03",
+  "capturedAt": "2026-09-23T16:14:09Z",
+  "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
+  "target": {
+    "compose_project": "isoryn-c02-v100",
+    "hive_checkout": "D:/isoryn-c02-hive-proof/app",
+    "api": "http://127.0.0.1:18199",
+    "data_root": "D:/isoryn-c02-hive-proof/data",
+    "projects_root_host": "D:/Hive/Projects",
+    "relative_path": "isoryn-engine",
+    "argv": [
+      "docker",
+      "compose",
+      "-p",
+      "isoryn-c02-v100",
+      "exec",
+      "-T",
+      "api",
+      "python",
+      "-m",
+      "app.mcp_server"
+    ],
+    "resolvedByLauncherRepo": "D:/isoryn-c02-hive-proof/app",
+    "ambientComposeProjectNameDuringProof": "hive-v102",
+    "isolationProof": "HIVE_COMPOSE_PROJECT is the only thing that selects the pinned stack: the compose file in the checkout declares its own name, and docker compose resolves an ambient project variable before that file. The -p flag is what outranks both, and the container that answered identified itself below."
+  },
+  "isolationProbe": {
+    "ambientComposeProjectName": "hive-v102",
+    "composeFileOwnNameKey": "hive (the pinned checkout's docker-compose.yml)",
+    "argv": [
+      "docker",
+      "exec",
+      "isoryn-c02-v100-api-1",
+      "git",
+      "-c",
+      "safe.directory=*",
+      "-C",
+      "/workspace/projects/isoryn-engine",
+      "rev-parse",
+      "HEAD"
+    ],
+    "returncode": 0,
+    "hostnameReportedByContainer": "59f1dfd72f90",
+    "headSeenInsideContainer": "70996f5322990010a171c46b9e4f0288f3e585d0",
+    "resolvedContainerName": "isoryn-c02-v100-api-1",
+    "resolvedProjectLabel": "isoryn-c02-v100",
+    "resolvedConfigFiles": "D:\\isoryn-c02-hive-proof\\app\\docker-compose.yml",
+    "expectedContainerName": "isoryn-c02-v100-api-1",
+    "result": "PASS",
+    "note": "safe.directory is passed on the command line for this one read-only rev-parse because the container runs as uid 100 against a bind mount owned by root; nothing in the stack's configuration was changed, and HIVE's own pipeline reaches the same head without it."
+  },
+  "precedingPipeline": {
+    "why": "Retries are recorded with their exit codes, and the pipeline that made this head current runs before the session opens, because a receipt written into the working tree would otherwise make the very head it proves stale.",
+    "attempts": [
+      {
+        "attempt": 1,
+        "exitCode": 0,
+        "summary": {
+          "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+          "relative_path": "isoryn-engine",
+          "git_branch": "isoryn-wo-0001-foundation",
+          "git_head_sha": "70996f5322990010a171c46b9e4f0288f3e585d0",
+          "state": "READY",
+          "working_tree_clean": true,
+          "index_status": "COMPLETED",
+          "corpus_status": "COMPLETED"
+        },
+        "stderr": null
+      }
+    ]
+  },
+  "initialize": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+      "protocolVersion": "2025-06-18",
+      "capabilities": {
+        "experimental": {},
+        "tools": {
+          "listChanged": false
+        }
+      },
+      "serverInfo": {
+        "name": "hive-mcp",
+        "version": "mcp-core-surface-v1"
+      },
+      "instructions": "HIVE local-first read-only Core surface; no canonical write or execution tools."
+    }
+  },
+  "tools": [
+    "checkpoint.read",
+    "context.build",
+    "context.search",
+    "memory.get",
+    "memory.search",
+    "project.list",
+    "project.status"
+  ],
+  "toolsAreExactlyTheGovernedSeven": true,
+  "serverInfo": {
+    "name": "hive-mcp",
+    "version": "mcp-core-surface-v1"
+  },
+  "protocolVersion": "2025-06-18",
+  "annotations": {
+    "project.list": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "project.status": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "context.build": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "context.search": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "memory.search": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "memory.get": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "checkpoint.read": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  "allReadOnly": true,
+  "calls": {
+    "project.list": {
+      "jsonrpc": "2.0",
+      "id": 3,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"limit\":32,\"projects\":[{\"detached_head\":false,\"git_branch\":\"isoryn-wo-0001-foundation\",\"git_head_sha\":\"70996f5322990010a171c46b9e4f0288f3e585d0\",\"language_stack\":[],\"name\":\"ISORYN\",\"project_id\":\"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\"relative_path\":\"isoryn-engine\",\"repository_accessible\":true,\"state\":\"READY\",\"working_tree_clean\":true}],\"returned_count\":1,\"truncated\":false,\"version\":\"mcp-project-list-v1\"}"
+          }
+        ],
+        "structuredContent": {
+          "version": "mcp-project-list-v1",
+          "limit": 32,
+          "returned_count": 1,
+          "truncated": false,
+          "projects": [
+            {
+              "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+              "name": "ISORYN",
+              "relative_path": "isoryn-engine",
+              "git_branch": "isoryn-wo-0001-foundation",
+              "git_head_sha": "70996f5322990010a171c46b9e4f0288f3e585d0",
+              "detached_head": false,
+              "repository_accessible": true,
+              "working_tree_clean": true,
+              "language_stack": [],
+              "state": "READY"
+            }
+          ]
+        },
+        "isError": false
+      }
+    },
+    "project.status": {
+      "jsonrpc": "2.0",
+      "id": 4,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"project\":{\"detached_head\":false,\"git_branch\":\"isoryn-wo-0001-foundation\",\"git_head_sha\":\"70996f5322990010a171c46b9e4f0288f3e585d0\",\"language_stack\":[],\"name\":\"ISORYN\",\"project_id\":\"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\"relative_path\":\"isoryn-engine\",\"repository_accessible\":true,\"state\":\"READY\",\"working_tree_clean\":true},\"version\":\"mcp-project-status-v1\"}"
+          }
+        ],
+        "structuredContent": {
+          "version": "mcp-project-status-v1",
+          "project": {
+            "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+            "name": "ISORYN",
+            "relative_path": "isoryn-engine",
+            "git_branch": "isoryn-wo-0001-foundation",
+            "git_head_sha": "70996f5322990010a171c46b9e4f0288f3e585d0",
+            "detached_head": false,
+            "repository_accessible": true,
+            "working_tree_clean": true,
+            "language_stack": [],
+            "state": "READY"
+          }
+        },
+        "isError": false
+      }
+    },
+    "checkpoint.read": {
+      "jsonrpc": "2.0",
+      "id": 5,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"checkpoint\":{\"content\":\"# ISORYN Checkpoint\\n\\n## STATUS\\nBOOTSTRAP CORRECTION REQUIRED\\n\\n## VERSION\\nISORYN 0.0 - Clean Foundation\\n\\n## PHASE\\n0 - GEF/HIVE Repository Foundation\\n\\n## OBJECTIVE\\nEstablish the professional Source Pack, GEF v1.0.0 governance, HIVE v1.0.0 integration, Codex MCP bridge and exact-head governance CI before engine implementation begins.\\n\\n## IN PROGRESS\\nISORYN-WO-0001-C03-MAIN-RULESET-UNLOCK.\\n\\n## BLOCKERS\\nMAIN_RULESET_SELF_LOCK: the live `main-governance` ruleset contains GitHub's restrict-updates rule while `bypass_actors` is empty. The attempted squash merge of approved PR #2 was rejected by GitHub with HTTP 405, \\\"Repository rule violations found / Cannot update this protected ref.\\\" The repository desired state now removes that rule and adds regression guards, but the live administrative ruleset still requires executor-side `gh` application and fresh evidence.\\n\\n## NEXT STEP\\nExecute `ISORYN-WO-0001-C03-MAIN-RULESET-UNLOCK`: apply the corrected live `main-governance` ruleset without the restrict-updates rule, capture BEFORE/AFTER receipts, verify pull-request merging is permitted, re-run exact-head Governance and return for independent re-review. Do not merge or begin engine implementation while this correction is open.\\n\",\"content_characters\":1233,\"git_blob_sha\":\"843667401d263dbc739db13377ad68e3e94365de\",\"git_head_sha\":\"70996f5322990010a171c46b9e4f0288f3e585d0\",\"path\":\"docs/project-brain/13-CHECKPOINT.md\",\"registered_head_sha\":\"70996f5322990010a171c46b9e4f0288f3e585d0\",\"section_count\":7,\"sections\":[{\"end_char\":62,\"end_line\":5,\"heading\":\"STATUS\",\"start_char\":21,\"start_line\":3},{\"end_char\":104,\"end_line\":8,\"heading\":\"VERSION\",\"start_char\":62,\"start_line\":6},{\"end_char\":149,\"end_line\":11,\"heading\":\"PHASE\",\"start_char\":104,\"start_line\":9},{\"end_char\":334,\"end_line\":14,\"heading\":\"OBJECTIVE\",\"start_char\":149,\"start_line\":12},{\"end_char\":390,\"end_line\":17,\"heading\":\"IN PROGRESS\",\"start_char\":334,\"start_line\":15},{\"end_char\":869,\"end_line\":20,\"heading\":\"BLOCKERS\",\"start_char\":390,\"start_line\":18},{\"end_char\":1233,\"end_line\":22,\"heading\":\"NEXT STEP\",\"start_char\":869,\"start_line\":21}],\"source_content_sha256\":\"34fb747c881b66cc780dddbfc716152067c5393cf3a508b86d0b959524d8696d\"},\"project_id\":\"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\"version\":\"mcp-checkpoint-read-v1\"}"
+          }
+        ],
+        "structuredContent": {
+          "version": "mcp-checkpoint-read-v1",
+          "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+          "checkpoint": {
+            "path": "docs/project-brain/13-CHECKPOINT.md",
+            "git_head_sha": "70996f5322990010a171c46b9e4f0288f3e585d0",
+            "registered_head_sha": "70996f5322990010a171c46b9e4f0288f3e585d0",
+            "git_blob_sha": "843667401d263dbc739db13377ad68e3e94365de",
+            "source_content_sha256": "34fb747c881b66cc780dddbfc716152067c5393cf3a508b86d0b959524d8696d",
+            "section_count": 7,
+            "sections": [
+              {
+                "heading": "STATUS",
+                "start_line": 3,
+                "end_line": 5,
+                "start_char": 21,
+                "end_char": 62
+              },
+              {
+                "heading": "VERSION",
+                "start_line": 6,
+                "end_line": 8,
+                "start_char": 62,
+                "end_char": 104
+              },
+              {
+                "heading": "PHASE",
+                "start_line": 9,
+                "end_line": 11,
+                "start_char": 104,
+                "end_char": 149
+              },
+              {
+                "heading": "OBJECTIVE",
+                "start_line": 12,
+                "end_line": 14,
+                "start_char": 149,
+                "end_char": 334
+              },
+              {
+                "heading": "IN PROGRESS",
+                "start_line": 15,
+                "end_line": 17,
+                "start_char": 334,
+                "end_char": 390
+              },
+              {
+                "heading": "BLOCKERS",
+                "start_line": 18,
+                "end_line": 20,
+                "start_char": 390,
+                "end_char": 869
+              },
+              {
+                "heading": "NEXT STEP",
+                "start_line": 21,
+                "end_line": 22,
+                "start_char": 869,
+                "end_char": 1233
+              }
+            ],
+            "content_characters": 1233,
+            "content": "# ISORYN Checkpoint\n\n## STATUS\nBOOTSTRAP CORRECTION REQUIRED\n\n## VERSION\nISORYN 0.0 - Clean Foundation\n\n## PHASE\n0 - GEF/HIVE Repository Foundation\n\n## OBJECTIVE\nEstablish the professional Source Pack, GEF v1.0.0 governance, HIVE v1.0.0 integration, Codex MCP bridge and exact-head governance CI before engine implementation begins.\n\n## IN PROGRESS\nISORYN-WO-0001-C03-MAIN-RULESET-UNLOCK.\n\n## BLOCKERS\nMAIN_RULESET_SELF_LOCK: the live `main-governance` ruleset contains GitHub's restrict-updates rule while `bypass_actors` is empty. The attempted squash merge of approved PR #2 was rejected by GitHub with HTTP 405, \"Repository rule violations found / Cannot update this protected ref.\" The repository desired state now removes that rule and adds regression guards, but the live administrative ruleset still requires executor-side `gh` application and fresh evidence.\n\n## NEXT STEP\nExecute `ISORYN-WO-0001-C03-MAIN-RULESET-UNLOCK`: apply the corrected live `main-governance` ruleset without the restrict-updates rule, capture BEFORE/AFTER receipts, verify pull-request merging is permitted, re-run exact-head Governance and return for independent re-review. Do not merge or begin engine implementation while this correction is open.\n"
+          }
+        },
+        "isError": false
+      }
+    },
+    "context.search": {
+      "jsonrpc": "2.0",
+      "id": 6,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"candidate_pool\":5,\"fallback_reason\":\"rerank_disabled\",\"hybrid_state\":\"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\",\"normalized_query\":\"main ruleset governance required status checks\",\"project_id\":\"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\"query\":\"main ruleset governance required status checks\",\"rerank_state\":\"RERANK_FALLBACK_DISABLED\",\"results\":[{\"chunk_content_sha256\":\"288f13474c73db623b47333b0e16293fc703085823050ad76e6911146f053966\",\"chunk_id\":\"5cb5482c-2eb0-4185-aa89-1262f8df9ff0\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"7df61ea8-82a7-4f6f-a97d-7b0e20bce721\",\"end_char\":80452,\"end_line\":1224,\"hybrid_score\":0.01639344262295082,\"lexical_contribution\":0.01639344262295082,\"lexical_rank\":1,\"lexical_score\":0.06131184846162796,\"path\":\".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md\",\"pre_rerank_rank\":1,\"project_id\":\"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\"qualified_symbol\":null,\"reference_id\":\"38d39d97-e05f-4b79-b3a2-3fee2d4bcf54\",\"repository_file_id\":\"6f9a0ad6-d152-41f3-80bf-1500b9c8373e\",\"repository_symbol_id\":null,\"rerank_rank\":1,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"      \\\"id\\\": 23776080,\\n      \\\"name\\\": \\\"main-governance\\\",\\n      \\\"enforcement\\\": \\\"active\\\",\\n      \\\"conditions\\\": {\\n        \\\"ref_name\\\": {\\n          \\\"exclude\\\": [],\\n          \\\"include\\\": [\\n            \\\"refs/heads/main\\\"\\n          ]\\n        }\\n      },\\n      \\\"bypassActors\\\": [],\\n      \\\"rules\\\": [\\n        {\\n          \\\"type\\\": \\\"non_fast_forward\\\",\\n          \\\"parameters\\\": {}\\n        },\\n        {\\n          \\\"type\\\": \\\"deletion\\\",\\n          \\\"parameters\\\": {}\\n        },\\n        {\\n          \\\"type\\\": \\\"required_linear_history\\\",\\n          \\\"parameters\\\": {}\\n        },\\n        {\\n          \\\"type\\\": \\\"update\\\",\\n          \\\"parameters\\\": {}\\n        },\\n        {\\n          \\\"type\",\"snippet_characters\":643,\"snippet_truncated\":true,\"source_content_sha256\":\"972faf5bb2dc0d4e6d35f4992c989ce2051efb7680f24cf96455bce61b2108e8\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":75541,\"start_line\":1145,\"task_id\":null,\"title\":null},{\"chunk_content_sha256\":\"6036ada541e63a959224867288a6ac8c3647a6847b8c3e864a6a25a146f0bff2\",\"chunk_id\":\"94505f27-86fb-4186-8559-52a238ed3756\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"7df61ea8-82a7-4f6f-a97d-7b0e20bce721\",\"end_char\":2469,\"end_line\":49,\"hybrid_score\":0.016129032258064516,\"lexical_contribution\":0.016129032258064516,\"lexical_rank\":2,\"lexical_score\":0.04654422029852867,\"path\":\".engineering/evidence/github/pre-c03-ruleset-a77e1e16.txt\",\"pre_rerank_rank\":2,\"project_id\":\"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\"qualified_symbol\":null,\"reference_id\":\"4654f42b-de72-45b5-a8ee-a61c84520bfb\",\"repository_file_id\":\"8c2c1f8a-3dc0-45e2-8b55-37e9606095a9\",\"repository_symbol_id\":null,\"rerank_rank\":2,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"# Verbatim pre-C03 live ruleset state, from the receipts the reviewer committed at a77e1e16bae1551d8a87e79d657d79813fbe318e.\\n# Reproduce with: git show a77e1e16bae1551d8a87e79d657d79813fbe318e:.engineering/evidence/github/ruleset-check-main.txt\\n# This is the immutable BEFORE record: the self-locking restrict-updates rule was live on main.\\n\\n### git show a77e1e16:.engineering/evidence/github/ruleset-check-main.txt\\n6 rules apply to branch main in repo KayzenRoot/isoryn-engine\\n\\n- deletion\\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\\n\\n- non_fast_forward\\n  (configured in ruleset 23776080 from repository Kayz\",\"snippet_characters\":643,\"snippet_truncated\":true,\"source_content_sha256\":\"6036ada541e63a959224867288a6ac8c3647a6847b8c3e864a6a25a146f0bff2\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":0,\"start_line\":1,\"task_id\":null,\"title\":null},{\"chunk_content_sha256\":\"b5c11185b72b7090c2aa8d2afa10d6d1e659e839c056edc93114c0c3650ef6b5\",\"chunk_id\":\"8c79ad96-f22e-497b-a8e1-423a6494ff47\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"7df61ea8-82a7-4f6f-a97d-7b0e20bce721\",\"end_char\":7214,\"end_line\":142,\"hybrid_score\":0.015873015873015872,\"lexical_contribution\":0.015873015873015872,\"lexical_rank\":3,\"lexical_score\":0.043846890330314636,\"path\":\"scripts/configure-github.ps1\",\"pre_rerank_rank\":3,\"project_id\":\"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\"qualified_symbol\":null,\"reference_id\":\"37c70fcc-7871-498e-9f84-3a9986d3ac86\",\"repository_file_id\":\"19272aae-9970-495c-b009-ebfa9b7b585f\",\"repository_symbol_id\":null,\"rerank_rank\":3,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"Write-Host \\\"Capturing BEFORE state for $Repo\\\" -ForegroundColor Cyan\\nSave-Receipt -Name \\\"before-repository.json\\\" -Lines (Invoke-Gh @(\\\"api\\\", \\\"repos/$Repo\\\"))\\n$beforeList = (Invoke-Gh @(\\\"api\\\", \\\"repos/$Repo/rulesets\\\")) | ConvertFrom-Json\\nSave-Receipt -Name \\\"before-rulesets.json\\\" -Lines (Invoke-Gh @(\\\"api\\\", \\\"repos/$Repo/rulesets\\\"))\\n# The list endpoint reports enforcement but omits `rules`, so it cannot show which rules were live. A\\n# self-locking restrict-updates rule is only visible in the per-ruleset read, and that is the state an\\n# AFTER receipt has to be compared against.\\n$beforeNamed = @(@($beforeList) | Where-Object { $_.name -eq $Ru\",\"snippet_characters\":643,\"snippet_truncated\":true,\"source_content_sha256\":\"2fb20cc25af032aa9db0169be06b35278d7c60012595dde14c84451bc16df935\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":3058,\"start_line\":71,\"task_id\":null,\"title\":null},{\"chunk_content_sha256\":\"1577dfd4fdb930440c8ca1bf220c7629cbc465d7893ed42beacd9e76b53eb3b9\",\"chunk_id\":\"fe6ae3ee-220f-4f6b-988b-263e81577f03\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"7df61ea8-82a7-4f6f-a97d-7b0e20bce721\",\"end_char\":1363,\"end_line\":27,\"hybrid_score\":0.015625,\"lexical_contribution\":0.015625,\"lexical_rank\":4,\"lexical_score\":0.042018380016088486,\"path\":\".engineering/evidence/github/pr-verification-c03.txt\",\"pre_rerank_rank\":4,\"project_id\":\"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\"qualified_symbol\":null,\"reference_id\":\"f4127136-5810-440c-9c35-15f611e9cfcf\",\"repository_file_id\":\"a1340fe8-f38e-4785-88b9-3b738e9cff6c\",\"repository_symbol_id\":null,\"rerank_rank\":4,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"# C03 post-application verification, re-read independently after configure-github.ps1 applied the manifest.\\n# captured: 2026-09-23T15:45:13Z  repo: KayzenRoot/isoryn-engine  ruleset: 23776080\\n\\n$ gh api repos/KayzenRoot/isoryn-engine/rulesets/23776080 --jq {bypass_actors,can_bypass:.current_user_can_bypass,enforcement,name,rules:[.rules[].type]}\\n{\\\"bypass_actors\\\":[],\\\"can_bypass\\\":\\\"never\\\",\\\"enforcement\\\":\\\"active\\\",\\\"name\\\":\\\"main-governance\\\",\\\"rules\\\":[\\\"non_fast_forward\\\",\\\"deletion\\\",\\\"required_linear_history\\\",\\\"pull_request\\\",\\\"required_status_checks\\\"]}\\nexit=0\\n\\n$ gh ruleset check main --repo KayzenRoot/isoryn-engine | head -1\\n5 rules apply to branch\",\"snippet_characters\":643,\"snippet_truncated\":true,\"source_content_sha256\":\"1577dfd4fdb930440c8ca1bf220c7629cbc465d7893ed42beacd9e76b53eb3b9\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":0,\"start_line\":1,\"task_id\":null,\"title\":null},{\"chunk_content_sha256\":\"c4028c54b1ad5c2a2227a103d897203502278e785cc7f2d2a184e4dd21792549\",\"chunk_id\":\"9cf4f260-f11e-4443-9f68-7b30b4a23e13\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"7df61ea8-82a7-4f6f-a97d-7b0e20bce721\",\"end_char\":75771,\"end_line\":1154,\"hybrid_score\":0.015384615384615385,\"lexical_contribution\":0.015384615384615385,\"lexical_rank\":5,\"lexical_score\":0.025750935077667236,\"path\":\".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md\",\"pre_rerank_rank\":5,\"project_id\":\"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\"qualified_symbol\":null,\"reference_id\":\"afaa959b-a3ba-434e-ad49-60e3ee9cd428\",\"repository_file_id\":\"6f9a0ad6-d152-41f3-80bf-1500b9c8373e\",\"repository_symbol_id\":null,\"rerank_rank\":5,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"        },\\n        \\\"secret_scanning_validity_checks\\\": {\\n          \\\"status\\\": \\\"disabled\\\"\\n        }\\n      }\\n    },\\n    \\\"repositoryReceipts\\\": [\\n      \\\".engineering/evidence/github/before-repository.json\\\",\\n      \\\".engineering/evidence/github/after-repository.json\\\"\\n    ],\\n    \\\"repositoryReceiptsIdentical\\\": false,\\n    \\\"codeownersBefore\\\": \\\"* @KayzenRoot\\\\n\\\",\\n    \\\"codeownersAfter\\\": \\\"# ISORYN review routing metadata.\\\\n#\\\\n# Ownership here records who a change should be routed to. It is deliberately NOT an approval gate:\\\\n# the main-governance ruleset sets require_code_owner_review=false and required_approving_review_count=0,\\\\n# because this rep\",\"snippet_characters\":643,\"snippet_truncated\":true,\"source_content_sha256\":\"972faf5bb2dc0d4e6d35f4992c989ce2051efb7680f24cf96455bce61b2108e8\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":73089,\"start_line\":1075,\"task_id\":null,\"title\":null}],\"semantic_state\":\"UNAVAILABLE\",\"top_k\":5,\"version\":\"mcp-context-search-v1\"}"
+          }
+        ],
+        "structuredContent": {
+          "version": "mcp-context-search-v1",
+          "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+          "query": "main ruleset governance required status checks",
+          "normalized_query": "main ruleset governance required status checks",
+          "top_k": 5,
+          "candidate_pool": 5,
+          "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "semantic_state": "UNAVAILABLE",
+          "rerank_state": "RERANK_FALLBACK_DISABLED",
+          "fallback_reason": "rerank_disabled",
+          "results": [
+            {
+              "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+              "reference_id": "38d39d97-e05f-4b79-b3a2-3fee2d4bcf54",
+              "chunk_id": "5cb5482c-2eb0-4185-aa89-1262f8df9ff0",
+              "corpus_run_id": "7df61ea8-82a7-4f6f-a97d-7b0e20bce721",
+              "source_kind": "REPOSITORY_FILE",
+              "hybrid_score": 0.01639344262295082,
+              "lexical_score": 0.06131184846162796,
+              "semantic_score": null,
+              "semantic_distance": null,
+              "lexical_rank": 1,
+              "semantic_rank": null,
+              "lexical_contribution": 0.01639344262295082,
+              "semantic_contribution": 0.0,
+              "snippet": "      \"id\": 23776080,\n      \"name\": \"main-governance\",\n      \"enforcement\": \"active\",\n      \"conditions\": {\n        \"ref_name\": {\n          \"exclude\": [],\n          \"include\": [\n            \"refs/heads/main\"\n          ]\n        }\n      },\n      \"bypassActors\": [],\n      \"rules\": [\n        {\n          \"type\": \"non_fast_forward\",\n          \"parameters\": {}\n        },\n        {\n          \"type\": \"deletion\",\n          \"parameters\": {}\n        },\n        {\n          \"type\": \"required_linear_history\",\n          \"parameters\": {}\n        },\n        {\n          \"type\": \"update\",\n          \"parameters\": {}\n        },\n        {\n          \"type",
+              "path": ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+              "title": null,
+              "qualified_symbol": null,
+              "repository_file_id": "6f9a0ad6-d152-41f3-80bf-1500b9c8373e",
+              "repository_symbol_id": null,
+              "task_id": null,
+              "source_content_sha256": "972faf5bb2dc0d4e6d35f4992c989ce2051efb7680f24cf96455bce61b2108e8",
+              "chunk_content_sha256": "288f13474c73db623b47333b0e16293fc703085823050ad76e6911146f053966",
+              "chunker_version": "line-window-v1",
+              "start_line": 1145,
+              "end_line": 1224,
+              "start_char": 75541,
+              "end_char": 80452,
+              "pre_rerank_rank": 1,
+              "rerank_rank": 1,
+              "rerank_score": null,
+              "snippet_characters": 643,
+              "snippet_truncated": true
+            },
+            {
+              "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+              "reference_id": "4654f42b-de72-45b5-a8ee-a61c84520bfb",
+              "chunk_id": "94505f27-86fb-4186-8559-52a238ed3756",
+              "corpus_run_id": "7df61ea8-82a7-4f6f-a97d-7b0e20bce721",
+              "source_kind": "REPOSITORY_FILE",
+              "hybrid_score": 0.016129032258064516,
+              "lexical_score": 0.04654422029852867,
+              "semantic_score": null,
+              "semantic_distance": null,
+              "lexical_rank": 2,
+              "semantic_rank": null,
+              "lexical_contribution": 0.016129032258064516,
+              "semantic_contribution": 0.0,
+              "snippet": "# Verbatim pre-C03 live ruleset state, from the receipts the reviewer committed at a77e1e16bae1551d8a87e79d657d79813fbe318e.\n# Reproduce with: git show a77e1e16bae1551d8a87e79d657d79813fbe318e:.engineering/evidence/github/ruleset-check-main.txt\n# This is the immutable BEFORE record: the self-locking restrict-updates rule was live on main.\n\n### git show a77e1e16:.engineering/evidence/github/ruleset-check-main.txt\n6 rules apply to branch main in repo KayzenRoot/isoryn-engine\n\n- deletion\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- non_fast_forward\n  (configured in ruleset 23776080 from repository Kayz",
+              "path": ".engineering/evidence/github/pre-c03-ruleset-a77e1e16.txt",
+              "title": null,
+              "qualified_symbol": null,
+              "repository_file_id": "8c2c1f8a-3dc0-45e2-8b55-37e9606095a9",
+              "repository_symbol_id": null,
+              "task_id": null,
+              "source_content_sha256": "6036ada541e63a959224867288a6ac8c3647a6847b8c3e864a6a25a146f0bff2",
+              "chunk_content_sha256": "6036ada541e63a959224867288a6ac8c3647a6847b8c3e864a6a25a146f0bff2",
+              "chunker_version": "line-window-v1",
+              "start_line": 1,
+              "end_line": 49,
+              "start_char": 0,
+              "end_char": 2469,
+              "pre_rerank_rank": 2,
+              "rerank_rank": 2,
+              "rerank_score": null,
+              "snippet_characters": 643,
+              "snippet_truncated": true
+            },
+            {
+              "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+              "reference_id": "37c70fcc-7871-498e-9f84-3a9986d3ac86",
+              "chunk_id": "8c79ad96-f22e-497b-a8e1-423a6494ff47",
+              "corpus_run_id": "7df61ea8-82a7-4f6f-a97d-7b0e20bce721",
+              "source_kind": "REPOSITORY_FILE",
+              "hybrid_score": 0.015873015873015872,
+              "lexical_score": 0.043846890330314636,
+              "semantic_score": null,
+              "semantic_distance": null,
+              "lexical_rank": 3,
+              "semantic_rank": null,
+              "lexical_contribution": 0.015873015873015872,
+              "semantic_contribution": 0.0,
+              "snippet": "Write-Host \"Capturing BEFORE state for $Repo\" -ForegroundColor Cyan\nSave-Receipt -Name \"before-repository.json\" -Lines (Invoke-Gh @(\"api\", \"repos/$Repo\"))\n$beforeList = (Invoke-Gh @(\"api\", \"repos/$Repo/rulesets\")) | ConvertFrom-Json\nSave-Receipt -Name \"before-rulesets.json\" -Lines (Invoke-Gh @(\"api\", \"repos/$Repo/rulesets\"))\n# The list endpoint reports enforcement but omits `rules`, so it cannot show which rules were live. A\n# self-locking restrict-updates rule is only visible in the per-ruleset read, and that is the state an\n# AFTER receipt has to be compared against.\n$beforeNamed = @(@($beforeList) | Where-Object { $_.name -eq $Ru",
+              "path": "scripts/configure-github.ps1",
+              "title": null,
+              "qualified_symbol": null,
+              "repository_file_id": "19272aae-9970-495c-b009-ebfa9b7b585f",
+              "repository_symbol_id": null,
+              "task_id": null,
+              "source_content_sha256": "2fb20cc25af032aa9db0169be06b35278d7c60012595dde14c84451bc16df935",
+              "chunk_content_sha256": "b5c11185b72b7090c2aa8d2afa10d6d1e659e839c056edc93114c0c3650ef6b5",
+              "chunker_version": "line-window-v1",
+              "start_line": 71,
+              "end_line": 142,
+              "start_char": 3058,
+              "end_char": 7214,
+              "pre_rerank_rank": 3,
+              "rerank_rank": 3,
+              "rerank_score": null,
+              "snippet_characters": 643,
+              "snippet_truncated": true
+            },
+            {
+              "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+              "reference_id": "f4127136-5810-440c-9c35-15f611e9cfcf",
+              "chunk_id": "fe6ae3ee-220f-4f6b-988b-263e81577f03",
+              "corpus_run_id": "7df61ea8-82a7-4f6f-a97d-7b0e20bce721",
+              "source_kind": "REPOSITORY_FILE",
+              "hybrid_score": 0.015625,
+              "lexical_score": 0.042018380016088486,
+              "semantic_score": null,
+              "semantic_distance": null,
+              "lexical_rank": 4,
+              "semantic_rank": null,
+              "lexical_contribution": 0.015625,
+              "semantic_contribution": 0.0,
+              "snippet": "# C03 post-application verification, re-read independently after configure-github.ps1 applied the manifest.\n# captured: 2026-09-23T15:45:13Z  repo: KayzenRoot/isoryn-engine  ruleset: 23776080\n\n$ gh api repos/KayzenRoot/isoryn-engine/rulesets/23776080 --jq {bypass_actors,can_bypass:.current_user_can_bypass,enforcement,name,rules:[.rules[].type]}\n{\"bypass_actors\":[],\"can_bypass\":\"never\",\"enforcement\":\"active\",\"name\":\"main-governance\",\"rules\":[\"non_fast_forward\",\"deletion\",\"required_linear_history\",\"pull_request\",\"required_status_checks\"]}\nexit=0\n\n$ gh ruleset check main --repo KayzenRoot/isoryn-engine | head -1\n5 rules apply to branch",
+              "path": ".engineering/evidence/github/pr-verification-c03.txt",
+              "title": null,
+              "qualified_symbol": null,
+              "repository_file_id": "a1340fe8-f38e-4785-88b9-3b738e9cff6c",
+              "repository_symbol_id": null,
+              "task_id": null,
+              "source_content_sha256": "1577dfd4fdb930440c8ca1bf220c7629cbc465d7893ed42beacd9e76b53eb3b9",
+              "chunk_content_sha256": "1577dfd4fdb930440c8ca1bf220c7629cbc465d7893ed42beacd9e76b53eb3b9",
+              "chunker_version": "line-window-v1",
+              "start_line": 1,
+              "end_line": 27,
+              "start_char": 0,
+              "end_char": 1363,
+              "pre_rerank_rank": 4,
+              "rerank_rank": 4,
+              "rerank_score": null,
+              "snippet_characters": 643,
+              "snippet_truncated": true
+            },
+            {
+              "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+              "reference_id": "afaa959b-a3ba-434e-ad49-60e3ee9cd428",
+              "chunk_id": "9cf4f260-f11e-4443-9f68-7b30b4a23e13",
+              "corpus_run_id": "7df61ea8-82a7-4f6f-a97d-7b0e20bce721",
+              "source_kind": "REPOSITORY_FILE",
+              "hybrid_score": 0.015384615384615385,
+              "lexical_score": 0.025750935077667236,
+              "semantic_score": null,
+              "semantic_distance": null,
+              "lexical_rank": 5,
+              "semantic_rank": null,
+              "lexical_contribution": 0.015384615384615385,
+              "semantic_contribution": 0.0,
+              "snippet": "        },\n        \"secret_scanning_validity_checks\": {\n          \"status\": \"disabled\"\n        }\n      }\n    },\n    \"repositoryReceipts\": [\n      \".engineering/evidence/github/before-repository.json\",\n      \".engineering/evidence/github/after-repository.json\"\n    ],\n    \"repositoryReceiptsIdentical\": false,\n    \"codeownersBefore\": \"* @KayzenRoot\\n\",\n    \"codeownersAfter\": \"# ISORYN review routing metadata.\\n#\\n# Ownership here records who a change should be routed to. It is deliberately NOT an approval gate:\\n# the main-governance ruleset sets require_code_owner_review=false and required_approving_review_count=0,\\n# because this rep",
+              "path": ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+              "title": null,
+              "qualified_symbol": null,
+              "repository_file_id": "6f9a0ad6-d152-41f3-80bf-1500b9c8373e",
+              "repository_symbol_id": null,
+              "task_id": null,
+              "source_content_sha256": "972faf5bb2dc0d4e6d35f4992c989ce2051efb7680f24cf96455bce61b2108e8",
+              "chunk_content_sha256": "c4028c54b1ad5c2a2227a103d897203502278e785cc7f2d2a184e4dd21792549",
+              "chunker_version": "line-window-v1",
+              "start_line": 1075,
+              "end_line": 1154,
+              "start_char": 73089,
+              "end_char": 75771,
+              "pre_rerank_rank": 5,
+              "rerank_rank": 5,
+              "rerank_score": null,
+              "snippet_characters": 643,
+              "snippet_truncated": true
+            }
+          ]
+        },
+        "isError": false
+      }
+    }
+  },
+  "executedCalls": [
+    "checkpoint.read",
+    "context.search",
+    "project.list",
+    "project.status"
+  ],
+  "launcherExit": 0,
+  "launcherStderr": ""
+}

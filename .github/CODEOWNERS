@@ -1,1 +1,10 @@
+# ISORYN review routing metadata.
+#
+# Ownership here records who a change should be routed to. It is deliberately NOT an approval gate:
+# the main-governance ruleset sets require_code_owner_review=false and required_approving_review_count=0,
+# because this repository has a single owner who is also the pull request author. GitHub does not accept a
+# review from the author, so enforcing code-owner approval here would make main permanently unmergeable.
+#
+# Add a team or second maintainer, then enable require_code_owner_review in
+# .engineering/github/ruleset-main-governance.json, before treating this file as a required gate.
 * @KayzenRoot

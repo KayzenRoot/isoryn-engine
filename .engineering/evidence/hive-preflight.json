@@ -1,0 +1,149 @@
+{
+  "api": "http://127.0.0.1:18199",
+  "result": "PASS",
+  "capturedAt": "2026-09-23T16:08:37Z",
+  "proofHead": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+  "correction": "ISORYN-WO-0001-C03",
+  "proofLineage": {
+    "reviewerHeadIssuingC03": "a77e1e16bae1551d8a87e79d657d79813fbe318e",
+    "proofHead": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+    "note": "C03 changed no HIVE contract, registration or workspace layout, so the C02 workspace and isolation proofs stand as recorded; what had to be re-executed is freshness - the pinned runtime answering for the head C03 actually delivered. The head that carries this receipt is its child, and no commit can carry a receipt naming its own SHA."
+  },
+  "supersedes": {
+    "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+    "reason": "re-proved for the C03 lineage; the C02 receipt stays valid for d749accc68be"
+  },
+  "stackReusedNotRecreated": "The isoryn-c02-v100 stack was checked before use rather than assumed: health reports version 1.0.0 on 127.0.0.1:18199, its data root and projects root are unchanged, and it publishes no port the concurrent runtimes own. A healthy, clearly isolated pinned stack under a C03 re-proof is the condition the Work Order allows reuse on, so nothing was recreated and no concurrent container was restarted.",
+  "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
+  "canonicalProjectsRoot": "D:\\Hive\\Projects",
+  "runtime": {
+    "baseline": "HIVE v1.0.0",
+    "sourceCommit": "a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf",
+    "versionReportedByHealth": "1.0.0",
+    "composeProject": "isoryn-c02-v100",
+    "apiPort": 18199,
+    "apiUrl": "http://127.0.0.1:18199",
+    "dashboardPort": 13199,
+    "dataRoot": "D:/isoryn-c02-hive-proof/data",
+    "projectsRoot": "D:/Hive/Projects",
+    "projectsRootInContainer": "/workspace/projects",
+    "projectsRootMountMode": "read-only bind of the real host directory",
+    "checkoutProvidedBy": "the C02 pinned v1.0.0 checkout at D:/isoryn-c02-hive-proof/app",
+    "publishedPorts": [
+      "127.0.0.1:18199 (api)",
+      "127.0.0.1:13199 (dashboard)"
+    ],
+    "postgresAndRedisPublishNoHostPort": true,
+    "healthChecks": {
+      "postgres": {
+        "status": "ok",
+        "details": {
+          "pgvector": true
+        }
+      },
+      "redis": {
+        "status": "ok",
+        "details": {
+          "canonical": false
+        }
+      },
+      "storage": {
+        "status": "ok",
+        "details": {
+          "configured": true,
+          "writable": true,
+          "canonical_data_root": "/var/lib/hive"
+        }
+      }
+    }
+  },
+  "pipeline": {
+    "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+    "relative_path": "isoryn-engine",
+    "git_branch": "isoryn-wo-0001-foundation",
+    "git_head_sha": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+    "state": "READY",
+    "working_tree_clean": true,
+    "index_status": "COMPLETED",
+    "corpus_status": "COMPLETED",
+    "repository_accessible": true,
+    "readBackAfterPipeline": {
+      "state": "READY",
+      "git_branch": "isoryn-wo-0001-foundation",
+      "git_head_sha": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+      "working_tree_clean": true,
+      "repository_accessible": true,
+      "inspection_error": null,
+      "last_inspected_at": "2026-09-23T16:08:02.132832Z"
+    },
+    "registrationResolvesBy": "exact relative path isoryn-engine under the mounted projects root",
+    "projectsSeenByPinnedRuntime": [
+      "isoryn-engine"
+    ],
+    "attempts": [
+      {
+        "attempt": 1,
+        "exitCode": 0,
+        "error": null
+      }
+    ],
+    "retryPolicy": "Attempts are recorded with their exit codes before the result is believed, because the runbook documents that Windows git rewrites .git/index while the container reads it through the bind mount, which can produce a transient git_timeout or git_status_unavailable inspection at a genuinely clean head.",
+    "rawStdout": "HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-23T16:08:01.842371Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}\nResolved existing ISORYN registration by exact relative path.\n{\n  \"project_id\": \"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\n  \"relative_path\": \"isoryn-engine\",\n  \"git_branch\": \"isoryn-wo-0001-foundation\",\n  \"git_head_sha\": \"e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8\",\n  \"state\": \"READY\",\n  \"working_tree_clean\": true,\n  \"index_status\": \"COMPLETED\",\n  \"corpus_status\": \"COMPLETED\"\n}\n",
+    "rawStderr": "",
+    "exitCode": 0
+  },
+  "note": "Derived state only: Git and the canonical checkpoint outrank HIVE. working_tree_clean is reported as observed.",
+  "beforeAfterReceipts": {
+    "window": "C03 re-proof at e0e0bd5056e6, bracketing every command that produced this receipt",
+    "beforeCapturedAt": "2026-09-23T16:08:00.694208+00:00",
+    "afterCapturedAt": "2026-09-23T16:08:37.103082+00:00",
+    "containersBefore": 19,
+    "containersAfter": 19,
+    "allContainersIdentical": true,
+    "concurrentContainersIdentical": 19,
+    "concurrentContainersChanged": {},
+    "changedAttribution": "Every difference is attributed by project label. This session only ever names isoryn-c02-v100, and any other movement belongs to the operator's own stacks, which are recorded rather than quieted.",
+    "dHiveTopLevelBefore": [
+      "cas",
+      "data",
+      "legacy-backup-20260919",
+      "postgres",
+      "projects",
+      "redis",
+      "tmp"
+    ],
+    "dHiveTopLevelAfter": [
+      "cas",
+      "data",
+      "legacy-backup-20260919",
+      "postgres",
+      "projects",
+      "redis",
+      "tmp"
+    ],
+    "existingRegisteredWorktreesBefore": [
+      "forge=forge",
+      "hive=hive",
+      "isoryn-engine=isoryn-engine",
+      "wo020-cc-27764-b51eb1a4-alpha=wo020-cc-27764-b51eb1a4-alpha",
+      "wo020-cc-30320-34ba5039-alpha=wo020-cc-30320-34ba5039-alpha",
+      "wo020-cc-40556-a703353b-alpha=wo020-cc-40556-a703353b-alpha"
+    ],
+    "existingRegisteredWorktreesAfter": [
+      "forge=forge",
+      "hive=hive",
+      "isoryn-engine=isoryn-engine",
+      "wo020-cc-27764-b51eb1a4-alpha=wo020-cc-27764-b51eb1a4-alpha",
+      "wo020-cc-30320-34ba5039-alpha=wo020-cc-30320-34ba5039-alpha",
+      "wo020-cc-40556-a703353b-alpha=wo020-cc-40556-a703353b-alpha"
+    ],
+    "concurrentHealthBefore": {
+      "hive-v102": "1.0.2",
+      "hive-wo031-fast-159ac90": "1.0.2"
+    },
+    "concurrentHealthAfter": {
+      "hive-v102": "1.0.2",
+      "hive-wo031-fast-159ac90": "1.0.2"
+    }
+  }
+}

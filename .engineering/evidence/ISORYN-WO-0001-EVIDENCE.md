@@ -1,0 +1,2605 @@
+# ISORYN-WO-0001 - Evidence Bundle
+
+Generated 2026-09-21T18:23:38Z by the executor of `ISORYN-WO-0001` (GEF v1.0.0 adoption, HIVE v1.0.0
+integration, professional GitHub foundation) for pull request
+[ISORYN-WO-0001/#2](https://github.com/KayzenRoot/isoryn-engine/pull/2) at exact head `d5de04c5ac157236de55875bb530f81d3d02ce86`.
+
+This bundle is machine-readable: the JSON block at the end is the payload
+`scripts/validate_governance.py` gates. Prose here only points at it.
+
+## Binding
+
+| Field | Value |
+| --- | --- |
+| Admission base (origin/main at WO admission) | `dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362` |
+| PR base (`main` at branch cut) | `5fb0179b9c0a9a8f94f170dc299f199a7c7c883d` |
+| Head executed against | `d5de04c5ac157236de55875bb530f81d3d02ce86` |
+| Head this bundle was written against | `12e2148e5353e6424639d1afdf26954e0abc6531` (the commit carrying this sentence is its child) |
+| Reviewer correction head | `4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b` |
+| C01 HIVE recovery proof head | `f293fabfd4cde0a202d917b75eee590567b2027e` |
+| Reviewer correction head issuing C02 | `8d4a76052869df276c34ec56c217a4595ae00425` |
+| C02 canonical workspace materialization head | `8eba7b4ef6258d708fdf24554822310531f151f3` |
+| C02 canonical workspace proof head | `d749accc68be408ae79d06e25946128b9cf7bdc3` |
+| Reviewer head issuing C03 (desired state + regression guards, promotion revoked) | `a77e1e16bae1551d8a87e79d657d79813fbe318e` |
+| C03 application head (live ruleset, receipts, evidence refresh) | `e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8` |
+| C03 HIVE re-proof and MCP session head | `70996f5322990010a171c46b9e4f0288f3e585d0` |
+| C03 delivered head whose own check-run was read back | `12e2148e5353e6424639d1afdf26954e0abc6531` |
+| Canonical local workspace | `D:\Hive\Projects\isoryn-engine`, a real directory and not a junction |
+| Branch | `isoryn-wo-0001-foundation` |
+| GEF pin | v1.0.0 `866fe3af8cccc65c929aaf6a47a924401fa448b3` |
+| HIVE pin | v1.0.0 `a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf` |
+
+Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations.
+
+headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against, and ciObservations is complete through it. The commit that actually carries this file is its descendant - no commit can observe its own Actions run - so that run is read from GitHub on the pull request instead of being claimed here, and environmentDrift states what could not be re-executed between headSha and the bundle head.
+
+The 11 commits between the admission base and the PR base are the earlier
+direct-to-`main` bootstrap of this same Work Order, permitted before branch protection existed;
+they are listed in `priorWorkOrderCommits` rather than presented as this PR's delta.
+
+## Result vocabulary
+
+`PASS` executed and satisfied the gate, `FAIL` executed and did not, `NOT_AVAILABLE` the platform or
+runtime refused the capability and the exact response is recorded, `DEFERRED_BY_WO` the Work Order
+itself excluded it and the authorizing clause is quoted.
+
+## Executed checks at `d5de04c5ac157236de55875bb530f81d3d02ce86`
+
+| `clean_worktree_for_hive` | PASS |
+| `git_diff_check` | PASS |
+| `governance_ci` | PASS |
+| `governance_validator` | PASS |
+| `hive_bootstrap_pipeline` | PASS |
+| `hive_corpus_current` | PASS |
+| `hive_inspection_head_matches_local_head` | PASS |
+| `hive_retrieval_canonical` | PASS |
+| `mcp_checkpoint_read` | PASS |
+| `mcp_context_search_canonical` | PASS |
+| `mcp_handshake` | PASS |
+| `mcp_launcher_no_npx_proxy` | PASS |
+| `mcp_project_status` | PASS |
+| `mcp_readonly_call` | PASS |
+| `no_uncommitted_tracked_changes` | PASS |
+| `performance_benchmark` | DEFERRED_BY_WO |
+| `py_compile` | PASS |
+| `secret_scan` | PASS |
+| `third_party_dependency_scan` | NOT_AVAILABLE |
+| `toolchain_build` | DEFERRED_BY_WO |
+| `unittest_suite` | PASS |
+
+`governance_validator` and `unittest_suite` read this bundle as their subject. They cannot pass at
+the code head alone; the first push therefore shows a red `Governance` run, quoted in
+`ciObservations` with its run URL instead of being smoothed over. The authority for the reviewed
+commit is the Actions run on the head that contains this file.
+
+## C01 - HIVE runtime recovery at `f293fabfd4cde0a202d917b75eee590567b2027e`
+
+Independent review found that the proofs above bound to a runtime that no longer served the machine,
+and blocked promotion on `HIVE_RUNTIME_DRIFT`. Correction C01 re-establishes the pinned baseline as a
+current proof instead of restating the old one. Nothing here edits the `d5de04c5ac15` records: they
+stay valid for that head, and the four heads are named separately in `c01Recovery.proofLineage`.
+
+The pinned v1.0.0 source was cloned read-only from the operator's existing HIVE object store at tag
+`v1.0.0` (`a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf`, `VERSION` 1.0.0) and brought up as its own
+Compose project `isoryn-c01-v100` on `127.0.0.1:18099`, with its own data root and its own projects
+root. Postgres and Redis publish no host port, and the network and container names derive from the
+project, so the stack shares no collision domain with the runtimes already on this machine.
+
+| Check | Result | Evidence |
+| --- | --- | --- |
+| Health reports the pinned baseline | PASS | `/api/v1/health` returns `"version":"1.0.0"` on 18099 while 8000 answers `"version":"1.0.2"` |
+| `HIVE_PROJECTS_ROOT` maps `isoryn-engine` to the real working copy | PASS | container sees `/workspace/projects/isoryn-engine`, mounted read-only |
+| ISORYN resolves uniquely, no ambiguous identity | PASS | `project.list` returns exactly one project |
+| Inspection `repository_accessible=true`, state `READY` | PASS | `hive-preflight.json`, `mcp-proof.json` `project.status` |
+| Inspection binds to the C01 head, not `d5de04c5ac15` | PASS | `git_head_sha` = `f293fabfd4cde0a202d917b75eee590567b2027e` |
+| `working_tree_clean` truthfully reported | PASS | `true`, captured after the code correction was committed |
+| Repository index completes | PASS | `index_status` COMPLETED |
+| Retrieval corpus syncs and reports CURRENT | PASS | 135 sources, 218 chunks/references |
+| Canonical retrieval resolves | PASS | `13-CHECKPOINT.md` rank 2, `04-ARCHITECTURE.md` rank 2, `15-DEFINITION-OF-DONE.md` rank 11 of 20 |
+| Real MCP session through the repository launcher | PASS | `mcp-proof.json`: initialize, tools/list, four executed calls, exit 0, empty stderr |
+| `tools/list` is exactly the governed surface | PASS | the seven read-only tools, `allReadOnly` true |
+| Launcher targets the pinned stack, not the concurrent one | PASS | `c01Recovery.isolation` - ambient `COMPOSE_PROJECT_NAME` was left pointing at the live stack for the whole session |
+| Concurrent HIVE workspaces untouched | PASS | `c01Recovery.concurrentRuntimeBeforeAfter` |
+
+The drift itself moved again while C01 was being executed: the runtime on `127.0.0.1:8000` is no
+longer the HIVE 1.0.1 checkout the review recorded but HIVE **1.0.2** from
+`C:\Users\csn19\AppData\Local\HIVE\app`, which is also where the evidence had pinned v1.0.0. That
+checkout is now at `8db3d244a679898f0e08d1898bc87e6a6a89326e` (`v1.0.2`), so the pinned release commit
+survives only as a tagged object in its store. The correction records that instead of quieting it: the
+pin was re-materialised from the tag rather than adopted from whatever the machine happens to run, and
+the canonical pin stays v1.0.0 - moving it to 1.0.1 or 1.0.2 needs an ADR, which this is not.
+
+Two behaviours of the local environment made the old launcher unsafe here, and both are now tested:
+Docker Compose resolves `COMPOSE_PROJECT_NAME` and `HIVE_DATA_ROOT` from the process environment
+before any `--env-file`, and `docker compose exec` selects containers by project label rather than by
+working directory. Left alone, a launcher running in the pinned checkout entered the 1.0.2 container,
+and an isolated stack mounted the live database directory instead of its own.
+
+`governance_ci` reads `PASS` for the head that carries this record, `47838e4d102e17ee35a5068443091b91e40a23b9`,
+from the Actions run named in `c01Recovery.governanceRun`. The commit that adds that sentence cannot
+observe its own run, so `gh pr checks 2 --required` on the pull request is the authority for it.
+
+## C02 - canonical workspace sync at `d749accc68be408ae79d06e25946128b9cf7bdc3`
+
+Independent re-review kept the C01 runtime proof and held promotion on `CANONICAL_WORKSPACE_MISMATCH`: C01 had
+re-proved the pinned baseline, but in `D:\Projects\isoryn-engine`, while `README.md`,
+`docs/project-brain/12-LOCAL-DEPLOYMENT.md` and `docs/project-brain/13-CHECKPOINT.md` all define
+`D:\Hive\Projects\isoryn-engine` as the canonical local workspace. C02 follows that authority instead of
+rewriting it, and no ADR was needed because nothing adopted changed.
+
+`D:\Hive` is already the read-write data root of the operator's newer HIVE 1.0.2 stack, so the directory was
+treated as someone else's storage throughout: one missing directory was created inside it and nothing else was
+touched. No existing entry was deleted, renamed, moved or overwritten, no prune or cleanup ran, and the canonical
+copy is a real directory rather than a junction or symlink, because the pinned container mounts the host path
+read-only and has to resolve a checkout, not a link. The clone command and the reason it carries
+`-c core.autocrlf=false` are recorded in `docs/HIVE-INTEGRATION.md`; the first plain clone produced CRLF in 31
+of 75 tracked files and the repository's own `check_line_endings` gate failed that tree, which is the gate doing
+its job rather than one being added.
+
+The old copy at `D:\Projects\isoryn-engine` stays in place, untouched and non-canonical at `8d4a7605`. It was not
+deleted and no C02 file was edited there after the canonical copy existed - except once, which is recorded in
+`errorsFoundAndCorrected` rather than smoothed over.
+
+Every measurement below was re-run against the canonical working copy at `d749accc68be`, which is the head that
+carries this record; `c02Recovery.proofLineage` names each head separately so nothing inherits a proof by
+proximity. The pinned baseline is HIVE v1.0.0 (`a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf`, `VERSION` 1.0.0)
+running as its own Compose project `isoryn-c02-v100` on `127.0.0.1:18199`, with its own data root and
+`HIVE_PROJECTS_ROOT` bound read-only to `D:/Hive/Projects`. Postgres and Redis publish no host port. The
+canonical HIVE pin was not moved to 1.0.1 or 1.0.2.
+
+| Acceptance item | Result | Evidence |
+| --- | --- | --- |
+| Health on 18199 reports the pinned baseline `1.0.0` while `127.0.0.1:8000` answers `1.0.2` | PASS | `hive-preflight.json` `runtime`, `bootstrap.json` raw health payload |
+| Canonical workspace exists as a real directory, no junction or symlink | PASS | `canonical_workspace_uses_no_junction`, `workspaceMaterialization.verified` |
+| Working tree matches its blobs byte for byte, `porcelain` empty, 75 tracked files, 0 CRLF | PASS | `workspaceMaterialization.verified` |
+| ISORYN resolves uniquely by exact relative path `isoryn-engine` | PASS | `pipeline.project_id` `cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd`, one project in the stack |
+| Inspection `repository_accessible=true`, state `READY` | PASS | `pipeline` |
+| Inspection `git_branch` = `isoryn-wo-0001-foundation`, `git_head_sha` = C02 proof head | PASS | `pipeline.git_head_sha` `d749accc68be408ae79d06e25946128b9cf7bdc3` |
+| `working_tree_clean` reported truthfully as observed | PASS | `true` - the capture ran after the head was committed and pushed |
+| Repository index completes | PASS | `index_status` COMPLETED |
+| Corpus syncs and reports `CURRENT` | PASS | 135 repository sources, 229 chunks (27 new, 202 reused), sync `2026-09-23T14:32:26.846415Z` |
+| Canonical retrieval resolves, ranks published as measured | PASS | `13-CHECKPOINT.md` rank 4, `04-ARCHITECTURE.md` rank 7, `15-DEFINITION-OF-DONE.md` rank 9 of a 20-result window |
+| Real MCP session through `scripts/hive_mcp.py` | PASS | `mcp-proof.json`: `initialize` (`protocolVersion` 2025-06-18, `hive-mcp`/`mcp-core-surface-v1`), `tools/list`, exit 0, stderr empty |
+| `tools/list` is exactly the seven governed read-only tools | PASS | `toolsAreExactlyTheGovernedSeven` true, `allReadOnly` true |
+| Four executed calls with raw responses | PASS | `project.list`, `project.status`, `context.search`, `checkpoint.read` |
+| Launcher provably targets the pinned isolated project | PASS | `isolationProbe`: ambient `COMPOSE_PROJECT_NAME=hive-v102` left in place, compose file still declares `name: hive`, and the answering container resolves by `docker inspect` to `isoryn-c02-v100-api-1` with label `isoryn-c02-v100`, reporting head `d749accc68be` from inside the mount |
+| Concurrent HIVE runtimes untouched | PASS | `concurrentRuntimeBeforeAfter`: 29 containers before, 29 after, none appeared, none disappeared, none changed; the only moving values are `/health` response timestamps. The materialization window is recorded separately with its own 19 identical and 4 externally restarted |
+| Exact-head Governance | PASS at `d749accc68be` | run 35874710441, job 107227520570, quoted in `checks.json` `governanceRun` |
+
+The proof stack is deliberately left running so the integration is currently demonstrable; retiring it is one
+named command in `residualRisks`.
+
+## C03 - main ruleset self-lock release
+
+C02 was reviewed, promoted and re-blocked in the same cycle: the review at `74f443f3d83c` was correct about the
+workspace, and a real squash-merge of the approved pull request then returned
+
+```
+HTTP 405 - Repository rule violations found / Cannot update this protected ref.
+```
+
+The cause was live state, not checked-in state. Ruleset `23776080` carried GitHub's restrict-updates rule
+(`type: update`) with `bypass_actors: []` and `current_user_can_bypass: never`. That combination means only a bypass
+actor may move the ref, and there is none, so `main` could not be updated by anybody - not by an approved,
+required-checks-green pull request opened by the repository owner. The validator, the unit tests and the Governance
+run were all green next to it because they compared the manifest's rule types against an allow-list. They encoded the
+self-lock instead of detecting it, which is the defect the promotion was revoked for.
+
+The reviewer's head `a77e1e16bae1` fixed everything that can be fixed from a checkout: the desired state dropped the
+rule, the validator and `tests/test_governance.py` reject any future manifest that pairs restrict-updates with no
+bypass actor, and `scripts/configure-github.ps1` refuses to apply one. What no checkout can fix is the ruleset that
+is already running on GitHub, so C03 executed the application through the authorized local `gh` session.
+
+| Acceptance item | Result | Evidence |
+| --- | --- | --- |
+| Live ruleset no longer contains the rule that produced the 405 | PASS | `c03Recovery.liveRulesetAfter.ruleTypes`, `gh ruleset check main` first line reads "5 rules apply" |
+| Every other protection retained | PASS | `c03Recovery.causalDelta`: exactly one rule type removed, no added rule, no condition, name, target or enforcement change |
+| No bypass actor added to buy mergeability | PASS | `bypass_actors: []` and `current_user_can_bypass: "never"` before and after |
+| Required context unchanged and still strict | PASS | `required_status_checks` with `strict_required_status_checks_policy: true`, context exactly `Governance` |
+| Squash-only merge policy and no impossible approval gate | PASS | `allowed_merge_methods: ["squash"]`, `required_approving_review_count: 0`, `require_code_owner_review: false` |
+| Configurator applied the manifest and captured BEFORE/AFTER | PASS | `.engineering/evidence/github/before-ruleset-23776080.json`, `after-ruleset.json`, `ruleset-check-main.txt`, `ruleset-view.txt` |
+| Application is idempotent | PASS | `configure-github-c03-idempotency.log`, second run exit 0, same ruleset id, nothing moved |
+| Pull request mergeability corroborated without merging | PASS | `pr-verification-c03.txt` and `pr-verification-c03-final-head.txt`: `state OPEN`, `mergeable MERGEABLE`, `mergeStateStatus CLEAN`, `mergedAt null`, and no merge was attempted |
+| Required check green on the delivered head itself | PASS | run 35887776564 / job 107272233729 `conclusion success` on `12e2148e5353e6424639d1afdf26954e0abc6531`, read from GitHub after the run completed |
+| Regression guards present | PASS | two added tests, suite now 29 tests |
+
+The BEFORE and AFTER receipts are the whole argument, so they are quoted rather than summarised. Before, six rules
+including the lock; after, five:
+
+```
+before: non_fast_forward, deletion, required_linear_history, update, pull_request, required_status_checks
+after:  non_fast_forward, deletion, required_linear_history,             pull_request, required_status_checks
+```
+
+The ruleset state was read back a third time after the last evidence commit landed, because the claim acceptance
+item 9 makes is about the delivered head, not about the head that happened to be checked out when the command was
+applied. `pr-verification-c03-final-head.txt` records `5 rules apply`, `bypass_actors: []`, `updated_at` still
+`2026-09-23T12:28:10.071-03:00` - the unlock itself, unmoved by anything since - and the `Governance` check-run
+GitHub executed against `12e2148e5353` with `conclusion success`. That file was added rather than editing
+`pr-verification-c03.txt`, which names `a77e1e16bae1` and is kept as captured.
+
+One capture had to be disclosed rather than trusted. `scripts/configure-github.ps1` writes each receipt to a fixed
+path, so the second, idempotency-proving run overwrote `before-ruleset-23776080.json` with the already-corrected
+state - the single file that showed the self-lock existed. It was restored to the bytes the first run captured, and
+the pre-correction state does not rest on that restoration: `ruleset-check-main.txt` and `ruleset-view.txt` as
+committed at `a77e1e16bae1` list six rules including `update`, and their verbatim contents are reproduced in
+`.engineering/evidence/github/pre-c03-ruleset-a77e1e16.txt`, reproducible with
+`git show a77e1e16bae1551d8a87e79d657d79813fbe318e:.engineering/evidence/github/ruleset-check-main.txt`. The
+general defect - a BEFORE capture that a retry silently replaces - stays open in `residualRisks`, because naming
+receipts by timestamp is a change of its own and this Work Order authorizes only the unlock.
+
+### HIVE freshness for the C03 lineage
+
+Requirement 4 allows the pinned stack to be reused when it is still healthy and clearly isolated, so it was checked
+rather than assumed: `127.0.0.1:18199` answers version `1.0.0` from the pinned baseline while `127.0.0.1:8000` and
+`127.0.0.1:18141` answer `1.0.2`, and `isoryn-c02-v100` keeps its own data root and its read-only `D:/Hive/Projects`
+mount. Nothing was recreated. ISORYN resolves by exact relative path as the only project in that stack, inspection
+reports `READY` at `70996f532299` with `working_tree_clean: true` and `repository_accessible: true`, indexing and
+corpus sync complete, and the canonical retrieval targets resolve at ranks 7 (`13-CHECKPOINT.md`), 5
+(`04-ARCHITECTURE.md`) and 9 (`15-DEFINITION-OF-DONE.md`) in a 20-result window - lexical-path ranks on a runtime with
+no embedding provider, which is stated rather than dressed up as semantic retrieval.
+
+The real MCP session then ran through `python scripts/hive_mcp.py` with `HIVE_COMPOSE_PROJECT=isoryn-c02-v100`
+against the machine's own ambient `COMPOSE_PROJECT_NAME=hive-v102`: `initialize`, `tools/list` returning exactly the
+seven governed read-only tools, and four executed calls - `project.list`, `project.status`, `checkpoint.read`,
+`context.search` - with no `isError` on any of them, launcher exit 0 and empty stderr. The container that answered
+identified itself as `isoryn-c02-v100-api-1`, project label `isoryn-c02-v100`, and read the same head back from
+inside its own mount. Across the whole window 19 containers were present before and after with none changed, the
+concurrent runtimes kept serving `1.0.2`, the top level of `D:\Hive` and the other stack's registered worktrees came
+back identical, and no command in this session named any of them.
+
+Ordering mattered more than it looks. The first session ran while these receipts were still uncommitted, so the tree
+was dirty at the very head being measured and `checkpoint.read` answered `source_not_current` - HIVE's staleness
+guard refusing to serve derived content for a head it has not indexed, which is the guard working and not failing.
+The session was reordered around that: pipeline first, session second, receipt written last, and the retry attempts
+recorded inside `mcp-proof.json` instead of being smoothed over.
+
+## What is proved, not asserted
+
+- **HIVE** (`hivePreflight`): health, exact-relative-path resolution without name collision, inspect
+  to `READY`, index `COMPLETED`, corpus sync `COMPLETED`, with the observed `git_branch`,
+  `git_head_sha` and `working_tree_clean` as reported by the runtime.
+- **Canonical retrieval** (`hiveRetrievalProof`): corpus state, source/chunk counts and two lexical
+  queries that resolve documents under `docs/project-brain/` - the canonical Project Brain, not
+  incidental files.
+- **MCP** (`mcpProof`): an executed JSON-RPC session through `scripts/hive_mcp.py` - `initialize`,
+  `tools/list` with the seven read-only tools and their annotations, then real
+  `project.list`, `project.status`, `checkpoint.read` and `context.search` calls, each with its raw
+  response. A configured launcher is not claimed as a working one.
+- **GitHub** (`github`, `c03Recovery`): repository settings and the `main-governance` ruleset as captured BEFORE and
+  AFTER through authenticated `gh`, plus `gh ruleset check main` read-back and the honest
+  `NOT_AVAILABLE` responses of the optional security endpoints. As of C03 this is applied live state read back from
+  the API, not a checked-in intent: `c03Recovery.liveRulesetBefore` and `liveRulesetAfter` are the two rule
+  enumerations the merge failure turned on, and `github.rulesetManifest` carries the note naming which capture each
+  inline value came from.
+- **Workspace authority** (`c02Recovery.canonicalWorkspace`): the canonical path the Project Brain names exists
+  as a real checkout of this repository on this branch, and the HIVE and MCP proofs above were produced by a
+  container that mounted that path read-only and reported its head back from inside the mount. A proof run in
+  some other directory is bound to that directory, so this is what makes the earlier ones speak to the authority.
+
+## Declared gaps
+
+`unsupportedPlatformFeatures` records what this plan or runtime cannot do, `residualRisks` what is
+still true but not solved, and `errorsFoundAndCorrected` each defect this Work Order found,
+including the ones that initially produced false or missing evidence here.
+
+`environmentDrift` records that the pinned HIVE v1.0.0 runtime stopped serving `127.0.0.1:8000`
+while this chain was being closed - including the verbatim failed re-capture receipt - so every
+HIVE and MCP proof here is read as bound to `d5de04c5ac15` rather than to the commit that carries
+this file. That record is kept as written. `c01Recovery` closes it: the pinned baseline is running
+again, isolated, and re-proved against `f293fabfd4cd`, so the drift is closed by a new correction
+rather than by editing the drift out.
+
+`c02Recovery` closes the last criterion C01 left open. The gap was not a runtime gap but an authority
+gap - a correct proof in the wrong directory - and `hive-preflight.json` had said so in its own
+`workspaceNote` while still being offered as promotion evidence. `environmentDrift.c02Note` states that
+the workspace authority and the runtime proof now name the same tree. What remains genuinely unsolved is
+listed in `residualRisks`: retrieval is still lexical-only, so `15-DEFINITION-OF-DONE.md` ranks 9 of 20
+rather than first, and the machine's ambient Compose variables still make an unnamed `docker compose`
+command in the pinned checkout an act against someone else's stack.
+
+`c03Recovery` closes the last thing that stood between WO-0001 and a mergeable repository, and it is the one record
+here that changed state outside the repository. Two things are therefore deliberately left as they are. The canonical
+checkpoint at `docs/project-brain/13-CHECKPOINT.md ## BLOCKERS` still says the live ruleset "still requires
+executor-side `gh` application": that sentence was true when the reviewer wrote it at `a77e1e16bae1`, it is the
+promotion target of `ISORYN-WO-0001-CHECKPOINT-DELTA.md`, and an executor editing the canonical checkpoint to
+describe its own delivery would be self-approving. Read it as the pre-C03 record, not as current state - the current
+state is `c03Recovery.liveRulesetAfter`. The STATUS field stays `BOOTSTRAP CORRECTION REQUIRED` for the same reason,
+and the derived bridge views stay in step with it so the drift gate keeps meaning something.
+
+## Stop condition
+
+`READY_FOR_C03_INDEPENDENT_REVIEW` - the live `main-governance` ruleset no longer carries the restrict-updates rule
+that made the approved pull request unmergeable, every other protection is retained with no bypass actor added, and
+the read-backs of that state are in `.engineering/evidence/github`. `verdict` stays `AWAITING_INDEPENDENT_REVIEW` and
+`checks.json` / `c03Recovery` bind each measurement to the head that produced it. The Work Order forbids merging this
+pull request, forbids engine implementation, and forbids promoting the checkpoint: the delta in
+`ISORYN-WO-0001-CHECKPOINT-DELTA.md` is `PROPOSED_ONLY`, including the `BLOCKERS NONE` line the correction has now
+earned, and promotion belongs to an independent audit of the delivered head.
+
+```json
+{
+  "schemaVersion": "isoryn-gef-evidence-bundle-v1",
+  "workOrder": "ISORYN-WO-0001",
+  "role": "EXECUTOR_DELIVERY",
+  "generatedAt": "2026-09-21T18:23:38Z",
+  "repository": "KayzenRoot/isoryn-engine",
+  "branch": "isoryn-wo-0001-foundation",
+  "pr": {
+    "number": 2,
+    "url": "https://github.com/KayzenRoot/isoryn-engine/pull/2",
+    "state": "OPEN",
+    "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
+    "headSha": "12e2148e5353e6424639d1afdf26954e0abc6531",
+    "mergedAt": null,
+    "merged": false,
+    "autoMergeRequest": null,
+    "headShaNote": "Recorded from the remote when this bundle was refreshed, so it names the last pushed head whose Governance run was read back through the API - 12e2148e5353, run 35887776564, conclusion success. The commit that carries this sentence is its child and cannot contain its own SHA; its required check is read from the pull request in the delivery report.",
+    "note": "Open for independent review. The Work Order forbids merging, and the executor does not merge or self-approve."
+  },
+  "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
+  "headSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+  "candidateHeadSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+  "bundleCommitHead": "12e2148e5353e6424639d1afdf26954e0abc6531",
+  "proofsBindNote": "headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against, and ciObservations is complete through it. The commit that actually carries this file is its descendant - no commit can observe its own Actions run - so that run is read from GitHub on the pull request instead of being claimed here, and environmentDrift states what could not be re-executed between headSha and the bundle head.",
+  "headBindingNote": "Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations. C02 adds one more binding: the HIVE and MCP receipts under c02Recovery are bound to d749accc68be, the head they were re-executed against and the head that carries them, while every earlier record above keeps the head it was produced at.",
+  "admissionBaseSha": "dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362",
+  "priorWorkOrderCommits": [
+    {
+      "sha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
+      "subject": "docs: enforce review-first direct correction policy"
+    },
+    {
+      "sha": "6584b7aae7546d33e8d747feff2265ba3d3eff67",
+      "subject": "docs: require PDF executor prompt artifacts"
+    },
+    {
+      "sha": "5725fa60aedf97f78f6c3146e81422d3ee54716d",
+      "subject": "chore(bootstrap): add local sync and GitHub hardening runbooks [ISORYN-WO-0001]"
+    },
+    {
+      "sha": "773199892d07c489c81157b51dc6d04733c2cf1d",
+      "subject": "chore(governance): reconcile complete ISORYN GEF/HIVE foundation [ISORYN-WO-0001]"
+    },
+    {
+      "sha": "c8678be6665399e3afe482dbe34250d1a7ab665f",
+      "subject": "chore(governance): install ISORYN source pack [ISORYN-WO-0001]"
+    },
+    {
+      "sha": "9393f623d487462faad58de01e0afb75c4db0365",
+      "subject": "chore(governance): install ISORYN source pack [ISORYN-WO-0001]"
+    },
+    {
+      "sha": "b1004848072c38aedb06e6bd48fda07e8db34710",
+      "subject": "chore(governance): install ISORYN source pack [ISORYN-WO-0001]"
+    },
+    {
+      "sha": "b289a4367bd711107c0de6d697676be5a4516359",
+      "subject": "chore(governance): install ISORYN source pack [ISORYN-WO-0001]"
+    },
+    {
+      "sha": "88283b45be0cfab2130d0cb5e342064e9f53dc61",
+      "subject": "chore(governance): install ISORYN source pack [ISORYN-WO-0001]"
+    },
+    {
+      "sha": "b2bbc17c5befd5e5932c076b0d6df23995778259",
+      "subject": "chore(governance): install ISORYN source pack [ISORYN-WO-0001]"
+    },
+    {
+      "sha": "9caf1be57707f39b79364be1308ec8512036414b",
+      "subject": "chore(governance): install ISORYN source pack [ISORYN-WO-0001]"
+    }
+  ],
+  "upstreamPins": {
+    "gef": {
+      "version": "1.0.0",
+      "releaseCommit": "866fe3af8cccc65c929aaf6a47a924401fa448b3",
+      "validated": "PASS",
+      "method": "annotated tag v1.0.0 resolves to this commit in a read-only source checkout; nothing was vendored into ISORYN"
+    },
+    "hive": {
+      "version": "1.0.0",
+      "releaseCommit": "a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf",
+      "validated": "PASS",
+      "method": "the release commit is present in the installed HIVE v1.0.0 source tree used by the local runtime; the separate development checkout does not contain it, which is recorded instead of being silently ignored"
+    }
+  },
+  "canonicalInputs": [
+    "AGENTS.md",
+    ".engineering/SOURCE-HIERARCHY.md",
+    "docs/project-brain/13-CHECKPOINT.md",
+    "docs/project-brain/16-DECISIONS-LEDGER.md",
+    "docs/project-brain/03-SCOPE.md",
+    "docs/project-brain/15-DEFINITION-OF-DONE.md",
+    "docs/project-brain/04-ARCHITECTURE.md",
+    "docs/project-brain/02-REQUIREMENTS.md",
+    "docs/project-brain/11-TEST-PLAN.md",
+    "docs/GEF-BOOTSTRAP.md",
+    "docs/HIVE-INTEGRATION.md",
+    ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+    "ISORYN-WO-0001-SYNC-GEF-HIVE-GITHUB-FOUNDATION.pdf (executor handoff artifact)"
+  ],
+  "filesChanged": [
+    ".codex/config.toml",
+    ".engineering/REVIEW-AUTOFIX-POLICY.md",
+    ".engineering/context-locks/ISORYN-WO-0001.json",
+    ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
+    ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+    ".engineering/evidence/checks.json",
+    ".engineering/evidence/ci.json",
+    ".engineering/evidence/github/after-repository.json",
+    ".engineering/evidence/github/after-ruleset.json",
+    ".engineering/evidence/github/before-repository.json",
+    ".engineering/evidence/github/before-rulesets.json",
+    ".engineering/evidence/github/ruleset-check-main.txt",
+    ".engineering/evidence/github/ruleset-list.json",
+    ".engineering/evidence/github/ruleset-view.txt",
+    ".engineering/evidence/github/security-endpoints.txt",
+    ".engineering/evidence/hive-preflight.json",
+    ".engineering/evidence/hive-retrieval-proof.json",
+    ".engineering/evidence/matrix.log",
+    ".engineering/evidence/mcp-proof.json",
+    ".engineering/gef/GEF-EVIDENCE-SPEC.md",
+    ".engineering/gef/GEF-EXECUTION-PROTOCOL.md",
+    ".engineering/github/repository-settings.json",
+    ".engineering/github/ruleset-main-governance.json",
+    ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+    ".env.example",
+    ".gitattributes",
+    ".github/CODEOWNERS",
+    ".github/dependabot.yml",
+    ".github/pull_request_template.md",
+    ".gitignore",
+    ".mcp.json",
+    "AGENTS.md",
+    "CONTRIBUTING.md",
+    "docs/BOOTSTRAP-RUNBOOK.md",
+    "docs/GEF-BOOTSTRAP.md",
+    "docs/HIVE-INTEGRATION.md",
+    "scripts/bootstrap-local.ps1",
+    "scripts/configure-github.ps1",
+    "scripts/hive-bootstrap.ps1",
+    "scripts/hive_bootstrap.py",
+    "scripts/hive_mcp.py",
+    "scripts/validate_governance.py",
+    "tests/test_governance.py"
+  ],
+  "checks": {
+    "py_compile": "PASS",
+    "governance_validator": "PASS",
+    "unittest_suite": "PASS",
+    "git_diff_check": "PASS",
+    "no_uncommitted_tracked_changes": "PASS",
+    "clean_worktree_for_hive": "PASS",
+    "secret_scan": "PASS",
+    "hive_bootstrap_pipeline": "PASS",
+    "hive_inspection_head_matches_local_head": "PASS",
+    "hive_corpus_current": "PASS",
+    "hive_retrieval_canonical": "PASS",
+    "mcp_handshake": "PASS",
+    "mcp_readonly_call": "PASS",
+    "mcp_project_status": "PASS",
+    "mcp_checkpoint_read": "PASS",
+    "mcp_context_search_canonical": "PASS",
+    "mcp_launcher_no_npx_proxy": "PASS",
+    "governance_ci": "PASS",
+    "toolchain_build": "DEFERRED_BY_WO",
+    "performance_benchmark": "DEFERRED_BY_WO",
+    "third_party_dependency_scan": "NOT_AVAILABLE",
+    "ruleset_manifest_has_no_update_rule": "PASS",
+    "live_ruleset_update_rule_removed": "PASS",
+    "live_ruleset_protections_retained": "PASS",
+    "live_ruleset_no_bypass_actor_added": "PASS",
+    "pull_request_state_clean_unmerged": "PASS",
+    "before_after_ruleset_receipts": "PASS",
+    "hive_stack_reused_isolated": "PASS",
+    "mcp_readonly_calls_without_error": "PASS"
+  },
+  "hivePreflight": {
+    "api": "http://127.0.0.1:8000",
+    "result": "PASS",
+    "attempts": [
+      {
+        "attempt": 1,
+        "result": "PASS",
+        "detail": "COMPLETED"
+      }
+    ],
+    "pipeline": {
+      "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+      "relative_path": "isoryn-engine",
+      "git_branch": "isoryn-wo-0001-foundation",
+      "git_head_sha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+      "state": "READY",
+      "working_tree_clean": true,
+      "index_status": "COMPLETED",
+      "corpus_status": "COMPLETED"
+    },
+    "classification": null,
+    "note": "Derived state only: Git and the canonical checkpoint outrank HIVE. working_tree_clean is reported as observed and never edited into a true value."
+  },
+  "hiveRetrievalProof": {
+    "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+    "corpus": {
+      "state": "CURRENT",
+      "last_successful_sync": "2026-09-21T17:43:39.160137Z",
+      "latest_run": {
+        "status": "COMPLETED",
+        "repository_source_count": 130,
+        "chunk_count": 200,
+        "current_reference_count": 202
+      }
+    },
+    "queries": {
+      "Definition of Done": {
+        "paths": [
+          ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+          ".engineering/evidence/mcp-proof.json",
+          ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+          ".engineering/evidence/mcp-proof.json",
+          ".engineering/evidence/hive-retrieval-proof.json",
+          ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+          ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
+          "docs/project-brain/15-DEFINITION-OF-DONE.md",
+          ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+          "scripts/validate_governance.py"
+        ],
+        "canonical_paths": [
+          "docs/project-brain/15-DEFINITION-OF-DONE.md"
+        ],
+        "canonical_ranks": [
+          7
+        ],
+        "first_canonical_rank": 7
+      },
+      "Godot engine foundation": {
+        "paths": [
+          "docs/project-brain/05-INTEGRATION-CONTRACTS.md",
+          ".engineering/evidence/hive-retrieval-proof.json",
+          ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+          ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+          ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+          ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+          ".engineering/github/repository-settings.json",
+          "README.md",
+          "docs/project-brain/01-PROJECT-OVERVIEW.md",
+          ".engineering/evidence/github/after-repository.json"
+        ],
+        "canonical_paths": [
+          "docs/project-brain/01-PROJECT-OVERVIEW.md",
+          "docs/project-brain/05-INTEGRATION-CONTRACTS.md"
+        ],
+        "canonical_ranks": [
+          0,
+          8
+        ],
+        "first_canonical_rank": 0
+      }
+    },
+    "canonical_paths": [
+      "docs/project-brain/01-PROJECT-OVERVIEW.md",
+      "docs/project-brain/05-INTEGRATION-CONTRACTS.md",
+      "docs/project-brain/15-DEFINITION-OF-DONE.md"
+    ]
+  },
+  "mcpProof": {
+    "launcher": "python scripts/hive_mcp.py",
+    "serverInfo": {
+      "name": "hive-mcp",
+      "version": "mcp-core-surface-v1"
+    },
+    "tools": [
+      "checkpoint.read",
+      "context.build",
+      "context.search",
+      "memory.get",
+      "memory.search",
+      "project.list",
+      "project.status"
+    ],
+    "annotations": {
+      "project.list": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "project.status": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "context.build": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "context.search": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "memory.search": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "memory.get": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      },
+      "checkpoint.read": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    "allReadOnly": true,
+    "calls": {
+      "project.list": {
+        "jsonrpc": "2.0",
+        "id": 3,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"limit\":32,\"projects\":[{\"detached_head\":false,\"git_branch\":\"isoryn-wo-0001-foundation\",\"git_head_sha\":\"d5de04c5ac157236de55875bb530f81d3d02ce86\",\"language_stack\":[],\"name\":\"ISORYN\",\"project_id\":\"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\"relative_path\":\"isoryn-engine\",\"repository_accessible\":true,\"state\":\"READY\",\"working_tree_clean\":true},{\"detached_head\":false,\"git_branch\":\"main\",\"git_head_sha\":\"8e995cf4fe66d6da185fd1540d84069d836a5525\",\"language_stack\":[],\"name\":\"FORGE\",\"project_id\":\"08d8ac6c-eedb-42d5-a03c-d699eea6fc85\",\"relative_path\":\"forge\",\"repository_accessible\":true,\"state\":\"READY\",\"working_tree_clean\":true},{\"detached_head\":false,\"git_branch\":\"feat/m01-core-runtime\",\"git_head_sha\":\"0eafc1682f31edadca935d1d47d9cf4baf2bf82f\",\"language_stack\":[\"rust\"],\"name\":\"CORE\",\"project_id\":\"220151cb-0e6e-43b3-845e-faec9c5a851b\",\"relative_path\":\"core\",\"repository_accessible\":true,\"state\":\"READY\",\"working_tree_clean\":false},{\"detached_head\":false,\"git_branch\":\"codex/cp-02r-hive-mcp-corrective\",\"git_head_sha\":\"79fd8c709ea73fb017545b835f9073288ce2af10\",\"language_stack\":[\"typescript\",\"javascript\"],\"name\":\"NEXLABS-WEB\",\"project_id\":\"85efae57-a5f4-44c8-aa0a-f63412fabaa5\",\"relative_path\":\"nexlabs-web\",\"repository_accessible\":true,\"state\":\"READY\",\"working_tree_clean\":true}],\"returned_count\":4,\"truncated\":false,\"version\":\"mcp-project-list-v1\"}"
+            }
+          ],
+          "structuredContent": {
+            "version": "mcp-project-list-v1",
+            "limit": 32,
+            "returned_count": 4,
+            "truncated": false,
+            "projects": [
+              {
+                "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+                "name": "ISORYN",
+                "relative_path": "isoryn-engine",
+                "git_branch": "isoryn-wo-0001-foundation",
+                "git_head_sha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+                "detached_head": false,
+                "repository_accessible": true,
+                "working_tree_clean": true,
+                "language_stack": [],
+                "state": "READY"
+              },
+              {
+                "project_id": "08d8ac6c-eedb-42d5-a03c-d699eea6fc85",
+                "name": "FORGE",
+                "relative_path": "forge",
+                "git_branch": "main",
+                "git_head_sha": "8e995cf4fe66d6da185fd1540d84069d836a5525",
+                "detached_head": false,
+                "repository_accessible": true,
+                "working_tree_clean": true,
+                "language_stack": [],
+                "state": "READY"
+              },
+              {
+                "project_id": "220151cb-0e6e-43b3-845e-faec9c5a851b",
+                "name": "CORE",
+                "relative_path": "core",
+                "git_branch": "feat/m01-core-runtime",
+                "git_head_sha": "0eafc1682f31edadca935d1d47d9cf4baf2bf82f",
+                "detached_head": false,
+                "repository_accessible": true,
+                "working_tree_clean": false,
+                "language_stack": [
+                  "rust"
+                ],
+                "state": "READY"
+              },
+              {
+                "project_id": "85efae57-a5f4-44c8-aa0a-f63412fabaa5",
+                "name": "NEXLABS-WEB",
+                "relative_path": "nexlabs-web",
+                "git_branch": "codex/cp-02r-hive-mcp-corrective",
+                "git_head_sha": "79fd8c709ea73fb017545b835f9073288ce2af10",
+                "detached_head": false,
+                "repository_accessible": true,
+                "working_tree_clean": true,
+                "language_stack": [
+                  "typescript",
+                  "javascript"
+                ],
+                "state": "READY"
+              }
+            ]
+          },
+          "isError": false
+        }
+      },
+      "project.status": {
+        "jsonrpc": "2.0",
+        "id": 4,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"project\":{\"detached_head\":false,\"git_branch\":\"isoryn-wo-0001-foundation\",\"git_head_sha\":\"d5de04c5ac157236de55875bb530f81d3d02ce86\",\"language_stack\":[],\"name\":\"ISORYN\",\"project_id\":\"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\"relative_path\":\"isoryn-engine\",\"repository_accessible\":true,\"state\":\"READY\",\"working_tree_clean\":true},\"version\":\"mcp-project-status-v1\"}"
+            }
+          ],
+          "structuredContent": {
+            "version": "mcp-project-status-v1",
+            "project": {
+              "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+              "name": "ISORYN",
+              "relative_path": "isoryn-engine",
+              "git_branch": "isoryn-wo-0001-foundation",
+              "git_head_sha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+              "detached_head": false,
+              "repository_accessible": true,
+              "working_tree_clean": true,
+              "language_stack": [],
+              "state": "READY"
+            }
+          },
+          "isError": false
+        }
+      },
+      "checkpoint.read": {
+        "jsonrpc": "2.0",
+        "id": 5,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"checkpoint\":{\"content\":\"# ISORYN Checkpoint\\n\\n## STATUS\\nBOOTSTRAP ACTIVE\\n\\n## VERSION\\nISORYN 0.0 - Clean Foundation\\n\\n## PHASE\\n0 - GEF/HIVE Repository Foundation\\n\\n## OBJECTIVE\\nEstablish the professional Source Pack, GEF v1.0.0 governance, HIVE v1.0.0 integration, Codex MCP bridge and exact-head governance CI before engine implementation begins.\\n\\n## IN PROGRESS\\nISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.\\n\\n## BLOCKERS\\nLocal HIVE runtime registration/indexing cannot be proven from GitHub alone and requires execution in the canonical Windows workspace. Repository administrative protection also requires settings/gh access if not already configured.\\n\\n## NEXT STEP\\nValidate local HIVE registration from D:\\\\Hive\\\\Projects\\\\isoryn-engine, configure professional main ruleset, collect exact-head CI/evidence, audit, then promote this checkpoint before engine module discovery.\\n\",\"content_characters\":837,\"git_blob_sha\":\"eda40e734a2c9f5e4fdf9cd8d559758f3ef93aba\",\"git_head_sha\":\"d5de04c5ac157236de55875bb530f81d3d02ce86\",\"path\":\"docs/project-brain/13-CHECKPOINT.md\",\"registered_head_sha\":\"d5de04c5ac157236de55875bb530f81d3d02ce86\",\"section_count\":7,\"sections\":[{\"end_char\":49,\"end_line\":5,\"heading\":\"STATUS\",\"start_char\":21,\"start_line\":3},{\"end_char\":91,\"end_line\":8,\"heading\":\"VERSION\",\"start_char\":49,\"start_line\":6},{\"end_char\":136,\"end_line\":11,\"heading\":\"PHASE\",\"start_char\":91,\"start_line\":9},{\"end_char\":321,\"end_line\":14,\"heading\":\"OBJECTIVE\",\"start_char\":136,\"start_line\":12},{\"end_char\":372,\"end_line\":17,\"heading\":\"IN PROGRESS\",\"start_char\":321,\"start_line\":15},{\"end_char\":617,\"end_line\":20,\"heading\":\"BLOCKERS\",\"start_char\":372,\"start_line\":18},{\"end_char\":837,\"end_line\":22,\"heading\":\"NEXT STEP\",\"start_char\":617,\"start_line\":21}],\"source_content_sha256\":\"e80d974e32e7d6da04e2cd35a5ff16c8c7f60e71f09ed4ddc4c2cf39484e0188\"},\"project_id\":\"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\"version\":\"mcp-checkpoint-read-v1\"}"
+            }
+          ],
+          "structuredContent": {
+            "version": "mcp-checkpoint-read-v1",
+            "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+            "checkpoint": {
+              "path": "docs/project-brain/13-CHECKPOINT.md",
+              "git_head_sha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+              "registered_head_sha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+              "git_blob_sha": "eda40e734a2c9f5e4fdf9cd8d559758f3ef93aba",
+              "source_content_sha256": "e80d974e32e7d6da04e2cd35a5ff16c8c7f60e71f09ed4ddc4c2cf39484e0188",
+              "section_count": 7,
+              "sections": [
+                {
+                  "heading": "STATUS",
+                  "start_line": 3,
+                  "end_line": 5,
+                  "start_char": 21,
+                  "end_char": 49
+                },
+                {
+                  "heading": "VERSION",
+                  "start_line": 6,
+                  "end_line": 8,
+                  "start_char": 49,
+                  "end_char": 91
+                },
+                {
+                  "heading": "PHASE",
+                  "start_line": 9,
+                  "end_line": 11,
+                  "start_char": 91,
+                  "end_char": 136
+                },
+                {
+                  "heading": "OBJECTIVE",
+                  "start_line": 12,
+                  "end_line": 14,
+                  "start_char": 136,
+                  "end_char": 321
+                },
+                {
+                  "heading": "IN PROGRESS",
+                  "start_line": 15,
+                  "end_line": 17,
+                  "start_char": 321,
+                  "end_char": 372
+                },
+                {
+                  "heading": "BLOCKERS",
+                  "start_line": 18,
+                  "end_line": 20,
+                  "start_char": 372,
+                  "end_char": 617
+                },
+                {
+                  "heading": "NEXT STEP",
+                  "start_line": 21,
+                  "end_line": 22,
+                  "start_char": 617,
+                  "end_char": 837
+                }
+              ],
+              "content_characters": 837,
+              "content": "# ISORYN Checkpoint\n\n## STATUS\nBOOTSTRAP ACTIVE\n\n## VERSION\nISORYN 0.0 - Clean Foundation\n\n## PHASE\n0 - GEF/HIVE Repository Foundation\n\n## OBJECTIVE\nEstablish the professional Source Pack, GEF v1.0.0 governance, HIVE v1.0.0 integration, Codex MCP bridge and exact-head governance CI before engine implementation begins.\n\n## IN PROGRESS\nISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.\n\n## BLOCKERS\nLocal HIVE runtime registration/indexing cannot be proven from GitHub alone and requires execution in the canonical Windows workspace. Repository administrative protection also requires settings/gh access if not already configured.\n\n## NEXT STEP\nValidate local HIVE registration from D:\\Hive\\Projects\\isoryn-engine, configure professional main ruleset, collect exact-head CI/evidence, audit, then promote this checkpoint before engine module discovery.\n"
+            }
+          },
+          "isError": false
+        }
+      },
+      "context.search": {
+        "jsonrpc": "2.0",
+        "id": 6,
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "{\"candidate_pool\":5,\"fallback_reason\":\"rerank_disabled\",\"hybrid_state\":\"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\",\"normalized_query\":\"definition of done\",\"project_id\":\"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\"query\":\"Definition of Done\",\"rerank_state\":\"RERANK_FALLBACK_DISABLED\",\"results\":[{\"chunk_content_sha256\":\"c509b009afcc28546fddd5a1d139d5e868a71ebb47b0fdf375990d3fa2646af5\",\"chunk_id\":\"bde16aaa-5049-4b42-bf99-deb31fa9a2b3\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"43cc41ca-685f-4812-8e98-0ac965919171\",\"end_char\":41498,\"end_line\":649,\"hybrid_score\":0.01639344262295082,\"lexical_contribution\":0.01639344262295082,\"lexical_rank\":1,\"lexical_score\":1.0409587621688843,\"path\":\".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md\",\"pre_rerank_rank\":1,\"project_id\":\"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\"qualified_symbol\":null,\"reference_id\":\"06289fa6-8a8e-470c-a09b-632744aaf67d\",\"repository_file_id\":\"bf4963d4-ddec-4e95-aa7f-e31a5efe173a\",\"repository_symbol_id\":null,\"rerank_rank\":1,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"            }\\n          ],\\n          \\\"structuredContent\\\": {\\n            \\\"version\\\": \\\"mcp-context-search-v1\\\",\\n            \\\"project_id\\\": \\\"8696b773-8554-4f27-9cb0-77ddfaf98deb\\\",\\n            \\\"query\\\": \\\"Definition of Done\\\",\\n            \\\"normalized_query\\\": \\\"definition of done\\\",\\n            \\\"top_k\\\": 5,\\n            \\\"candidate_pool\\\": 5,\\n            \\\"hybrid_state\\\": \\\"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\\\",\\n            \\\"semantic_state\\\": \\\"UNAVAILABLE\\\",\\n            \\\"rerank_state\\\": \\\"RERANK_FALLBACK_DISABLED\\\",\\n            \\\"fallback_reason\\\": \\\"rerank_disabled\\\",\\n            \\\"results\\\": [\\n              {\\n                \\\"project_id\\\": \\\"8696b773-8554-4f27-9\",\"snippet_characters\":643,\"snippet_truncated\":true,\"source_content_sha256\":\"954bcd7f4e0cc1e05ebb1754a1aaf8aa4df78fabfb54027b5f0d0dd0a11c99ba\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":36356,\"start_line\":570,\"task_id\":null,\"title\":null},{\"chunk_content_sha256\":\"7babe43715f282601727e6c2823643493f704f650a355b1fa7b4aa9fa2821566\",\"chunk_id\":\"ebe8e2a3-fa25-43f2-a4b4-9ac40ce4dba1\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"43cc41ca-685f-4812-8e98-0ac965919171\",\"end_char\":26511,\"end_line\":329,\"hybrid_score\":0.016129032258064516,\"lexical_contribution\":0.016129032258064516,\"lexical_rank\":2,\"lexical_score\":1.0409587621688843,\"path\":\".engineering/evidence/mcp-proof.json\",\"pre_rerank_rank\":2,\"project_id\":\"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\"qualified_symbol\":null,\"reference_id\":\"85fc03eb-6b4e-430a-8ffa-cd9725faebfd\",\"repository_file_id\":\"b6431965-e302-48e6-8fd9-13fdbc785e5a\",\"repository_symbol_id\":null,\"rerank_rank\":2,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"          }\\n        ],\\n        \\\"structuredContent\\\": {\\n          \\\"version\\\": \\\"mcp-context-search-v1\\\",\\n          \\\"project_id\\\": \\\"8696b773-8554-4f27-9cb0-77ddfaf98deb\\\",\\n          \\\"query\\\": \\\"Definition of Done\\\",\\n          \\\"normalized_query\\\": \\\"definition of done\\\",\\n          \\\"top_k\\\": 5,\\n          \\\"candidate_pool\\\": 5,\\n          \\\"hybrid_state\\\": \\\"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\\\",\\n          \\\"semantic_state\\\": \\\"UNAVAILABLE\\\",\\n          \\\"rerank_state\\\": \\\"RERANK_FALLBACK_DISABLED\\\",\\n          \\\"fallback_reason\\\": \\\"rerank_disabled\\\",\\n          \\\"results\\\": [\\n            {\\n              \\\"project_id\\\": \\\"8696b773-8554-4f27-9cb0-77ddfaf98deb\\\",\\n             \",\"snippet_characters\":643,\"snippet_truncated\":true,\"source_content_sha256\":\"3781d9b9709e375e7afc574cb567d1c37f0a3ab3b7ad0107a091c5cf46f2fd75\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":21529,\"start_line\":250,\"task_id\":null,\"title\":null},{\"chunk_content_sha256\":\"d9bb3c5cb2d1f8772f70818dba397e6fd9d95a0c8f42a5909bcffac79b17f027\",\"chunk_id\":\"ac667c5b-2aa2-4559-8ff3-a7b8c0c61ce2\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"43cc41ca-685f-4812-8e98-0ac965919171\",\"end_char\":32881,\"end_line\":569,\"hybrid_score\":0.015873015873015872,\"lexical_contribution\":0.015873015873015872,\"lexical_rank\":3,\"lexical_score\":0.9363574981689453,\"path\":\".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md\",\"pre_rerank_rank\":3,\"project_id\":\"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\"qualified_symbol\":null,\"reference_id\":\"f359f8f7-0f30-4583-8900-ddeee335da2b\",\"repository_file_id\":\"bf4963d4-ddec-4e95-aa7f-e31a5efe173a\",\"repository_symbol_id\":null,\"rerank_rank\":3,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"              \\\"text\\\": \\\"{\\\\\\\"candidate_pool\\\\\\\":5,\\\\\\\"fallback_reason\\\\\\\":\\\\\\\"rerank_disabled\\\\\\\",\\\\\\\"hybrid_state\\\\\\\":\\\\\\\"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\\\\\\\",\\\\\\\"normalized_query\\\\\\\":\\\\\\\"definition of done\\\\\\\",\\\\\\\"project_id\\\\\\\":\\\\\\\"8696b773-8554-4f27-9cb0-77ddfaf98deb\\\\\\\",\\\\\\\"query\\\\\\\":\\\\\\\"Definition of Done\\\\\\\",\\\\\\\"rerank_state\\\\\\\":\\\\\\\"RERANK_FALLBACK_DISABLED\\\\\\\",\\\\\\\"results\\\\\\\":[{\\\\\\\"chunk_content_sha256\\\\\\\":\\\\\\\"84172922aa8aadc46e4a0758dabdfab599d23cec94dfcffc808ebc24fc1e5ea0\\\\\\\",\\\\\\\"chunk_id\\\\\\\":\\\\\\\"f3b56f23-3bb4-40e4-be35-29116be52a18\\\\\\\",\\\\\\\"chunker_version\\\\\\\":\\\\\\\"line-window-v1\\\\\\\",\\\\\\\"corpus_run_id\\\\\\\":\\\\\\\"2ebde07b-af29-4db4-84e1-7254b94614d1\\\\\\\",\\\\\\\"end_char\\\\\\\":3292,\\\\\\\"end_line\\\\\\\":40,\\\\\\\"hybrid_score\\\\\\\":0.0163\",\"snippet_characters\":643,\"snippet_truncated\":true,\"source_content_sha256\":\"954bcd7f4e0cc1e05ebb1754a1aaf8aa4df78fabfb54027b5f0d0dd0a11c99ba\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":26881,\"start_line\":569,\"task_id\":null,\"title\":null},{\"chunk_content_sha256\":\"83ef1f1523cb005fd4a6d12317c49cde388045ccf0fe53844f9fced400baa8ef\",\"chunk_id\":\"725867f7-d242-4f26-ae11-00eae543d7ee\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"43cc41ca-685f-4812-8e98-0ac965919171\",\"end_char\":18056,\"end_line\":249,\"hybrid_score\":0.015625,\"lexical_contribution\":0.015625,\"lexical_rank\":4,\"lexical_score\":0.9363574981689453,\"path\":\".engineering/evidence/mcp-proof.json\",\"pre_rerank_rank\":4,\"project_id\":\"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\"qualified_symbol\":null,\"reference_id\":\"6320a9a6-c468-45e3-ab74-60f8e82a0e24\",\"repository_file_id\":\"b6431965-e302-48e6-8fd9-13fdbc785e5a\",\"repository_symbol_id\":null,\"rerank_rank\":4,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"            \\\"text\\\": \\\"{\\\\\\\"candidate_pool\\\\\\\":5,\\\\\\\"fallback_reason\\\\\\\":\\\\\\\"rerank_disabled\\\\\\\",\\\\\\\"hybrid_state\\\\\\\":\\\\\\\"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\\\\\\\",\\\\\\\"normalized_query\\\\\\\":\\\\\\\"definition of done\\\\\\\",\\\\\\\"project_id\\\\\\\":\\\\\\\"8696b773-8554-4f27-9cb0-77ddfaf98deb\\\\\\\",\\\\\\\"query\\\\\\\":\\\\\\\"Definition of Done\\\\\\\",\\\\\\\"rerank_state\\\\\\\":\\\\\\\"RERANK_FALLBACK_DISABLED\\\\\\\",\\\\\\\"results\\\\\\\":[{\\\\\\\"chunk_content_sha256\\\\\\\":\\\\\\\"84172922aa8aadc46e4a0758dabdfab599d23cec94dfcffc808ebc24fc1e5ea0\\\\\\\",\\\\\\\"chunk_id\\\\\\\":\\\\\\\"f3b56f23-3bb4-40e4-be35-29116be52a18\\\\\\\",\\\\\\\"chunker_version\\\\\\\":\\\\\\\"line-window-v1\\\\\\\",\\\\\\\"corpus_run_id\\\\\\\":\\\\\\\"2ebde07b-af29-4db4-84e1-7254b94614d1\\\\\\\",\\\\\\\"end_char\\\\\\\":3292,\\\\\\\"end_line\\\\\\\":40,\\\\\\\"hybrid_score\\\\\\\":0.016393\",\"snippet_characters\":643,\"snippet_truncated\":true,\"source_content_sha256\":\"3781d9b9709e375e7afc574cb567d1c37f0a3ab3b7ad0107a091c5cf46f2fd75\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":12056,\"start_line\":249,\"task_id\":null,\"title\":null},{\"chunk_content_sha256\":\"88293e10b2bc71260145588e09392f8853e076952be26569e7dafbdfe29c7a04\",\"chunk_id\":\"5dd0e87d-91ea-45d6-ab2e-3ea7b7b654c3\",\"chunker_version\":\"line-window-v1\",\"corpus_run_id\":\"43cc41ca-685f-4812-8e98-0ac965919171\",\"end_char\":1622,\"end_line\":49,\"hybrid_score\":0.015384615384615385,\"lexical_contribution\":0.015384615384615385,\"lexical_rank\":5,\"lexical_score\":0.5241162180900574,\"path\":\".engineering/evidence/hive-retrieval-proof.json\",\"pre_rerank_rank\":5,\"project_id\":\"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\"qualified_symbol\":null,\"reference_id\":\"3ceb57de-b65c-475b-9b82-c47a1f1f3aae\",\"repository_file_id\":\"a930975b-8f21-4b35-9d0a-0735ae3e91d8\",\"repository_symbol_id\":null,\"rerank_rank\":5,\"rerank_score\":null,\"semantic_contribution\":0.0,\"semantic_distance\":null,\"semantic_rank\":null,\"semantic_score\":null,\"snippet\":\"... \\\"2026-09-21T17:22:25.734460Z\\\",\\n    \\\"latest_run\\\": {\\n      \\\"status\\\": \\\"COMPLETED\\\",\\n      \\\"repository_source_count\\\": 124,\\n      \\\"chunk_count\\\": 133,\\n      \\\"current_reference_count\\\": 135\\n    }\\n  },\\n  \\\"queries\\\": {\\n    \\\"Definition of Done\\\": {\\n      \\\"paths\\\": [\\n        \\\".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md\\\",\\n        \\\"docs/project-brain/15-DEFINITION-OF-DONE.md\\\",\\n        \\\"scripts/validate_governance.py\\\",\\n        \\\"AGENTS.md\\\",\\n        \\\".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md\\\",\\n        \\\"docs/project-brain/00-README-UPLOAD-ORDER.md\\\"\\n      ],\\n      \\\"canonical_paths\\\": [\\n        \\\"docs/project-brain/00-REA\",\"snippet_characters\":646,\"snippet_truncated\":true,\"source_content_sha256\":\"88293e10b2bc71260145588e09392f8853e076952be26569e7dafbdfe29c7a04\",\"source_kind\":\"REPOSITORY_FILE\",\"start_char\":0,\"start_line\":1,\"task_id\":null,\"title\":null}],\"semantic_state\":\"UNAVAILABLE\",\"top_k\":5,\"version\":\"mcp-context-search-v1\"}"
+            }
+          ],
+          "structuredContent": {
+            "version": "mcp-context-search-v1",
+            "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+            "query": "Definition of Done",
+            "normalized_query": "definition of done",
+            "top_k": 5,
+            "candidate_pool": 5,
+            "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+            "semantic_state": "UNAVAILABLE",
+            "rerank_state": "RERANK_FALLBACK_DISABLED",
+            "fallback_reason": "rerank_disabled",
+            "results": [
+              {
+                "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+                "reference_id": "06289fa6-8a8e-470c-a09b-632744aaf67d",
+                "chunk_id": "bde16aaa-5049-4b42-bf99-deb31fa9a2b3",
+                "corpus_run_id": "43cc41ca-685f-4812-8e98-0ac965919171",
+                "source_kind": "REPOSITORY_FILE",
+                "hybrid_score": 0.01639344262295082,
+                "lexical_score": 1.0409587621688843,
+                "semantic_score": null,
+                "semantic_distance": null,
+                "lexical_rank": 1,
+                "semantic_rank": null,
+                "lexical_contribution": 0.01639344262295082,
+                "semantic_contribution": 0.0,
+                "snippet": "            }\n          ],\n          \"structuredContent\": {\n            \"version\": \"mcp-context-search-v1\",\n            \"project_id\": \"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\n            \"query\": \"Definition of Done\",\n            \"normalized_query\": \"definition of done\",\n            \"top_k\": 5,\n            \"candidate_pool\": 5,\n            \"hybrid_state\": \"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\",\n            \"semantic_state\": \"UNAVAILABLE\",\n            \"rerank_state\": \"RERANK_FALLBACK_DISABLED\",\n            \"fallback_reason\": \"rerank_disabled\",\n            \"results\": [\n              {\n                \"project_id\": \"8696b773-8554-4f27-9",
+                "path": ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+                "title": null,
+                "qualified_symbol": null,
+                "repository_file_id": "bf4963d4-ddec-4e95-aa7f-e31a5efe173a",
+                "repository_symbol_id": null,
+                "task_id": null,
+                "source_content_sha256": "954bcd7f4e0cc1e05ebb1754a1aaf8aa4df78fabfb54027b5f0d0dd0a11c99ba",
+                "chunk_content_sha256": "c509b009afcc28546fddd5a1d139d5e868a71ebb47b0fdf375990d3fa2646af5",
+                "chunker_version": "line-window-v1",
+                "start_line": 570,
+                "end_line": 649,
+                "start_char": 36356,
+                "end_char": 41498,
+                "pre_rerank_rank": 1,
+                "rerank_rank": 1,
+                "rerank_score": null,
+                "snippet_characters": 643,
+                "snippet_truncated": true
+              },
+              {
+                "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+                "reference_id": "85fc03eb-6b4e-430a-8ffa-cd9725faebfd",
+                "chunk_id": "ebe8e2a3-fa25-43f2-a4b4-9ac40ce4dba1",
+                "corpus_run_id": "43cc41ca-685f-4812-8e98-0ac965919171",
+                "source_kind": "REPOSITORY_FILE",
+                "hybrid_score": 0.016129032258064516,
+                "lexical_score": 1.0409587621688843,
+                "semantic_score": null,
+                "semantic_distance": null,
+                "lexical_rank": 2,
+                "semantic_rank": null,
+                "lexical_contribution": 0.016129032258064516,
+                "semantic_contribution": 0.0,
+                "snippet": "          }\n        ],\n        \"structuredContent\": {\n          \"version\": \"mcp-context-search-v1\",\n          \"project_id\": \"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\n          \"query\": \"Definition of Done\",\n          \"normalized_query\": \"definition of done\",\n          \"top_k\": 5,\n          \"candidate_pool\": 5,\n          \"hybrid_state\": \"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\",\n          \"semantic_state\": \"UNAVAILABLE\",\n          \"rerank_state\": \"RERANK_FALLBACK_DISABLED\",\n          \"fallback_reason\": \"rerank_disabled\",\n          \"results\": [\n            {\n              \"project_id\": \"8696b773-8554-4f27-9cb0-77ddfaf98deb\",\n             ",
+                "path": ".engineering/evidence/mcp-proof.json",
+                "title": null,
+                "qualified_symbol": null,
+                "repository_file_id": "b6431965-e302-48e6-8fd9-13fdbc785e5a",
+                "repository_symbol_id": null,
+                "task_id": null,
+                "source_content_sha256": "3781d9b9709e375e7afc574cb567d1c37f0a3ab3b7ad0107a091c5cf46f2fd75",
+                "chunk_content_sha256": "7babe43715f282601727e6c2823643493f704f650a355b1fa7b4aa9fa2821566",
+                "chunker_version": "line-window-v1",
+                "start_line": 250,
+                "end_line": 329,
+                "start_char": 21529,
+                "end_char": 26511,
+                "pre_rerank_rank": 2,
+                "rerank_rank": 2,
+                "rerank_score": null,
+                "snippet_characters": 643,
+                "snippet_truncated": true
+              },
+              {
+                "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+                "reference_id": "f359f8f7-0f30-4583-8900-ddeee335da2b",
+                "chunk_id": "ac667c5b-2aa2-4559-8ff3-a7b8c0c61ce2",
+                "corpus_run_id": "43cc41ca-685f-4812-8e98-0ac965919171",
+                "source_kind": "REPOSITORY_FILE",
+                "hybrid_score": 0.015873015873015872,
+                "lexical_score": 0.9363574981689453,
+                "semantic_score": null,
+                "semantic_distance": null,
+                "lexical_rank": 3,
+                "semantic_rank": null,
+                "lexical_contribution": 0.015873015873015872,
+                "semantic_contribution": 0.0,
+                "snippet": "              \"text\": \"{\\\"candidate_pool\\\":5,\\\"fallback_reason\\\":\\\"rerank_disabled\\\",\\\"hybrid_state\\\":\\\"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\\\",\\\"normalized_query\\\":\\\"definition of done\\\",\\\"project_id\\\":\\\"8696b773-8554-4f27-9cb0-77ddfaf98deb\\\",\\\"query\\\":\\\"Definition of Done\\\",\\\"rerank_state\\\":\\\"RERANK_FALLBACK_DISABLED\\\",\\\"results\\\":[{\\\"chunk_content_sha256\\\":\\\"84172922aa8aadc46e4a0758dabdfab599d23cec94dfcffc808ebc24fc1e5ea0\\\",\\\"chunk_id\\\":\\\"f3b56f23-3bb4-40e4-be35-29116be52a18\\\",\\\"chunker_version\\\":\\\"line-window-v1\\\",\\\"corpus_run_id\\\":\\\"2ebde07b-af29-4db4-84e1-7254b94614d1\\\",\\\"end_char\\\":3292,\\\"end_line\\\":40,\\\"hybrid_score\\\":0.0163",
+                "path": ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+                "title": null,
+                "qualified_symbol": null,
+                "repository_file_id": "bf4963d4-ddec-4e95-aa7f-e31a5efe173a",
+                "repository_symbol_id": null,
+                "task_id": null,
+                "source_content_sha256": "954bcd7f4e0cc1e05ebb1754a1aaf8aa4df78fabfb54027b5f0d0dd0a11c99ba",
+                "chunk_content_sha256": "d9bb3c5cb2d1f8772f70818dba397e6fd9d95a0c8f42a5909bcffac79b17f027",
+                "chunker_version": "line-window-v1",
+                "start_line": 569,
+                "end_line": 569,
+                "start_char": 26881,
+                "end_char": 32881,
+                "pre_rerank_rank": 3,
+                "rerank_rank": 3,
+                "rerank_score": null,
+                "snippet_characters": 643,
+                "snippet_truncated": true
+              },
+              {
+                "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+                "reference_id": "6320a9a6-c468-45e3-ab74-60f8e82a0e24",
+                "chunk_id": "725867f7-d242-4f26-ae11-00eae543d7ee",
+                "corpus_run_id": "43cc41ca-685f-4812-8e98-0ac965919171",
+                "source_kind": "REPOSITORY_FILE",
+                "hybrid_score": 0.015625,
+                "lexical_score": 0.9363574981689453,
+                "semantic_score": null,
+                "semantic_distance": null,
+                "lexical_rank": 4,
+                "semantic_rank": null,
+                "lexical_contribution": 0.015625,
+                "semantic_contribution": 0.0,
+                "snippet": "            \"text\": \"{\\\"candidate_pool\\\":5,\\\"fallback_reason\\\":\\\"rerank_disabled\\\",\\\"hybrid_state\\\":\\\"LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE\\\",\\\"normalized_query\\\":\\\"definition of done\\\",\\\"project_id\\\":\\\"8696b773-8554-4f27-9cb0-77ddfaf98deb\\\",\\\"query\\\":\\\"Definition of Done\\\",\\\"rerank_state\\\":\\\"RERANK_FALLBACK_DISABLED\\\",\\\"results\\\":[{\\\"chunk_content_sha256\\\":\\\"84172922aa8aadc46e4a0758dabdfab599d23cec94dfcffc808ebc24fc1e5ea0\\\",\\\"chunk_id\\\":\\\"f3b56f23-3bb4-40e4-be35-29116be52a18\\\",\\\"chunker_version\\\":\\\"line-window-v1\\\",\\\"corpus_run_id\\\":\\\"2ebde07b-af29-4db4-84e1-7254b94614d1\\\",\\\"end_char\\\":3292,\\\"end_line\\\":40,\\\"hybrid_score\\\":0.016393",
+                "path": ".engineering/evidence/mcp-proof.json",
+                "title": null,
+                "qualified_symbol": null,
+                "repository_file_id": "b6431965-e302-48e6-8fd9-13fdbc785e5a",
+                "repository_symbol_id": null,
+                "task_id": null,
+                "source_content_sha256": "3781d9b9709e375e7afc574cb567d1c37f0a3ab3b7ad0107a091c5cf46f2fd75",
+                "chunk_content_sha256": "83ef1f1523cb005fd4a6d12317c49cde388045ccf0fe53844f9fced400baa8ef",
+                "chunker_version": "line-window-v1",
+                "start_line": 249,
+                "end_line": 249,
+                "start_char": 12056,
+                "end_char": 18056,
+                "pre_rerank_rank": 4,
+                "rerank_rank": 4,
+                "rerank_score": null,
+                "snippet_characters": 643,
+                "snippet_truncated": true
+              },
+              {
+                "project_id": "8696b773-8554-4f27-9cb0-77ddfaf98deb",
+                "reference_id": "3ceb57de-b65c-475b-9b82-c47a1f1f3aae",
+                "chunk_id": "5dd0e87d-91ea-45d6-ab2e-3ea7b7b654c3",
+                "corpus_run_id": "43cc41ca-685f-4812-8e98-0ac965919171",
+                "source_kind": "REPOSITORY_FILE",
+                "hybrid_score": 0.015384615384615385,
+                "lexical_score": 0.5241162180900574,
+                "semantic_score": null,
+                "semantic_distance": null,
+                "lexical_rank": 5,
+                "semantic_rank": null,
+                "lexical_contribution": 0.015384615384615385,
+                "semantic_contribution": 0.0,
+                "snippet": "... \"2026-09-21T17:22:25.734460Z\",\n    \"latest_run\": {\n      \"status\": \"COMPLETED\",\n      \"repository_source_count\": 124,\n      \"chunk_count\": 133,\n      \"current_reference_count\": 135\n    }\n  },\n  \"queries\": {\n    \"Definition of Done\": {\n      \"paths\": [\n        \".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md\",\n        \"docs/project-brain/15-DEFINITION-OF-DONE.md\",\n        \"scripts/validate_governance.py\",\n        \"AGENTS.md\",\n        \".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md\",\n        \"docs/project-brain/00-README-UPLOAD-ORDER.md\"\n      ],\n      \"canonical_paths\": [\n        \"docs/project-brain/00-REA",
+                "path": ".engineering/evidence/hive-retrieval-proof.json",
+                "title": null,
+                "qualified_symbol": null,
+                "repository_file_id": "a930975b-8f21-4b35-9d0a-0735ae3e91d8",
+                "repository_symbol_id": null,
+                "task_id": null,
+                "source_content_sha256": "88293e10b2bc71260145588e09392f8853e076952be26569e7dafbdfe29c7a04",
+                "chunk_content_sha256": "88293e10b2bc71260145588e09392f8853e076952be26569e7dafbdfe29c7a04",
+                "chunker_version": "line-window-v1",
+                "start_line": 1,
+                "end_line": 49,
+                "start_char": 0,
+                "end_char": 1622,
+                "pre_rerank_rank": 5,
+                "rerank_rank": 5,
+                "rerank_score": null,
+                "snippet_characters": 646,
+                "snippet_truncated": true
+              }
+            ]
+          },
+          "isError": false
+        }
+      }
+    },
+    "launcherStderr": ""
+  },
+  "github": {
+    "settingsAppliedFrom": ".engineering/github/repository-settings.json",
+    "repositoryBefore": {
+      "name": "isoryn-engine",
+      "full_name": "KayzenRoot/isoryn-engine",
+      "private": false,
+      "visibility": "public",
+      "default_branch": "main",
+      "description": "ISORYN engine program: clean governed foundation (GEF v1.0.0 + HIVE v1.0.0). Godot 4.x is the accepted foundation direction pending evidence-backed discovery.",
+      "topics": [
+        "engine-development",
+        "game-engine",
+        "godot",
+        "governance",
+        "isoryn"
+      ],
+      "has_issues": true,
+      "has_projects": true,
+      "has_wiki": false,
+      "has_downloads": false,
+      "has_pages": false,
+      "has_discussions": false,
+      "allow_merge_commit": false,
+      "allow_rebase_merge": false,
+      "allow_squash_merge": true,
+      "allow_auto_merge": true,
+      "delete_branch_on_merge": true,
+      "allow_update_branch": true,
+      "use_squash_pr_title_as_default": false,
+      "squash_merge_commit_message": "COMMIT_MESSAGES",
+      "security_and_analysis": {
+        "secret_scanning": {
+          "status": "enabled"
+        },
+        "secret_scanning_push_protection": {
+          "status": "enabled"
+        },
+        "dependabot_security_updates": {
+          "status": "enabled"
+        },
+        "secret_scanning_non_provider_patterns": {
+          "status": "disabled"
+        },
+        "secret_scanning_validity_checks": {
+          "status": "disabled"
+        }
+      }
+    },
+    "repositoryAfter": {
+      "name": "isoryn-engine",
+      "full_name": "KayzenRoot/isoryn-engine",
+      "private": false,
+      "visibility": "public",
+      "default_branch": "main",
+      "description": "ISORYN engine program: clean governed foundation (GEF v1.0.0 + HIVE v1.0.0). Godot 4.x is the accepted foundation direction pending evidence-backed discovery.",
+      "topics": [
+        "engine-development",
+        "game-engine",
+        "godot",
+        "governance",
+        "isoryn"
+      ],
+      "has_issues": true,
+      "has_projects": false,
+      "has_wiki": false,
+      "has_downloads": false,
+      "has_pages": false,
+      "has_discussions": false,
+      "allow_merge_commit": false,
+      "allow_rebase_merge": false,
+      "allow_squash_merge": true,
+      "allow_auto_merge": true,
+      "delete_branch_on_merge": true,
+      "allow_update_branch": true,
+      "use_squash_pr_title_as_default": false,
+      "squash_merge_commit_message": "COMMIT_MESSAGES",
+      "security_and_analysis": {
+        "secret_scanning": {
+          "status": "enabled"
+        },
+        "secret_scanning_push_protection": {
+          "status": "enabled"
+        },
+        "dependabot_security_updates": {
+          "status": "enabled"
+        },
+        "secret_scanning_non_provider_patterns": {
+          "status": "disabled"
+        },
+        "secret_scanning_validity_checks": {
+          "status": "disabled"
+        }
+      }
+    },
+    "repositoryReceipts": [
+      ".engineering/evidence/github/before-repository.json",
+      ".engineering/evidence/github/after-repository.json"
+    ],
+    "repositoryReceiptsIdentical": false,
+    "codeownersBefore": "* @KayzenRoot\n",
+    "codeownersAfter": "# ISORYN review routing metadata.\n#\n# Ownership here records who a change should be routed to. It is deliberately NOT an approval gate:\n# the main-governance ruleset sets require_code_owner_review=false and required_approving_review_count=0,\n# because this repository has a single owner who is also the pull request author. GitHub does not accept a\n# review from the author, so enforcing code-owner approval here would make main permanently unmergeable.\n#\n# Add a team or second maintainer, then enable require_code_owner_review in\n# .engineering/github/ruleset-main-governance.json, before treating this file as a required gate.\n* @KayzenRoot\n",
+    "rulesetManifest": {
+      "name": "main-governance",
+      "target": "branch",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "refs/heads/main"
+          ]
+        }
+      },
+      "bypass_actors": [],
+      "rules": [
+        {
+          "type": "deletion"
+        },
+        {
+          "type": "non_fast_forward"
+        },
+        {
+          "type": "required_linear_history"
+        },
+        {
+          "type": "update",
+          "parameters": {
+            "update_allows_fetch_and_merge": false
+          }
+        },
+        {
+          "type": "pull_request",
+          "parameters": {
+            "allowed_merge_methods": [
+              "squash"
+            ],
+            "dismiss_stale_reviews_on_push": true,
+            "require_code_owner_review": false,
+            "require_last_push_approval": false,
+            "required_approving_review_count": 0,
+            "required_review_thread_resolution": true
+          }
+        },
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "do_not_enforce_on_create": false,
+            "strict_required_status_checks_policy": true,
+            "required_status_checks": [
+              {
+                "context": "Governance"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "effectiveRuleset": {
+      "id": 23776080,
+      "name": "main-governance",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "refs/heads/main"
+          ]
+        }
+      },
+      "bypassActors": [],
+      "rules": [
+        {
+          "type": "non_fast_forward",
+          "parameters": {}
+        },
+        {
+          "type": "deletion",
+          "parameters": {}
+        },
+        {
+          "type": "required_linear_history",
+          "parameters": {}
+        },
+        {
+          "type": "update",
+          "parameters": {}
+        },
+        {
+          "type": "pull_request",
+          "parameters": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash"
+            ]
+          }
+        },
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Governance"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "requiredStatusChecks": {
+      "strict_required_status_checks_policy": true,
+      "do_not_enforce_on_create": false,
+      "required_status_checks": [
+        {
+          "context": "Governance"
+        }
+      ]
+    },
+    "rulesetCheckMain": "6 rules apply to branch main in repo KayzenRoot/isoryn-engine\n\n- deletion\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- non_fast_forward\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- required_linear_history\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true] \n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- update\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n",
+    "statusChecksSequencing": "required_status_checks was withheld from the first application because a required context that has never reported leaves a protected branch permanently unmergeable. It was applied from the checked-in manifest only after the 'Governance' context was observed green on real runs, and this receipt is the read-back of the applied state rather than a description of intent.",
+    "rulesetView": "\nmain-governance\nID: 23776080\nSource: KayzenRoot/isoryn-engine (Repository)\nEnforcement: Active\nYou can bypass: never\n\nBypass List\nThis ruleset cannot be bypassed\n\nConditions\n- ref_name: [exclude: []] [include: [refs/heads/main]] \n\nRules\n- deletion\n- non_fast_forward\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n- required_linear_history\n- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true] \n- update\n",
+    "securityEndpointProbe": "vulnerability_alerts => NOT_AVAILABLE (exit=1) gh.exe : gh: Not Found (HTTP 404)\nautomated_security_fixes => NOT_AVAILABLE (exit=1) gh.exe : gh: Not Found (HTTP 404)\n",
+    "enforcementProofMethod": "The applied state is proved by read-back: GET on the ruleset id and 'gh ruleset check main' listing all six rules against refs/heads/main. No destructive push, force-push or branch-deletion test was run against main to 'show' the protection, because the Work Order forbids force-push and destructive cleanup and such a probe cannot be undone if the guard fails.",
+    "receipts": [
+      "after-repository.json",
+      "after-ruleset.json",
+      "before-repository.json",
+      "before-ruleset-23776080.json",
+      "before-rulesets.json",
+      "configure-github-c03-idempotency.log",
+      "pr-verification-c03.txt",
+      "pre-c03-ruleset-a77e1e16.txt",
+      "ruleset-check-main.txt",
+      "ruleset-list.json",
+      "ruleset-view.txt",
+      "security-endpoints.txt"
+    ],
+    "c03SupersededBy": "rulesetManifest, effectiveRuleset, rulesetCheckMain and rulesetView above are the read-backs taken while the checked-in desired state still carried the restrict-updates rule. C03 applied the corrected manifest, so the live values now on disk under .engineering/evidence/github are the post-correction ones and are reproduced in c03Recovery. The pre-correction captures are kept as written for the heads they describe.",
+    "rulesetCheckMainPostC03": "5 rules apply to branch main in repo KayzenRoot/isoryn-engine\n\n- deletion\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- non_fast_forward\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- required_linear_history\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true] \n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)",
+    "repositorySecretScanningPostC03": {
+      "secret_scanning": {
+        "status": "enabled"
+      },
+      "secret_scanning_push_protection": {
+        "status": "enabled"
+      },
+      "dependabot_security_updates": {
+        "status": "enabled"
+      },
+      "secret_scanning_non_provider_patterns": {
+        "status": "disabled"
+      },
+      "secret_scanning_validity_checks": {
+        "status": "disabled"
+      }
+    }
+  },
+  "ciObservations": [
+    {
+      "head": "56559d387a9431c67795c194ddecd750ccca49ef",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35876788786/job/107234662512",
+      "detail": "GitHub check-run for this exact commit, read through the API. The head that carries the re-bound C02 receipts."
+    },
+    {
+      "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35874710441/job/107227520570",
+      "detail": "GitHub check-run for this exact commit, read through the API. This is the C02 canonical workspace proof head."
+    },
+    {
+      "head": "8d4a76052869df276c34ec56c217a4595ae00425",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35868575444/job/107206378500",
+      "detail": "GitHub check-run for this exact commit, read through the API. The reviewer head that issued C02."
+    },
+    {
+      "head": "47838e4d102e17ee35a5068443091b91e40a23b9",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35866516664/job/107199374162",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35854318100/job/107159087105",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "9f5dd767e9bd9972b2e98fed46abbae90202cd46",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35638179286/job/106460697408",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "b8b5e90940356c69e85511e29c940f1f093977fc",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35637778291/job/106459349626",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "dfd8745e607a529197a806ce15ec2003aa073114",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35635555729/job/106451985978",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "72b2d3a06fb70d240784d945680741f623eccabd",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35634056578/job/106446985162",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "bd73ecd41e11b21e29678c1a0830ba5895c74b35",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35632133365/job/106440622755",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "3de6fa11ed5dda13a31a9b7abe6591de6a34bf0f",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "failure",
+      "result": "FAIL",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35627653055/job/106425847441",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35613159283/job/106377088615",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "6584b7aae7546d33e8d747feff2265ba3d3eff67",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35612910958/job/106376255435",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35885436589/job/107264269626",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "70996f5322990010a171c46b9e4f0288f3e585d0",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887146651/job/107270084523",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    }
+  ],
+  "ciObservationContext": "Each entry names the commit GitHub evaluated. The failing run is the structural one this bundle exists to resolve: the validator's Evidence Bundle gate cannot be satisfied by the code head it evidences, so the run before any bundle existed reports FAIL and is kept visible instead of being smoothed over by a later pass.",
+  "environmentDrift": {
+    "observedAt": "2026-09-21T17:54:00Z",
+    "summary": "While the evidence chain was being closed, 127.0.0.1:8000 stopped being served by the pinned HIVE v1.0.0 stack and started being served by a different local HIVE checkout at version 1.0.1, whose projects root does not contain ISORYN.",
+    "pinnedSourceStillCorrect": "C:\\Users\\csn19\\AppData\\Local\\HIVE\\app is still at release commit a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf (git describe v1.0.0), so the pin this Work Order adopted is intact; the runtime answering the port is not that stack.",
+    "servingStack": "docker compose project dir D:\\Projetos Codex\\hive, VERSION 1.0.1, HEAD f96901f (v1.0.0-11-gf96901f), mounting D:\\Projetos Codex\\hive\\.hive-projects as /workspace/projects and its own .hive-data as the data root.",
+    "symptoms": [
+      "GET /api/v1/health reports version 1.0.1 where every proof in this bundle recorded 1.0.0",
+      "the ISORYN registration visible there is state OFFLINE with inspection_error path_unavailable, because that stack's projects root has no isoryn-engine",
+      "a machine-level HIVE_PROJECTS_ROOT now resolves to D:/Projetos Codex instead of the canonical D:\\Hive\\projects documented in docs/HIVE-INTEGRATION.md"
+    ],
+    "failedReCapture": {
+      "api": "http://127.0.0.1:8000",
+      "result": "FAIL",
+      "attempts": [
+        {
+          "attempt": 1,
+          "result": "FAIL",
+          "detail": "HIVE bootstrap failed: ISORYN is not READY in HIVE: {'project_id': '1e4aaa02-d268-4ab3-88e5-d956203177fb', 'name': 'ISORYN', 'relative_path': 'isoryn-engine', 'git_branch': None, 'git_head_sha': None, 'detached_head': False, 'repository_accessible': False, 'working_tree_clean': None, 'language_stack': [], 'state': 'OFFLINE', 'inspection_error': 'path_unavailable', 'created_at': '2026-09-21T17:54:0"
+        },
+        {
+          "attempt": 2,
+          "result": "FAIL",
+          "detail": "HIVE bootstrap failed: GET /api/v1/health -> HTTP 503: {\"status\":\"degraded\",\"version\":\"1.0.1\",\"environment\":\"development\",\"timestamp\":\"2026-09-21T17:54:29.721168Z\",\"data_root\":\"/var/lib/hive\",\"checks\":{\"postgres\":{\"status\":\"ok\",\"details\":{\"pgvector\":true}},\"redis\":{\"status\":\"degraded\",\"details\":{\"reason\":\"connection failed (ConnectionError)\"}},\"storage\":{\"status\":\"ok\",\"details\":{\"configured\":true,"
+        },
+        {
+          "attempt": 3,
+          "result": "FAIL",
+          "detail": "HIVE bootstrap failed: ISORYN is not READY in HIVE: {'project_id': '1e4aaa02-d268-4ab3-88e5-d956203177fb', 'name': 'ISORYN', 'relative_path': 'isoryn-engine', 'git_branch': None, 'git_head_sha': None, 'detached_head': False, 'repository_accessible': False, 'working_tree_clean': None, 'language_stack': [], 'state': 'OFFLINE', 'inspection_error': 'path_unavailable', 'created_at': '2026-09-21T17:54:0"
+        }
+      ],
+      "pipeline": {
+        "unparsed_output": "HIVE health: {'status': 'ok', 'version': '1.0.1', 'environment': 'development', 'timestamp': '2026-09-21T17:54:50.050805Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}\nResolved existing ISORYN registration by exact relative path.\n\nHIVE bootstrap failed: ISORYN is not READY in HIVE: {'project_id': '1e4aaa02-d268-4ab3-88e5-d956203177fb', 'name': 'ISORYN', 'relative_path': 'isoryn-engine', 'git_branch': None, 'git_head_sha': None, 'detached_head': False, 'repository_accessible': False, 'working_tree_clean': None, 'language_stack': [], 'state': 'OFFLINE', 'inspection_error': 'path_unavailable', 'created_at': '2026-09-21T17:54:01.070201Z', 'updated_at': '2026-09-21T17:54:50.283374Z', 'last_inspected_at': '2026-09-21T17:54:50.283374Z'}"
+      },
+      "classification": "HIVE_UNAVAILABLE",
+      "note": "Derived state only: Git and the canonical checkpoint outrank HIVE. working_tree_clean is reported as observed and never edited into a true value."
+    },
+    "notDoneOnPurpose": [
+      "No container, volume, port or environment of the other workspace was stopped, restarted or re-pointed to reclaim the proofs: that stack belongs to concurrent work and ISORYN's rules put stopping shared runtime state outside this Work Order.",
+      "DELETE is not offered by the HIVE API (405), so the registration a bootstrap attempt created in that stack at 17:54Z (project 1e4aaa02-d268-4ab3-88e5-d956203177fb, state OFFLINE) remains, and is named here rather than quietly cleaned up in a database this Work Order does not own."
+    ],
+    "consequence": "HIVE and MCP re-proofs at heads after the capture head could not be executed against the pinned runtime, so no receipt in this bundle was regenerated for them. The checks that do not need HIVE - the governance validator, the unit suite and the CI job - are green at every pushed head, which is what the ciObservations chain shows.",
+    "pinnedContainersAbsent": "Verified at 18:09Z: `docker ps -a` lists no container of the pinned stack and `docker volume ls` holds a single anonymous volume belonging to the concurrent one, so the pinned v1.0.0 images and its data root were removed with the runtime, not just stopped. The receipts in this bundle are therefore the only surviving record of that runtime's behaviour.",
+    "recovery": "With the operator's decision: bring the pinned v1.0.0 stack back (its source at C:\\Users\\csn19\\AppData\\Local\\HIVE\\app still builds; nothing to restore from, it must be re-upped) either on its own host port or after the concurrent stack is released, point HIVE_PROJECTS_ROOT at D:\\Hive\\projects, then run python scripts/hive_bootstrap.py --relative-path isoryn-engine and re-capture. Nothing in the repository has to change for that; the proofs are re-runnable, not lost.",
+    "closedBy": {
+      "correction": "C01",
+      "proofHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
+      "record": "c01Recovery",
+      "result": "HIVE_RUNTIME_DRIFT CLOSED for the governed v1.0.0 baseline: the pinned runtime runs isolated and re-proves health, registration, READY, index, corpus, canonical retrieval and MCP at the C01 head.",
+      "stillTrueAfterClosure": "The machine-level default runtime on 127.0.0.1:8000 is HIVE 1.0.2 and has no ISORYN registration. Integrations that follow the ambient environment still reach it, so every ISORYN HIVE call has to name the pinned stack explicitly."
+    },
+    "c02Note": "C02 re-executed the whole HIVE and MCP pipeline from the canonical workspace at d749accc68be408ae79d06e25946128b9cf7bdc3, so the runtime proof and the workspace authority now agree."
+  },
+  "unsupportedPlatformFeatures": [
+    {
+      "capability": "ruleset enforcement level 'evaluate'",
+      "result": "NOT_AVAILABLE",
+      "detail": "REST rejects the property on this plan; only 'active' and 'disabled' are accepted, so a dry-run ruleset cannot be expressed."
+    },
+    {
+      "capability": "vulnerability_alerts toggle",
+      "result": "NOT_AVAILABLE",
+      "detail": "PUT /repos/KayzenRoot/isoryn-engine/vulnerability_alerts -> HTTP 404. Dependabot version updates are still configured through .github/dependabot.yml."
+    },
+    {
+      "capability": "automated_security_fixes toggle",
+      "result": "NOT_AVAILABLE",
+      "detail": "PUT /repos/KayzenRoot/isoryn-engine/automated_security_fixes -> HTTP 404."
+    },
+    {
+      "capability": "mandatory human approval, CODEOWNERS review or last-pusher approval on main",
+      "result": "DEFERRED_BY_WO",
+      "detail": "Work Order: 'avoid mandatory human approval/CODEOWNER/last-pusher rules that deadlock a single-owner automated workflow.' .github/CODEOWNERS stays routing metadata only and the ruleset keeps required_approving_review_count=0."
+    },
+    {
+      "capability": "review requirement without an approval gate",
+      "result": "PASS",
+      "detail": "Encoded as the pull_request rule with required_review_thread_resolution=true and dismiss_stale_reviews_on_push=true, the supported non-deadlocking form."
+    },
+    {
+      "capability": "use_squash_pr_title_as_default",
+      "result": "NOT_AVAILABLE",
+      "detail": "PATCH /repos/KayzenRoot/isoryn-engine returns HTTP 200 with the field still false, both in the response body and on read-back, even though .engineering/github/repository-settings.json asks for true. On a User-owned repository the platform ignores this key, so the squash-title default stays a reviewer choice rather than an enforced setting. Every other governed key reads back at its target state - this run's only delta was has_projects true to false, because the rest (merge methods, delete_branch_on_merge, allow_update_branch, secret scanning, push protection, dependabot security updates) was already at target from earlier applications, which is what an idempotent script is expected to report."
+    },
+    {
+      "capability": "HIVE semantic retrieval and reranking",
+      "result": "NOT_AVAILABLE",
+      "detail": "context.search and context.build answered hybrid_state 'LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE', semantic_state 'UNAVAILABLE', rerank_state 'RERANK_FALLBACK_DISABLED'. HIVE v1.0.0 raises SemanticConfigurationError 'embedding_base_url_missing' when no OpenAI-compatible endpoint is configured, and this local deployment sets no HIVE_EMBEDDING_BASE_URL. pgvector is healthy, so the storage path exists; the embedding provider is an operator choice outside this repository and no HIVE configuration was changed to make a proof pass. Every retrieval claim in this bundle is therefore about the lexical path, which is what the runtime actually served."
+    },
+    {
+      "capability": "HIVE v1.0.0 MCP tools beyond the core surface",
+      "result": "NOT_AVAILABLE",
+      "detail": "The pinned runtime exposes exactly project.list, project.status, context.build, context.search, memory.search, memory.get, checkpoint.read. The code.*/run.*/decision.*/validation.*/telemetry.*/project.open list in docs/project-brain/09 is design intent, not v1.0.0 surface, and the validator refuses to advertise it."
+    }
+  ],
+  "errorsFoundAndCorrected": [
+    "HIVE_PROJECTS_ROOT disagreed with every ISORYN document. Corrected to the documented root; the three pre-existing READY registrations were re-resolved and verified before the old value was dropped.",
+    "A workspace consolidation was interrupted by a background process holding file handles, which duplicated two sibling repositories. Recovered by comparing every path (byte-identical or missing) and restoring the missing tracked and untracked trees before removing anything; both Git objects were verified with fsck and exact pre-move HEADs. See residualRisks.",
+    "Nested junctions are not traversed by the container filesystem, so a junction under the projects root cannot stand in for a real directory. Recorded instead of worked around with a bind mount, which failed read-only.",
+    "The repository worktree was CRLF while every blob is LF (Windows core.autocrlf=true). HIVE's Linux container applies no conversion, so it reported all 51 tracked files dirty and refused canonical retrieval with an empty result set. Fixed with .gitattributes ('* text=auto eol=lf') plus a real LF checkout; the validator now fails if a text file in the working tree carries CRLF, and project.status reports working_tree_clean true.",
+    "scripts/hive_mcp.py discovered a HIVE checkout only through HIVE_REPO_PATH plus sibling paths, which no operator on this machine had set, so the MCP launcher died before starting Docker. It now honours HIVE_HOME, exported by the HIVE installer, and reports the resolution failure instead of exiting silently.",
+    "HIVE registration/index/corpus exceeded the 15 second per-request timeout in scripts/hive_bootstrap.py and reported a false failure. Raised to a configurable timeout (default 180s, 600s used here) and added the observed working_tree_clean and branch fields to the reported preflight truth.",
+    "The first capture pass wrote its own receipts into the working tree while HIVE read that tree as dirty (the CRLF defect above), so the receipts it produced proved nothing about the snapshot they were meant to establish. Capture now writes outside the repository and installs the receipts afterwards, and the matrix.log keeps both attempts.",
+    "The main-governance ruleset was left with a single rule after several rejected payloads. Repaired to the full rule set with the correct schema: allowed_merge_methods belongs to the pull_request rule, 'update' accepts only update_allows_fetch_and_merge, and the approval counter is required_approving_review_count.",
+    "scripts/configure-github.ps1 named a different ruleset, inlined its payload, and sent typed booleans with -f. Rewritten to upsert main-governance from the checked-in manifests, capture BEFORE/AFTER receipts and record optional security endpoints instead of assuming them.",
+    ".env.example and the default parameter of scripts/bootstrap-local.ps1 committed absolute machine paths, violating GEF PC-08 and the Work Order rule that machine paths stay documentation. Both are now operator configuration; scripts/validate_governance.py enforces it.",
+    "The governance validator checked 27 artifacts and none of the repository-governance layer it is supposed to gate (README/CONTRIBUTING/SECURITY/.gitignore/.github, CI, tests, tooling, Work Orders, Context Locks, Evidence Bundles). Coverage was extended and semantic assertions added without removing any prior check.",
+    "Two validator assertions were wrong in ways that would have produced false signals: the checkpoint gate required the literal word 'IN PROGRESS' inside its own section, and the machine-path pattern matched the 'p:/' inside https:// URLs. Both now assert what was meant, with unit tests on the pattern itself.",
+    "scripts/configure-github.ps1 wrote its .txt receipts with CRLF, which re-created the exact container-read failure .gitattributes exists to prevent: the working tree read as modified and HIVE's reads would have gone stale behind a passing test suite. The writer now normalises to LF and the line-ending gate caught it the same run it was introduced in.",
+    "ISORYN-WO-0001 omitted the EVIDENCE, HIVE PREFLIGHT, CANONICAL BASIS, CONTEXT BUDGET and RISK/ASSURANCE sections that GEF-EXECUTION-PROTOCOL.md requires of every implementation Work Order.",
+    "CONTRIBUTING.md still described the one-time direct-to-main bootstrap as available after the ruleset would make it impossible, and its branch convention contradicted the branch this Work Order designates.",
+    "No test exercised scripts/validate_governance.py, so the governance gate itself was unverified.",
+    "A capture pass reported hive_retrieval_canonical PASS while the index run for that head had actually failed, because the corpus was still CURRENT from an earlier sync. Both retrieval assertions are now gated on the pipeline result for this head, so a stale-but-current corpus can no longer pass.",
+    "Windows git rewriting .git/index while HIVE's container reads the same file over the mount made a single status read fail with git_status_unavailable at a clean head, and checkpoint.read then answered source_not_current. The exact container command was reproduced and succeeds, so the capture retries the pipeline (3 attempts, 20s apart) and records every attempt instead of publishing one race as truth.",
+    "MCP responses were keyed by request id rather than tool name, so mcp-proof.json would have published {\"3\": null} in place of the calls it claimed to prove; the launcher thread also awaited without a bound. Receipts now carry each tool's raw response behind its name under a per-call timeout.",
+    "The preflight receipt was built by slicing between the first '{' and the last '}' of the bootstrap script's stdout. That text opens with a Python-repr health line, so nothing parsed and every successful run was filed under an 'error' key with its proof truncated to the last 800 characters - including the head HIVE had inspected. The summary is now parsed as the trailing JSON object it is, and the captured head is compared with the local HEAD under its own check.",
+    "governance_ci was a hard-coded NOT_AVAILABLE line, and the failing Actions run was recorded against whatever the local head happened to be at generation time - which misattributed a real run to a commit it never evaluated. The capture now reads the check-run for the pushed head through the GitHub API and each observation names the exact commit GitHub checked.",
+    "clean_worktree_for_hive asserted a fully empty 'git status', which the Evidence Bundle's own untracked artifacts violate, and it was written from an assumption rather than HIVE's rule. The guard HIVE actually applies is 'git status --porcelain=v1 --untracked-files=no': modified tracked paths fail its reads, untracked paths do not - confirmed in this run, where every HIVE/MCP check passed with the receipts untracked. The check now mirrors that contract and logs the untracked set as an observation.",
+    "The generator resolved the proof head as 'the head HIVE recorded, or else the local HEAD'. After the runtime drift that fallback fired: the capture directory held a failed v1.0.1 preflight with no head, so the next run bound every HIVE and MCP proof to a commit it had never measured. Reading the receipts from the installed tree instead of the scratch directory, and refusing to generate when the runtime receipt names no head, removes that path; the failed attempt is now carried verbatim under environmentDrift instead of overwriting the receipt that proves the pinned runtime worked.",
+    "scripts/hive_mcp.py resolved a HIVE checkout by path but let Docker Compose pick the stack, so on a machine whose environment exports COMPOSE_PROJECT_NAME for a different HIVE it execed into that other runtime while reporting a clean launch. It now passes -p when HIVE_COMPOSE_PROJECT is set and rejects a value that could inject compose arguments.",
+    "An isolated pinned stack first rendered its data root from the ambient HIVE_DATA_ROOT rather than from its own env file, which would have pointed a v1.0.0 migration at the live 1.0.2 database directory. Caught by reading `docker compose config` back before any container started; the recorded stack runs with per-process overrides.",
+    "The canonical workspace path carried by the Work Order and the runbook (D:\\Hive\\Projects\\isoryn-engine) no longer exists: D:\\Hive is now the newer stack's data root and the ISORYN working copy is at D:\\Projects\\isoryn-engine. Proved by directory listing rather than recreated, because recreating it would have collided with concurrent work.",
+    {
+      "error": "The first materialization of the canonical workspace produced a working tree that did not match its blobs.",
+      "detail": "A plain network clone on this machine inherited Git for Windows' system core.autocrlf=true and wrote CRLF into 31 of 75 tracked files, while every blob is LF. The repository's own check_line_endings gate failed it ('working tree carries CRLF'), and HIVE would have reported the source as not current.",
+      "correction": "Re-materialized with git -c core.autocrlf=false and pinned core.autocrlf=false in the workspace's own config, then verified 75 tracked files, 0 with CRLF and 0 differing from their blob by a single byte. docs/HIVE-INTEGRATION.md now states the command and why the flag is not cosmetic."
+    },
+    {
+      "error": "An index rebuilt by checkout still reported 31 files as modified after the line endings were corrected.",
+      "detail": "git status and git diff disagreed because the cached stat data came from the CRLF write; git restore and checkout -f did not rewrite the files.",
+      "correction": "git read-tree HEAD followed by git checkout-index -a -f rebuilt the index and the working tree together; porcelain output is empty and the byte comparison against the blobs is exact."
+    },
+    {
+      "error": "The first C02 documentation edit was applied to the non-canonical copy.",
+      "detail": "docs/HIVE-INTEGRATION.md was edited at D:\\Projects\\isoryn-engine after the canonical copy already existed, which is the exact 'do not keep editing both' failure the Work Order forbids.",
+      "correction": "The change was moved to D:\\Hive\\Projects\\isoryn-engine and the old copy was restored to its committed state with git checkout -- docs/HIVE-INTEGRATION.md; it is clean at 8d4a76052869df276c34ec56c217a4595ae00425 and carries no C02 work."
+    },
+    {
+      "error": "The isolation probe first reported FAIL against a correctly isolated container.",
+      "detail": "It compared the container's answer to the expected container name, but Docker sets hostname to the container id, so a correct answer could not match. The probe also ran git without the safe.directory exception HIVE itself passes, and recorded a spurious fatal.",
+      "correction": "The probe now resolves the reported hostname through docker inspect and asserts the Compose project label and container name of whatever answered, and mirrors HIVE's git invocation. It passes with the ambient COMPOSE_PROJECT_NAME still pointing at another live stack."
+    },
+    {
+      "error": "The C02 proof was first bound to a head that did not carry the record of it.",
+      "detail": "The receipts installed by commit d749acc declared proofHead 8eba7b4, the commit that only added the runbook section. The evidence that reads those receipts therefore described a different tree than the one it lives in, which is exactly the inheritance-by-proximity this bundle exists to prevent.",
+      "correction": "The whole pipeline - bootstrap, inspect, index, corpus sync, three retrieval queries, the isolation probe and the MCP session - was re-run against d749acc with a clean working tree, and every receipt and rank here now comes from that run. No receipt was re-dated: the earlier 8eba7b4 measurements stay true for that head and are named separately in proofLineage."
+    },
+    {
+      "error": "A concurrency comparison reported two containers as changed when none was.",
+      "detail": "Docker returns a container's mount list in nondeterministic order, so an unsorted field-by-field compare flagged hive-postgres-1 and hive-v102-redis-1 purely because their two binds swapped positions between the snapshots.",
+      "correction": "Mounts are sorted by source before comparison and the method states so. With that applied the re-proof window shows 29 containers before, 29 after, none appeared, none disappeared and none changed; the only moving values anywhere are /health response timestamps, which differ on any two calls."
+    },
+    {
+      "error": "A record stated the non-canonical copy was clean while it still held a superseded draft.",
+      "detail": "errorsFoundAndCorrected and hive-preflight.json both state that D:\\Projects\\isoryn-engine is untouched and carries no C02 work. Re-checking it at the end of this correction found an uncommitted 76-line edit to ISORYN-WO-0001-EVIDENCE.md: the first C02 prose draft, written before the work moved to the canonical copy. The claim was true of the intent, not of the tree.",
+      "correction": "The draft was exported to a patch outside the repository (D:/isoryn-c02-hive-proof/receipts/incumbent-stale-c02-draft.patch) rather than deleted, then the file was restored to its committed state with git restore --source=HEAD --worktree. The old copy is now verifiably clean at 8d4a76052869df276c34ec56c217a4595ae00425, which is what the record asserts, and nothing from it was merged into the canonical bundle because the canonical section carries the re-run numbers the draft predates."
+    },
+    "MAIN_RULESET_SELF_LOCK (C03): live ruleset 23776080 carried GitHub's restrict-updates rule with an empty bypass list, so the real squash-merge of PR #2 returned HTTP 405 'Repository rule violations found / Cannot update this protected ref.' The reviewer removed the rule from the checked-in desired state and added the regression guards; C03 applied that manifest to the live repository and re-read it back. Fixing this by adding a bypass actor, or by dropping any other rule, would have traded mergeability for protection - explicitly refused by the Work Order.",
+    "The static desired-state validator passed a manifest that made the repository permanently unmergeable (C03): it compared rule types against an allow-list without noticing that restrict-updates plus no bypass actor is a self-lock, so a green Governance run and a promoted checkpoint coexisted with an unmergeable main. The gate now rejects that combination, and scripts/configure-github.ps1 refuses to apply it.",
+    "BEFORE receipts could not show what they were about to change (C03): 'gh api repos/.../rulesets' returns the ruleset list without its 'rules' array, so the captured BEFORE state could not contain the offending rule. The configurator now also captures the per-ruleset read before upserting, which is why before-ruleset-23776080.json is the file that proves the rule was live at all.",
+    "The configurator destroys its own BEFORE evidence when it runs twice (C03): every receipt is written to a fixed path, so the idempotency re-application overwrote before-ruleset-23776080.json with the already-corrected state - the one file that showed the self-lock. The capture was restored to the bytes the first run produced, the incident is disclosed in c03Recovery.beforeReceiptProvenance, and the pre-correction state stays independently reproducible from the receipts committed at a77e1e16bae1. The general defect - a BEFORE capture a retry silently replaces - is named in residualRisks rather than fixed inside this Work Order's 'only this correction' limit.",
+    "The first MCP session proved the guard, not the integration (C03): it ran while the C03 HIVE receipts were still uncommitted, so the working tree was dirty at the head being measured and checkpoint.read answered source_not_current. That is the staleness guard doing exactly what docs/HIVE-INTEGRATION.md says it must, and the session was re-ordered - pipeline first, session second, receipt written last - so the four read-only calls were executed against a head that was simultaneously clean and indexed (70996f532299). The errored session was discarded rather than published, and the retry attempts are recorded inside mcp-proof.json."
+  ],
+  "residualRisks": [
+    "One sibling workspace could not be relinked at its previous path because an unrelated service holds a lock on the empty directory. No data was lost: the working tree, index and history all live at the new canonical path, and the leftover is an empty directory. Retrying the link needs the owning process to release it.",
+    "The sibling project registrations predate this Work Order; one reports an inspection head older than its current head. Refreshing them is outside ISORYN's scope and is recorded rather than silently done.",
+    "This Work Order's own evidence artifacts are keyword-dense and quote canonical headings, which displaced docs/project-brain/15-DEFINITION-OF-DONE.md from a six-row lexical window (it resolves at rank 7 of 10). Nothing was excluded from the probe to restore the pass: the window is 10 and every canonical rank is recorded in hiveRetrievalProof, so further displacement shows up as a number instead of a silent FAIL.",
+    "allow_auto_merge is enabled at the repository level as a capability. It is not enabled on the pull request (autoMergeRequest is null) and the Work Order forbids merging.",
+    "Canonical documentation keeps the absolute workspace path by explicit Work Order allowance ('machine paths stay configuration/documentation'), so documentation is not a portability guarantee; executable config is.",
+    "The Evidence Bundle is committed after the code it evidences because a commit cannot contain its own SHA and cannot name a pull request that does not exist yet. headBindingNote and ciObservations carry that precisely; any later evidence-only commit must append its own observed result.",
+    "HIVE's staleness guard ignores untracked paths ('git status --porcelain=v1 --untracked-files=no') but fails closed on any modified tracked path, and its index walks the working tree so untracked files are indexed too. Proofs are therefore captured from a head with no dirty tracked paths; the Evidence Bundle's own untracked artifacts are listed in matrix.log as an observation rather than hidden.",
+    "The machine's own environment still exports COMPOSE_PROJECT_NAME=hive-v102 and HIVE_DATA_ROOT=D:/HIVE, and the pinned checkout's compose file declares name: hive. Every ISORYN call must therefore keep naming the pinned stack through HIVE_COMPOSE_PROJECT; a plain docker compose command in that checkout targets someone else's stack.",
+    "D:\\Hive is also the read-write data root of the concurrent HIVE 1.0.2 stack. The canonical workspace now lives one level inside that tree, so an operator who registers it in that runtime could have HIVE relocate the working copy, as HIVE 1.0 has done to other worktrees on this machine. No registration was made there by this correction.",
+    "docs/project-brain/15-DEFINITION-OF-DONE.md ranks 9 of 20 for the query 'Definition of Done' while retrieval is lexical-only, because the evidence bundle repeats the phrase more often than the canonical page does. Widening the window is what made it visible; it is not fixed.",
+    "HIVE v1.0.0 exists on this machine only as a tagged object inside the 1.0.2 store plus the operator-local copy this correction built from it. There is no independent durable v1.0.0 checkout, so the pinned proof depends on the operator keeping that store.",
+    "A retrieval proof is valid only for the head it was taken at: any new commit requires re-inspect, re-index, re-sync and a re-run before HIVE context is treated as current.",
+    "The proof stack is left running on purpose (127.0.0.1:18199, project isoryn-c02-v100) so the integration is currently functioning. To retire it: docker compose -p isoryn-c02-v100 --env-file D:/isoryn-c02-hive-proof/isoryn-c02.env down, which names this project and no other.",
+    "The live ruleset is now applied state, not merely checked-in intent: a future manifest that reintroduces restrict-updates will be refused by the validator and by configure-github.ps1, but nothing stops an operator editing the ruleset in the GitHub UI. The AFTER receipts are the reference point for the next audit.",
+    "GitHub reports pull request mergeability asynchronously. mergeStateStatus CLEAN was read at the reviewer head a77e1e16bae1 and is re-read on the delivered head in the exact-head CI record; it is a corroboration, never the proof, for the reason stated in c03Recovery.verification.decisiveProofNote.",
+    "scripts/configure-github.ps1 writes each receipt to a fixed path, so re-running it replaces the BEFORE capture with whatever is live at that moment. A run that follows a successful application therefore no longer proves what it changed. The fix is to name BEFORE receipts by timestamp or by the head being reconciled; it is out of this correction's scope and is offered to the reviewer as its own bounded change."
+  ],
+  "rollback": {
+    "posture": "Reverting the Work Order commits restores the pre-bootstrap Source Pack. No runtime, dependency or product code was introduced, so no data migration or lockfile regeneration is involved.",
+    "protectedBranch": "main cannot be deleted or force-updated under main-governance; corrections land as new commits on the Work Order branch and are re-evidenced at the new exact head.",
+    "hive": "HIVE holds only derived state for this project. Re-indexing or forgetting the registration cannot affect canonical Git truth; nothing in this Work Order wrote through HIVE."
+  },
+  "proposedCheckpointDelta": {
+    "status": "PROPOSED_ONLY",
+    "path": ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
+    "note": "The executor may not self-approve promotion."
+  },
+  "stopCondition": "READY_FOR_C03_INDEPENDENT_REVIEW",
+  "verdict": "AWAITING_INDEPENDENT_REVIEW",
+  "c01GeneratedAt": "2026-09-23T13:17:22Z",
+  "c01Recovery": {
+    "trigger": "Independent review of PR #2 returned CORRECTION REQUIRED and blocked promotion on HIVE_RUNTIME_DRIFT.",
+    "proofLineage": {
+      "historicalHiveProofHead": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+      "reviewerCorrectionHead": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
+      "c01ExecutionProofHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
+      "finalEvidenceCarryingHead": "47838e4d102e17ee35a5068443091b91e40a23b9",
+      "note": "The d5de04c5ac15 records are left exactly as written and remain valid only for that head. C01 adds a current proof at f293fabfd4cd rather than restating the old one. 47838e4d102e carries the evidence of that proof and is green for Governance; the commit that carries this sentence is its descendant and is read from the pull request instead of being claimed here."
+    },
+    "runtime": {
+      "baseline": "HIVE v1.0.0",
+      "sourceCommit": "a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf",
+      "versionReportedByHealth": "1.0.0",
+      "composeProject": "isoryn-c01-v100",
+      "apiPort": 18099,
+      "apiUrl": "http://127.0.0.1:18099",
+      "dataRoot": "D:/isoryn-c01-hive-proof/data",
+      "projectsRoot": "D:/Projects",
+      "projectsRootInContainer": "/workspace/projects",
+      "postgresPublishedPort": null,
+      "redisPublishedPort": null,
+      "network": "isoryn-c01-v100_hive",
+      "materialisation": "git clone --no-hardlinks --branch v1.0.0 from the operator's existing HIVE object store. The clone step read the source repository only; no container, volume, network, .env or Git state of any pre-existing stack was modified.",
+      "secrets": "POSTGRES_PASSWORD is generated per machine in the operator-local compose env file and is not recorded here."
+    },
+    "isolation": {
+      "collisionDomainsSeparated": [
+        "Compose project name, which also derives container and network names",
+        "host API port",
+        "HIVE_DATA_ROOT",
+        "HIVE_PROJECTS_ROOT",
+        "compose env file"
+      ],
+      "ambientEnvironmentHazard": "Docker Compose resolves variables from the process environment before --env-file. This machine exports COMPOSE_PROJECT_NAME, HIVE_DATA_ROOT, HIVE_PROJECTS_ROOT, HIVE_HOME and HIVE_REPO_PATH for the operator's live stack, so a stack configured only with --env-file rendered HIVE_DATA_ROOT as the live database directory and would have migrated it with a v1.0.0 schema. `docker compose config` was read back with per-process overrides before anything started, and that is what the recorded mounts reflect.",
+      "launcherHazard": "docker compose exec chooses containers by project label, not by working directory. From inside the pinned v1.0.0 checkout with the ambient COMPOSE_PROJECT_NAME left at the live value, `docker compose ps` listed hive-v102-api-1 and its siblings; with -p isoryn-c01-v100 it listed isoryn-c01-v100-api-1. scripts/hive_mcp.py now passes -p when HIVE_COMPOSE_PROJECT is set.",
+      "targetedPinnedStackNotConcurrent": true
+    },
+    "concurrentRuntimeBeforeAfter": {
+      "policy": "The concurrent stacks are not owned by this correction; none was stopped, deleted, reconfigured or entered.",
+      "hiveProjectAtD-Projetos-Codex": {
+        "role": "the HIVE 1.0.1 workspace the review named",
+        "before": "api Exited(3), dashboard Created, migration/storage-init Exited(0), redis and postgres Exited(127)",
+        "after": "identical container set and identical recorded states and timestamps",
+        "mutatedByThisCorrection": false
+      },
+      "hiveV102Project": {
+        "role": "the runtime actually serving 127.0.0.1:8000 during C01",
+        "before": "api/postgres/redis up and healthy, dashboard up, StartedAt 2026-09-22T22:57:17Z, restartcount 0",
+        "after": "unchanged StartedAt, restartcount 0, same image id, /api/v1/health still ok at version 1.0.2",
+        "mutatedByThisCorrection": false,
+        "dataRootStillExclusive": "D:/HIVE/postgres is mounted only in hive-v102-postgres-1"
+      },
+      "outsideThisCorrection": "A third stack, compose project hive-wo031-final-159ac90-retry-02 on 127.0.0.1:18041, was running at the first snapshot and gone at the second. No command in this session named that project, and its images are still present, which is a normal down-without-rmi by its own owner. Recorded rather than assumed away, because a before/after claim has to name what actually moved."
+    },
+    "results": {
+      "health": {
+        "version": "1.0.0",
+        "status": "ok",
+        "postgres": "ok with pgvector",
+        "redis": "ok",
+        "storage": "ok"
+      },
+      "project": {
+        "project_id": "76ee3c9b-d539-4020-a010-cb956cf4254a",
+        "relative_path": "isoryn-engine",
+        "git_branch": "isoryn-wo-0001-foundation",
+        "git_head_sha": "f293fabfd4cde0a202d917b75eee590567b2027e",
+        "state": "READY",
+        "repository_accessible": true,
+        "working_tree_clean": true,
+        "registrationIsUnique": true,
+        "projectListReturnedCount": 1
+      },
+      "index": {
+        "status": "COMPLETED"
+      },
+      "corpus": {
+        "state": "CURRENT",
+        "repository_source_count": 135,
+        "chunk_count": 218,
+        "reference_count": 218
+      },
+      "canonicalRetrieval": {
+        "docs/project-brain/13-CHECKPOINT.md": {
+          "firstRank": 2,
+          "withinTop10": true
+        },
+        "docs/project-brain/15-DEFINITION-OF-DONE.md": {
+          "firstRank": 11,
+          "withinTop10": false,
+          "window": 20
+        },
+        "docs/project-brain/04-ARCHITECTURE.md": {
+          "firstRank": 2,
+          "withinTop10": true
+        },
+        "note": "The DoD page ranks behind this Work Order's own evidence bundle for its own name because the bundle repeats the phrase far more often. Reported at rank 11 of a 20-wide window rather than re-queried until it surfaced in one."
+      },
+      "mcp": {
+        "transport": "stdio JSON-RPC through scripts/hive_mcp.py",
+        "toolsListed": [
+          "checkpoint.read",
+          "context.build",
+          "context.search",
+          "memory.get",
+          "memory.search",
+          "project.list",
+          "project.status"
+        ],
+        "toolsListMatchesGovernedSurface": true,
+        "allReadOnly": true,
+        "callsExecuted": [
+          "project.list",
+          "project.status",
+          "checkpoint.read",
+          "context.search"
+        ],
+        "launcherExitCode": 0,
+        "launcherStderr": "",
+        "semanticState": "UNAVAILABLE",
+        "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+        "rerankState": "RERANK_FALLBACK_DISABLED"
+      }
+    },
+    "checks": {
+      "py_compile": "PASS",
+      "governance_validator": "PASS",
+      "unittest_suite": "PASS",
+      "git_diff_check": "PASS",
+      "no_uncommitted_tracked_changes": "PASS",
+      "clean_worktree_for_hive": "PASS",
+      "secret_scan": "PASS",
+      "hive_bootstrap_pipeline": "PASS",
+      "hive_inspection_head_matches_local_head": "PASS",
+      "hive_corpus_current": "PASS",
+      "hive_retrieval_canonical": "PASS",
+      "mcp_handshake": "PASS",
+      "mcp_readonly_call": "PASS",
+      "mcp_project_status": "PASS",
+      "mcp_checkpoint_read": "PASS",
+      "mcp_context_search_canonical": "PASS",
+      "mcp_launcher_no_npx_proxy": "PASS",
+      "mcp_launcher_targets_pinned_project": "PASS",
+      "concurrent_hive_untouched": "PASS",
+      "governance_ci": "PASS",
+      "toolchain_build": "DEFERRED_BY_WO",
+      "performance_benchmark": "DEFERRED_BY_WO",
+      "third_party_dependency_scan": "NOT_AVAILABLE"
+    },
+    "filesChanged": [
+      "scripts/hive_mcp.py",
+      "tests/test_hive_mcp.py",
+      ".codex/config.toml",
+      ".env.example",
+      "docs/HIVE-INTEGRATION.md",
+      ".engineering/evidence/hive-preflight.json",
+      ".engineering/evidence/hive-retrieval-proof.json",
+      ".engineering/evidence/mcp-proof.json",
+      ".engineering/evidence/checks.json",
+      ".engineering/evidence/ci.json",
+      ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+      ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md"
+    ],
+    "testCounts": {
+      "unittest": "27 tests, 0 failures (was 24 before the isolation tests)"
+    },
+    "notDone": [
+      "The canonical HIVE pin stays v1.0.0; it was not raised to 1.0.1 or 1.0.2 to make the drift disappear, because a baseline change needs its own ADR.",
+      "No engine or product implementation was introduced.",
+      "PR #2 is not merged and the checkpoint is not promoted."
+    ],
+    "governanceRun": {
+      "head": "47838e4d102e17ee35a5068443091b91e40a23b9",
+      "context": "Governance",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35866516664/job/107199374162",
+      "requiredChecks": "gh pr checks 2 --required -> Governance pass"
+    }
+  },
+  "c02GeneratedAt": "2026-09-23T14:41:32Z",
+  "c02Recovery": {
+    "trigger": "Independent re-review at 8d4a76052869df276c34ec56c217a4595ae00425 kept the C01 runtime proof and blocked promotion on CANONICAL_WORKSPACE_MISMATCH: C01 had re-proved the pinned baseline, but against D:\\Projects\\isoryn-engine while README.md, docs/project-brain/12-LOCAL-DEPLOYMENT.md and docs/project-brain/13-CHECKPOINT.md all define D:\\Hive\\Projects\\isoryn-engine.",
+    "proofLineage": {
+      "historicalHiveProofHead": "d5de04c5ac157236de55875bb530f81d3d02ce86",
+      "c01RuntimeRecoveryHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
+      "reviewerCorrectionHeadIssuingC02": "8d4a76052869df276c34ec56c217a4595ae00425",
+      "c02MaterializeHead": "8eba7b4ef6258d708fdf24554822310531f151f3",
+      "c02CanonicalProofHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+      "note": "8eba7b4 materialized the canonical workspace and changed no evidence; the full HIVE and MCP pipeline was then re-run against the pushed evidence head d749accc68be408ae79d06e25946128b9cf7bdc3, so the head the proof is bound to is the head that carries the record of it. Earlier records are kept as written for their own heads and are not restated."
+    },
+    "canonicalWorkspace": {
+      "path": "D:\\Hive\\Projects\\isoryn-engine",
+      "projectsRoot": "D:\\Hive\\Projects",
+      "registeredRelativePath": "isoryn-engine",
+      "howCreated": "git -c core.autocrlf=false clone https://github.com/KayzenRoot/isoryn-engine.git D:\\Hive\\Projects\\isoryn-engine",
+      "realDirectory": true,
+      "junctionOrSymlink": false,
+      "origin": "https://github.com/KayzenRoot/isoryn-engine.git",
+      "branch": "isoryn-wo-0001-foundation",
+      "lineageContainsC01": true,
+      "trackedFiles": 75,
+      "crlfFiles": 0,
+      "filesDifferingFromTheirBlob": 0,
+      "oldWorkspaceDisposition": "D:\\Projects\\isoryn-engine left untouched and non-canonical at 8d4a76052869df276c34ec56c217a4595ae00425; no file was edited there after the canonical copy existed."
+    },
+    "runtime": {
+      "baseline": "HIVE v1.0.0",
+      "sourceCommit": "a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf",
+      "versionReportedByHealth": "1.0.0",
+      "composeProject": "isoryn-c02-v100",
+      "apiPort": 18199,
+      "dashboardPort": 13199,
+      "dataRoot": "D:/isoryn-c02-hive-proof/data",
+      "projectsRootHost": "D:/Hive/Projects",
+      "projectsRootMount": "read-only bind at /workspace/projects",
+      "postgresAndRedisPublishNoHostPort": true,
+      "pinUnchanged": "The canonical HIVE pin stays v1.0.0. Moving it to 1.0.1 or 1.0.2 needs an ADR."
+    },
+    "isolation": {
+      "ambientComposeProjectName": "hive-v102",
+      "composeFileOwnNameKey": "hive",
+      "argv": [
+        "docker",
+        "compose",
+        "-p",
+        "isoryn-c02-v100",
+        "exec",
+        "-T",
+        "api",
+        "python",
+        "-m",
+        "app.mcp_server"
+      ],
+      "answeredContainer": "isoryn-c02-v100-api-1",
+      "answeredContainerHostname": "59f1dfd72f90",
+      "answeredProjectLabel": "isoryn-c02-v100",
+      "answeredConfigFiles": "D:\\isoryn-c02-hive-proof\\app\\docker-compose.yml",
+      "headSeenInsideContainer": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+      "result": "PASS",
+      "meaning": "The ambient COMPOSE_PROJECT_NAME pointed at a different live stack for the whole session and the pinned compose file still declares name: hive, so the only reason the launcher reached isoryn-c02-v100 is the explicit -p that HIVE_COMPOSE_PROJECT adds. The container that answered named itself back."
+    },
+    "concurrentRuntimeBeforeAfter": {
+      "window": "the re-proof window that produced every measurement in this record",
+      "method": "docker inspect field comparison of every container present in the re-proof window, mount lists sorted by source before comparing (Docker returns them in nondeterministic order)",
+      "beforeCapturedAt": "2026-09-23T14:31:35.261391+00:00",
+      "afterCapturedAt": "2026-09-23T14:33:00.593488+00:00",
+      "containersBefore": 29,
+      "containersAfter": 29,
+      "unchangedContainers": [
+        "hive | hive-api-1",
+        "hive | hive-dashboard-1",
+        "hive | hive-migration-1",
+        "hive | hive-postgres-1",
+        "hive | hive-redis-1",
+        "hive | hive-storage-init-1",
+        "hive-v102 | hive-v102-api-1",
+        "hive-v102 | hive-v102-dashboard-1",
+        "hive-v102 | hive-v102-migration-1",
+        "hive-v102 | hive-v102-postgres-1",
+        "hive-v102 | hive-v102-redis-1",
+        "hive-v102 | hive-v102-storage-init-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-api-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-dashboard-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-migration-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-postgres-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-redis-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-storage-init-1",
+        "isoryn-c01-v100 | isoryn-c01-v100-api-1",
+        "isoryn-c01-v100 | isoryn-c01-v100-migration-1",
+        "isoryn-c01-v100 | isoryn-c01-v100-postgres-1",
+        "isoryn-c01-v100 | isoryn-c01-v100-redis-1",
+        "isoryn-c01-v100 | isoryn-c01-v100-storage-init-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-api-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-dashboard-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-migration-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-postgres-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-redis-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-storage-init-1"
+      ],
+      "changedContainers": {},
+      "changedAttribution": "No container changed in this window. The 1.0.2 stack on 127.0.0.1:8000 and the hive-wo031-fast-159ac90 stack are byte-for-byte identical across the two snapshots, and the only values that move anywhere are the /health response timestamps, which differ on any two calls.",
+      "concurrentHealthBefore": {
+        "hive-v102": "1.0.2",
+        "hive-wo031-fast-159ac90": "1.0.2"
+      },
+      "concurrentHealthAfter": {
+        "hive-v102": "1.0.2",
+        "hive-wo031-fast-159ac90": "1.0.2"
+      },
+      "dHiveTopLevelBefore": [
+        "cas",
+        "data",
+        "legacy-backup-20260919",
+        "postgres",
+        "projects",
+        "redis",
+        "tmp"
+      ],
+      "dHiveTopLevelAfter": [
+        "cas",
+        "data",
+        "legacy-backup-20260919",
+        "postgres",
+        "projects",
+        "redis",
+        "tmp"
+      ],
+      "worktreesObserved": {
+        "core": {
+          "before": {
+            "head": "0eafc1682f31edadca935d1d47d9cf4baf2bf82f",
+            "branch": "feat/m01-core-runtime",
+            "porcelain": ""
+          },
+          "after": {
+            "head": "0eafc1682f31edadca935d1d47d9cf4baf2bf82f",
+            "branch": "feat/m01-core-runtime",
+            "porcelain": ""
+          }
+        },
+        "isoryn-engine": {
+          "before": {
+            "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+            "branch": "isoryn-wo-0001-foundation",
+            "porcelain": ""
+          },
+          "after": {
+            "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+            "branch": "isoryn-wo-0001-foundation",
+            "porcelain": ""
+          }
+        },
+        "nexlabs-web": {
+          "before": {
+            "head": "79fd8c709ea73fb017545b835f9073288ce2af10",
+            "branch": "codex/cp-02r-hive-mcp-corrective",
+            "porcelain": ""
+          },
+          "after": {
+            "head": "79fd8c709ea73fb017545b835f9073288ce2af10",
+            "branch": "codex/cp-02r-hive-mcp-corrective",
+            "porcelain": ""
+          }
+        }
+      },
+      "materializationWindow": {
+        "window": "the earlier window that cloned the canonical workspace and ran the first C02 proof at 8eba7b4ef6258d708fdf24554822310531f151f3",
+        "beforeCapturedAt": "2026-09-23T13:52:33.682594+00:00",
+        "afterCapturedAt": "2026-09-23T14:18:52.269077+00:00",
+        "unchangedContainers": 19,
+        "changedContainers": {
+          "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-api-1": [
+            "started_at: 2026-09-23T13:51:23.664072179Z -> 2026-09-23T14:18:40.758516949Z"
+          ],
+          "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-migration-1": [
+            "started_at: 2026-09-23T13:42:19.382253199Z -> 2026-09-23T14:16:04.921159561Z"
+          ],
+          "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-redis-1": [
+            "started_at: 2026-09-23T13:51:56.812763102Z -> 2026-09-23T14:17:10.850870909Z",
+            "state: running -> exited",
+            "health: healthy -> unhealthy"
+          ],
+          "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-storage-init-1": [
+            "started_at: 2026-09-23T13:42:18.819908545Z -> 2026-09-23T14:16:04.153990022Z"
+          ]
+        },
+        "changedAttribution": "Every changed container belongs to the hive-wo031-fast-159ac90 stack, which no command in this session names; its own owner restarted it during the C02 window (its api/redis/migration/storage-init StartedAt values move forward and its health answers 503 between the two snapshots). All commands this correction ran against Docker were 'docker compose -p isoryn-c02-v100 ...', plus read-only docker ps/inspect.",
+        "concurrentHealthBefore": {
+          "hive-v102": "1.0.2",
+          "hive-wo031-fast-159ac90": "1.0.2"
+        },
+        "concurrentHealthAfter": {
+          "hive-v102": "1.0.2",
+          "hive-wo031-fast-159ac90": "<HTTPError 503: 'Service Unavailable'>"
+        }
+      },
+      "canonicalCopyIsTheOnlyAddition": "D:/Hive/Projects gained one entry, isoryn-engine; the two existing worktrees and every other directory under D:/Hive are byte-for-byte where they were."
+    },
+    "results": {
+      "health": "1.0.0 from the pinned baseline on 127.0.0.1:18199 while 127.0.0.1:8000 answers 1.0.2",
+      "registration": "resolved by exact relative path isoryn-engine, one project in the stack",
+      "inspect": {
+        "state": "READY",
+        "repository_accessible": true,
+        "git_branch": "isoryn-wo-0001-foundation",
+        "git_head_sha": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+        "working_tree_clean": true
+      },
+      "index": "COMPLETED",
+      "corpus": {
+        "status": "COMPLETED",
+        "state": "CURRENT",
+        "repository_source_count": 135,
+        "chunk_count": 229,
+        "reference_count": 229,
+        "last_successful_sync": "2026-09-23T14:32:26.846415Z"
+      },
+      "retrieval": {
+        "checkpoint status phase objective": {
+          "target": "docs/project-brain/13-CHECKPOINT.md",
+          "rank": 4,
+          "window": 20
+        },
+        "Definition of Done": {
+          "target": "docs/project-brain/15-DEFINITION-OF-DONE.md",
+          "rank": 9,
+          "window": 20
+        },
+        "Godot engine foundation architecture": {
+          "target": "docs/project-brain/04-ARCHITECTURE.md",
+          "rank": 7,
+          "window": 20
+        }
+      },
+      "mcp": {
+        "serverInfo": {
+          "name": "hive-mcp",
+          "version": "mcp-core-surface-v1"
+        },
+        "tools": [
+          "checkpoint.read",
+          "context.build",
+          "context.search",
+          "memory.get",
+          "memory.search",
+          "project.list",
+          "project.status"
+        ],
+        "toolsAreExactlyTheGovernedSeven": true,
+        "allReadOnly": true,
+        "executedCalls": [
+          "checkpoint.read",
+          "context.search",
+          "project.list",
+          "project.status"
+        ],
+        "launcherExit": 0,
+        "launcherStderr": ""
+      }
+    },
+    "checks": {
+      "canonical_workspace_materialized": "PASS",
+      "canonical_workspace_uses_no_junction": "PASS",
+      "working_tree_matches_blobs_byte_for_byte": "PASS",
+      "canonical_projects_root_mounted": "PASS",
+      "mcp_launcher_targets_pinned_project": "PASS",
+      "concurrent_hive_untouched": "PASS"
+    },
+    "filesChanged": [
+      "docs/HIVE-INTEGRATION.md",
+      ".engineering/evidence/hive-preflight.json",
+      ".engineering/evidence/hive-retrieval-proof.json",
+      ".engineering/evidence/mcp-proof.json",
+      ".engineering/evidence/checks.json",
+      ".engineering/evidence/ci.json",
+      ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+      ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md"
+    ],
+    "testCounts": {
+      "unittests": 27,
+      "governanceArtifactsChecked": 54,
+      "governedMcpTools": 7,
+      "trackedFiles": 75,
+      "crlfTrackedFiles": 0,
+      "note": "No test was added in C02: no portable script blocked the canonical path, and check_line_endings already fails a CRLF working tree - it is what caught the first clone attempt."
+    },
+    "notDone": [
+      "No merge; PR #2 stays open.",
+      "No checkpoint promotion; the delta stays PROPOSED_ONLY.",
+      "No engine or product implementation.",
+      "The canonical HIVE pin was not moved to 1.0.1 or 1.0.2.",
+      "No deletion of the non-canonical D:\\Projects\\isoryn-engine copy.",
+      "No ADR was written, because none was needed: the canonical authority was followed rather than changed.",
+      "Nothing was registered in, or pointed at, the concurrent 1.0.2 runtime."
+    ],
+    "carrierHead": {
+      "head": "56559d387a9431c67795c194ddecd750ccca49ef",
+      "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35876788786/job/107234662512",
+      "deltaFromProofHead": "evidence-only: this commit changes nothing under scripts/, docs/ or tests/, so the validator, unittest suite and the canonical workspace facts re-run identically here.",
+      "limit": "The HIVE and MCP receipts stay bound to d749acc on purpose. Re-running them here would move the proof head to a commit that then cannot carry its own receipt, which is the loop this record already states once instead of hiding behind a matching SHA."
+    }
+  },
+  "c03GeneratedAt": "2026-09-23T15:54:06Z",
+  "c03Recovery": {
+    "trigger": "The C02 independent review at 74f443f3d83c8bb1642314ab28632342fcf0b50f closed CANONICAL_WORKSPACE_MISMATCH, promoted the checkpoint and obtained a green Governance run on a4c1aa6ee241d9d021483a79a2c8ed57b7d9bbf4. A real squash-merge attempt immediately afterwards exposed MAIN_RULESET_SELF_LOCK, which the static desired-state checks had encoded rather than detected. The promotion was revoked at 8d4a76052869df276c34ec56c217a4595ae00425.",
+    "failedMergeAttempt": {
+      "httpStatus": 405,
+      "response": "Repository rule violations found / Cannot update this protected ref.",
+      "attemptedAgainst": "refs/heads/main via pull request #2 squash merge",
+      "cause": "GitHub's restrict-updates branch rule (ruleset rule type 'update') permits ref updates only for bypass actors. Live ruleset 23776080 carried that rule with bypass_actors [], and current_user_can_bypass 'never', so no actor - including the repository owner - could merge even an otherwise valid, required-checks-green pull request.",
+      "recordedIn": "docs/project-brain/13-CHECKPOINT.md ## BLOCKERS and .engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md"
+    },
+    "proofLineage": {
+      "reviewerHeadIssuingC03": "a77e1e16bae1551d8a87e79d657d79813fbe318e",
+      "manifestRemovesUpdateRule": "ed2a11a14039c751edafd5c445e4bff259078c6c",
+      "validatorRegressionTest": "1d15eabad003e257a011785a1d64f3cb6a168181",
+      "unittestRegressionTest": "7d8aca4fc52720ff0eef48c1b2b601f6bb2d3594",
+      "configuratorFailsClosed": "fb453996224ff4df2dff7df51f35b27c4574106d",
+      "selfLockRecordedAsBlocker": "a77e1e16bae1551d8a87e79d657d79813fbe318e",
+      "c03ApplicationAndEvidenceHead": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+      "c03HiveReproofAndMcpHead": "70996f5322990010a171c46b9e4f0288f3e585d0",
+      "note": "a77e1e16bae1 is the reviewer head whose corrected desired state C03 applied; e0e0bd5056e6 carries the application, its receipts and the evidence refresh, and 70996f532299 is the head the HIVE re-proof was taken at. The split is forced by HIVE's own staleness guard: the MCP session has to run against a head that is simultaneously clean and indexed, which only becomes true of the HIVE receipts once they are committed. Each receipt names the head it was measured at, and the commit that carries it is that head's child."
+    },
+    "desiredState": {
+      "path": ".engineering/github/ruleset-main-governance.json",
+      "ruleTypes": [
+        "deletion",
+        "non_fast_forward",
+        "required_linear_history",
+        "pull_request",
+        "required_status_checks"
+      ],
+      "bypassActors": [],
+      "containsUpdateRule": false,
+      "note": "The manifest C03 applied is the reviewer's, committed unmodified at ed2a11a14039. The executor changed no governance policy in it."
+    },
+    "liveRulesetBefore": {
+      "id": 23776080,
+      "name": "main-governance",
+      "target": "branch",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "refs/heads/main"
+          ]
+        }
+      },
+      "bypassActors": [],
+      "currentUserCanBypass": "never",
+      "ruleTypes": [
+        "non_fast_forward",
+        "deletion",
+        "required_linear_history",
+        "update",
+        "pull_request",
+        "required_status_checks"
+      ],
+      "rules": [
+        {
+          "type": "non_fast_forward"
+        },
+        {
+          "type": "deletion"
+        },
+        {
+          "type": "required_linear_history"
+        },
+        {
+          "type": "update"
+        },
+        {
+          "type": "pull_request",
+          "parameters": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash"
+            ]
+          }
+        },
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Governance"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": "2026-09-21T14:47:28.392-03:00"
+    },
+    "liveRulesetAfter": {
+      "id": 23776080,
+      "name": "main-governance",
+      "target": "branch",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "refs/heads/main"
+          ]
+        }
+      },
+      "bypassActors": [],
+      "currentUserCanBypass": "never",
+      "ruleTypes": [
+        "non_fast_forward",
+        "deletion",
+        "required_linear_history",
+        "pull_request",
+        "required_status_checks"
+      ],
+      "rules": [
+        {
+          "type": "non_fast_forward"
+        },
+        {
+          "type": "deletion"
+        },
+        {
+          "type": "required_linear_history"
+        },
+        {
+          "type": "pull_request",
+          "parameters": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash"
+            ]
+          }
+        },
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Governance"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": "2026-09-23T12:28:10.071-03:00"
+    },
+    "causalDelta": {
+      "ruleTypesRemoved": [
+        "update"
+      ],
+      "ruleTypesAdded": [],
+      "bypassActorsChanged": false,
+      "otherRulesetFieldsChanged": [],
+      "meaning": "Exactly one rule type disappeared and nothing else moved: the self-locking restrict-updates rule was removed and every other protection stayed, which is the whole of the authorized change."
+    },
+    "application": {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure-github.ps1 -Repo KayzenRoot/isoryn-engine",
+      "method": "Idempotent upsert by name through 'gh api --method PUT repos/KayzenRoot/isoryn-engine/rulesets/23776080 --input <manifest>', which updates the existing ruleset instead of creating a second one.",
+      "authenticatedAs": "gh auth status: account KayzenRoot, active, token scopes gist/read:org/repo/workflow; repository receipt reads permissions.admin true",
+      "receipts": [
+        ".engineering/evidence/github/before-repository.json",
+        ".engineering/evidence/github/before-rulesets.json",
+        ".engineering/evidence/github/before-ruleset-23776080.json",
+        ".engineering/evidence/github/after-repository.json",
+        ".engineering/evidence/github/after-ruleset.json",
+        ".engineering/evidence/github/ruleset-check-main.txt",
+        ".engineering/evidence/github/ruleset-list.json",
+        ".engineering/evidence/github/ruleset-view.txt",
+        ".engineering/evidence/github/security-endpoints.txt",
+        ".engineering/evidence/github/pr-verification-c03.txt",
+        ".engineering/evidence/github/pre-c03-ruleset-a77e1e16.txt",
+        ".engineering/evidence/github/configure-github-c03-idempotency.log"
+      ]
+    },
+    "idempotency": {
+      "applications": 2,
+      "secondApplicationExitCode": 0,
+      "secondApplicationChanged": "nothing - the same ruleset id 23776080 was upserted, the rule set stayed at five rules, and GitHub reported an unchanged updated_at",
+      "receipt": ".engineering/evidence/github/configure-github-c03-idempotency.log",
+      "note": "The Work Order asks for the corrected manifest to be applied and for the branch to become mergeable without weakening anything. Applying the same manifest twice proves the tool is a reconciliation to desired state and not a one-shot patch, which is what a later operator can rely on."
+    },
+    "beforeReceiptProvenance": {
+      "file": ".engineering/evidence/github/before-ruleset-23776080.json",
+      "containsUpdateRule": true,
+      "disclosedIncident": "The second, idempotency-proving run rewrote every BEFORE receipt in place, including this one, so the captured self-locking state was overwritten by the already-corrected state. The file was then restored to the bytes the first run captured. That makes this receipt a restoration rather than a raw capture, and it is recorded as such instead of being presented as untouched tool output.",
+      "independentCorroboration": "The pre-C03 state does not depend on that restoration: ruleset-check-main.txt and ruleset-view.txt as committed at a77e1e16bae1551d8a87e79d657d79813fbe318e list six rules including 'update', and their verbatim contents are reproduced in .engineering/evidence/github/pre-c03-ruleset-a77e1e16.txt, reproducible with 'git show a77e1e16bae1551d8a87e79d657d79813fbe318e:.engineering/evidence/github/ruleset-check-main.txt'."
+    },
+    "verification": {
+      "ghApiRuleset": {
+        "command": "gh api repos/KayzenRoot/isoryn-engine/rulesets/23776080",
+        "ruleTypes": [
+          "non_fast_forward",
+          "deletion",
+          "required_linear_history",
+          "pull_request",
+          "required_status_checks"
+        ],
+        "bypassActors": [],
+        "currentUserCanBypass": "never",
+        "exitCode": 0
+      },
+      "ghRulesetCheckMain": {
+        "command": "gh ruleset check main --repo KayzenRoot/isoryn-engine",
+        "firstLine": "5 rules apply to branch main in repo KayzenRoot/isoryn-engine",
+        "updateRuleListed": false,
+        "exitCode": 0
+      },
+      "ghRulesetView": {
+        "command": "gh ruleset view 23776080 --repo KayzenRoot/isoryn-engine",
+        "raw": "main-governance\nID: 23776080\nSource: KayzenRoot/isoryn-engine (Repository)\nEnforcement: Active\nYou can bypass: never\n\nBypass List\nThis ruleset cannot be bypassed\n\nConditions\n- ref_name: [exclude: []] [include: [refs/heads/main]] \n\nRules\n- deletion\n- non_fast_forward\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n- required_linear_history\n- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true]",
+        "exitCode": 0
+      },
+      "prState": {
+        "command": "gh pr view 2 --json number,state,headRefOid,baseRefName,mergeable,mergeStateStatus,isDraft",
+        "state": "OPEN",
+        "mergeable": "MERGEABLE",
+        "mergeStateStatus": "CLEAN",
+        "isDraft": false,
+        "headRefOid": "a77e1e16bae1551d8a87e79d657d79813fbe318e",
+        "exitCode": 0
+      },
+      "requiredChecks": {
+        "command": "gh pr checks 2 --required",
+        "output": "Governance\tpass\t4s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/35880013525/job/107245742715",
+        "exitCode": 0
+      },
+      "decisiveProofNote": "mergeable/mergeStateStatus are corroborating, not decisive: the decisive proof is that the live ruleset no longer contains the restrict-updates rule that produced HTTP 405, while deletion, non_fast_forward, required_linear_history, pull_request (squash only, no impossible approval) and required_status_checks (strict, context 'Governance') all remain, and bypass_actors stayed empty with current_user_can_bypass 'never'. No merge was attempted, because the Work Order forbids it."
+    },
+    "testCounts": {
+      "unittests": 29,
+      "addedInC03": 2,
+      "governanceArtifactsChecked": 54,
+      "governedMcpTools": 7,
+      "trackedFiles": 75,
+      "crlfTrackedFiles": 0,
+      "note": "The two tests added here keep the fix from regressing: one pins the configurator's fail-closed guard against a self-locking manifest, the other pins that BEFORE captures the per-ruleset read - the only endpoint that shows which rules were live - before the upsert runs."
+    },
+    "filesChanged": [
+      "scripts/configure-github.ps1",
+      "tests/test_governance.py",
+      ".engineering/evidence/github/before-ruleset-23776080.json",
+      ".engineering/evidence/github/pr-verification-c03.txt",
+      ".engineering/evidence/hive-preflight.json",
+      ".engineering/evidence/hive-retrieval-proof.json",
+      ".engineering/evidence/mcp-proof.json",
+      ".engineering/evidence/checks.json",
+      ".engineering/evidence/ci.json",
+      ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md"
+    ],
+    "notDone": [
+      "PR #2 was not merged and remains OPEN.",
+      "No bypass actor was added and no protection was weakened to make the branch mergeable.",
+      "The checkpoint was not promoted; the delta stays PROPOSED_ONLY.",
+      "No engine, runtime, editor, renderer, architecture-freeze, toolchain-freeze or benchmark work.",
+      "The GEF and HIVE pins are unchanged.",
+      "No unrelated HIVE stack, data root, project, container, volume or worktree was created, changed or removed.",
+      "The non-canonical copy under the previous workspace path was left untouched."
+    ],
+    "governanceRuns": [
+      {
+        "head": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+        "context": "Governance",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35885436589/job/107264269626",
+        "detail": "GitHub check-run for this exact commit, read through the API after the run completed."
+      },
+      {
+        "head": "70996f5322990010a171c46b9e4f0288f3e585d0",
+        "context": "Governance",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887146651/job/107270084523",
+        "detail": "GitHub check-run for the head every HIVE and MCP measurement in this record was taken against."
+      },
+      {
+        "head": "12e2148e5353e6424639d1afdf26954e0abc6531",
+        "context": "Governance",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887776564/job/107272233729",
+        "detail": "Required check on the delivered head, read through the API after the run completed: conclusion success, and the live ruleset still reports five rules with no bypass actor. Recorded here by its child commit, which cannot contain its own SHA and whose check is read from the pull request."
+      }
+    ],
+    "deliveredHeadReadBack": {
+      "head": "12e2148e5353e6424639d1afdf26954e0abc6531",
+      "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887776564/job/107272233729",
+      "receipt": ".engineering/evidence/github/pr-verification-c03-final-head.txt",
+      "whyReadAgain": "AC-09 is a claim about the delivered head, so the ruleset and the required check were re-read from GitHub after the last evidence commit landed instead of being inherited from the head the command was first run against.",
+      "deltaFromApplicationHead": "evidence-only: nothing under scripts/, docs/ or tests/ changed after e0e0bd5056e6, so the validator, the unit suite and the applied live ruleset are the same objects this record claims.",
+      "limit": "The HIVE and MCP receipts stay bound to 70996f532299 on purpose. Re-running them here would move the proof head to a commit that then cannot carry its own receipt, which is the loop the C02 carrierHead record states once instead of hiding behind a matching SHA."
+    },
+    "hiveReproof": {
+      "stackReuse": "reused isoryn-c02-v100 after proving it healthy and isolated; nothing was recreated, restarted or retargeted",
+      "proofHead": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+      "health": {
+        "postgres": {
+          "status": "ok",
+          "details": {
+            "pgvector": true
+          }
+        },
+        "redis": {
+          "status": "ok",
+          "details": {
+            "canonical": false
+          }
+        },
+        "storage": {
+          "status": "ok",
+          "details": {
+            "configured": true,
+            "writable": true,
+            "canonical_data_root": "/var/lib/hive"
+          }
+        }
+      },
+      "pipeline": {
+        "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+        "relative_path": "isoryn-engine",
+        "git_branch": "isoryn-wo-0001-foundation",
+        "git_head_sha": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+        "state": "READY",
+        "working_tree_clean": true,
+        "index_status": "COMPLETED",
+        "corpus_status": "COMPLETED",
+        "repository_accessible": true,
+        "readBackAfterPipeline": {
+          "state": "READY",
+          "git_branch": "isoryn-wo-0001-foundation",
+          "git_head_sha": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
+          "working_tree_clean": true,
+          "repository_accessible": true,
+          "inspection_error": null,
+          "last_inspected_at": "2026-09-23T16:08:02.132832Z"
+        },
+        "registrationResolvesBy": "exact relative path isoryn-engine under the mounted projects root",
+        "projectsSeenByPinnedRuntime": [
+          "isoryn-engine"
+        ],
+        "attempts": [
+          {
+            "attempt": 1,
+            "exitCode": 0,
+            "error": null
+          }
+        ],
+        "retryPolicy": "Attempts are recorded with their exit codes before the result is believed, because the runbook documents that Windows git rewrites .git/index while the container reads it through the bind mount, which can produce a transient git_timeout or git_status_unavailable inspection at a genuinely clean head.",
+        "rawStdout": "HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-23T16:08:01.842371Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}\nResolved existing ISORYN registration by exact relative path.\n{\n  \"project_id\": \"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\n  \"relative_path\": \"isoryn-engine\",\n  \"git_branch\": \"isoryn-wo-0001-foundation\",\n  \"git_head_sha\": \"e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8\",\n  \"state\": \"READY\",\n  \"working_tree_clean\": true,\n  \"index_status\": \"COMPLETED\",\n  \"corpus_status\": \"COMPLETED\"\n}\n",
+        "rawStderr": "",
+        "exitCode": 0
+      },
+      "corpus": {
+        "run_id": "228e8919-3faf-458a-bf61-bb00d579f481",
+        "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+        "repository_index_run_id": "a6278af8-3abc-4186-8c26-5db775584bb8",
+        "repository_source_fingerprint": "05ee7878b3fd4fb04b7cd99ab5cfb7a45d93d55a899f83d155838de590d1f9c5",
+        "task_source_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source_fingerprint": "e2efe544fec40d60fce32a53d784163f6554ddd2963e819f428335620056d916",
+        "status": "COMPLETED",
+        "started_at": "2026-09-23T16:08:23.680455Z",
+        "completed_at": "2026-09-23T16:08:29.124356Z",
+        "repository_source_count": 141,
+        "task_source_count": 0,
+        "chunk_count": 246,
+        "reference_count": 248,
+        "repository_reference_count": 248,
+        "task_reference_count": 0,
+        "new_chunk_count": 76,
+        "reused_chunk_count": 170,
+        "new_reference_count": 154,
+        "reused_reference_count": 94,
+        "removed_reference_count": 93,
+        "current_reference_count": 248,
+        "skipped_binary_count": 0,
+        "skipped_decode_count": 0,
+        "error": null
+      },
+      "retrievalRanks": {
+        "checkpoint status phase objective": {
+          "target": "docs/project-brain/13-CHECKPOINT.md",
+          "firstCanonicalRank": 7
+        },
+        "Definition of Done": {
+          "target": "docs/project-brain/15-DEFINITION-OF-DONE.md",
+          "firstCanonicalRank": 9
+        },
+        "Godot engine foundation architecture": {
+          "target": "docs/project-brain/04-ARCHITECTURE.md",
+          "firstCanonicalRank": 5
+        }
+      },
+      "concurrency": {
+        "containersBefore": 19,
+        "containersAfter": 19,
+        "allContainersIdentical": true,
+        "concurrentContainersChanged": {},
+        "dHiveTopLevelBefore": [
+          "cas",
+          "data",
+          "legacy-backup-20260919",
+          "postgres",
+          "projects",
+          "redis",
+          "tmp"
+        ],
+        "dHiveTopLevelAfter": [
+          "cas",
+          "data",
+          "legacy-backup-20260919",
+          "postgres",
+          "projects",
+          "redis",
+          "tmp"
+        ],
+        "existingRegisteredWorktreesBefore": [
+          "forge=forge",
+          "hive=hive",
+          "isoryn-engine=isoryn-engine",
+          "wo020-cc-27764-b51eb1a4-alpha=wo020-cc-27764-b51eb1a4-alpha",
+          "wo020-cc-30320-34ba5039-alpha=wo020-cc-30320-34ba5039-alpha",
+          "wo020-cc-40556-a703353b-alpha=wo020-cc-40556-a703353b-alpha"
+        ],
+        "existingRegisteredWorktreesAfter": [
+          "forge=forge",
+          "hive=hive",
+          "isoryn-engine=isoryn-engine",
+          "wo020-cc-27764-b51eb1a4-alpha=wo020-cc-27764-b51eb1a4-alpha",
+          "wo020-cc-30320-34ba5039-alpha=wo020-cc-30320-34ba5039-alpha",
+          "wo020-cc-40556-a703353b-alpha=wo020-cc-40556-a703353b-alpha"
+        ],
+        "concurrentHealthBefore": {
+          "hive-v102": "1.0.2",
+          "hive-wo031-fast-159ac90": "1.0.2"
+        },
+        "concurrentHealthAfter": {
+          "hive-v102": "1.0.2",
+          "hive-wo031-fast-159ac90": "1.0.2"
+        }
+      },
+      "mcpSession": {
+        "proofHead": "70996f5322990010a171c46b9e4f0288f3e585d0",
+        "tools": [
+          "checkpoint.read",
+          "context.build",
+          "context.search",
+          "memory.get",
+          "memory.search",
+          "project.list",
+          "project.status"
+        ],
+        "toolsAreExactlyTheGovernedSeven": true,
+        "allReadOnly": true,
+        "executedCalls": [
+          "checkpoint.read",
+          "context.search",
+          "project.list",
+          "project.status"
+        ],
+        "callErrors": {
+          "project.list": false,
+          "project.status": false,
+          "checkpoint.read": false,
+          "context.search": false
+        },
+        "launcherExit": 0,
+        "launcherStderr": "",
+        "answeredContainer": "isoryn-c02-v100-api-1",
+        "headSeenInsideContainer": "70996f5322990010a171c46b9e4f0288f3e585d0"
+      }
+    },
+    "checks": {
+      "live_ruleset_update_rule_removed": "PASS",
+      "live_ruleset_protections_retained": "PASS",
+      "live_ruleset_no_bypass_actor_added": "PASS",
+      "required_status_context_governance_strict": "PASS",
+      "ruleset_application_idempotent": "PASS",
+      "pull_request_open_unmerged_clean": "PASS",
+      "hive_stack_reused_isolated": "PASS",
+      "hive_inspection_head_matches_proof_head": "PASS",
+      "hive_corpus_current": "PASS",
+      "hive_retrieval_canonical": "PASS",
+      "mcp_handshake": "PASS",
+      "mcp_readonly_calls_without_error": "PASS",
+      "governance_ci_at_both_c03_heads": "PASS",
+      "concurrent_hive_untouched": "PASS"
+    }
+  }
+}
+```

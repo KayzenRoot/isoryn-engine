@@ -1,0 +1,2 @@
+vulnerability_alerts => NOT_AVAILABLE (exit=1) gh.exe : gh: Not Found (HTTP 404)
+automated_security_fixes => NOT_AVAILABLE (exit=1) gh.exe : gh: Not Found (HTTP 404)

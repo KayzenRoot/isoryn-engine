@@ -1,18 +1,126 @@
 # HIVE v1.0.0 Integration
 
-ISORYN targets stable HIVE v1.0.0 at commit a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf.
+ISORYN targets stable HIVE v1.0.0 at commit `a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf`. HIVE stays a
+separate local-first runtime: never copy its backend, database or Docker stack into ISORYN, and never
+let product correctness depend on HIVE being reachable. Git and `docs/project-brain/` remain canonical;
+HIVE holds derived index state only.
 
-HIVE remains a separate local-first runtime. Do not copy HIVE backend/database/Docker stack into ISORYN.
+## Operator configuration (not repository constants)
 
-Canonical workspace: D:\Hive\Projects\isoryn-engine
-Recommended HIVE_PROJECTS_ROOT for that layout: D:\Hive\Projects
-Set HIVE_REPO_PATH to the actual stable HIVE checkout when it is not discoverable automatically.
+| Variable | Meaning |
+| --- | --- |
+| `HIVE_API_URL` | Local API base. Use `http://127.0.0.1:8000`, not `localhost`: HIVE binds IPv4 only, and `localhost` can resolve to `::1`. |
+| `HIVE_REPO_PATH` | HIVE checkout providing `docker-compose.yml` and `backend/`. Set only when auto-discovery fails. |
+| `HIVE_COMPOSE_PROJECT` | Docker Compose project owning the `api` container the MCP launcher execs into. Unset means "whatever the checkout's compose file names", which is correct on a single-stack machine. |
+| `HIVE_HOME` | Exported by a standard local HIVE install (`<install>\app`). `scripts/hive_mcp.py` honours it, so the MCP launcher works with no per-machine setting. |
+| `HIVE_ISORYN_RELATIVE_PATH` | This repository's path relative to HIVE's `HIVE_PROJECTS_ROOT` (`isoryn-engine`). |
+| `HIVE_REQUEST_TIMEOUT` | Per-request seconds. Registration, indexing and corpus sync exceed the 15s default on a cold corpus; the runbook uses 600. |
 
-HIVE v1.0.0 reads these canonical paths: docs/project-brain/13-CHECKPOINT.md, 03-SCOPE.md, 15-DEFINITION-OF-DONE.md, 04-ARCHITECTURE.md and 16-DECISIONS-LEDGER.md.
+Start HIVE with its own supported procedure (`hive-up`, or `docker compose up -d` in the HIVE
+checkout) and confirm `GET /api/v1/health` before bootstrapping.
 
-After HIVE is running:
-python scripts/hive_bootstrap.py --relative-path isoryn-engine
+## Canonical workspace materialization
 
-The script verifies health, resolves/registers ISORYN, inspects Git state, indexes the repository and synchronizes the retrieval corpus.
+`README.md`, `docs/project-brain/12-LOCAL-DEPLOYMENT.md` and `docs/project-brain/13-CHECKPOINT.md` fix the
+canonical local workspace at `D:\Hive\Projects\isoryn-engine`. A proof run in any other directory is bound
+to that directory, not to that authority, so the workspace has to exist before it can be proven.
 
-.codex/config.toml requires the project-scoped HIVE MCP launcher scripts/hive_mcp.py. HIVE retrieval/memory is derived context; tracked Git remains canonical.
+That path sits inside HIVE's own data area, so everything already beside it - the other registered
+worktrees and every directory under `D:\Hive` - belongs to other work. Create the missing directory; do
+not replace, rename, move, clean or reuse what is already there. Once the canonical copy exists, an older
+copy elsewhere stays untouched and is recorded as non-canonical rather than deleted.
+
+```
+git -c core.autocrlf=false clone https://github.com/KayzenRoot/isoryn-engine.git D:\Hive\Projects\isoryn-engine
+```
+
+The `-c core.autocrlf=false` is not cosmetic. Git for Windows ships `core.autocrlf=true` in its system
+config, and a plain network clone with that setting writes CRLF into the working tree even though every
+blob is LF; `check_line_endings` in `scripts/validate_governance.py` then fails the tree and HIVE reports
+the source as not current. Keep that setting in the workspace's own config so later checkouts cannot
+reintroduce it, and materialize the directory itself rather than a junction or symlink for the reason the
+next section gives. Verify the result with `git status --porcelain=v1` empty and
+`python scripts/validate_governance.py` passing before registering anything in HIVE.
+
+## Running the pinned baseline beside another HIVE stack
+
+A machine that already runs a newer HIVE cannot prove the pinned baseline by reusing that runtime, and
+must not take its port or its data root away. Bring the pinned checkout up as a second, isolated
+stack instead. Every collision domain below has to differ, and the pinned compose file supports each
+one without editing it: distinct Compose project name (which also derives the network and container
+names), `HIVE_API_PORT`, `HIVE_DATA_ROOT`, and a `HIVE_PROJECTS_ROOT` of its own. Postgres and Redis
+publish no host port, so they collide on nothing.
+
+Two behaviours make this easy to get wrong, so they are stated rather than assumed:
+
+1. **Docker Compose resolves variables from the process environment before the `--env-file`.** If the
+   operator's shell exports `COMPOSE_PROJECT_NAME` or `HIVE_DATA_ROOT` for the stack it installed,
+   an `--env-file` alone silently keeps pointing the new stack at the live one — including its
+   database directory. Pass the overrides for the same process (`env VAR=... docker compose ...`) and
+   confirm the target with `docker compose config` before anything starts.
+2. **`docker compose exec` selects containers by project label, not by working directory.** The
+   checkout a launcher runs in does not constrain which stack it enters, so
+   `scripts/hive_mcp.py` passes `-p` when `HIVE_COMPOSE_PROJECT` is set; without an explicit project
+   an ambient `COMPOSE_PROJECT_NAME` wins over the compose file's own `name:`.
+
+`HIVE_PROJECTS_ROOT` must contain the registered directory as a real directory: HIVE mounts it
+read-only and the container filesystem does not traverse a nested junction, so a link standing in for
+the repository resolves to a missing path. Keep the mount narrow — the projects root is visible to
+the container read-only, and registration is still by exact relative path.
+
+## Bootstrap and proof
+
+```
+python scripts/hive_bootstrap.py --relative-path isoryn-engine --timeout 600
+```
+
+Health → resolve/register → inspect → index → retrieval corpus sync. Registration is resolved by exact
+relative path, and an ambiguous project identity fails closed instead of silently re-pointing at
+another project. Re-run after every head change so HIVE's inspection head matches the reviewed head.
+
+## Working-tree line endings are load-bearing
+
+HIVE inspects and indexes the repository from inside a Linux container that applies no line-ending
+conversion. With a CRLF working tree (what `core.autocrlf=true` produces on Windows) every tracked file
+reads as modified, HIVE reports the source as not current, and retrieval answers `results: []` instead
+of the canonical text. `.gitattributes` pins text to LF and `scripts/validate_governance.py` fails if a
+text file in the working tree carries CRLF, so this cannot regress silently.
+
+## Staleness guard
+
+A stale inspection head makes HIVE answer `source_not_current` with an empty result set rather than
+serving old content. Treat an empty retrieval as the enforced signal it is: re-inspect, re-index and
+re-sync, then re-prove. Never cache around it or describe a stale read as a live one.
+
+The guard tests modified tracked paths (`git status --porcelain=v1 --untracked-files=no`), so an
+untracked scratch file does not fail HIVE's reads while any dirty tracked file does. Because a corpus
+left CURRENT by an earlier sync still answers retrieval for a head that was never indexed, a retrieval
+proof is only meaningful together with the inspect/index/sync result for that same head.
+
+Windows git rewrites `.git/index` at the same time the container reads it through the mount, so a
+single status read can fail with `git_status_unavailable` at a genuinely clean head and the next call
+then reports `source_not_current`. Re-run the pipeline before believing it: the runbook retries with a
+recorded attempt count so a transient race is never published as a result.
+
+## MCP surface
+
+`.codex/config.toml` (project-scoped) and `.mcp.json` require the launcher `scripts/hive_mcp.py`, which
+starts `python -m app.mcp_server` through `docker compose exec -T api` in the HIVE checkout. The pinned
+v1.0.0 surface is exactly seven read-only tools: `project.list`, `project.status`, `context.build`,
+`context.search`, `memory.search`, `memory.get`, `checkpoint.read`. `code.*`, `run.*`, `decision.*`,
+`validation.*`, `telemetry.*` and `project.open` appear in the design documents but v1.0.0 does not
+expose them; do not claim or implement against them.
+
+The MCP cold start goes through Docker, so a client with a ~5s startup timeout reports a spurious
+failure; `.codex/config.toml` raises `startup_timeout_sec` to 120. Configuring a launcher is not proof:
+reload the CLI session and show an executed `tools/list` plus one read-only call, as
+`.engineering/evidence/<WO-ID>-EVIDENCE.md` does.
+
+## What the local runtime actually answers
+
+Without `HIVE_EMBEDDING_BASE_URL` the pinned runtime has no embedding provider, so `context.search` and
+`context.build` answer `semantic_state: UNAVAILABLE` with `hybrid_state:
+LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE` and rerank disabled — lexical recall only. Point that variable at
+an OpenAI-compatible endpoint (operator configuration, never repository configuration) to light up the
+semantic path, then re-index and re-prove. Read a lexical hit list as what it is: do not describe a
+fallback response as semantic retrieval.

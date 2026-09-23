@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "hive": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["scripts/hive_mcp.py"]
+    }
+  }
+}
