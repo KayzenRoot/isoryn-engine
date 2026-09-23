@@ -1,4 +1,4 @@
-6 rules apply to branch main in repo KayzenRoot/isoryn-engine
+5 rules apply to branch main in repo KayzenRoot/isoryn-engine
 
 - deletion
   (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
@@ -13,7 +13,4 @@
   (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
 
 - required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true] 
-  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)
-
-- update
   (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)

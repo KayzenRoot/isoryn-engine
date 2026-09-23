@@ -1,0 +1,26 @@
+# Second application of the corrected desired state, run after the first application had already removed the update rule.
+# Purpose: prove scripts/configure-github.ps1 is idempotent against the live repository - it upserted ruleset 23776080 again, changed nothing, exit 0.
+# Command: powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure-github.ps1 -Repo KayzenRoot/isoryn-engine
+# captured: 2026-09-23T15:51:33Z
+github.com
+  ✓ Logged in to github.com account KayzenRoot (keyring)
+  - Active account: true
+  - Git operations protocol: https
+  - Token: gho_************************************
+  - Token scopes: 'gist', 'read:org', 'repo', 'workflow'
+Capturing BEFORE state for KayzenRoot/isoryn-engine
+  receipt: D:\Hive\Projects\isoryn-engine\.engineering\evidence\github\before-repository.json
+  receipt: D:\Hive\Projects\isoryn-engine\.engineering\evidence\github\before-rulesets.json
+  receipt: D:\Hive\Projects\isoryn-engine\.engineering\evidence\github\before-ruleset-23776080.json
+Applying repository settings from repository-settings.json
+Probing optional security endpoints (recorded, not assumed)
+vulnerability_alerts => NOT_AVAILABLE (exit=1) gh.exe : gh: Not Found (HTTP 404)
+automated_security_fixes => NOT_AVAILABLE (exit=-1) gh.exe : gh: Not Found (HTTP 404)
+Upserting ruleset 'main-governance'
+Capturing AFTER state and verification
+  receipt: D:\Hive\Projects\isoryn-engine\.engineering\evidence\github\after-repository.json
+  receipt: D:\Hive\Projects\isoryn-engine\.engineering\evidence\github\after-ruleset.json
+  receipt: D:\Hive\Projects\isoryn-engine\.engineering\evidence\github\ruleset-check-main.txt
+  receipt: D:\Hive\Projects\isoryn-engine\.engineering\evidence\github\ruleset-list.json
+  receipt: D:\Hive\Projects\isoryn-engine\.engineering\evidence\github\ruleset-view.txt
+GitHub governance state applied to KayzenRoot/isoryn-engine (ruleset id 23776080).

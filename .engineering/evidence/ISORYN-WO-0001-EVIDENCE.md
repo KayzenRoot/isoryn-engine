@@ -20,6 +20,7 @@ This bundle is machine-readable: the JSON block at the end is the payload
 | Reviewer correction head issuing C02 | `8d4a76052869df276c34ec56c217a4595ae00425` |
 | C02 canonical workspace materialization head | `8eba7b4ef6258d708fdf24554822310531f151f3` |
 | C02 canonical workspace proof head | `d749accc68be408ae79d06e25946128b9cf7bdc3` |
+| Reviewer head issuing C03 (desired state + regression guards, promotion revoked) | `a77e1e16bae1551d8a87e79d657d79813fbe318e` |
 | Canonical local workspace | `D:\Hive\Projects\isoryn-engine`, a real directory and not a junction |
 | Branch | `isoryn-wo-0001-foundation` |
 | GEF pin | v1.0.0 `866fe3af8cccc65c929aaf6a47a924401fa448b3` |
@@ -165,6 +166,57 @@ canonical HIVE pin was not moved to 1.0.1 or 1.0.2.
 The proof stack is deliberately left running so the integration is currently demonstrable; retiring it is one
 named command in `residualRisks`.
 
+## C03 - main ruleset self-lock release
+
+C02 was reviewed, promoted and re-blocked in the same cycle: the review at `74f443f3d83c` was correct about the
+workspace, and a real squash-merge of the approved pull request then returned
+
+```
+HTTP 405 - Repository rule violations found / Cannot update this protected ref.
+```
+
+The cause was live state, not checked-in state. Ruleset `23776080` carried GitHub's restrict-updates rule
+(`type: update`) with `bypass_actors: []` and `current_user_can_bypass: never`. That combination means only a bypass
+actor may move the ref, and there is none, so `main` could not be updated by anybody - not by an approved,
+required-checks-green pull request opened by the repository owner. The validator, the unit tests and the Governance
+run were all green next to it because they compared the manifest's rule types against an allow-list. They encoded the
+self-lock instead of detecting it, which is the defect the promotion was revoked for.
+
+The reviewer's head `a77e1e16bae1` fixed everything that can be fixed from a checkout: the desired state dropped the
+rule, the validator and `tests/test_governance.py` reject any future manifest that pairs restrict-updates with no
+bypass actor, and `scripts/configure-github.ps1` refuses to apply one. What no checkout can fix is the ruleset that
+is already running on GitHub, so C03 executed the application through the authorized local `gh` session.
+
+| Acceptance item | Result | Evidence |
+| --- | --- | --- |
+| Live ruleset no longer contains the rule that produced the 405 | PASS | `c03Recovery.liveRulesetAfter.ruleTypes`, `gh ruleset check main` first line reads "5 rules apply" |
+| Every other protection retained | PASS | `c03Recovery.causalDelta`: exactly one rule type removed, no added rule, no condition, name, target or enforcement change |
+| No bypass actor added to buy mergeability | PASS | `bypass_actors: []` and `current_user_can_bypass: "never"` before and after |
+| Required context unchanged and still strict | PASS | `required_status_checks` with `strict_required_status_checks_policy: true`, context exactly `Governance` |
+| Squash-only merge policy and no impossible approval gate | PASS | `allowed_merge_methods: ["squash"]`, `required_approving_review_count: 0`, `require_code_owner_review: false` |
+| Configurator applied the manifest and captured BEFORE/AFTER | PASS | `.engineering/evidence/github/before-ruleset-23776080.json`, `after-ruleset.json`, `ruleset-check-main.txt`, `ruleset-view.txt` |
+| Application is idempotent | PASS | `configure-github-c03-idempotency.log`, second run exit 0, same ruleset id, nothing moved |
+| Pull request mergeability corroborated without merging | PASS | `pr-verification-c03.txt`: `state OPEN`, `mergeable MERGEABLE`, `mergeStateStatus CLEAN`, and no merge was attempted |
+| Regression guards present | PASS | two added tests, suite now 29 tests |
+
+The BEFORE and AFTER receipts are the whole argument, so they are quoted rather than summarised. Before, six rules
+including the lock; after, five:
+
+```
+before: non_fast_forward, deletion, required_linear_history, update, pull_request, required_status_checks
+after:  non_fast_forward, deletion, required_linear_history,             pull_request, required_status_checks
+```
+
+One capture had to be disclosed rather than trusted. `scripts/configure-github.ps1` writes each receipt to a fixed
+path, so the second, idempotency-proving run overwrote `before-ruleset-23776080.json` with the already-corrected
+state - the single file that showed the self-lock existed. It was restored to the bytes the first run captured, and
+the pre-correction state does not rest on that restoration: `ruleset-check-main.txt` and `ruleset-view.txt` as
+committed at `a77e1e16bae1` list six rules including `update`, and their verbatim contents are reproduced in
+`.engineering/evidence/github/pre-c03-ruleset-a77e1e16.txt`, reproducible with
+`git show a77e1e16bae1551d8a87e79d657d79813fbe318e:.engineering/evidence/github/ruleset-check-main.txt`. The
+general defect - a BEFORE capture that a retry silently replaces - stays open in `residualRisks`, because naming
+receipts by timestamp is a change of its own and this Work Order authorizes only the unlock.
+
 ## What is proved, not asserted
 
 - **HIVE** (`hivePreflight`): health, exact-relative-path resolution without name collision, inspect
@@ -177,9 +229,12 @@ named command in `residualRisks`.
   `tools/list` with the seven read-only tools and their annotations, then real
   `project.list`, `project.status`, `checkpoint.read` and `context.search` calls, each with its raw
   response. A configured launcher is not claimed as a working one.
-- **GitHub** (`github`): repository settings and the `main-governance` ruleset as captured BEFORE and
+- **GitHub** (`github`, `c03Recovery`): repository settings and the `main-governance` ruleset as captured BEFORE and
   AFTER through authenticated `gh`, plus `gh ruleset check main` read-back and the honest
-  `NOT_AVAILABLE` responses of the optional security endpoints.
+  `NOT_AVAILABLE` responses of the optional security endpoints. As of C03 this is applied live state read back from
+  the API, not a checked-in intent: `c03Recovery.liveRulesetBefore` and `liveRulesetAfter` are the two rule
+  enumerations the merge failure turned on, and `github.rulesetManifest` carries the note naming which capture each
+  inline value came from.
 - **Workspace authority** (`c02Recovery.canonicalWorkspace`): the canonical path the Project Brain names exists
   as a real checkout of this repository on this branch, and the HIVE and MCP proofs above were produced by a
   container that mounted that path read-only and reported its head back from inside the mount. A proof run in
@@ -206,14 +261,24 @@ listed in `residualRisks`: retrieval is still lexical-only, so `15-DEFINITION-OF
 rather than first, and the machine's ambient Compose variables still make an unnamed `docker compose`
 command in the pinned checkout an act against someone else's stack.
 
+`c03Recovery` closes the last thing that stood between WO-0001 and a mergeable repository, and it is the one record
+here that changed state outside the repository. Two things are therefore deliberately left as they are. The canonical
+checkpoint at `docs/project-brain/13-CHECKPOINT.md ## BLOCKERS` still says the live ruleset "still requires
+executor-side `gh` application": that sentence was true when the reviewer wrote it at `a77e1e16bae1`, it is the
+promotion target of `ISORYN-WO-0001-CHECKPOINT-DELTA.md`, and an executor editing the canonical checkpoint to
+describe its own delivery would be self-approving. Read it as the pre-C03 record, not as current state - the current
+state is `c03Recovery.liveRulesetAfter`. The STATUS field stays `BOOTSTRAP CORRECTION REQUIRED` for the same reason,
+and the derived bridge views stay in step with it so the drift gate keeps meaning something.
+
 ## Stop condition
 
-`READY_FOR_C02_REVIEW` - the canonical workspace the Project Brain names now exists, and the isolated
-pinned HIVE v1.0.0 registration, index, corpus, retrieval and MCP proofs were re-executed against it at
-`d749accc68be408ae79d06e25946128b9cf7bdc3`, with the concurrent runtimes shown unchanged across the
-window. `verdict` stays `AWAITING_INDEPENDENT_REVIEW`. The Work Order forbids merging and forbids
-starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and promotion - including the
-`BLOCKERS NONE` line C02 is now entitled to propose - belongs to an independent audit at this head.
+`READY_FOR_C03_INDEPENDENT_REVIEW` - the live `main-governance` ruleset no longer carries the restrict-updates rule
+that made the approved pull request unmergeable, every other protection is retained with no bypass actor added, and
+the read-backs of that state are in `.engineering/evidence/github`. `verdict` stays `AWAITING_INDEPENDENT_REVIEW` and
+`checks.json` / `c03Recovery` bind each measurement to the head that produced it. The Work Order forbids merging this
+pull request, forbids engine implementation, and forbids promoting the checkpoint: the delta in
+`ISORYN-WO-0001-CHECKPOINT-DELTA.md` is `PROPOSED_ONLY`, including the `BLOCKERS NONE` line the correction has now
+earned, and promotion belongs to an independent audit of the delivered head.
 
 ```json
 {
@@ -383,7 +448,13 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
     "governance_ci": "PASS",
     "toolchain_build": "DEFERRED_BY_WO",
     "performance_benchmark": "DEFERRED_BY_WO",
-    "third_party_dependency_scan": "NOT_AVAILABLE"
+    "third_party_dependency_scan": "NOT_AVAILABLE",
+    "ruleset_manifest_has_no_update_rule": "PASS",
+    "live_ruleset_update_rule_removed": "PASS",
+    "live_ruleset_protections_retained": "PASS",
+    "live_ruleset_no_bypass_actor_added": "PASS",
+    "pull_request_state_clean_unmerged": "PASS",
+    "before_after_ruleset_receipts": "PASS"
   },
   "hivePreflight": {
     "api": "http://127.0.0.1:8000",
@@ -1147,12 +1218,35 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
       "after-repository.json",
       "after-ruleset.json",
       "before-repository.json",
+      "before-ruleset-23776080.json",
       "before-rulesets.json",
+      "configure-github-c03-idempotency.log",
+      "pr-verification-c03.txt",
+      "pre-c03-ruleset-a77e1e16.txt",
       "ruleset-check-main.txt",
       "ruleset-list.json",
       "ruleset-view.txt",
       "security-endpoints.txt"
-    ]
+    ],
+    "c03SupersededBy": "rulesetManifest, effectiveRuleset, rulesetCheckMain and rulesetView above are the read-backs taken while the checked-in desired state still carried the restrict-updates rule. C03 applied the corrected manifest, so the live values now on disk under .engineering/evidence/github are the post-correction ones and are reproduced in c03Recovery. The pre-correction captures are kept as written for the heads they describe.",
+    "rulesetCheckMainPostC03": "5 rules apply to branch main in repo KayzenRoot/isoryn-engine\n\n- deletion\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- non_fast_forward\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- required_linear_history\n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)\n\n- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true] \n  (configured in ruleset 23776080 from repository KayzenRoot/isoryn-engine)",
+    "repositorySecretScanningPostC03": {
+      "secret_scanning": {
+        "status": "enabled"
+      },
+      "secret_scanning_push_protection": {
+        "status": "enabled"
+      },
+      "dependabot_security_updates": {
+        "status": "enabled"
+      },
+      "secret_scanning_non_provider_patterns": {
+        "status": "disabled"
+      },
+      "secret_scanning_validity_checks": {
+        "status": "disabled"
+      }
+    }
   },
   "ciObservations": [
     {
@@ -1429,7 +1523,11 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
       "error": "A record stated the non-canonical copy was clean while it still held a superseded draft.",
       "detail": "errorsFoundAndCorrected and hive-preflight.json both state that D:\\Projects\\isoryn-engine is untouched and carries no C02 work. Re-checking it at the end of this correction found an uncommitted 76-line edit to ISORYN-WO-0001-EVIDENCE.md: the first C02 prose draft, written before the work moved to the canonical copy. The claim was true of the intent, not of the tree.",
       "correction": "The draft was exported to a patch outside the repository (D:/isoryn-c02-hive-proof/receipts/incumbent-stale-c02-draft.patch) rather than deleted, then the file was restored to its committed state with git restore --source=HEAD --worktree. The old copy is now verifiably clean at 8d4a76052869df276c34ec56c217a4595ae00425, which is what the record asserts, and nothing from it was merged into the canonical bundle because the canonical section carries the re-run numbers the draft predates."
-    }
+    },
+    "MAIN_RULESET_SELF_LOCK (C03): live ruleset 23776080 carried GitHub's restrict-updates rule with an empty bypass list, so the real squash-merge of PR #2 returned HTTP 405 'Repository rule violations found / Cannot update this protected ref.' The reviewer removed the rule from the checked-in desired state and added the regression guards; C03 applied that manifest to the live repository and re-read it back. Fixing this by adding a bypass actor, or by dropping any other rule, would have traded mergeability for protection - explicitly refused by the Work Order.",
+    "The static desired-state validator passed a manifest that made the repository permanently unmergeable (C03): it compared rule types against an allow-list without noticing that restrict-updates plus no bypass actor is a self-lock, so a green Governance run and a promoted checkpoint coexisted with an unmergeable main. The gate now rejects that combination, and scripts/configure-github.ps1 refuses to apply it.",
+    "BEFORE receipts could not show what they were about to change (C03): 'gh api repos/.../rulesets' returns the ruleset list without its 'rules' array, so the captured BEFORE state could not contain the offending rule. The configurator now also captures the per-ruleset read before upserting, which is why before-ruleset-23776080.json is the file that proves the rule was live at all.",
+    "The configurator destroys its own BEFORE evidence when it runs twice (C03): every receipt is written to a fixed path, so the idempotency re-application overwrote before-ruleset-23776080.json with the already-corrected state - the one file that showed the self-lock. The capture was restored to the bytes the first run produced, the incident is disclosed in c03Recovery.beforeReceiptProvenance, and the pre-correction state stays independently reproducible from the receipts committed at a77e1e16bae1. The general defect - a BEFORE capture a retry silently replaces - is named in residualRisks rather than fixed inside this Work Order's 'only this correction' limit."
   ],
   "residualRisks": [
     "One sibling workspace could not be relinked at its previous path because an unrelated service holds a lock on the empty directory. No data was lost: the working tree, index and history all live at the new canonical path, and the leftover is an empty directory. Retrying the link needs the owning process to release it.",
@@ -1444,7 +1542,10 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
     "docs/project-brain/15-DEFINITION-OF-DONE.md ranks 9 of 20 for the query 'Definition of Done' while retrieval is lexical-only, because the evidence bundle repeats the phrase more often than the canonical page does. Widening the window is what made it visible; it is not fixed.",
     "HIVE v1.0.0 exists on this machine only as a tagged object inside the 1.0.2 store plus the operator-local copy this correction built from it. There is no independent durable v1.0.0 checkout, so the pinned proof depends on the operator keeping that store.",
     "A retrieval proof is valid only for the head it was taken at: any new commit requires re-inspect, re-index, re-sync and a re-run before HIVE context is treated as current.",
-    "The proof stack is left running on purpose (127.0.0.1:18199, project isoryn-c02-v100) so the integration is currently functioning. To retire it: docker compose -p isoryn-c02-v100 --env-file D:/isoryn-c02-hive-proof/isoryn-c02.env down, which names this project and no other."
+    "The proof stack is left running on purpose (127.0.0.1:18199, project isoryn-c02-v100) so the integration is currently functioning. To retire it: docker compose -p isoryn-c02-v100 --env-file D:/isoryn-c02-hive-proof/isoryn-c02.env down, which names this project and no other.",
+    "The live ruleset is now applied state, not merely checked-in intent: a future manifest that reintroduces restrict-updates will be refused by the validator and by configure-github.ps1, but nothing stops an operator editing the ruleset in the GitHub UI. The AFTER receipts are the reference point for the next audit.",
+    "GitHub reports pull request mergeability asynchronously. mergeStateStatus CLEAN was read at the reviewer head a77e1e16bae1 and is re-read on the delivered head in the exact-head CI record; it is a corroboration, never the proof, for the reason stated in c03Recovery.verification.decisiveProofNote.",
+    "scripts/configure-github.ps1 writes each receipt to a fixed path, so re-running it replaces the BEFORE capture with whatever is live at that moment. A run that follows a successful application therefore no longer proves what it changed. The fix is to name BEFORE receipts by timestamp or by the head being reconciled; it is out of this correction's scope and is offered to the reviewer as its own bounded change."
   ],
   "rollback": {
     "posture": "Reverting the Work Order commits restores the pre-bootstrap Source Pack. No runtime, dependency or product code was introduced, so no data migration or lockfile regeneration is involved.",
@@ -1456,7 +1557,7 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
     "path": ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
     "note": "The executor may not self-approve promotion."
   },
-  "stopCondition": "READY_FOR_C02_REVIEW",
+  "stopCondition": "READY_FOR_C03_INDEPENDENT_REVIEW",
   "verdict": "AWAITING_INDEPENDENT_REVIEW",
   "c01GeneratedAt": "2026-09-23T13:17:22Z",
   "c01Recovery": {
@@ -1940,6 +2041,272 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
       "deltaFromProofHead": "evidence-only: this commit changes nothing under scripts/, docs/ or tests/, so the validator, unittest suite and the canonical workspace facts re-run identically here.",
       "limit": "The HIVE and MCP receipts stay bound to d749acc on purpose. Re-running them here would move the proof head to a commit that then cannot carry its own receipt, which is the loop this record already states once instead of hiding behind a matching SHA."
     }
+  },
+  "c03GeneratedAt": "2026-09-23T15:54:06Z",
+  "c03Recovery": {
+    "trigger": "The C02 independent review at 74f443f3d83c8bb1642314ab28632342fcf0b50f closed CANONICAL_WORKSPACE_MISMATCH, promoted the checkpoint and obtained a green Governance run on a4c1aa6ee241d9d021483a79a2c8ed57b7d9bbf4. A real squash-merge attempt immediately afterwards exposed MAIN_RULESET_SELF_LOCK, which the static desired-state checks had encoded rather than detected. The promotion was revoked at 8d4a76052869df276c34ec56c217a4595ae00425.",
+    "failedMergeAttempt": {
+      "httpStatus": 405,
+      "response": "Repository rule violations found / Cannot update this protected ref.",
+      "attemptedAgainst": "refs/heads/main via pull request #2 squash merge",
+      "cause": "GitHub's restrict-updates branch rule (ruleset rule type 'update') permits ref updates only for bypass actors. Live ruleset 23776080 carried that rule with bypass_actors [], and current_user_can_bypass 'never', so no actor - including the repository owner - could merge even an otherwise valid, required-checks-green pull request.",
+      "recordedIn": "docs/project-brain/13-CHECKPOINT.md ## BLOCKERS and .engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md"
+    },
+    "proofLineage": {
+      "reviewerHeadIssuingC03": "a77e1e16bae1551d8a87e79d657d79813fbe318e",
+      "manifestRemovesUpdateRule": "ed2a11a14039c751edafd5c445e4bff259078c6c",
+      "validatorRegressionTest": "1d15eabad003e257a011785a1d64f3cb6a168181",
+      "unittestRegressionTest": "7d8aca4fc52720ff0eef48c1b2b601f6bb2d3594",
+      "configuratorFailsClosed": "fb453996224ff4df2dff7df51f35b27c4574106d",
+      "selfLockRecordedAsBlocker": "a77e1e16bae1551d8a87e79d657d79813fbe318e"
+    },
+    "desiredState": {
+      "path": ".engineering/github/ruleset-main-governance.json",
+      "ruleTypes": [
+        "deletion",
+        "non_fast_forward",
+        "required_linear_history",
+        "pull_request",
+        "required_status_checks"
+      ],
+      "bypassActors": [],
+      "containsUpdateRule": false,
+      "note": "The manifest C03 applied is the reviewer's, committed unmodified at ed2a11a14039. The executor changed no governance policy in it."
+    },
+    "liveRulesetBefore": {
+      "id": 23776080,
+      "name": "main-governance",
+      "target": "branch",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "refs/heads/main"
+          ]
+        }
+      },
+      "bypassActors": [],
+      "currentUserCanBypass": "never",
+      "ruleTypes": [
+        "non_fast_forward",
+        "deletion",
+        "required_linear_history",
+        "update",
+        "pull_request",
+        "required_status_checks"
+      ],
+      "rules": [
+        {
+          "type": "non_fast_forward"
+        },
+        {
+          "type": "deletion"
+        },
+        {
+          "type": "required_linear_history"
+        },
+        {
+          "type": "update"
+        },
+        {
+          "type": "pull_request",
+          "parameters": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash"
+            ]
+          }
+        },
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Governance"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": "2026-09-21T14:47:28.392-03:00"
+    },
+    "liveRulesetAfter": {
+      "id": 23776080,
+      "name": "main-governance",
+      "target": "branch",
+      "enforcement": "active",
+      "conditions": {
+        "ref_name": {
+          "exclude": [],
+          "include": [
+            "refs/heads/main"
+          ]
+        }
+      },
+      "bypassActors": [],
+      "currentUserCanBypass": "never",
+      "ruleTypes": [
+        "non_fast_forward",
+        "deletion",
+        "required_linear_history",
+        "pull_request",
+        "required_status_checks"
+      ],
+      "rules": [
+        {
+          "type": "non_fast_forward"
+        },
+        {
+          "type": "deletion"
+        },
+        {
+          "type": "required_linear_history"
+        },
+        {
+          "type": "pull_request",
+          "parameters": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash"
+            ]
+          }
+        },
+        {
+          "type": "required_status_checks",
+          "parameters": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Governance"
+              }
+            ]
+          }
+        }
+      ],
+      "updatedAt": "2026-09-23T12:28:10.071-03:00"
+    },
+    "causalDelta": {
+      "ruleTypesRemoved": [
+        "update"
+      ],
+      "ruleTypesAdded": [],
+      "bypassActorsChanged": false,
+      "otherRulesetFieldsChanged": [],
+      "meaning": "Exactly one rule type disappeared and nothing else moved: the self-locking restrict-updates rule was removed and every other protection stayed, which is the whole of the authorized change."
+    },
+    "application": {
+      "command": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/configure-github.ps1 -Repo KayzenRoot/isoryn-engine",
+      "method": "Idempotent upsert by name through 'gh api --method PUT repos/KayzenRoot/isoryn-engine/rulesets/23776080 --input <manifest>', which updates the existing ruleset instead of creating a second one.",
+      "authenticatedAs": "gh auth status: account KayzenRoot, active, token scopes gist/read:org/repo/workflow; repository receipt reads permissions.admin true",
+      "receipts": [
+        ".engineering/evidence/github/before-repository.json",
+        ".engineering/evidence/github/before-rulesets.json",
+        ".engineering/evidence/github/before-ruleset-23776080.json",
+        ".engineering/evidence/github/after-repository.json",
+        ".engineering/evidence/github/after-ruleset.json",
+        ".engineering/evidence/github/ruleset-check-main.txt",
+        ".engineering/evidence/github/ruleset-list.json",
+        ".engineering/evidence/github/ruleset-view.txt",
+        ".engineering/evidence/github/security-endpoints.txt",
+        ".engineering/evidence/github/pr-verification-c03.txt",
+        ".engineering/evidence/github/pre-c03-ruleset-a77e1e16.txt",
+        ".engineering/evidence/github/configure-github-c03-idempotency.log"
+      ]
+    },
+    "idempotency": {
+      "applications": 2,
+      "secondApplicationExitCode": 0,
+      "secondApplicationChanged": "nothing - the same ruleset id 23776080 was upserted, the rule set stayed at five rules, and GitHub reported an unchanged updated_at",
+      "receipt": ".engineering/evidence/github/configure-github-c03-idempotency.log",
+      "note": "The Work Order asks for the corrected manifest to be applied and for the branch to become mergeable without weakening anything. Applying the same manifest twice proves the tool is a reconciliation to desired state and not a one-shot patch, which is what a later operator can rely on."
+    },
+    "beforeReceiptProvenance": {
+      "file": ".engineering/evidence/github/before-ruleset-23776080.json",
+      "containsUpdateRule": true,
+      "disclosedIncident": "The second, idempotency-proving run rewrote every BEFORE receipt in place, including this one, so the captured self-locking state was overwritten by the already-corrected state. The file was then restored to the bytes the first run captured. That makes this receipt a restoration rather than a raw capture, and it is recorded as such instead of being presented as untouched tool output.",
+      "independentCorroboration": "The pre-C03 state does not depend on that restoration: ruleset-check-main.txt and ruleset-view.txt as committed at a77e1e16bae1551d8a87e79d657d79813fbe318e list six rules including 'update', and their verbatim contents are reproduced in .engineering/evidence/github/pre-c03-ruleset-a77e1e16.txt, reproducible with 'git show a77e1e16bae1551d8a87e79d657d79813fbe318e:.engineering/evidence/github/ruleset-check-main.txt'."
+    },
+    "verification": {
+      "ghApiRuleset": {
+        "command": "gh api repos/KayzenRoot/isoryn-engine/rulesets/23776080",
+        "ruleTypes": [
+          "non_fast_forward",
+          "deletion",
+          "required_linear_history",
+          "pull_request",
+          "required_status_checks"
+        ],
+        "bypassActors": [],
+        "currentUserCanBypass": "never",
+        "exitCode": 0
+      },
+      "ghRulesetCheckMain": {
+        "command": "gh ruleset check main --repo KayzenRoot/isoryn-engine",
+        "firstLine": "5 rules apply to branch main in repo KayzenRoot/isoryn-engine",
+        "updateRuleListed": false,
+        "exitCode": 0
+      },
+      "ghRulesetView": {
+        "command": "gh ruleset view 23776080 --repo KayzenRoot/isoryn-engine",
+        "raw": "main-governance\nID: 23776080\nSource: KayzenRoot/isoryn-engine (Repository)\nEnforcement: Active\nYou can bypass: never\n\nBypass List\nThis ruleset cannot be bypassed\n\nConditions\n- ref_name: [exclude: []] [include: [refs/heads/main]] \n\nRules\n- deletion\n- non_fast_forward\n- pull_request: [allowed_merge_methods: [squash]] [dismiss_stale_reviews_on_push: true] [require_code_owner_review: false] [require_extra_approval_for_unattributed_changes: true] [require_last_push_approval: false] [required_approving_review_count: 0] [required_review_thread_resolution: true] [required_reviewers: []] \n- required_linear_history\n- required_status_checks: [do_not_enforce_on_create: false] [required_status_checks: [map[context:Governance]]] [strict_required_status_checks_policy: true]",
+        "exitCode": 0
+      },
+      "prState": {
+        "command": "gh pr view 2 --json number,state,headRefOid,baseRefName,mergeable,mergeStateStatus,isDraft",
+        "state": "OPEN",
+        "mergeable": "MERGEABLE",
+        "mergeStateStatus": "CLEAN",
+        "isDraft": false,
+        "headRefOid": "a77e1e16bae1551d8a87e79d657d79813fbe318e",
+        "exitCode": 0
+      },
+      "requiredChecks": {
+        "command": "gh pr checks 2 --required",
+        "output": "Governance\tpass\t4s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/35880013525/job/107245742715",
+        "exitCode": 0
+      },
+      "decisiveProofNote": "mergeable/mergeStateStatus are corroborating, not decisive: the decisive proof is that the live ruleset no longer contains the restrict-updates rule that produced HTTP 405, while deletion, non_fast_forward, required_linear_history, pull_request (squash only, no impossible approval) and required_status_checks (strict, context 'Governance') all remain, and bypass_actors stayed empty with current_user_can_bypass 'never'. No merge was attempted, because the Work Order forbids it."
+    },
+    "testCounts": {
+      "unittests": 29,
+      "addedInC03": 2,
+      "governanceArtifactsChecked": 54,
+      "governedMcpTools": 7,
+      "trackedFiles": 75,
+      "crlfTrackedFiles": 0,
+      "note": "The two tests added here keep the fix from regressing: one pins the configurator's fail-closed guard against a self-locking manifest, the other pins that BEFORE captures the per-ruleset read - the only endpoint that shows which rules were live - before the upsert runs."
+    },
+    "filesChanged": [
+      "scripts/configure-github.ps1",
+      "tests/test_governance.py",
+      ".engineering/evidence/github/before-ruleset-23776080.json",
+      ".engineering/evidence/github/pr-verification-c03.txt"
+    ],
+    "notDone": [
+      "PR #2 was not merged and remains OPEN.",
+      "No bypass actor was added and no protection was weakened to make the branch mergeable.",
+      "The checkpoint was not promoted; the delta stays PROPOSED_ONLY.",
+      "No engine, runtime, editor, renderer, architecture-freeze, toolchain-freeze or benchmark work.",
+      "The GEF and HIVE pins are unchanged.",
+      "No unrelated HIVE stack, data root, project, container, volume or worktree was created, changed or removed.",
+      "The non-canonical copy under the previous workspace path was left untouched."
+    ]
   }
 }
 ```

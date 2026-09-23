@@ -1,9 +1,99 @@
 {
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0001-foundation",
-  "localHead": "56559d387a9431c67795c194ddecd750ccca49ef",
-  "remoteHead": "56559d387a9431c67795c194ddecd750ccca49ef",
+  "localHead": "a77e1e16bae1551d8a87e79d657d79813fbe318e",
+  "remoteHead": "a77e1e16bae1551d8a87e79d657d79813fbe318e",
   "observations": [
+    {
+      "head": "a77e1e16bae1551d8a87e79d657d79813fbe318e",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35880013525/job/107245742715",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "238fff94b738244d240cac30250bcdfc49011889",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "failure",
+      "result": "FAIL",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35879996719/job/107245696784",
+      "detail": "GitHub check-run for this exact commit, read through the API. GOVERNANCE VALIDATION FAILED: checkpoint bridge drift for status - the derived checkpoint views disagreed with the canonical STATUS field, and the run was left red until the derived view was regenerated."
+    },
+    {
+      "head": "fb453996224ff4df2dff7df51f35b27c4574106d",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35879983376/job/107245641795",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "a4c1aa6ee241d9d021483a79a2c8ed57b7d9bbf4",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35879670244/job/107244569846",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "d6921dcf7fa6b155b32a5a042cd75ed47590b933",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "failure",
+      "result": "FAIL",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35879572867/job/107244230514",
+      "detail": "GitHub check-run for this exact commit, read through the API. GOVERNANCE VALIDATION FAILED: checkpoint bridge drift for status - the derived checkpoint views disagreed with the canonical STATUS field, and the run was left red until the derived view was regenerated."
+    },
+    {
+      "head": "8168d7547bd1018a429575e8bde258a2601d265b",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "failure",
+      "result": "FAIL",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35879552405/job/107244160691",
+      "detail": "GitHub check-run for this exact commit, read through the API. GOVERNANCE VALIDATION FAILED: checkpoint bridge drift for status - the derived checkpoint views disagreed with the canonical STATUS field, and the run was left red until the derived view was regenerated."
+    },
+    {
+      "head": "cf7a8581f599e79ce8098a7c61043d0dc39f83c9",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "failure",
+      "result": "FAIL",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35879543505/job/107244131695",
+      "detail": "GitHub check-run for this exact commit, read through the API. GOVERNANCE VALIDATION FAILED: checkpoint bridge drift for status - the derived checkpoint views disagreed with the canonical STATUS field, and the run was left red until the derived view was regenerated."
+    },
+    {
+      "head": "2648868223ff30dbbeb5cd72d372accd421e3972",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "failure",
+      "result": "FAIL",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35879534182/job/107244100972",
+      "detail": "GitHub check-run for this exact commit, read through the API. GOVERNANCE VALIDATION FAILED: checkpoint bridge drift for status - the derived checkpoint views disagreed with the canonical STATUS field, and the run was left red until the derived view was regenerated."
+    },
+    {
+      "head": "74f443f3d83c8bb1642314ab28632342fcf0b50f",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35877607582/job/107237480970",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "5f17c66eea645c754bc13b273ee9bbf87102eb84",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35877138169/job/107235870028",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
     {
       "head": "56559d387a9431c67795c194ddecd750ccca49ef",
       "context": "Governance",
@@ -129,5 +219,35 @@
       "head": "8eba7b4ef6258d708fdf24554822310531f151f3",
       "reason": "It was never pushed on its own: C02 committed the runbook correction and the evidence refresh in one push, so GitHub only ran Governance on the descendant head d749acc that carries both. The C02 receipts are therefore bound to d749acc, not to this commit."
     }
+  ],
+  "headsWithoutOwnRun": [
+    {
+      "head": "ed2a11a14039c751edafd5c445e4bff259078c6c",
+      "reason": "No Governance check-run exists for this exact commit; GitHub recorded the run on a later head of the same push sequence. It is listed so the chain does not imply coverage that was never executed."
+    },
+    {
+      "head": "1d15eabad003e257a011785a1d64f3cb6a168181",
+      "reason": "No Governance check-run exists for this exact commit; GitHub recorded the run on a later head of the same push sequence. It is listed so the chain does not imply coverage that was never executed."
+    },
+    {
+      "head": "7d8aca4fc52720ff0eef48c1b2b601f6bb2d3594",
+      "reason": "No Governance check-run exists for this exact commit; GitHub recorded the run on a later head of the same push sequence. It is listed so the chain does not imply coverage that was never executed."
+    },
+    {
+      "head": "dfaad71070554439ff92b079c7830da5559acc80",
+      "reason": "No Governance check-run exists for this exact commit; GitHub recorded the run on a later head of the same push sequence. It is listed so the chain does not imply coverage that was never executed."
+    },
+    {
+      "head": "fafd095972b38bf9a035605564739e1008f858fb",
+      "reason": "No Governance check-run exists for this exact commit; GitHub recorded the run on a later head of the same push sequence. It is listed so the chain does not imply coverage that was never executed."
+    }
+  ],
+  "failedRunsKeptVisible": [
+    "238fff94b738",
+    "2648868223ff",
+    "3de6fa11ed5d",
+    "8168d7547bd1",
+    "cf7a8581f599",
+    "d6921dcf7fa6"
   ]
 }

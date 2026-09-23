@@ -70,7 +70,15 @@ New-Item -ItemType Directory -Path $EvidenceDir -Force | Out-Null
 
 Write-Host "Capturing BEFORE state for $Repo" -ForegroundColor Cyan
 Save-Receipt -Name "before-repository.json" -Lines (Invoke-Gh @("api", "repos/$Repo"))
+$beforeList = (Invoke-Gh @("api", "repos/$Repo/rulesets")) | ConvertFrom-Json
 Save-Receipt -Name "before-rulesets.json" -Lines (Invoke-Gh @("api", "repos/$Repo/rulesets"))
+# The list endpoint reports enforcement but omits `rules`, so it cannot show which rules were live. A
+# self-locking restrict-updates rule is only visible in the per-ruleset read, and that is the state an
+# AFTER receipt has to be compared against.
+$beforeNamed = @(@($beforeList) | Where-Object { $_.name -eq $RulesetName })
+if ($beforeNamed.Count -eq 1) {
+  Save-Receipt -Name "before-ruleset-$($beforeNamed[0].id).json" -Lines (Invoke-Gh @("api", "repos/$Repo/rulesets/$($beforeNamed[0].id)"))
+}
 
 Write-Host "Applying repository settings from $(Split-Path -Leaf $RepoManifest)" -ForegroundColor Cyan
 Invoke-Gh @("api", "--method", "PATCH", "repos/$Repo", "--input", $RepoManifest) | Out-Null

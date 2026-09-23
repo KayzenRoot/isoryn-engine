@@ -91,6 +91,16 @@ class McpContractTests(unittest.TestCase):
 
 
 class DesiredStateTests(unittest.TestCase):
+    def test_configurator_reads_rules_before_applying_them(self):
+        script = (ROOT / "scripts/configure-github.ps1").read_text(encoding="utf-8")
+        self.assertIn("before-ruleset-$", script)
+        self.assertLess(script.index("before-ruleset-$"), script.index("Upserting ruleset"))
+
+    def test_configurator_refuses_a_self_locking_ruleset(self):
+        script = (ROOT / "scripts/configure-github.ps1").read_text(encoding="utf-8")
+        self.assertIn('-contains "update"', script)
+        self.assertIn("make main unmergeable", script)
+
     def test_ruleset_manifest_shape(self):
         ruleset = load(".engineering/github/ruleset-main-governance.json")
         self.assertEqual(ruleset["name"], "main-governance")
