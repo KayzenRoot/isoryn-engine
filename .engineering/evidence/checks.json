@@ -1,5 +1,5 @@
 {
-  "proofHead": "8eba7b4ef6258d708fdf24554822310531f151f3",
+  "proofHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
   "correction": "ISORYN-WO-0001-C02",
   "checks": {
     "py_compile": "PASS",
@@ -25,15 +25,17 @@
     "mcp_launcher_no_npx_proxy": "PASS",
     "mcp_launcher_targets_pinned_project": "PASS",
     "concurrent_hive_untouched": "PASS",
-    "governance_ci": "UNKNOWN",
+    "governance_ci": "PASS",
     "toolchain_build": "DEFERRED_BY_WO",
     "performance_benchmark": "DEFERRED_BY_WO",
     "third_party_dependency_scan": "NOT_AVAILABLE"
   },
   "governanceRun": {
-    "head": null,
+    "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
     "context": "Governance",
-    "result": "UNKNOWN",
-    "note": "Read from GitHub after this commit is pushed; a commit cannot observe its own run."
+    "result": "PASS",
+    "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35874710441/job/107227520570",
+    "requiredChecksCommand": "gh pr checks 2 --required",
+    "note": "This is the run GitHub Actions executed on the head every measurement in this file was taken against. The commit that carries this refreshed file is its descendant, and no commit can observe its own run, so the pull request is the authority for that one."
   }
 }

@@ -1,22 +1,22 @@
 {
   "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
-  "proofHead": "8eba7b4ef6258d708fdf24554822310531f151f3",
+  "proofHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
   "api": "http://127.0.0.1:18199",
   "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
   "canonicalProjectsRoot": "D:\\Hive\\Projects",
   "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
   "corpus": {
     "state": "CURRENT",
-    "last_successful_sync": "2026-09-23T14:17:15.852061Z",
+    "last_successful_sync": "2026-09-23T14:32:26.846415Z",
     "latest_run": {
       "status": "COMPLETED",
       "repository_source_count": 135,
-      "chunk_count": 224,
-      "reference_count": 224,
-      "new_chunk_count": 0,
-      "reused_chunk_count": 224,
-      "current_reference_count": 224,
-      "repository_reference_count": 224,
+      "chunk_count": 229,
+      "reference_count": 229,
+      "new_chunk_count": 27,
+      "reused_chunk_count": 202,
+      "current_reference_count": 229,
+      "repository_reference_count": 229,
       "task_reference_count": 0,
       "error": null
     }
@@ -28,23 +28,24 @@
       "paths": [
         ".engineering/evidence/hive-retrieval-proof.json",
         ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
-        ".engineering/evidence/mcp-proof.json",
-        "docs/project-brain/13-CHECKPOINT.md",
         ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         ".engineering/evidence/mcp-proof.json",
+        "docs/project-brain/13-CHECKPOINT.md",
+        ".engineering/evidence/mcp-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         "scripts/validate_governance.py"
       ],
       "canonical_paths": [
         "docs/project-brain/13-CHECKPOINT.md"
       ],
       "canonical_ranks": [
-        3
+        4
       ],
-      "first_canonical_rank": 3,
+      "first_canonical_rank": 4,
       "ranks_within_top_20": [
-        3
+        4
       ],
-      "first_canonical_rank_within_top_20": 3,
+      "first_canonical_rank_within_top_20": 4,
       "hybrid_state": null,
       "semantic_state": "UNAVAILABLE",
       "rerank_state": null
@@ -54,37 +55,37 @@
       "topK": 20,
       "paths": [
         ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
-        ".engineering/evidence/mcp-proof.json",
-        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
-        ".engineering/evidence/mcp-proof.json",
-        ".engineering/evidence/mcp-proof.json",
-        ".engineering/evidence/mcp-proof.json",
         ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/hive-retrieval-proof.json",
         ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
-        ".engineering/evidence/mcp-proof.json",
-        ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         "docs/project-brain/15-DEFINITION-OF-DONE.md",
-        ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         "scripts/validate_governance.py",
         ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         "AGENTS.md",
         ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
+        "docs/project-brain/00-README-UPLOAD-ORDER.md",
+        ".engineering/context-locks/ISORYN-WO-0001.json",
         ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md"
       ],
       "canonical_paths": [
         "docs/project-brain/15-DEFINITION-OF-DONE.md"
       ],
       "canonical_ranks": [
-        12
+        9
       ],
-      "first_canonical_rank": 12,
+      "first_canonical_rank": 9,
       "ranks_within_top_20": [
-        12
+        9
       ],
-      "first_canonical_rank_within_top_20": 12,
+      "first_canonical_rank_within_top_20": 9,
       "hybrid_state": null,
       "semantic_state": "UNAVAILABLE",
       "rerank_state": null
@@ -94,8 +95,12 @@
       "topK": 20,
       "paths": [
         ".engineering/evidence/hive-retrieval-proof.json",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+        ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
         "README.md",
         "docs/project-brain/01-PROJECT-OVERVIEW.md",
+        ".engineering/evidence/mcp-proof.json",
+        ".engineering/evidence/mcp-proof.json",
         "docs/project-brain/04-ARCHITECTURE.md",
         ".engineering/work-orders/ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.md",
         "AGENTS.md",
@@ -106,13 +111,13 @@
         "docs/project-brain/04-ARCHITECTURE.md"
       ],
       "canonical_ranks": [
-        3
+        7
       ],
-      "first_canonical_rank": 3,
+      "first_canonical_rank": 7,
       "ranks_within_top_20": [
-        3
+        7
       ],
-      "first_canonical_rank_within_top_20": 3,
+      "first_canonical_rank_within_top_20": 7,
       "hybrid_state": null,
       "semantic_state": "UNAVAILABLE",
       "rerank_state": null
@@ -123,5 +128,5 @@
     "docs/project-brain/15-DEFINITION-OF-DONE.md",
     "docs/project-brain/04-ARCHITECTURE.md"
   ],
-  "rankNote": "Every canonical target is resolved from the canonical workspace, and the rank each one actually got is reported, including 15-DEFINITION-OF-DONE.md at rank 12 of 20 for the query 'Definition of Done'. The phrase repeats far more often in .engineering/evidence/ than on the canonical page, so a lexical fallback ranks the evidence above the source; the window was widened to 20 and the number published rather than the query retuned until the wanted page came first."
+  "rankNote": "Ranks are reported as the runtime returned them, for every canonical target, in a 20-result window: 13-CHECKPOINT.md rank 4; 15-DEFINITION-OF-DONE.md rank 9; 04-ARCHITECTURE.md rank 7. docs/project-brain/15-DEFINITION-OF-DONE.md sits behind the evidence bundle for the query 'Definition of Done' because that bundle repeats the phrase far more often than the canonical page does. The measured number is published instead of the query being retuned until the wanted page came first."
 }

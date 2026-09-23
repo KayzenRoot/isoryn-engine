@@ -1,9 +1,27 @@
 {
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0001-foundation",
-  "localHead": "47838e4d102e17ee35a5068443091b91e40a23b9",
-  "remoteHead": "47838e4d102e17ee35a5068443091b91e40a23b9",
+  "localHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+  "remoteHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
   "observations": [
+    {
+      "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35874710441/job/107227520570",
+      "detail": "GitHub check-run for this exact commit, read through the API. This is the C02 canonical workspace proof head."
+    },
+    {
+      "head": "8d4a76052869df276c34ec56c217a4595ae00425",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35868575444/job/107206378500",
+      "detail": "GitHub check-run for this exact commit, read through the API. The reviewer head that issued C02."
+    },
     {
       "head": "47838e4d102e17ee35a5068443091b91e40a23b9",
       "context": "Governance",
@@ -96,5 +114,11 @@
     }
   ],
   "raw": null,
-  "note": "Chain read from the GitHub API on 2026-09-23 through the C01 evidence head 47838e4d102e17ee35a5068443091b91e40a23b9. Each observation is bound to the head it names; a run for one head is not evidence for another. The commit carrying this file is a descendant of that head and cannot observe its own run, so its result is read from the pull request check list."
+  "note": "Newest observation first. Each entry is a check-run read from GitHub for the exact commit named, never inferred from a neighbouring commit; unrunHeads states which heads have no run of their own and why. A commit cannot observe its own run, so the authority for the head that carries this file is gh pr checks 2 --required on the pull request.",
+  "unrunHeads": [
+    {
+      "head": "8eba7b4ef6258d708fdf24554822310531f151f3",
+      "reason": "It was never pushed on its own: C02 committed the runbook correction and the evidence refresh in one push, so GitHub only ran Governance on the descendant head d749acc that carries both. The C02 receipts are therefore bound to d749acc, not to this commit."
+    }
+  ]
 }

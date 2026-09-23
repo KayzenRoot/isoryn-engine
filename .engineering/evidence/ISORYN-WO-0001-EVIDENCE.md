@@ -17,6 +17,10 @@ This bundle is machine-readable: the JSON block at the end is the payload
 | Head this bundle was written against | `b8b5e90940356c69e85511e29c940f1f093977fc` |
 | Reviewer correction head | `4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b` |
 | C01 HIVE recovery proof head | `f293fabfd4cde0a202d917b75eee590567b2027e` |
+| Reviewer correction head issuing C02 | `8d4a76052869df276c34ec56c217a4595ae00425` |
+| C02 canonical workspace materialization head | `8eba7b4ef6258d708fdf24554822310531f151f3` |
+| C02 canonical workspace proof head | `d749accc68be408ae79d06e25946128b9cf7bdc3` |
+| Canonical local workspace | `D:\Hive\Projects\isoryn-engine`, a real directory and not a junction |
 | Branch | `isoryn-wo-0001-foundation` |
 | GEF pin | v1.0.0 `866fe3af8cccc65c929aaf6a47a924401fa448b3` |
 | HIVE pin | v1.0.0 `a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf` |
@@ -111,6 +115,56 @@ and an isolated stack mounted the live database directory instead of its own.
 from the Actions run named in `c01Recovery.governanceRun`. The commit that adds that sentence cannot
 observe its own run, so `gh pr checks 2 --required` on the pull request is the authority for it.
 
+## C02 - canonical workspace sync at `d749accc68be408ae79d06e25946128b9cf7bdc3`
+
+Independent re-review kept the C01 runtime proof and held promotion on `CANONICAL_WORKSPACE_MISMATCH`: C01 had
+re-proved the pinned baseline, but in `D:\Projects\isoryn-engine`, while `README.md`,
+`docs/project-brain/12-LOCAL-DEPLOYMENT.md` and `docs/project-brain/13-CHECKPOINT.md` all define
+`D:\Hive\Projects\isoryn-engine` as the canonical local workspace. C02 follows that authority instead of
+rewriting it, and no ADR was needed because nothing adopted changed.
+
+`D:\Hive` is already the read-write data root of the operator's newer HIVE 1.0.2 stack, so the directory was
+treated as someone else's storage throughout: one missing directory was created inside it and nothing else was
+touched. No existing entry was deleted, renamed, moved or overwritten, no prune or cleanup ran, and the canonical
+copy is a real directory rather than a junction or symlink, because the pinned container mounts the host path
+read-only and has to resolve a checkout, not a link. The clone command and the reason it carries
+`-c core.autocrlf=false` are recorded in `docs/HIVE-INTEGRATION.md`; the first plain clone produced CRLF in 31
+of 75 tracked files and the repository's own `check_line_endings` gate failed that tree, which is the gate doing
+its job rather than one being added.
+
+The old copy at `D:\Projects\isoryn-engine` stays in place, untouched and non-canonical at `8d4a7605`. It was not
+deleted and no C02 file was edited there after the canonical copy existed - except once, which is recorded in
+`errorsFoundAndCorrected` rather than smoothed over.
+
+Every measurement below was re-run against the canonical working copy at `d749accc68be`, which is the head that
+carries this record; `c02Recovery.proofLineage` names each head separately so nothing inherits a proof by
+proximity. The pinned baseline is HIVE v1.0.0 (`a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf`, `VERSION` 1.0.0)
+running as its own Compose project `isoryn-c02-v100` on `127.0.0.1:18199`, with its own data root and
+`HIVE_PROJECTS_ROOT` bound read-only to `D:/Hive/Projects`. Postgres and Redis publish no host port. The
+canonical HIVE pin was not moved to 1.0.1 or 1.0.2.
+
+| Acceptance item | Result | Evidence |
+| --- | --- | --- |
+| Health on 18199 reports the pinned baseline `1.0.0` while `127.0.0.1:8000` answers `1.0.2` | PASS | `hive-preflight.json` `runtime`, `bootstrap.json` raw health payload |
+| Canonical workspace exists as a real directory, no junction or symlink | PASS | `canonical_workspace_uses_no_junction`, `workspaceMaterialization.verified` |
+| Working tree matches its blobs byte for byte, `porcelain` empty, 75 tracked files, 0 CRLF | PASS | `workspaceMaterialization.verified` |
+| ISORYN resolves uniquely by exact relative path `isoryn-engine` | PASS | `pipeline.project_id` `cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd`, one project in the stack |
+| Inspection `repository_accessible=true`, state `READY` | PASS | `pipeline` |
+| Inspection `git_branch` = `isoryn-wo-0001-foundation`, `git_head_sha` = C02 proof head | PASS | `pipeline.git_head_sha` `d749accc68be408ae79d06e25946128b9cf7bdc3` |
+| `working_tree_clean` reported truthfully as observed | PASS | `true` - the capture ran after the head was committed and pushed |
+| Repository index completes | PASS | `index_status` COMPLETED |
+| Corpus syncs and reports `CURRENT` | PASS | 135 repository sources, 229 chunks (27 new, 202 reused), sync `2026-09-23T14:32:26.846415Z` |
+| Canonical retrieval resolves, ranks published as measured | PASS | `13-CHECKPOINT.md` rank 4, `04-ARCHITECTURE.md` rank 7, `15-DEFINITION-OF-DONE.md` rank 9 of a 20-result window |
+| Real MCP session through `scripts/hive_mcp.py` | PASS | `mcp-proof.json`: `initialize` (`protocolVersion` 2025-06-18, `hive-mcp`/`mcp-core-surface-v1`), `tools/list`, exit 0, stderr empty |
+| `tools/list` is exactly the seven governed read-only tools | PASS | `toolsAreExactlyTheGovernedSeven` true, `allReadOnly` true |
+| Four executed calls with raw responses | PASS | `project.list`, `project.status`, `context.search`, `checkpoint.read` |
+| Launcher provably targets the pinned isolated project | PASS | `isolationProbe`: ambient `COMPOSE_PROJECT_NAME=hive-v102` left in place, compose file still declares `name: hive`, and the answering container resolves by `docker inspect` to `isoryn-c02-v100-api-1` with label `isoryn-c02-v100`, reporting head `d749accc68be` from inside the mount |
+| Concurrent HIVE runtimes untouched | PASS | `concurrentRuntimeBeforeAfter`: 29 containers before, 29 after, none appeared, none disappeared, none changed; the only moving values are `/health` response timestamps. The materialization window is recorded separately with its own 19 identical and 4 externally restarted |
+| Exact-head Governance | PASS at `d749accc68be` | run 35874710441, job 107227520570, quoted in `checks.json` `governanceRun` |
+
+The proof stack is deliberately left running so the integration is currently demonstrable; retiring it is one
+named command in `residualRisks`.
+
 ## What is proved, not asserted
 
 - **HIVE** (`hivePreflight`): health, exact-relative-path resolution without name collision, inspect
@@ -126,6 +180,10 @@ observe its own run, so `gh pr checks 2 --required` on the pull request is the a
 - **GitHub** (`github`): repository settings and the `main-governance` ruleset as captured BEFORE and
   AFTER through authenticated `gh`, plus `gh ruleset check main` read-back and the honest
   `NOT_AVAILABLE` responses of the optional security endpoints.
+- **Workspace authority** (`c02Recovery.canonicalWorkspace`): the canonical path the Project Brain names exists
+  as a real checkout of this repository on this branch, and the HIVE and MCP proofs above were produced by a
+  container that mounted that path read-only and reported its head back from inside the mount. A proof run in
+  some other directory is bound to that directory, so this is what makes the earlier ones speak to the authority.
 
 ## Declared gaps
 
@@ -140,12 +198,22 @@ this file. That record is kept as written. `c01Recovery` closes it: the pinned b
 again, isolated, and re-proved against `f293fabfd4cd`, so the drift is closed by a new correction
 rather than by editing the drift out.
 
+`c02Recovery` closes the last criterion C01 left open. The gap was not a runtime gap but an authority
+gap - a correct proof in the wrong directory - and `hive-preflight.json` had said so in its own
+`workspaceNote` while still being offered as promotion evidence. `environmentDrift.c02Note` states that
+the workspace authority and the runtime proof now name the same tree. What remains genuinely unsolved is
+listed in `residualRisks`: retrieval is still lexical-only, so `15-DEFINITION-OF-DONE.md` ranks 9 of 20
+rather than first, and the machine's ambient Compose variables still make an unnamed `docker compose`
+command in the pinned checkout an act against someone else's stack.
+
 ## Stop condition
 
-`READY_FOR_C01_REVIEW` - the HIVE runtime drift that blocked promotion is closed by current,
-re-executed proof at `f293fabfd4cde0a202d917b75eee590567b2027e`, and `verdict` stays
-`AWAITING_INDEPENDENT_REVIEW`. The Work Order forbids merging and forbids starting engine
-implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to an independent audit.
+`READY_FOR_C02_REVIEW` - the canonical workspace the Project Brain names now exists, and the isolated
+pinned HIVE v1.0.0 registration, index, corpus, retrieval and MCP proofs were re-executed against it at
+`d749accc68be408ae79d06e25946128b9cf7bdc3`, with the concurrent runtimes shown unchanged across the
+window. `verdict` stays `AWAITING_INDEPENDENT_REVIEW`. The Work Order forbids merging and forbids
+starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and promotion - including the
+`BLOCKERS NONE` line C02 is now entitled to propose - belongs to an independent audit at this head.
 
 ```json
 {
@@ -160,19 +228,19 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
     "url": "https://github.com/KayzenRoot/isoryn-engine/pull/2",
     "state": "OPEN",
     "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
-    "headSha": "b8b5e90940356c69e85511e29c940f1f093977fc",
+    "headSha": "d749accc68be408ae79d06e25946128b9cf7bdc3",
     "mergedAt": null,
     "merged": false,
     "autoMergeRequest": null,
-    "headShaNote": "Recorded from the remote when this bundle was generated, so it names the last pushed head, not the evidence commit itself - a pull request receipt cannot contain its own SHA. The follow-up evidence commit refreshes it alongside ciObservations.",
+    "headShaNote": "Recorded from the remote when this bundle was refreshed, so it names the last pushed head, not the evidence commit itself - a pull request receipt cannot contain its own SHA. The follow-up evidence commit refreshes it alongside ciObservations.",
     "note": "Open for independent review. The Work Order forbids merging, and the executor does not merge or self-approve."
   },
   "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
   "headSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
   "candidateHeadSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
-  "bundleCommitHead": "b8b5e90940356c69e85511e29c940f1f093977fc",
+  "bundleCommitHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
   "proofsBindNote": "headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against, and ciObservations is complete through it. The commit that actually carries this file is its descendant - no commit can observe its own Actions run - so that run is read from GitHub on the pull request instead of being claimed here, and environmentDrift states what could not be re-executed between headSha and the bundle head.",
-  "headBindingNote": "Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations.",
+  "headBindingNote": "Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations. C02 adds one more binding: the HIVE and MCP receipts under c02Recovery are bound to d749accc68be, the head they were re-executed against and the head that carries them, while every earlier record above keeps the head it was produced at.",
   "admissionBaseSha": "dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362",
   "priorWorkOrderCommits": [
     {
@@ -1088,6 +1156,51 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
   },
   "ciObservations": [
     {
+      "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35874710441/job/107227520570",
+      "detail": "GitHub check-run for this exact commit, read through the API. This is the C02 canonical workspace proof head."
+    },
+    {
+      "head": "8d4a76052869df276c34ec56c217a4595ae00425",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35868575444/job/107206378500",
+      "detail": "GitHub check-run for this exact commit, read through the API. The reviewer head that issued C02."
+    },
+    {
+      "head": "47838e4d102e17ee35a5068443091b91e40a23b9",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35866516664/job/107199374162",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35854318100/job/107159087105",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
+      "head": "9f5dd767e9bd9972b2e98fed46abbae90202cd46",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35638179286/job/106460697408",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
+    {
       "head": "b8b5e90940356c69e85511e29c940f1f093977fc",
       "context": "Governance",
       "status": "completed",
@@ -1202,7 +1315,7 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
       "result": "HIVE_RUNTIME_DRIFT CLOSED for the governed v1.0.0 baseline: the pinned runtime runs isolated and re-proves health, registration, READY, index, corpus, canonical retrieval and MCP at the C01 head.",
       "stillTrueAfterClosure": "The machine-level default runtime on 127.0.0.1:8000 is HIVE 1.0.2 and has no ISORYN registration. Integrations that follow the ambient environment still reach it, so every ISORYN HIVE call has to name the pinned stack explicitly."
     },
-    "c02Note": "C02 re-executed the whole HIVE and MCP pipeline from the canonical workspace at 8eba7b4ef6258d708fdf24554822310531f151f3, so the runtime proof and the workspace authority now agree."
+    "c02Note": "C02 re-executed the whole HIVE and MCP pipeline from the canonical workspace at d749accc68be408ae79d06e25946128b9cf7bdc3, so the runtime proof and the workspace authority now agree."
   },
   "unsupportedPlatformFeatures": [
     {
@@ -1292,6 +1405,16 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
       "error": "The isolation probe first reported FAIL against a correctly isolated container.",
       "detail": "It compared the container's answer to the expected container name, but Docker sets hostname to the container id, so a correct answer could not match. The probe also ran git without the safe.directory exception HIVE itself passes, and recorded a spurious fatal.",
       "correction": "The probe now resolves the reported hostname through docker inspect and asserts the Compose project label and container name of whatever answered, and mirrors HIVE's git invocation. It passes with the ambient COMPOSE_PROJECT_NAME still pointing at another live stack."
+    },
+    {
+      "error": "The C02 proof was first bound to a head that did not carry the record of it.",
+      "detail": "The receipts installed by commit d749acc declared proofHead 8eba7b4, the commit that only added the runbook section. The evidence that reads those receipts therefore described a different tree than the one it lives in, which is exactly the inheritance-by-proximity this bundle exists to prevent.",
+      "correction": "The whole pipeline - bootstrap, inspect, index, corpus sync, three retrieval queries, the isolation probe and the MCP session - was re-run against d749acc with a clean working tree, and every receipt and rank here now comes from that run. No receipt was re-dated: the earlier 8eba7b4 measurements stay true for that head and are named separately in proofLineage."
+    },
+    {
+      "error": "A concurrency comparison reported two containers as changed when none was.",
+      "detail": "Docker returns a container's mount list in nondeterministic order, so an unsorted field-by-field compare flagged hive-postgres-1 and hive-v102-redis-1 purely because their two binds swapped positions between the snapshots.",
+      "correction": "Mounts are sorted by source before comparison and the method states so. With that applied the re-proof window shows 29 containers before, 29 after, none appeared, none disappeared and none changed; the only moving values anywhere are /health response timestamps, which differ on any two calls."
     }
   ],
   "residualRisks": [
@@ -1304,7 +1427,7 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
     "HIVE's staleness guard ignores untracked paths ('git status --porcelain=v1 --untracked-files=no') but fails closed on any modified tracked path, and its index walks the working tree so untracked files are indexed too. Proofs are therefore captured from a head with no dirty tracked paths; the Evidence Bundle's own untracked artifacts are listed in matrix.log as an observation rather than hidden.",
     "The machine's own environment still exports COMPOSE_PROJECT_NAME=hive-v102 and HIVE_DATA_ROOT=D:/HIVE, and the pinned checkout's compose file declares name: hive. Every ISORYN call must therefore keep naming the pinned stack through HIVE_COMPOSE_PROJECT; a plain docker compose command in that checkout targets someone else's stack.",
     "D:\\Hive is also the read-write data root of the concurrent HIVE 1.0.2 stack. The canonical workspace now lives one level inside that tree, so an operator who registers it in that runtime could have HIVE relocate the working copy, as HIVE 1.0 has done to other worktrees on this machine. No registration was made there by this correction.",
-    "docs/project-brain/15-DEFINITION-OF-DONE.md ranks 12 of 20 for the query 'Definition of Done' while retrieval is lexical-only, because the evidence bundle repeats the phrase more often than the canonical page does. Widening the window is what made it visible; it is not fixed.",
+    "docs/project-brain/15-DEFINITION-OF-DONE.md ranks 9 of 20 for the query 'Definition of Done' while retrieval is lexical-only, because the evidence bundle repeats the phrase more often than the canonical page does. Widening the window is what made it visible; it is not fixed.",
     "HIVE v1.0.0 exists on this machine only as a tagged object inside the 1.0.2 store plus the operator-local copy this correction built from it. There is no independent durable v1.0.0 checkout, so the pinned proof depends on the operator keeping that store.",
     "A retrieval proof is valid only for the head it was taken at: any new commit requires re-inspect, re-index, re-sync and a re-run before HIVE context is treated as current.",
     "The proof stack is left running on purpose (127.0.0.1:18199, project isoryn-c02-v100) so the integration is currently functioning. To retire it: docker compose -p isoryn-c02-v100 --env-file D:/isoryn-c02-hive-proof/isoryn-c02.env down, which names this project and no other."
@@ -1501,15 +1624,16 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
       "requiredChecks": "gh pr checks 2 --required -> Governance pass"
     }
   },
-  "c02GeneratedAt": "2026-09-23T14:23:58Z",
+  "c02GeneratedAt": "2026-09-23T14:41:32Z",
   "c02Recovery": {
     "trigger": "Independent re-review at 8d4a76052869df276c34ec56c217a4595ae00425 kept the C01 runtime proof and blocked promotion on CANONICAL_WORKSPACE_MISMATCH: C01 had re-proved the pinned baseline, but against D:\\Projects\\isoryn-engine while README.md, docs/project-brain/12-LOCAL-DEPLOYMENT.md and docs/project-brain/13-CHECKPOINT.md all define D:\\Hive\\Projects\\isoryn-engine.",
     "proofLineage": {
       "historicalHiveProofHead": "d5de04c5ac157236de55875bb530f81d3d02ce86",
       "c01RuntimeRecoveryHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
       "reviewerCorrectionHeadIssuingC02": "8d4a76052869df276c34ec56c217a4595ae00425",
-      "c02CanonicalProofHead": "8eba7b4ef6258d708fdf24554822310531f151f3",
-      "note": "Each proof below was executed against the canonical working copy at 8eba7b4ef6258d708fdf24554822310531f151f3. Earlier records are kept as written for their own heads and are not restated."
+      "c02MaterializeHead": "8eba7b4ef6258d708fdf24554822310531f151f3",
+      "c02CanonicalProofHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+      "note": "8eba7b4 materialized the canonical workspace and changed no evidence; the full HIVE and MCP pipeline was then re-run against the pushed evidence head d749accc68be408ae79d06e25946128b9cf7bdc3, so the head the proof is bound to is the head that carries the record of it. Earlier records are kept as written for their own heads and are not restated."
     },
     "canonicalWorkspace": {
       "path": "D:\\Hive\\Projects\\isoryn-engine",
@@ -1558,14 +1682,17 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
       "answeredContainerHostname": "59f1dfd72f90",
       "answeredProjectLabel": "isoryn-c02-v100",
       "answeredConfigFiles": "D:\\isoryn-c02-hive-proof\\app\\docker-compose.yml",
-      "headSeenInsideContainer": "8eba7b4ef6258d708fdf24554822310531f151f3",
+      "headSeenInsideContainer": "d749accc68be408ae79d06e25946128b9cf7bdc3",
       "result": "PASS",
       "meaning": "The ambient COMPOSE_PROJECT_NAME pointed at a different live stack for the whole session and the pinned compose file still declares name: hive, so the only reason the launcher reached isoryn-c02-v100 is the explicit -p that HIVE_COMPOSE_PROJECT adds. The container that answered named itself back."
     },
     "concurrentRuntimeBeforeAfter": {
-      "method": "docker inspect field comparison of every container that existed BEFORE C02, excluding the isoryn-c02-v100 stack this correction created",
-      "beforeCapturedAt": "2026-09-23T13:52:33.682594+00:00",
-      "afterCapturedAt": "2026-09-23T14:18:52.269077+00:00",
+      "window": "the re-proof window that produced every measurement in this record",
+      "method": "docker inspect field comparison of every container present in the re-proof window, mount lists sorted by source before comparing (Docker returns them in nondeterministic order)",
+      "beforeCapturedAt": "2026-09-23T14:31:35.261391+00:00",
+      "afterCapturedAt": "2026-09-23T14:33:00.593488+00:00",
+      "containersBefore": 29,
+      "containersAfter": 29,
       "unchangedContainers": [
         "hive | hive-api-1",
         "hive | hive-dashboard-1",
@@ -1579,38 +1706,33 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
         "hive-v102 | hive-v102-postgres-1",
         "hive-v102 | hive-v102-redis-1",
         "hive-v102 | hive-v102-storage-init-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-api-1",
         "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-dashboard-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-migration-1",
         "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-postgres-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-redis-1",
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-storage-init-1",
         "isoryn-c01-v100 | isoryn-c01-v100-api-1",
         "isoryn-c01-v100 | isoryn-c01-v100-migration-1",
         "isoryn-c01-v100 | isoryn-c01-v100-postgres-1",
         "isoryn-c01-v100 | isoryn-c01-v100-redis-1",
-        "isoryn-c01-v100 | isoryn-c01-v100-storage-init-1"
+        "isoryn-c01-v100 | isoryn-c01-v100-storage-init-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-api-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-dashboard-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-migration-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-postgres-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-redis-1",
+        "isoryn-c02-v100 | isoryn-c02-v100-storage-init-1"
       ],
-      "changedContainers": {
-        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-api-1": [
-          "started_at: 2026-09-23T13:51:23.664072179Z -> 2026-09-23T14:18:40.758516949Z"
-        ],
-        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-migration-1": [
-          "started_at: 2026-09-23T13:42:19.382253199Z -> 2026-09-23T14:16:04.921159561Z"
-        ],
-        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-redis-1": [
-          "started_at: 2026-09-23T13:51:56.812763102Z -> 2026-09-23T14:17:10.850870909Z",
-          "state: running -> exited",
-          "health: healthy -> unhealthy"
-        ],
-        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-storage-init-1": [
-          "started_at: 2026-09-23T13:42:18.819908545Z -> 2026-09-23T14:16:04.153990022Z"
-        ]
-      },
-      "changedAttribution": "Every changed container belongs to the hive-wo031-fast-159ac90 stack, which no command in this session names; its own owner restarted it during the C02 window (its api/redis/migration/storage-init StartedAt values move forward and its health answers 503 between the two snapshots). All commands this correction ran against Docker were 'docker compose -p isoryn-c02-v100 ...', plus read-only docker ps/inspect.",
+      "changedContainers": {},
+      "changedAttribution": "No container changed in this window. The 1.0.2 stack on 127.0.0.1:8000 and the hive-wo031-fast-159ac90 stack are byte-for-byte identical across the two snapshots, and the only values that move anywhere are the /health response timestamps, which differ on any two calls.",
       "concurrentHealthBefore": {
         "hive-v102": "1.0.2",
         "hive-wo031-fast-159ac90": "1.0.2"
       },
       "concurrentHealthAfter": {
         "hive-v102": "1.0.2",
-        "hive-wo031-fast-159ac90": "<HTTPError 503: 'Service Unavailable'>"
+        "hive-wo031-fast-159ac90": "1.0.2"
       },
       "dHiveTopLevelBefore": [
         "cas",
@@ -1630,14 +1752,73 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
         "redis",
         "tmp"
       ],
-      "siblingWorktrees": {
+      "worktreesObserved": {
         "core": {
-          "before": "0eafc1682f31edadca935d1d47d9cf4baf2bf82f clean",
-          "after": "unchanged"
+          "before": {
+            "head": "0eafc1682f31edadca935d1d47d9cf4baf2bf82f",
+            "branch": "feat/m01-core-runtime",
+            "porcelain": ""
+          },
+          "after": {
+            "head": "0eafc1682f31edadca935d1d47d9cf4baf2bf82f",
+            "branch": "feat/m01-core-runtime",
+            "porcelain": ""
+          }
+        },
+        "isoryn-engine": {
+          "before": {
+            "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+            "branch": "isoryn-wo-0001-foundation",
+            "porcelain": ""
+          },
+          "after": {
+            "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+            "branch": "isoryn-wo-0001-foundation",
+            "porcelain": ""
+          }
         },
         "nexlabs-web": {
-          "before": "79fd8c709ea73fb017545b835f9073288ce2af10 clean",
-          "after": "unchanged"
+          "before": {
+            "head": "79fd8c709ea73fb017545b835f9073288ce2af10",
+            "branch": "codex/cp-02r-hive-mcp-corrective",
+            "porcelain": ""
+          },
+          "after": {
+            "head": "79fd8c709ea73fb017545b835f9073288ce2af10",
+            "branch": "codex/cp-02r-hive-mcp-corrective",
+            "porcelain": ""
+          }
+        }
+      },
+      "materializationWindow": {
+        "window": "the earlier window that cloned the canonical workspace and ran the first C02 proof at 8eba7b4ef6258d708fdf24554822310531f151f3",
+        "beforeCapturedAt": "2026-09-23T13:52:33.682594+00:00",
+        "afterCapturedAt": "2026-09-23T14:18:52.269077+00:00",
+        "unchangedContainers": 19,
+        "changedContainers": {
+          "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-api-1": [
+            "started_at: 2026-09-23T13:51:23.664072179Z -> 2026-09-23T14:18:40.758516949Z"
+          ],
+          "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-migration-1": [
+            "started_at: 2026-09-23T13:42:19.382253199Z -> 2026-09-23T14:16:04.921159561Z"
+          ],
+          "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-redis-1": [
+            "started_at: 2026-09-23T13:51:56.812763102Z -> 2026-09-23T14:17:10.850870909Z",
+            "state: running -> exited",
+            "health: healthy -> unhealthy"
+          ],
+          "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-storage-init-1": [
+            "started_at: 2026-09-23T13:42:18.819908545Z -> 2026-09-23T14:16:04.153990022Z"
+          ]
+        },
+        "changedAttribution": "Every changed container belongs to the hive-wo031-fast-159ac90 stack, which no command in this session names; its own owner restarted it during the C02 window (its api/redis/migration/storage-init StartedAt values move forward and its health answers 503 between the two snapshots). All commands this correction ran against Docker were 'docker compose -p isoryn-c02-v100 ...', plus read-only docker ps/inspect.",
+        "concurrentHealthBefore": {
+          "hive-v102": "1.0.2",
+          "hive-wo031-fast-159ac90": "1.0.2"
+        },
+        "concurrentHealthAfter": {
+          "hive-v102": "1.0.2",
+          "hive-wo031-fast-159ac90": "<HTTPError 503: 'Service Unavailable'>"
         }
       },
       "canonicalCopyIsTheOnlyAddition": "D:/Hive/Projects gained one entry, isoryn-engine; the two existing worktrees and every other directory under D:/Hive are byte-for-byte where they were."
@@ -1649,7 +1830,7 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
         "state": "READY",
         "repository_accessible": true,
         "git_branch": "isoryn-wo-0001-foundation",
-        "git_head_sha": "8eba7b4ef6258d708fdf24554822310531f151f3",
+        "git_head_sha": "d749accc68be408ae79d06e25946128b9cf7bdc3",
         "working_tree_clean": true
       },
       "index": "COMPLETED",
@@ -1657,24 +1838,24 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
         "status": "COMPLETED",
         "state": "CURRENT",
         "repository_source_count": 135,
-        "chunk_count": 224,
-        "reference_count": 224,
-        "last_successful_sync": "2026-09-23T14:17:15.852061Z"
+        "chunk_count": 229,
+        "reference_count": 229,
+        "last_successful_sync": "2026-09-23T14:32:26.846415Z"
       },
       "retrieval": {
         "checkpoint status phase objective": {
           "target": "docs/project-brain/13-CHECKPOINT.md",
-          "rank": 3,
+          "rank": 4,
           "window": 20
         },
         "Definition of Done": {
           "target": "docs/project-brain/15-DEFINITION-OF-DONE.md",
-          "rank": 12,
+          "rank": 9,
           "window": 20
         },
         "Godot engine foundation architecture": {
           "target": "docs/project-brain/04-ARCHITECTURE.md",
-          "rank": 3,
+          "rank": 7,
           "window": 20
         }
       },

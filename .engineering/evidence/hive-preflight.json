@@ -1,9 +1,15 @@
 {
   "api": "http://127.0.0.1:18199",
   "result": "PASS",
-  "capturedAt": "2026-09-23T14:22:41Z",
-  "proofHead": "8eba7b4ef6258d708fdf24554822310531f151f3",
+  "capturedAt": "2026-09-23T14:38:42Z",
+  "proofHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
   "correction": "ISORYN-WO-0001-C02",
+  "proofLineage": {
+    "reviewerHeadIssuingC02": "8d4a76052869df276c34ec56c217a4595ae00425",
+    "materializeHead": "8eba7b4ef6258d708fdf24554822310531f151f3",
+    "proofHead": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+    "note": "8eba7b4 is the commit that materialized the canonical workspace and carries no evidence change; the whole HIVE/MCP proof was then re-run against the pushed evidence head d749acc, so this receipt is bound to the head that actually carries it."
+  },
   "supersedes": {
     "head": "f293fabfd4cde0a202d917b75eee590567b2027e",
     "reason": "CANONICAL_WORKSPACE_MISMATCH closed by C02"
@@ -47,39 +53,27 @@
     "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
     "relative_path": "isoryn-engine",
     "git_branch": "isoryn-wo-0001-foundation",
-    "git_head_sha": "8eba7b4ef6258d708fdf24554822310531f151f3",
+    "git_head_sha": "d749accc68be408ae79d06e25946128b9cf7bdc3",
     "state": "READY",
     "working_tree_clean": true,
     "index_status": "COMPLETED",
     "corpus_status": "COMPLETED",
     "repository_accessible": true,
     "registrationResolvesBy": "exact relative path isoryn-engine under the mounted projects root",
-    "rawStdout": "HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-23T14:16:55.734458Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}\nResolved existing ISORYN registration by exact relative path.\n{\n  \"project_id\": \"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\n  \"relative_path\": \"isoryn-engine\",\n  \"git_branch\": \"isoryn-wo-0001-foundation\",\n  \"git_head_sha\": \"8eba7b4ef6258d708fdf24554822310531f151f3\",\n  \"state\": \"READY\",\n  \"working_tree_clean\": true,\n  \"index_status\": \"COMPLETED\",\n  \"corpus_status\": \"COMPLETED\"\n}\n"
+    "rawStdout": "HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-23T14:32:01.814665Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}\nResolved existing ISORYN registration by exact relative path.\n{\n  \"project_id\": \"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\n  \"relative_path\": \"isoryn-engine\",\n  \"git_branch\": \"isoryn-wo-0001-foundation\",\n  \"git_head_sha\": \"d749accc68be408ae79d06e25946128b9cf7bdc3\",\n  \"state\": \"READY\",\n  \"working_tree_clean\": true,\n  \"index_status\": \"COMPLETED\",\n  \"corpus_status\": \"COMPLETED\"\n}\n"
   },
   "classification": null,
   "concurrentRuntimeNote": "D:\\Hive is also the read-write data root of the operator's newer HIVE 1.0.2 stack (it mounts D:/HIVE at /var/lib/hive and its projects root is D:/Projects). Creating D:\\Hive\\Projects\\isoryn-engine added one directory inside that tree: no existing entry under D:\\Hive was deleted, renamed, moved or overwritten, and the sibling worktrees core and nexlabs-web are at the same heads and equally clean before and after. ISORYN is not registered in the 1.0.2 runtime and no call in this correction was made against it.",
   "note": "Derived state only: Git and the canonical checkpoint outrank HIVE. working_tree_clean is reported as observed and never edited into a true value.",
   "beforeAfterReceipts": {
-    "beforeCapturedAt": "2026-09-23T13:52:33.682594+00:00",
-    "afterCapturedAt": "2026-09-23T14:18:52.269077+00:00",
-    "concurrentContainersIdentical": 19,
-    "concurrentContainersChanged": {
-      "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-api-1": [
-        "started_at: 2026-09-23T13:51:23.664072179Z -> 2026-09-23T14:18:40.758516949Z"
-      ],
-      "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-migration-1": [
-        "started_at: 2026-09-23T13:42:19.382253199Z -> 2026-09-23T14:16:04.921159561Z"
-      ],
-      "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-redis-1": [
-        "started_at: 2026-09-23T13:51:56.812763102Z -> 2026-09-23T14:17:10.850870909Z",
-        "state: running -> exited",
-        "health: healthy -> unhealthy"
-      ],
-      "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-storage-init-1": [
-        "started_at: 2026-09-23T13:42:18.819908545Z -> 2026-09-23T14:16:04.153990022Z"
-      ]
-    },
-    "changedAttribution": "Every changed container belongs to the hive-wo031-fast-159ac90 stack, which no command in this session names; its own owner restarted it during the C02 window (its api/redis/migration/storage-init StartedAt values move forward and its health answers 503 between the two snapshots). All commands this correction ran against Docker were 'docker compose -p isoryn-c02-v100 ...', plus read-only docker ps/inspect.",
+    "window": "re-proof at d749accc68be, bracketing every command that produced this receipt",
+    "beforeCapturedAt": "2026-09-23T14:31:35.261391+00:00",
+    "afterCapturedAt": "2026-09-23T14:33:00.593488+00:00",
+    "containersBefore": 29,
+    "containersAfter": 29,
+    "concurrentContainersIdentical": 29,
+    "concurrentContainersChanged": {},
+    "changedAttribution": "No container changed in this window. The 1.0.2 stack on 127.0.0.1:8000 and the hive-wo031-fast-159ac90 stack are byte-for-byte identical across the two snapshots, and the only values that move anywhere are the /health response timestamps, which differ on any two calls.",
     "dHiveTopLevelBefore": [
       "cas",
       "data",
@@ -97,6 +91,75 @@
       "projects",
       "redis",
       "tmp"
-    ]
+    ],
+    "existingRegisteredWorktrees": {
+      "core": {
+        "before": {
+          "head": "0eafc1682f31edadca935d1d47d9cf4baf2bf82f",
+          "branch": "feat/m01-core-runtime",
+          "porcelain": ""
+        },
+        "after": {
+          "head": "0eafc1682f31edadca935d1d47d9cf4baf2bf82f",
+          "branch": "feat/m01-core-runtime",
+          "porcelain": ""
+        }
+      },
+      "isoryn-engine": {
+        "before": {
+          "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+          "branch": "isoryn-wo-0001-foundation",
+          "porcelain": ""
+        },
+        "after": {
+          "head": "d749accc68be408ae79d06e25946128b9cf7bdc3",
+          "branch": "isoryn-wo-0001-foundation",
+          "porcelain": ""
+        }
+      },
+      "nexlabs-web": {
+        "before": {
+          "head": "79fd8c709ea73fb017545b835f9073288ce2af10",
+          "branch": "codex/cp-02r-hive-mcp-corrective",
+          "porcelain": ""
+        },
+        "after": {
+          "head": "79fd8c709ea73fb017545b835f9073288ce2af10",
+          "branch": "codex/cp-02r-hive-mcp-corrective",
+          "porcelain": ""
+        }
+      }
+    },
+    "concurrentHealthBefore": {
+      "hive-v102": "1.0.2",
+      "hive-wo031-fast-159ac90": "1.0.2"
+    },
+    "concurrentHealthAfter": {
+      "hive-v102": "1.0.2",
+      "hive-wo031-fast-159ac90": "1.0.2"
+    },
+    "earlierWindow": {
+      "window": "materialization and first C02 proof at 8eba7b4ef625",
+      "beforeCapturedAt": "2026-09-23T13:52:33.682594+00:00",
+      "afterCapturedAt": "2026-09-23T14:18:52.269077+00:00",
+      "concurrentContainersIdentical": 19,
+      "concurrentContainersChanged": {
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-api-1": [
+          "started_at: 2026-09-23T13:51:23.664072179Z -> 2026-09-23T14:18:40.758516949Z"
+        ],
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-migration-1": [
+          "started_at: 2026-09-23T13:42:19.382253199Z -> 2026-09-23T14:16:04.921159561Z"
+        ],
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-redis-1": [
+          "started_at: 2026-09-23T13:51:56.812763102Z -> 2026-09-23T14:17:10.850870909Z",
+          "state: running -> exited",
+          "health: healthy -> unhealthy"
+        ],
+        "hive-wo031-fast-159ac90 | hive-wo031-fast-159ac90-storage-init-1": [
+          "started_at: 2026-09-23T13:42:18.819908545Z -> 2026-09-23T14:16:04.153990022Z"
+        ]
+      },
+      "changedAttribution": "Every changed container belongs to the hive-wo031-fast-159ac90 stack, which no command in this session names; its own owner restarted it during the C02 window (its api/redis/migration/storage-init StartedAt values move forward and its health answers 503 between the two snapshots). All commands this correction ran against Docker were 'docker compose -p isoryn-c02-v100 ...', plus read-only docker ps/inspect."
+    }
   }
 }
