@@ -53,6 +53,16 @@ foreach ($f in @($RepoManifest, $RulesetManifest)) {
   if (-not (Test-Path $f)) { throw "Missing desired-state manifest: $f" }
 }
 
+# Fail closed on a self-locking branch policy. GitHub's branch-ruleset "update" rule means only
+# bypass actors may update the matching ref. With an empty bypass_actors list, even an otherwise
+# valid pull request cannot be merged into main.
+$RulesetSafety = Get-Content $RulesetManifest -Raw | ConvertFrom-Json
+$RuleTypes = @($RulesetSafety.rules | ForEach-Object { $_.type })
+$BypassActors = @($RulesetSafety.bypass_actors)
+if (($RuleTypes -contains "update") -and $BypassActors.Count -eq 0) {
+  throw "Unsafe ruleset: restrict-updates is present with no bypass actor; this would make main unmergeable."
+}
+
 if (-not (Get-Command gh -ErrorAction SilentlyContinue)) { throw "GitHub CLI (gh) is required." }
 Invoke-Gh @("auth", "status")
 
