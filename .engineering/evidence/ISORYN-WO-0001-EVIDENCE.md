@@ -1424,6 +1424,11 @@ starting engine implementation; the checkpoint delta is `PROPOSED_ONLY`, and pro
       "error": "A concurrency comparison reported two containers as changed when none was.",
       "detail": "Docker returns a container's mount list in nondeterministic order, so an unsorted field-by-field compare flagged hive-postgres-1 and hive-v102-redis-1 purely because their two binds swapped positions between the snapshots.",
       "correction": "Mounts are sorted by source before comparison and the method states so. With that applied the re-proof window shows 29 containers before, 29 after, none appeared, none disappeared and none changed; the only moving values anywhere are /health response timestamps, which differ on any two calls."
+    },
+    {
+      "error": "A record stated the non-canonical copy was clean while it still held a superseded draft.",
+      "detail": "errorsFoundAndCorrected and hive-preflight.json both state that D:\\Projects\\isoryn-engine is untouched and carries no C02 work. Re-checking it at the end of this correction found an uncommitted 76-line edit to ISORYN-WO-0001-EVIDENCE.md: the first C02 prose draft, written before the work moved to the canonical copy. The claim was true of the intent, not of the tree.",
+      "correction": "The draft was exported to a patch outside the repository (D:/isoryn-c02-hive-proof/receipts/incumbent-stale-c02-draft.patch) rather than deleted, then the file was restored to its committed state with git restore --source=HEAD --worktree. The old copy is now verifiably clean at 8d4a76052869df276c34ec56c217a4595ae00425, which is what the record asserts, and nothing from it was merged into the canonical bundle because the canonical section carries the re-run numbers the draft predates."
     }
   ],
   "residualRisks": [
