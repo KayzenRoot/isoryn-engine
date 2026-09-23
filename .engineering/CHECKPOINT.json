@@ -2,8 +2,8 @@
   "schemaVersion": "isoryn-gef-checkpoint-bridge-v1",
   "viewStatus": "DERIVED_VIEW",
   "canonicalCheckpoint": "docs/project-brain/13-CHECKPOINT.md",
-  "status": "BOOTSTRAP APPROVED",
+  "status": "ARCHITECTURE DISCOVERY ACTIVE",
   "version": "ISORYN 0.0 - Clean Foundation",
-  "phase": "0 - GEF/HIVE Repository Foundation",
-  "nextStep": "Merge approved PR #2 by squash into main, confirm the resulting main head, then admit ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY from that exact base. Freeze architecture and toolchain decisions only from measured evidence before engine implementation begins."
+  "phase": "1 - Architecture / Godot Baseline / Toolchain Discovery",
+  "nextStep": "Execute ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY end to end: re-prove HIVE on this branch, verify the official Godot candidate matrix, build and measure the baseline toolchain, freeze evidence-backed architecture/version/topology boundaries, produce the Master Module Index and proprietary-technology registry, update canonical sources and stop at READY_FOR_ARCHITECTURE_TOOLCHAIN_AUDIT without production engine implementation."
 }

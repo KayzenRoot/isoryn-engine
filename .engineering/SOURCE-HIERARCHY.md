@@ -1,6 +1,6 @@
 # ISORYN Source Hierarchy
 
-Status: FROZEN_BOOTSTRAP
+Status: FROZEN_FOUNDATION
 
 REPOSITORY_STATE: exact Git files/commits/diffs/executable facts.
 PROJECT_STATE: docs/project-brain/13-CHECKPOINT.md.

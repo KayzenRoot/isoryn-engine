@@ -4,13 +4,13 @@ Status: DERIVED_VIEW
 Canonical source: docs/project-brain/13-CHECKPOINT.md
 
 ## STATUS
-BOOTSTRAP APPROVED
+ARCHITECTURE DISCOVERY ACTIVE
 
 ## VERSION
 ISORYN 0.0 - Clean Foundation
 
 ## PHASE
-0 - GEF/HIVE Repository Foundation
+1 - Architecture / Godot Baseline / Toolchain Discovery
 
 ## NEXT STEP
-Merge approved PR #2 by squash into main, confirm the resulting main head, then admit ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY from that exact base. Freeze architecture and toolchain decisions only from measured evidence before engine implementation begins.
+Execute ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY end to end: re-prove HIVE on this branch, verify the official Godot candidate matrix, build and measure the baseline toolchain, freeze evidence-backed architecture/version/topology boundaries, produce the Master Module Index and proprietary-technology registry, update canonical sources and stop at READY_FOR_ARCHITECTURE_TOOLCHAIN_AUDIT without production engine implementation.
