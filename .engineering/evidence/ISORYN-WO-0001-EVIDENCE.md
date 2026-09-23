@@ -14,7 +14,7 @@ This bundle is machine-readable: the JSON block at the end is the payload
 | Admission base (origin/main at WO admission) | `dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362` |
 | PR base (`main` at branch cut) | `5fb0179b9c0a9a8f94f170dc299f199a7c7c883d` |
 | Head executed against | `d5de04c5ac157236de55875bb530f81d3d02ce86` |
-| Head this bundle was written against | `b8b5e90940356c69e85511e29c940f1f093977fc` |
+| Head this bundle was written against | `12e2148e5353e6424639d1afdf26954e0abc6531` (the commit carrying this sentence is its child) |
 | Reviewer correction head | `4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b` |
 | C01 HIVE recovery proof head | `f293fabfd4cde0a202d917b75eee590567b2027e` |
 | Reviewer correction head issuing C02 | `8d4a76052869df276c34ec56c217a4595ae00425` |
@@ -23,6 +23,7 @@ This bundle is machine-readable: the JSON block at the end is the payload
 | Reviewer head issuing C03 (desired state + regression guards, promotion revoked) | `a77e1e16bae1551d8a87e79d657d79813fbe318e` |
 | C03 application head (live ruleset, receipts, evidence refresh) | `e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8` |
 | C03 HIVE re-proof and MCP session head | `70996f5322990010a171c46b9e4f0288f3e585d0` |
+| C03 delivered head whose own check-run was read back | `12e2148e5353e6424639d1afdf26954e0abc6531` |
 | Canonical local workspace | `D:\Hive\Projects\isoryn-engine`, a real directory and not a junction |
 | Branch | `isoryn-wo-0001-foundation` |
 | GEF pin | v1.0.0 `866fe3af8cccc65c929aaf6a47a924401fa448b3` |
@@ -198,7 +199,8 @@ is already running on GitHub, so C03 executed the application through the author
 | Squash-only merge policy and no impossible approval gate | PASS | `allowed_merge_methods: ["squash"]`, `required_approving_review_count: 0`, `require_code_owner_review: false` |
 | Configurator applied the manifest and captured BEFORE/AFTER | PASS | `.engineering/evidence/github/before-ruleset-23776080.json`, `after-ruleset.json`, `ruleset-check-main.txt`, `ruleset-view.txt` |
 | Application is idempotent | PASS | `configure-github-c03-idempotency.log`, second run exit 0, same ruleset id, nothing moved |
-| Pull request mergeability corroborated without merging | PASS | `pr-verification-c03.txt`: `state OPEN`, `mergeable MERGEABLE`, `mergeStateStatus CLEAN`, and no merge was attempted |
+| Pull request mergeability corroborated without merging | PASS | `pr-verification-c03.txt` and `pr-verification-c03-final-head.txt`: `state OPEN`, `mergeable MERGEABLE`, `mergeStateStatus CLEAN`, `mergedAt null`, and no merge was attempted |
+| Required check green on the delivered head itself | PASS | run 35887776564 / job 107272233729 `conclusion success` on `12e2148e5353e6424639d1afdf26954e0abc6531`, read from GitHub after the run completed |
 | Regression guards present | PASS | two added tests, suite now 29 tests |
 
 The BEFORE and AFTER receipts are the whole argument, so they are quoted rather than summarised. Before, six rules
@@ -208,6 +210,13 @@ including the lock; after, five:
 before: non_fast_forward, deletion, required_linear_history, update, pull_request, required_status_checks
 after:  non_fast_forward, deletion, required_linear_history,             pull_request, required_status_checks
 ```
+
+The ruleset state was read back a third time after the last evidence commit landed, because the claim acceptance
+item 9 makes is about the delivered head, not about the head that happened to be checked out when the command was
+applied. `pr-verification-c03-final-head.txt` records `5 rules apply`, `bypass_actors: []`, `updated_at` still
+`2026-09-23T12:28:10.071-03:00` - the unlock itself, unmoved by anything since - and the `Governance` check-run
+GitHub executed against `12e2148e5353` with `conclusion success`. That file was added rather than editing
+`pr-verification-c03.txt`, which names `a77e1e16bae1` and is kept as captured.
 
 One capture had to be disclosed rather than trusted. `scripts/configure-github.ps1` writes each receipt to a fixed
 path, so the second, idempotency-proving run overwrote `before-ruleset-23776080.json` with the already-corrected
@@ -321,17 +330,17 @@ earned, and promotion belongs to an independent audit of the delivered head.
     "url": "https://github.com/KayzenRoot/isoryn-engine/pull/2",
     "state": "OPEN",
     "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
-    "headSha": "70996f5322990010a171c46b9e4f0288f3e585d0",
+    "headSha": "12e2148e5353e6424639d1afdf26954e0abc6531",
     "mergedAt": null,
     "merged": false,
     "autoMergeRequest": null,
-    "headShaNote": "Recorded from the remote when this bundle was refreshed, so it names the last pushed head whose Governance run was read back through the API - 70996f532299. The commit that carries this sentence is its child and cannot contain its own SHA; its required check is read from the pull request in the delivery report.",
+    "headShaNote": "Recorded from the remote when this bundle was refreshed, so it names the last pushed head whose Governance run was read back through the API - 12e2148e5353, run 35887776564, conclusion success. The commit that carries this sentence is its child and cannot contain its own SHA; its required check is read from the pull request in the delivery report.",
     "note": "Open for independent review. The Work Order forbids merging, and the executor does not merge or self-approve."
   },
   "baseSha": "5fb0179b9c0a9a8f94f170dc299f199a7c7c883d",
   "headSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
   "candidateHeadSha": "d5de04c5ac157236de55875bb530f81d3d02ce86",
-  "bundleCommitHead": "70996f5322990010a171c46b9e4f0288f3e585d0",
+  "bundleCommitHead": "12e2148e5353e6424639d1afdf26954e0abc6531",
   "proofsBindNote": "headSha is the tree every measurement in this bundle was executed against, taken from the HIVE inspection receipt rather than from the local checkout, so a later evidence-only or documentation commit can never inherit those proofs by proximity. bundleCommitHead is the head this bundle was written against, and ciObservations is complete through it. The commit that actually carries this file is its descendant - no commit can observe its own Actions run - so that run is read from GitHub on the pull request instead of being claimed here, and environmentDrift states what could not be re-executed between headSha and the bundle head.",
   "headBindingNote": "Every entry in checks was executed against this exact tree by a capture tool that runs outside the repository and installs its receipts into this directory afterwards, so no measurement was taken of a tree the capture itself had dirtied. The governance_validator and unittest_suite gates read this bundle, so they cannot be satisfied by the code head alone: they execute against the head that contains this file, and GitHub Actions re-executes them on that head, which is the authority for the reviewed commit. See ciObservations. C02 adds one more binding: the HIVE and MCP receipts under c02Recovery are bound to d749accc68be, the head they were re-executed against and the head that carries them, while every earlier record above keeps the head it was produced at.",
   "admissionBaseSha": "dfe6b0547f0c46c6f0afb14cb4cfa6b3c8a17362",
@@ -2379,8 +2388,23 @@ earned, and promotion belongs to an independent audit of the delivered head.
         "result": "PASS",
         "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887146651/job/107270084523",
         "detail": "GitHub check-run for the head every HIVE and MCP measurement in this record was taken against."
+      },
+      {
+        "head": "12e2148e5353e6424639d1afdf26954e0abc6531",
+        "context": "Governance",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887776564/job/107272233729",
+        "detail": "Required check on the delivered head, read through the API after the run completed: conclusion success, and the live ruleset still reports five rules with no bypass actor. Recorded here by its child commit, which cannot contain its own SHA and whose check is read from the pull request."
       }
     ],
+    "deliveredHeadReadBack": {
+      "head": "12e2148e5353e6424639d1afdf26954e0abc6531",
+      "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887776564/job/107272233729",
+      "receipt": ".engineering/evidence/github/pr-verification-c03-final-head.txt",
+      "whyReadAgain": "AC-09 is a claim about the delivered head, so the ruleset and the required check were re-read from GitHub after the last evidence commit landed instead of being inherited from the head the command was first run against.",
+      "deltaFromApplicationHead": "evidence-only: nothing under scripts/, docs/ or tests/ changed after e0e0bd5056e6, so the validator, the unit suite and the applied live ruleset are the same objects this record claims.",
+      "limit": "The HIVE and MCP receipts stay bound to 70996f532299 on purpose. Re-running them here would move the proof head to a commit that then cannot carry its own receipt, which is the loop the C02 carrierHead record states once instead of hiding behind a matching SHA."
+    },
     "hiveReproof": {
       "stackReuse": "reused isoryn-c02-v100 after proving it healthy and isolated; nothing was recreated, restarted or retargeted",
       "proofHead": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",

@@ -46,6 +46,8 @@
     "mcp_handshake": "PASS",
     "mcp_readonly_calls_without_error": "PASS",
     "governance_ci_at_both_c03_heads": "PASS",
+    "governance_ci_on_delivered_head": "PASS",
+    "live_ruleset_re_read_on_delivered_head": "PASS",
     "concurrent_hive_untouched": "PASS"
   },
   "governanceRun": {
@@ -60,6 +62,14 @@
     "head": "e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8",
     "result": "PASS",
     "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35885436589/job/107264269626"
+  },
+  "governanceRunOnDeliveredHead": {
+    "head": "12e2148e5353e6424639d1afdf26954e0abc6531",
+    "context": "Governance",
+    "result": "PASS",
+    "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35887776564/job/107272233729",
+    "receipt": ".engineering/evidence/github/pr-verification-c03-final-head.txt",
+    "note": "Read through the API after the run completed, together with a fresh live ruleset read (five rules, no bypass actor) and a pull-request read (OPEN, MERGEABLE, CLEAN, mergedAt null). The commit carrying this file is its child and cannot observe its own run, so gh pr checks 2 --required on the pull request is the authority for that one."
   },
   "carrierHeadNote": "mcp-proof.json and this file name 70996f532299, the head that was clean and indexed when they were measured; the commit carrying them is its descendant."
 }

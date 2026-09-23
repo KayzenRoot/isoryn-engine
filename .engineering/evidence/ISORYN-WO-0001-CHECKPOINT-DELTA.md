@@ -34,8 +34,10 @@ encoded instead of detecting:
 - PR #2 is `OPEN`, `MERGEABLE`, `mergeStateStatus CLEAN`, and was not merged.
 - HIVE v1.0.0 was re-proved for the C03 lineage against the reused isolated pinned stack at
   `70996f5322990010a171c46b9e4f0288f3e585d0`, including the real MCP session.
-- `Governance` passed on both C03 heads: run 35885436589 on `e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8` and run
-  35887146651 on `70996f5322990010a171c46b9e4f0288f3e585d0`.
+- `Governance` passed on every C03 head: run 35885436589 on `e0e0bd5056e68ce2b57ef68ade4fb46b50598cb8`, run
+  35887146651 on `70996f5322990010a171c46b9e4f0288f3e585d0`, and run 35887776564 on the delivered head
+  `12e2148e5353e6424639d1afdf26954e0abc6531`, each read from GitHub for the exact commit named. The live ruleset was
+  re-read alongside the last one and still applies five rules with no bypass actor.
 
 ## Proposed checkpoint field values
 
