@@ -99,8 +99,9 @@ class DesiredStateTests(unittest.TestCase):
         rules = {r["type"]: r.get("parameters", {}) for r in ruleset["rules"]}
         self.assertEqual(
             set(rules),
-            {"deletion", "non_fast_forward", "required_linear_history", "update", "pull_request",
+            {"deletion", "non_fast_forward", "required_linear_history", "pull_request",
              "required_status_checks"})
+        self.assertNotIn("update", rules)
         self.assertEqual([c["context"] for c in rules["required_status_checks"]["required_status_checks"]],
                          ["Governance"])
         self.assertIs(rules["pull_request"]["required_review_thread_resolution"], True)
