@@ -1,0 +1,15 @@
+scons: Reading SConscript files ...
+Using Visual Studio 14.3 with Windows SDK 10.0.26100.0.
+WARNING: The ANGLE rendering driver requires dependencies to be installed.
+You can install them by running `python misc\scripts\install_angle.py`.
+See the documentation for more information:
+	https://docs.godotengine.org/en/latest/engine_details/development/compiling/compiling_for_windows.html
+Alternatively, disable this driver by compiling with `angle=no` explicitly.
+Building for platform "windows", architecture "x86_64", target "editor".
+scons: done reading SConscript files.
+scons: Building targets ...
+Compiling editor\translations\doc_translations.gen.cpp ...
+editor\translations\doc_translations.gen.cpp(503845): fatal error C1060: espa‡o de heap do compilador insuficiente
+scons: *** [bin\obj\editor\translations\doc_translations.gen.windows.editor.x86_64.obj] Error 2
+scons: building terminated because of errors.
+INFO: Time elapsed: 00:00:55.15

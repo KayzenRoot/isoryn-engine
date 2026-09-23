@@ -1,0 +1,2 @@
+scons_args=-n platform=windows target=editor arch=x86_64 accesskit=no d3d12=no angle=no
+start_utc=1790190795 stop_utc=1790190882 elapsed_seconds=87 exit=0

@@ -1,10 +1,29 @@
 # ISORYN Backlog
 
-1. Finish/audit GEF/HIVE bootstrap.
-2. Configure main ruleset and professional repository settings.
-3. Freeze ISORYN constitution and architecture decision process.
-4. Build Master Module Index from prior ISORYN plan plus new HIVE/CORE/IRIS opportunities.
-5. Create Godot/hardware benchmark baselines.
-6. Plan rendering, lighting, streaming, materials, geometry, animation, physics, tooling and AI-native systems in dependency order.
-7. Create proprietary technology registry with proof obligations.
-8. Admit first implementation Work Order only after architecture/DoD are sufficient.
+Status: DISCOVERY_BASELINE (reordered by ISORYN-WO-0002)
+
+## Done
+
+1. Finish/audit GEF/HIVE bootstrap. - ISORYN-WO-0001 delivered, corrected through C01-C03, merged to `main`.
+2. Configure main ruleset and professional repository settings. - `main-governance` active; the restrict-updates self-lock was removed and re-read live.
+3. Freeze ISORYN constitution and architecture decision process. - GEF lifecycle plus ADR process in use; ADR-0001/0002/0003 are the first products of it.
+4. Build Master Module Index from prior ISORYN plan plus new HIVE/CORE/IRIS opportunities. - `docs/project-brain/06-MASTER-MODULE-INDEX.md` (32 families, one row each).
+5. Create Godot/hardware benchmark baselines. - Contract plus first single-host baseline in `docs/project-brain/09-TOOLCHAIN-AND-BENCHMARK-BASELINE.md`; per-hardware-class baselines remain open (see 5b below).
+7. Create proprietary technology registry with proof obligations. - `docs/project-brain/07-PROPRIETARY-TECHNOLOGY-REGISTRY.md` (PT-01..PT-10, all proposal-level).
+
+## Next, in dependency order
+
+5b. **Second hardware class baseline.** One mobile-APU Windows host is not a matrix, and that host cannot currently produce a windowed GPU series at all (see 10). Every measured number in this increment is headless, single-host and labelled as such. Needs PT-08 variance statement.
+6. **Admit PT-08 (deterministic capture and replay harness) as its own increment.** Every other proof gate depends on it, so it goes first: repeat-run variance, `--write-movie`/`--fixed-fps` golden frames, and the capture format that lands in evidence. Its golden-frame half has an explicit prerequisite now: a host with a working windowed device, because `--write-movie` brings up the real RenderingDevice even under `--headless` and dies on the same shader refusal (receipt `gpu-windowed-device-blocker.txt`).
+8. **Admit the first implementation Work Order only after the architecture audit promotes ADR-0001/0002/0003.** Candidate scope, in the frozen optimization order: camera-aware relevance (PT-01 at seam 2) before any geometry/streaming work.
+9. **Seam-3 module skeleton exercise.** Prove the `custom_modules` overlay end to end with a trivial, feature-flagged module (compile with the flag on and off) before any real module is proposed - this validates ADR-0001's central claim at the lowest possible cost. **Half done by WO-0002, at configure level:** an out-of-tree probe module is imported by upstream's build system and reaches `scons: done building targets` with exit 0, and the same command with `module_isoryn_probe_enabled=no` still configures (`custom-modules-feasibility.txt`). **Remaining:** actually compiling and linking that module's C++ objects both ways, which is a build of hours and is what ADR-0003's gate (a) still requires before a real seam-3 module is admitted.
+10. **Restore a windowed rendering device, then decide the driver matrix (M-29).** The assumption carried at admission was wrong and is now executed evidence: on this host the Vulkan loader skips the current AMD ICD (`terminator_CreateInstance: Received return code -13 ... Skipping this driver`), the single device that survives enumeration refuses every shader module (`Error (-3) creating module for shader stage ...`), and the OpenGL window path dies during context creation and the OpenGL window path dies during context creation. Upstream's own `4.7.2-stable` binary reproduces the device refusal and the OpenGL crash on the same machine, which places the refusal outside this build; it does not reproduce this build's Vulkan exit - 139 about 3 s in, where the control binary is still rendering when the 300 s cap kills it (`windowed-output-sink-control.txt`) - so attributing that early segfault belongs to this row too, and until it is explained the frozen command line stays a measurement build rather than a CI reference. `d3d12` was the candidate answer and WO-0002 executed it to a refutation: the official binary finishes the harness through it, prints a complete series with non-zero submission counters and logs no error at all - and its own readback contradicts it. Under `--write-movie --fixed-fps` the same path returned four 1280x720 PNGs that are byte-identical to each other and black at all 921,600 pixels, and the run then dies on the first request for the picture back (`Can't create buffer of size: 3686400, error 0x887a0005`, a buffer exactly one RGBA frame; `0x887a0005` is `DXGI_ERROR_DEVICE_REMOVED`) and segfaults. A scene with a current `Camera3D` and no clear-color override cannot present black everywhere, so no pixel has ever come back from this device showing the objects the series counts, and the timings are not admitted. ISORYN-D-016 now gates a GPU baseline on readback rather than on exit code, and on decoded pixels rather than on a frame file appearing - a file can exist and still be evidence of nothing. Decide between a host whose display driver works and accepting a headless-only metric series; installing the D3D12 SDK is no longer a candidate on its own, because the path it would enable has been measured and does not draw on this machine. Note also that upstream reaches a crash or a silent no-op rather than a stated unsupported-device error, which is the fail-fast probe ISORYN needs. Receipts: `gpu-device-enumeration.txt`, `gpu-windowed-device-blocker.txt`, `gpu-windowed-device-control.txt`, `windowed-output-sink-control.txt`, `gpu-readback-golden-frame.txt` with the four frames under `frames/`.
+11. **Import/asset pipeline contract with IRIS (M-23, M-04).** Only after a fingerprint/event shape is agreed; no shared database.
+12. **CI decision for engine builds (M-30).** Needs cache, disk and time budget; currently out of scope for the Governance workflow.
+13. **Security follow-ups (M-25, M-27).** Threat model for third-party native extensions (PT-10) before modding/UGC is opened; secret scanning and dependency pinning already exist and need extension to GDExtension DSOs.
+14. **Streaming/LOD decision gate (PT-02, PT-03).** Both are NECESSARY/IMPORTANT but gated on 5b, 6 and 9.
+
+## Standing rules for this backlog
+
+- A row may not be pulled forward past its dependency, and a proposal may not become an implementation without an admitted Work Order (AGENTS.md authority item 5).
+- Rows are written so that the class in `06-MASTER-MODULE-INDEX.md` and the maturity in `07-PROPRIETARY-TECHNOLOGY-REGISTRY.md` are the source of truth; this file only orders them.

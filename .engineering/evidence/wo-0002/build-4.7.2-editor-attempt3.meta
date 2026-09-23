@@ -1,0 +1,5 @@
+scons_args=platform=windows target=editor arch=x86_64 accesskit=no d3d12=no -j4
+start_utc=2026-09-23T19:04:15Z
+exit=2
+elapsed_seconds=277
+stop_utc=2026-09-23T19:08:52Z

@@ -1,0 +1,8 @@
+# captured_utc=2026-09-23T22:00:14Z
+source_tag=4.7.2-stable
+source_commit=ed1daf0bf001b61586d9930840f2f1394092c079
+build_command=scons platform=windows target=template_release arch=x86_64 accesskit=no d3d12=no angle=no disable_path_overrides=no -j8
+artifact=godot.windows.template_release.x86_64.console.exe size_bytes=292864 sha256=272c53715fd949b61354088717482e974aa47c04ece70acb2ec67fcf87c843b8
+artifact=godot.windows.template_release.x86_64.exe size_bytes=68254208 sha256=7052a3f08be1872418cae83c08c15c5ff46e52950b2fb8d43b19b24587914a18
+obj_count=2422
+version_string=4.7.2.stable.custom_build.ed1daf0bf

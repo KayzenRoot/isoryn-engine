@@ -1,0 +1,29 @@
+# Build receipt index for ISORYN-WO-0002
+# generated_utc=2026-09-23T22:08:23Z
+# raw_location=/d/GodotDiscovery/ISORYN-WO-0002 (operator-local, disposable, never committed)
+# committed_form=UTF-8 with LF endings; raw_size_bytes/raw_sha256 identify the file the toolchain wrote
+# normalize=iconv -f CP1252 -t UTF-8 $raw | tr -d '\r' > $committed, then sha256sum both forms
+# regenerate=rewrite this index once, after the last build receipt has closed; an earlier snapshot of an
+#   in-flight log is never the committed state, so a log is published only together with its .meta
+# duplicate_pair=the raw workspace also holds an unlabelled build-4.7.2-editor.log/.meta covering the same
+#   run as build-4.7.2-editor-attempt2; only the attempt-labelled pair is published, so one run has one name
+# attempt1 exception=build-4.7.2-editor.attempt1.meta predates the timed wrapper, so it carries no
+#   scons_args line; that attempt's command is the one in the section 2 table of
+#   docs/project-brain/09-TOOLCHAIN-AND-BENCHMARK-BASELINE.md, and its log content corroborates it
+#
+name|raw_size|raw_sha256|committed_size|committed_sha256
+build-4.7.2-editor.attempt1.meta|89|dc2e826f15ee4d2c0cdf9f45cbd518df7cdf0e6bb1523ea9f6bde73dbbf18aea|89|dc2e826f15ee4d2c0cdf9f45cbd518df7cdf0e6bb1523ea9f6bde73dbbf18aea
+build-4.7.2-editor.attempt1-configure-failure.log|874|8598546341df230b36b1ae3721d7e76057455caa4be473e4be6762ed293fcf91|862|589378e7faca197b83a3eac8b402b368ec145ae210c0411320cbb3b2c3dfbc01
+build-4.7.2-editor-attempt2.log|121962|fd35bc434c467ac42bd31c71de17fed96996019ffaed6352a901865ea6c30a5e|119958|9ee496e38eba171d935fd0ae5cc042455df4a04a4d2878510ad8322040229daf
+build-4.7.2-editor-attempt2.meta|172|909ba21de2c162909cae03381e175298b97f2f32c28c2eeb12e3108d0f78340a|172|909ba21de2c162909cae03381e175298b97f2f32c28c2eeb12e3108d0f78340a
+build-4.7.2-editor-attempt3.log|1770|9754c65b078c9c4e82e54d0c9eab9dd21664935059e99fdb811309ddac67de21|1741|272fbe5b50949318e75d8daf007462498e2e245407a2119d6fc1030930c4b603
+build-4.7.2-editor-attempt3.meta|168|e7e2974df942881e7f0fbc23a7cd5c7edc42a6e8d9e2e998d965a70e27ac51c4|168|e7e2974df942881e7f0fbc23a7cd5c7edc42a6e8d9e2e998d965a70e27ac51c4
+build-4.7.2-editor-attempt4.log|965|f0c448cd85c4f60a1cb931616eeed289d0230b6974169262cd80ea8e0d5bc2c1|952|0266e9e3d8496e9213812ace8d17eefd64150e89e938e92b14b509a917287d55
+build-4.7.2-editor-attempt4.meta|242|798a7dfe4481decb2bc1aa8ea0a6d8c1f5edddec61998c32d9d54675e844c0b8|242|798a7dfe4481decb2bc1aa8ea0a6d8c1f5edddec61998c32d9d54675e844c0b8
+build-4.7.2-template-release-terminated.log|38488|49cf47f7118d19c66bd6229dbc4cb6109e8537da0647bdb1fd963df468cbc409|37820|c803e28facee9bf15dad0263c94c27f50020a13de9c8db07b0b7f976920ee82c
+build-4.7.2-template-release-terminated.meta|190|90f0330e832617f1b6d4317a42bb656a54f2a3b268c8801e9203313eb5f4d4f6|190|90f0330e832617f1b6d4317a42bb656a54f2a3b268c8801e9203313eb5f4d4f6
+build-4.7.2-template-release-terminated.note.txt|1257|7668e1f5795531753a973cfc7673c7a7af81a6450e760e18f9b4d10068a6b0bf|1257|7668e1f5795531753a973cfc7673c7a7af81a6450e760e18f9b4d10068a6b0bf
+build-4.6.3-editor-configure-dryrun.log|177855|116b72695d2a5633676f9354527939678c5e42ce9212e61145990acf923021ad|174799|e155dbe25bc0f04f408b572202e092fae54d38467ffc8611ddd0d5481122434f
+build-4.6.3-editor-configure-dryrun.meta|155|05e08381696578c72df4490458f642a7ed4eef39338feaf3096d78d2d70a92c3|155|05e08381696578c72df4490458f642a7ed4eef39338feaf3096d78d2d70a92c3
+build-4.7.2-template-release-measurable.log|146478|5273293df0525e885cdc01800ea5b802e222c72a01f60fc871a1956445071281|143929|3fa9e57894ec72009ce5f23fe2641587bbc28ec7ad92ce497fae6081a6a48dc8
+build-4.7.2-template-release-measurable.meta|214|68ca2d15390a94b6caffa8f74dbd7fd0b6c6b0b38472ff0ce8670c3cea6323d2|214|68ca2d15390a94b6caffa8f74dbd7fd0b6c6b0b38472ff0ce8670c3cea6323d2

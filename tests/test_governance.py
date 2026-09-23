@@ -137,6 +137,44 @@ class DesiredStateTests(unittest.TestCase):
             self.assertEqual(payload["workOrder"], wo_id)
 
 
+class DiscoveryBaselineTests(unittest.TestCase):
+    def test_every_scope_family_has_an_index_row(self):
+        vg.check_scope_coverage()
+        scope = (ROOT / vg.SCOPE_DOC).read_text(encoding="utf-8")
+        block = re.search(r"## Product scope to plan\n(.*?)\n\n", scope, re.S).group(1)
+        families = [f.strip() for f in block.strip().rstrip(".").split(";") if f.strip()]
+        index = (ROOT / vg.MODULE_INDEX_DOC).read_text(encoding="utf-8")
+        rows = re.findall(r"(?m)^\| (M-\d\d) \|", index)
+        self.assertEqual(len(families), len(rows), "one index row per scope family")
+        self.assertEqual(len(rows), len(set(rows)), "duplicate module index row")
+
+    def test_coverage_gate_uses_the_documented_vocabulary(self):
+        self.assertTrue(hasattr(vg, "check_scope_coverage"))
+        self.assertIn(vg.MODULE_INDEX_DOC, vg.REQUIRED)
+        self.assertTrue(".exe" in vg.BINARY_ARTIFACTS and "SConstruct" in vg.ENGINE_TREE_MARKERS)
+
+    def test_repository_carries_no_engine_binary_or_tree_fingerprint(self):
+        vg.check_no_vendoring()
+
+    def test_adrs_are_proposals_not_self_promotions(self):
+        adrs = sorted((ROOT / "docs/adr").glob("ADR-*.md"))
+        self.assertEqual(len(adrs), 3, "ADR-0001/0002/0003 are the WO-0002 deliverables")
+        for adr in adrs:
+            text = adr.read_text(encoding="utf-8")
+            self.assertIn("Status:", text, adr.name)
+            self.assertIn("PROPOSED", text, adr.name)
+            self.assertNotIn("Status: ACCEPTED", text, adr.name)
+
+    def test_pinned_upstream_commit_is_consistent_across_the_baseline_set(self):
+        receipt = load(".engineering/evidence/wo-0002/godot-official-state.json")
+        commit = receipt["currentStable"]["commitShaVerifiedByLocalClone"]
+        self.assertRegex(commit, r"^[0-9a-f]{40}$")
+        for rel in ("docs/project-brain/06-MASTER-MODULE-INDEX.md",
+                    "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
+                    "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md"):
+            self.assertIn(commit, (ROOT / rel).read_text(encoding="utf-8"), rel)
+
+
 class PolicyPreservationTests(unittest.TestCase):
     def test_pdf_prompt_policy_survives(self):
         agents = (ROOT / "AGENTS.md").read_text(encoding="utf-8")

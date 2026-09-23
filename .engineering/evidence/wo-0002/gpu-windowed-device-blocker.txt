@@ -1,0 +1,62 @@
+# captured_utc=2026-09-23T22:23:57Z
+# Why no GPU frame-time baseline exists in this increment, executed rather than asserted.
+# The same workload is run on the ISORYN-built binary and on upstream's own published 4.7.2-stable
+# binary, so the failure can be attributed to the host instead of to this build.
+# These cases are capped at 60 frames on purpose: they reproduce the crash, not a measurement. The
+# harness reports only after 90 warm-up + 600 measured frames, so no series line can appear here;
+# gpu-windowed-device-control.txt holds the full-length runs and the readback gate.
+# control binary sha256=c8f0a6bc45a19b33541501e57f6f7cd972ab18453743266339d495cbbe846643 version=4.7.2.stable.official.ed1daf0bf
+## the built binary, windowed, on each device path it can select
+## (--verbose is what makes Godot surface the Vulkan loader's own messages; without it the
+##  driver-skipping line never reaches the log, which is how this receipt lost it the first time)
+case=built-vulkan-windowed exit=139 error_lines=607 bytes=115498
+  bench_config=
+  error_signatures:
+          203 ERROR: Condition "!shader_id" is true. Returning: RID()
+          165 ERROR: Parameter "shader" is null.
+          109 ERROR: Error (-3) creating module for shader stage Compute.
+           94 ERROR: Error (-3) creating module for shader stage Vertex.
+           28 ERROR: Condition "p_shader.is_null()" is true.
+            2 ERROR: Condition "!scene_singleton->sky.sky_shader.shader.version_is_valid(version)" is true.
+case=built-gl-windowed exit=139 error_lines=0 bytes=0
+  bench_config=
+  error_signatures:
+## upstream's published binary for the same tag, same project, same flags
+case=official-vulkan-windowed exit=124 error_lines=827 bytes=141246
+  bench_config=ISORYN_BENCH_CONFIG {"display_server":"Windows","engine_version":"4.7.2-stable (official)","harness":"isoryn-wo-0002-bench","instances":1200,"measure_frames":600,"ready_us":80872,"rendering_method":"forward_plus","seed":20260923,"warmup_frames":90,"window_size":"(1280, 720)"}
+  error_signatures:
+          217 ERROR: Condition "!shader_id" is true. Returning: RID()
+          170 ERROR: Parameter "shader" is null.
+          167 ERROR: Condition "shader_rid.is_null()" is true. Returning: 0
+          109 ERROR: Error (-3) creating module for shader stage Compute.
+          108 ERROR: Error (-3) creating module for shader stage Vertex.
+           28 ERROR: Condition "p_shader.is_null()" is true.
+case=official-gl-windowed exit=139 error_lines=0 bytes=0
+  bench_config=
+  error_signatures:
+case=official-d3d12-windowed exit=0 error_lines=0 bytes=278
+  bench_config=ISORYN_BENCH_CONFIG {"display_server":"Windows","engine_version":"4.7.2-stable (official)","harness":"isoryn-wo-0002-bench","instances":1200,"measure_frames":600,"ready_us":48111,"rendering_method":"forward_plus","seed":20260923,"warmup_frames":90,"window_size":"(1280, 720)"}
+  error_signatures:
+## the loader decision, from the two verbose Vulkan logs above
+  /d/GodotDiscovery/ISORYN-WO-0002/runs/ctl-built-vulkan-windowed.txt:	terminator_CreateInstance: Received return code -13 from call to vkCreateInstance in ICD C:\WINDOWS\System32\DriverStore\FileRepository\u0201039.inf_amd64_89c3272f19eab06b\B025980\.\amdvlk64.dll. Skipping this driver.
+  /d/GodotDiscovery/ISORYN-WO-0002/runs/ctl-built-vulkan-windowed.txt-	Objects - 1
+  /d/GodotDiscovery/ISORYN-WO-0002/runs/ctl-built-vulkan-windowed.txt-		Object[0] - VK_OBJECT_TYPE_INSTANCE, Handle 1575689490560
+  --
+  /d/GodotDiscovery/ISORYN-WO-0002/runs/ctl-built-vulkan-windowed.txt:Devices:
+  /d/GodotDiscovery/ISORYN-WO-0002/runs/ctl-built-vulkan-windowed.txt-  #0: AMD Radeon 535 Series - Supported, Discrete
+  /d/GodotDiscovery/ISORYN-WO-0002/runs/ctl-built-vulkan-windowed.txt-Optional Vulkan device extension VK_KHR_fragment_shading_rate not found
+  --
+  /d/GodotDiscovery/ISORYN-WO-0002/runs/ctl-official-vulkan-windowed.txt:	terminator_CreateInstance: Received return code -13 from call to vkCreateInstance in ICD C:\WINDOWS\System32\DriverStore\FileRepository\u0201039.inf_amd64_89c3272f19eab06b\B025980\.\amdvlk64.dll. Skipping this driver.
+  /d/GodotDiscovery/ISORYN-WO-0002/runs/ctl-official-vulkan-windowed.txt-	Objects - 1
+  /d/GodotDiscovery/ISORYN-WO-0002/runs/ctl-official-vulkan-windowed.txt-		Object[0] - VK_OBJECT_TYPE_INSTANCE, Handle 1699106781888
+  --
+## error signature of the built binary's windowed Vulkan run
+      203 ERROR: Condition "!shader_id" is true. Returning: RID()
+      165 ERROR: Parameter "shader" is null.
+      109 ERROR: Error (-3) creating module for shader stage Compute.
+       94 ERROR: Error (-3) creating module for shader stage Vertex.
+## the driver that works there is the one this build was configured without, and why:
+scons_d3d12_configure_exit=255
+  ERROR: The Direct3D 12 rendering driver requires dependencies to be installed.
+  You can install them by running `python misc\scripts\install_d3d12_sdk_windows.py`.
+  Alternatively, disable this driver by compiling with `d3d12=no` explicitly.

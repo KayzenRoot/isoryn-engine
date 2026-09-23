@@ -8,4 +8,4 @@ Target demanding 2.5D/3D and isometric game production with measurable improveme
 
 ISORYN is not a cosmetic Godot wrapper. Prefer extensions/modules and upstream compatibility where practical; own deeper forks/replacements only when benchmarked value justifies maintenance cost.
 
-Current stage: repository bootstrap and architecture discovery. No engine implementation is authorized yet.
+Current stage: bootstrap merged; architecture/toolchain discovery delivered and awaiting independent audit. Godot baseline, repository topology, toolchain and extension seams are now evidence-backed proposals (ADR-0001/0002/0003) instead of open questions. No engine implementation is authorized yet.

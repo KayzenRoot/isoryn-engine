@@ -38,10 +38,15 @@ REQUIRED = (
     "docs/project-brain/00-README-UPLOAD-ORDER.md", "docs/project-brain/01-PROJECT-OVERVIEW.md",
     "docs/project-brain/02-REQUIREMENTS.md", "docs/project-brain/03-SCOPE.md",
     "docs/project-brain/04-ARCHITECTURE.md", "docs/project-brain/05-INTEGRATION-CONTRACTS.md",
+    "docs/project-brain/06-MASTER-MODULE-INDEX.md", "docs/project-brain/07-PROPRIETARY-TECHNOLOGY-REGISTRY.md",
+    "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md", "docs/project-brain/09-TOOLCHAIN-AND-BENCHMARK-BASELINE.md",
     "docs/project-brain/10-SECURITY-GOVERNANCE.md", "docs/project-brain/11-TEST-PLAN.md",
     "docs/project-brain/12-LOCAL-DEPLOYMENT.md", "docs/project-brain/13-CHECKPOINT.md",
     "docs/project-brain/14-BACKLOG.md", "docs/project-brain/15-DEFINITION-OF-DONE.md",
     "docs/project-brain/16-DECISIONS-LEDGER.md",
+    "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+    "docs/adr/ADR-0002-build-toolchain-and-upstream-sync.md",
+    "docs/adr/ADR-0003-extension-seam-policy.md",
     "docs/GEF-BOOTSTRAP.md", "docs/HIVE-INTEGRATION.md", "docs/BOOTSTRAP-RUNBOOK.md",
     "scripts/validate_governance.py", "scripts/hive_mcp.py", "scripts/hive_bootstrap.py",
     "scripts/bootstrap-local.ps1", "scripts/hive-bootstrap.ps1", "scripts/configure-github.ps1",
@@ -59,6 +64,12 @@ PORTABLE_CONFIG = (".env.example", ".codex/config.toml", ".gitignore",
 PORTABLE_CONFIG_GLOBS = ("scripts/*.ps1", "scripts/*.py", ".engineering/context-locks/*.json",
                          ".github/*.yml", ".github/*.md", ".github/workflows/*.yml")
 VENDORED_TREES = ("hive", "gef-bootstrap", "core", "iris", "backend", "node_modules")
+# ADR-0001/0002 keep the engine external: build products and engine-tree fingerprints are never repository state.
+BINARY_ARTIFACTS = (".exe", ".dll", ".lib", ".obj", ".pdb", ".so", ".dylib", ".a", ".o", ".class", ".jar")
+ENGINE_TREE_MARKERS = ("SConstruct", "SCsub")
+ENGINE_TREE_SUFFIXES = (".gen.h", ".gen.cpp")
+SCOPE_DOC = "docs/project-brain/03-SCOPE.md"
+MODULE_INDEX_DOC = "docs/project-brain/06-MASTER-MODULE-INDEX.md"
 # HIVE indexes from a Linux container that performs no line-ending conversion, so a CRLF working
 # tree reads as an entirely modified repository and its staleness guard refuses canonical retrieval.
 TEXT_SUFFIXES = (".md", ".py", ".ps1", ".json", ".yml", ".yaml", ".toml", ".txt", ".ini", ".cfg",
@@ -110,6 +121,33 @@ def check_no_vendoring():
         path = ROOT / name
         if path.is_dir():
             fail(f"vendored external workspace present at repository root: {name}/ (AGENTS.md forbids it)")
+    for path in sorted(ROOT.rglob("*")):
+        if not path.is_file():
+            continue
+        rel = path.relative_to(ROOT)
+        if any(part in {".git", "__pycache__", "node_modules"} for part in rel.parts):
+            continue
+        suffix = path.suffix.lower()
+        if suffix in BINARY_ARTIFACTS:
+            fail(f"generated/executable artifact committed at {rel.as_posix()}; "
+                 "engine builds and binaries stay outside the repository (ADR-0001/ADR-0002)")
+        if path.name in ENGINE_TREE_MARKERS or suffix in ENGINE_TREE_SUFFIXES:
+            fail(f"engine-tree fingerprint committed at {rel.as_posix()}; "
+                 "the Godot source tree is an external pinned clone, never vendored (WO-0002 out of scope)")
+
+
+def check_scope_coverage():
+    scope = read(SCOPE_DOC)
+    block = re.search(r"## Product scope to plan\n(.*?)\n\n", scope, re.S)
+    if not block:
+        fail(f"{SCOPE_DOC} no longer carries the 'Product scope to plan' block the module index is derived from")
+    families = [f.strip() for f in block.group(1).strip().rstrip(".").split(";") if f.strip()]
+    if len(families) < 2:
+        fail("scope product list is unparsable; the coverage gate would pass on nothing")
+    index = read(MODULE_INDEX_DOC)
+    missing = [f for f in families if f not in index]
+    if missing:
+        fail("Master Module Index does not cover scope families: " + ", ".join(missing))
 
 
 def check_line_endings():
@@ -338,6 +376,7 @@ def check_stale_claims():
 def main() -> int:
     check_artifacts()
     check_no_vendoring()
+    check_scope_coverage()
     check_line_endings()
     check_checkpoint_bridge()
     check_pins()

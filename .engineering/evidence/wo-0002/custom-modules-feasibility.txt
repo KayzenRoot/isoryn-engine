@@ -1,0 +1,17 @@
+# captured_utc=2026-09-23T22:31:33Z
+# Seam-3 feasibility: can upstream compile a module that lives outside its own tree?
+# Dry-run configure only (-n): no object is compiled, the measured build's 2,422 objects
+# (godot-4.7.2-binary-identity.txt) and its linked binary are untouched.
+# The probe module's config.py prints a marker when upstream's build system imports it, so the
+# log shows whether the seam was honored without any edit to an upstream file.
+## run A: custom_modules=/d/GodotDiscovery/ISORYN-WO-0002/custom_modules_probe/isoryn_probe
+ISORYN_PROBE_MODULE_CONFIGURED
+ISORYN_PROBE_MODULE_CONFIGURED
+scons: done reading SConscript files.
+scons: done building targets.
+runA_exit=0
+## run B: same probe plus module_isoryn_probe_enabled=no (the module-disabled negative check)
+ISORYN_PROBE_MODULE_CONFIGURED
+scons: done reading SConscript files.
+scons: done building targets.
+runB_exit=0

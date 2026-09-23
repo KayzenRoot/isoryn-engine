@@ -1,0 +1,13 @@
+receipt=build-4.7.2-template-release-terminated
+kind=interpretation note (the machine values are in build-4.7.2-template-release-terminated.meta)
+exit_127_reading=127 is the wrapper's status after the operator killed the cl.exe children; SCons then reported
+  "Error 3221225794" (0xC0000142 STATUS_DLL_INIT_FAILED) for the in-flight compile/link nodes. That is the
+  signature of a killed toolchain process, not a compiler or source defect.
+outputs_before_termination=620 .obj plus 37 .lib = 657 files matching *template_release* under bin/obj
+why_terminated=Finishing this command would have produced a binary that cannot run the benchmark harness:
+  disable_path_overrides defaults to True (SConstruct:272-278) and OVERRIDE_PATH_ENABLED is defined only for
+  editor builds or when that option is cleared (SConstruct:1101-1102), so a stock template_release refuses an
+  explicit project path (main/main.cpp:1818-1822) and a project in the working directory
+  (main/main.cpp:2115-2123). The receipt of the terminated run is kept because the finding is the product.
+cleanup=Those 657 outputs were deleted before the next build so that no killed-process artifact could be
+  mistaken for a completed one; the deletion is recorded here rather than left silent.

@@ -1,0 +1,72 @@
+# captured_utc=2026-09-23T23:16:16Z
+# Two-sink control on the windowed device paths. Flags are the same ones the earlier windowed receipts used;
+# --quit-after 90 is below the harness reporting point (90 warm-up + 600 measured frames), so a series line
+# cannot appear here by design - only the _ready() configuration line, which is the fact under test.
+# built binary  sha256=272c53715fd949b61354088717482e974aa47c04ece70acb2ec67fcf87c843b8
+# control binary sha256=c8f0a6bc45a19b33541501e57f6f7cd972ab18453743266339d495cbbe846643
+# Each case is launched once with stdout and stderr redirected to files and `--log-file` pointing at a third,
+# so a line that reaches the engine's own writer is recorded even where the console capture would not show it.
+# The three `Segmentation fault` lines below are this shell's job-control report for the engine processes that
+# died, not engine output; they are kept because the exit codes they accompany are the evidence.
+
+## surviving paths: the capture method does record the harness line when the run reaches _ready()
+case=A-built-headless exit=0 stdout_bytes=280 stderr_bytes=131 logfile_bytes=408
+  bench_config_in_stdout=1 bench_config_in_stderr=0 bench_config_in_logfile=1 log_lines=3 log_error_lines=1
+case=D-built-headless-dummy exit=0 stdout_bytes=273 stderr_bytes=131 logfile_bytes=401
+  bench_config_in_stdout=1 bench_config_in_stderr=0 bench_config_in_logfile=1 log_lines=3 log_error_lines=1
+
+## windowed paths
+/d/GodotDiscovery/ISORYN-WO-0002/phase_sink.sh: line 23:    94 Segmentation fault         ( cd "$d" && timeout 120 "$bin" --no-header "$@" --path "$BENCH" --quit-after 90 --log-file "$d/run.log" ) > "$d/stdout.txt" 2> "$d/stderr.txt"
+case=B-built-vulkan-windowed exit=139 stdout_bytes=15954 stderr_bytes=99544 logfile_bytes=114069
+  bench_config_in_stdout=0 bench_config_in_stderr=0 bench_config_in_logfile=0 log_lines=1379 log_error_lines=607
+/d/GodotDiscovery/ISORYN-WO-0002/phase_sink.sh: line 23:   111 Segmentation fault         ( cd "$d" && timeout 120 "$bin" --no-header "$@" --path "$BENCH" --quit-after 90 --log-file "$d/run.log" ) > "$d/stdout.txt" 2> "$d/stderr.txt"
+case=C-built-gl-windowed exit=139 stdout_bytes=207 stderr_bytes=0 logfile_bytes=0
+  bench_config_in_stdout=0 bench_config_in_stderr=0 bench_config_in_logfile=0 log_lines=0 log_error_lines=0
+case=E-official-vulkan-windowed exit=124 stdout_bytes=17105 stderr_bytes=124989 logfile_bytes=140025
+  bench_config_in_stdout=1 bench_config_in_stderr=0 bench_config_in_logfile=1 log_lines=1837 log_error_lines=830
+/d/GodotDiscovery/ISORYN-WO-0002/phase_sink.sh: line 23:   145 Segmentation fault         ( cd "$d" && timeout 120 "$bin" --no-header "$@" --path "$BENCH" --quit-after 90 --log-file "$d/run.log" ) > "$d/stdout.txt" 2> "$d/stderr.txt"
+case=F-official-gl-windowed exit=139 stdout_bytes=366 stderr_bytes=0 logfile_bytes=309
+  bench_config_in_stdout=0 bench_config_in_stderr=0 bench_config_in_logfile=0 log_lines=7 log_error_lines=0
+
+## where the B log brackets the missing line (setup output before it, device errors after it)
+  marker_last_setup_line=1347 of 1379
+  marker_first_error_line=52
+  marker_last_error_line=1378
+
+## does the engine file writer flush at all when the process dies? (case B vs case A)
+  A_logfile_bytes=408 (exit 0, writer flushed)
+  C_logfile_bytes=0 (exit 139, nothing reached the file)
+  B_logfile_bytes=114069 (exit 139, filled past its buffer)
+
+## where the harness line sits in the stream that does produce it (case E, engine log file)
+  E_last_setup_line=1349  E_bench_config_line=1421  E_total_lines=1837
+  So on the path that survives, the configuration line is printed 72 lines after the last device-setup print and
+  416 lines before the stream ends - it is not the first line out, and it is not the last.
+
+## what these numbers settle
+1. An empty `bench_config=` in `godot-4.7.2-smoke.txt` and `gpu-windowed-device-blocker.txt` is not a capture
+   artifact. Case E runs the same windowed Vulkan path, with the same flags, through the same redirection, and the
+   line reaches both sinks. Cases B and C emit nothing to either sink because they never get to that point.
+2. On the built binary neither windowed path reaches the workload's `_ready()`: B dies 32 lines past its own
+   device-setup marker, where E is still 72 lines short of the position the harness line occupies upstream's
+   stream. The headless paths (A, D) print it in both sinks, so this is specific to bringing up a real device.
+3. The two binaries do NOT fail the same way on the Vulkan path. Both show the same refusal (`Error (-3) creating
+   module for shader stage ...`, `Condition "!shader_id" is true. Returning: RID()`), but the built binary exits
+   139 in about 3 s and upstream's keeps rendering until the 120 s cap kills it (exit 124), and at the full-length
+   run in `gpu-windowed-device-control.txt` §B it is still alive at 301 s with 3,759 error lines. The refusal is
+   the host's; the early exit is not reproduced by the control and is therefore a property of this build that
+   WO-0002 does not explain.
+4. On the OpenGL path the control does reproduce the failure class - both binaries exit 139 with no `_ready()`
+   line - but not to the same depth: F's log records `Native OpenGL API detected: 3.3: ATI Technologies Inc. -
+   Radeon 535 Series` and C's captures stop before that line, so upstream's binary dies inside context creation
+   and this build dies slightly earlier in the same startup.
+5. F's log also carries `Accessibility: AccessKit driver loaded.` and C's does not, which is the expected
+   consequence of `accesskit=no` in the frozen command line and not a defect signal.
+
+## consequence for the increment
+   The conclusion that this host cannot yield a GPU frame-time baseline stands: no path on either binary produces
+   a frame that survives readback with the scene in it (ISORYN-D-016, `gpu-readback-golden-frame.txt`). What this
+   control removes is the sentence that claimed upstream's binary reproduces the built binary's crashes: it
+   reproduces the OpenGL crash and the device refusal, and contradicts the Vulkan one. The unexplained early
+   segfault on the built binary is recorded as a residual risk of this Work Order and as a gate on adopting the
+   frozen command line as CI's reference build.
