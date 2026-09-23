@@ -1,43 +1,47 @@
-# ISORYN-WO-0001 Proposed Checkpoint Delta
+# ISORYN-WO-0001 Checkpoint Promotion Record
 
-Status: PROPOSED_ONLY
-Rule: an executor may propose promotion but must not self-approve or promote it (AGENTS.md Review,
-`.engineering/gef/GEF-POLICY.md` item 8, Work Order stop condition). Apply only after an independent audit returns
-APPROVED at the exact candidate head.
-Revision: this is the delta proposed for correction C02. The C01 delta proposed the same field values and carried
-`CANONICAL_WORKSPACE_MISMATCH`; C02 closes that blocker with a re-executed proof at the canonical workspace instead
-of relaxing the criterion, and only an independent re-audit at the C02 head can promote it.
+Status: PROMOTED_AFTER_INDEPENDENT_AUDIT
 
-## Canonical checkpoint
-`docs/project-brain/13-CHECKPOINT.md` is the only canonical state source. `.engineering/CHECKPOINT.md` and
-`.engineering/CHECKPOINT.json` are derived views and must be regenerated from it, never edited independently.
+Independent audit head: `74f443f3d83c8bb1642314ab28632342fcf0b50f`
+Audit verdict: **APPROVED**
+Promotion authority: reviewer/chat under the GEF review-first policy. The executor proposed the delta but did not self-promote it.
 
-## Field deltas
+## Promotion basis
 
-| Field | Current | Proposed | Authority |
-| --- | --- | --- | --- |
-| STATUS | `BOOTSTRAP ACTIVE` | `BOOTSTRAP AUDIT PENDING` | Work Order stop condition: execution finished, independent review outstanding |
-| PHASE | `0 - GEF/HIVE Repository Foundation` | unchanged | phase 0 is still the active phase until the audit promotes it |
-| IN PROGRESS | `ISORYN-WO-0001-GEF-HIVE-BOOTSTRAP.` | `NONE. ISORYN-WO-0001 delivered and awaiting independent audit.` | Work Order: stop for independent review, do not advance to the next increment |
-| NEXT STEP | validate local HIVE registration, configure professional main ruleset, collect exact-head CI/evidence, audit, promote | `Audit ISORYN-WO-0001 at the exact PR head; on APPROVED, promote this delta and open the architecture/toolchain discovery Work Order` | Definition of Done and the review-first policy |
-| BLOCKERS | `CANONICAL_WORKSPACE_MISMATCH: ...` | `NONE. C02 materialized the canonical workspace as a real directory at D:\\Hive\\Projects\\isoryn-engine without touching any HIVE state already under D:\\Hive, and re-ran the isolated pinned HIVE v1.0.0 registration/index/corpus/retrieval/MCP proof against that exact path at d749accc68be408ae79d06e25946128b9cf7bdc3 - the head that carries this record - with the concurrent runtimes shown unchanged across the window. The mismatch C01 left open is therefore closed by current proof rather than by editing the words out. Product/engine implementation remains unauthorized.` | Evidence Bundle `c02Recovery`, `.engineering/evidence/hive-preflight.json` |
+Correction C02 closed the final blocker, `CANONICAL_WORKSPACE_MISMATCH`, by materializing the canonical
+workspace at `D:\Hive\Projects\isoryn-engine` as a real directory and re-running the isolated pinned HIVE
+v1.0.0 registration/index/corpus/retrieval/MCP proof against that path. The exact HIVE/MCP proof head is
+`d749accc68be408ae79d06e25946128b9cf7bdc3`; subsequent commits through the independent audit head are
+evidence-only and Governance passed on the exact audit head.
 
-## Explicitly not changed
-- No adopted decision is amended, superseded or reversed; `docs/project-brain/16-DECISIONS-LEDGER.md` is untouched.
-- No engine, Godot version, fork topology, toolchain or build-pipeline claim is added, because no executed benchmark
-  supports one (`docs/project-brain/03-SCOPE.md` forbids unmeasured performance/quality claims).
-- `docs/project-brain/15-DEFINITION-OF-DONE.md` gates stay intact; this delta reports against them instead of relaxing
-  them.
-- HIVE remains derived context only; nothing in this delta lets HIVE write canonical state.
+No adopted decision was amended, no engine/product implementation entered WO-0001, and no HIGH/CRITICAL
+finding remains open.
 
-## DoD reconciliation for the bootstrap gate
-| Definition of Done element | Result | Where |
-| --- | --- | --- |
-| Source Pack passes deterministic validation | PASS | `scripts/validate_governance.py`, `.engineering/evidence/checks.json` |
-| GEF target-project artifacts exist | PASS | `.engineering/gef/`, Work Order, Context Lock, Evidence Bundle |
-| HIVE MCP/registration tooling exists and is unit-tested | PASS | `scripts/hive_mcp.py`, `scripts/hive_bootstrap.py`, `tests/` |
-| Exact-head governance CI passes | recorded per head | `.engineering/evidence/ISORYN-WO-0001-EVIDENCE.md` `checks` and `followUpHeads` |
-| Local HIVE registration/index/corpus sync evidenced | PASS at the canonical workspace | C02 re-ran the whole pipeline against `D:\\Hive\\Projects\\isoryn-engine`: `hive-preflight.json` (READY, index and corpus COMPLETED, `working_tree_clean` observed), `hive-retrieval-proof.json` (three canonical targets with measured ranks), `mcp-proof.json` (real session through `scripts/hive_mcp.py` on the isolated pinned project) |
-| Main protection/ruleset evidenced or gap recorded | PASS with recorded gaps | `.engineering/evidence/github/`, `unsupportedPlatformFeatures` |
-| Audit returns APPROVED | AWAITING INDEPENDENT RE-REVIEW | the reviewer who issued C02 must re-audit at the corrected head; C02 only supplies the proof that closes the criterion that reviewer blocked on |
-| Checkpoint promoted after audit | NOT DONE (correct) | this file is a proposal only |
+## Promoted canonical checkpoint
+
+`docs/project-brain/13-CHECKPOINT.md` is the canonical state source. Its promoted values are:
+
+- STATUS: `BOOTSTRAP APPROVED`
+- PHASE: `0 - GEF/HIVE Repository Foundation`
+- IN PROGRESS: none; WO-0001 is approved
+- BLOCKERS: none for the bootstrap gate
+- NEXT STEP: merge PR #2 by squash, confirm the resulting `main` head, then admit
+  `ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY` from that exact base
+
+`.engineering/CHECKPOINT.md` and `.engineering/CHECKPOINT.json` are regenerated derived views of the same
+promoted state.
+
+## DoD reconciliation
+
+| Definition of Done element | Result |
+| --- | --- |
+| Source Pack deterministic validation | PASS |
+| GEF target-project artifacts | PASS |
+| HIVE MCP/registration tooling and tests | PASS |
+| Exact-head Governance on independent audit head | PASS |
+| Canonical local HIVE registration/index/corpus/retrieval | PASS |
+| Professional main protection/ruleset evidence | PASS with documented platform gaps |
+| Independent audit | APPROVED |
+| Checkpoint promotion after audit | PROMOTED |
+
+Product/engine implementation remains outside WO-0001. The next increment is architecture/toolchain discovery.
