@@ -1,9 +1,18 @@
 {
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0001-foundation",
-  "localHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
-  "remoteHead": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
+  "localHead": "47838e4d102e17ee35a5068443091b91e40a23b9",
+  "remoteHead": "47838e4d102e17ee35a5068443091b91e40a23b9",
   "observations": [
+    {
+      "head": "47838e4d102e17ee35a5068443091b91e40a23b9",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35866516664/job/107199374162",
+      "detail": "GitHub check-run for this exact commit, read through the API"
+    },
     {
       "head": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
       "context": "Governance",
@@ -87,5 +96,5 @@
     }
   ],
   "raw": null,
-  "note": "Chain read from the GitHub API on 2026-09-23 through the reviewer correction head 4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b. Each observation is bound to the head it names; a run for one head is not evidence for another."
+  "note": "Chain read from the GitHub API on 2026-09-23 through the C01 evidence head 47838e4d102e17ee35a5068443091b91e40a23b9. Each observation is bound to the head it names; a run for one head is not evidence for another. The commit carrying this file is a descendant of that head and cannot observe its own run, so its result is read from the pull request check list."
 }

@@ -20,9 +20,16 @@
     "mcp_launcher_no_npx_proxy": "PASS",
     "mcp_launcher_targets_pinned_project": "PASS",
     "concurrent_hive_untouched": "PASS",
-    "governance_ci": "UNKNOWN",
+    "governance_ci": "PASS",
     "toolchain_build": "DEFERRED_BY_WO",
     "performance_benchmark": "DEFERRED_BY_WO",
     "third_party_dependency_scan": "NOT_AVAILABLE"
+  },
+  "governanceRun": {
+    "head": "47838e4d102e17ee35a5068443091b91e40a23b9",
+    "context": "Governance",
+    "result": "PASS",
+    "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35866516664/job/107199374162",
+    "requiredChecksCommand": "gh pr checks 2 --required"
   }
 }

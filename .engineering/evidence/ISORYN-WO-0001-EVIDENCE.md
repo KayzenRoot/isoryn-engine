@@ -107,6 +107,10 @@ before any `--env-file`, and `docker compose exec` selects containers by project
 working directory. Left alone, a launcher running in the pinned checkout entered the 1.0.2 container,
 and an isolated stack mounted the live database directory instead of its own.
 
+`governance_ci` reads `PASS` for the head that carries this record, `47838e4d102e17ee35a5068443091b91e40a23b9`,
+from the Actions run named in `c01Recovery.governanceRun`. The commit that adds that sentence cannot
+observe its own run, so `gh pr checks 2 --required` on the pull request is the authority for it.
+
 ## What is proved, not asserted
 
 - **HIVE** (`hivePreflight`): health, exact-relative-path resolution without name collision, inspect
@@ -1297,8 +1301,8 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
       "historicalHiveProofHead": "d5de04c5ac157236de55875bb530f81d3d02ce86",
       "reviewerCorrectionHead": "4ee69e2c45a6afd2c23a0e7b5a8df20d0acbcc9b",
       "c01ExecutionProofHead": "f293fabfd4cde0a202d917b75eee590567b2027e",
-      "finalEvidenceCarryingHead": "recorded in .engineering/evidence/ci.json once Governance runs on the pushed head",
-      "note": "The d5de04c5ac15 records are left exactly as written and remain valid only for that head. C01 adds a current proof at f293fabfd4cd rather than restating the old one."
+      "finalEvidenceCarryingHead": "47838e4d102e17ee35a5068443091b91e40a23b9",
+      "note": "The d5de04c5ac15 records are left exactly as written and remain valid only for that head. C01 adds a current proof at f293fabfd4cd rather than restating the old one. 47838e4d102e carries the evidence of that proof and is green for Governance; the commit that carries this sentence is its descendant and is read from the pull request instead of being claimed here."
     },
     "runtime": {
       "baseline": "HIVE v1.0.0",
@@ -1435,7 +1439,7 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
       "mcp_launcher_no_npx_proxy": "PASS",
       "mcp_launcher_targets_pinned_project": "PASS",
       "concurrent_hive_untouched": "PASS",
-      "governance_ci": "UNKNOWN",
+      "governance_ci": "PASS",
       "toolchain_build": "DEFERRED_BY_WO",
       "performance_benchmark": "DEFERRED_BY_WO",
       "third_party_dependency_scan": "NOT_AVAILABLE"
@@ -1461,7 +1465,14 @@ implementation; the checkpoint delta is `PROPOSED_ONLY` and promotion belongs to
       "The canonical HIVE pin stays v1.0.0; it was not raised to 1.0.1 or 1.0.2 to make the drift disappear, because a baseline change needs its own ADR.",
       "No engine or product implementation was introduced.",
       "PR #2 is not merged and the checkpoint is not promoted."
-    ]
+    ],
+    "governanceRun": {
+      "head": "47838e4d102e17ee35a5068443091b91e40a23b9",
+      "context": "Governance",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35866516664/job/107199374162",
+      "requiredChecks": "gh pr checks 2 --required -> Governance pass"
+    }
   }
 }
 ```
