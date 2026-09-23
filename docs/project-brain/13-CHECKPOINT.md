@@ -1,7 +1,7 @@
 # ISORYN Checkpoint
 
 ## STATUS
-BOOTSTRAP APPROVED
+BOOTSTRAP CORRECTION REQUIRED
 
 ## VERSION
 ISORYN 0.0 - Clean Foundation
@@ -13,10 +13,10 @@ ISORYN 0.0 - Clean Foundation
 Establish the professional Source Pack, GEF v1.0.0 governance, HIVE v1.0.0 integration, Codex MCP bridge and exact-head governance CI before engine implementation begins.
 
 ## IN PROGRESS
-NONE. ISORYN-WO-0001 was independently reviewed and APPROVED at head `74f443f3d83c8bb1642314ab28632342fcf0b50f`; this checkpoint records the reviewer-authorized promotion.
+ISORYN-WO-0001-C03-MAIN-RULESET-UNLOCK.
 
 ## BLOCKERS
-NONE. Correction C02 closed the canonical workspace mismatch by materializing and proving `D:\Hive\Projects\isoryn-engine` against the pinned isolated HIVE v1.0.0 runtime. Product/engine implementation remains unauthorized until the next governed discovery Work Order admits it.
+MAIN_RULESET_SELF_LOCK: the live `main-governance` ruleset contains GitHub's restrict-updates rule while `bypass_actors` is empty. The attempted squash merge of approved PR #2 was rejected by GitHub with HTTP 405, "Repository rule violations found / Cannot update this protected ref." The repository desired state now removes that rule and adds regression guards, but the live administrative ruleset still requires executor-side `gh` application and fresh evidence.
 
 ## NEXT STEP
-Merge approved PR #2 by squash, confirm the resulting `main` head and then admit `ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY` from that exact base. Freeze architecture/toolchain decisions only from measured evidence before engine implementation begins.
+Execute `ISORYN-WO-0001-C03-MAIN-RULESET-UNLOCK`: apply the corrected live `main-governance` ruleset without the restrict-updates rule, capture BEFORE/AFTER receipts, verify pull-request merging is permitted, re-run exact-head Governance and return for independent re-review. Do not merge or begin engine implementation while this correction is open.
