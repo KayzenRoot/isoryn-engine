@@ -77,15 +77,23 @@ the `Governance` CI job executes. It refuses a record whose certified fields (`h
 `.engineering/evidence/`, is not valid JSON, or carries no observations; whose ledger belongs to another Work Order or
 branch; whose certified head has no Governance observation, more than one, or one that is not
 `completed`/`success`; whose copy embedded in `governanceRun` reports a different run than the versioned ledger; whose
-`commandsExecutedAtHead` disagrees with the execution row or holds no declared role; or whose
-`commandsExecutedAtTreeState` says one thing while `commandsExecutedAtNote` describes uncommitted files; or whose stamped command rows credit a command to a head or tree state the record
-does not itself name. Two things it
-deliberately does not claim. It is static: it reads the record and the ledger, never GitHub, so it cannot assert that
+`commandsExecutedAtHead` disagrees with the execution row or holds no declared role; whose
+`commandsExecutedAtTreeState` contradicts what `commandsExecutedAtNote` says about uncommitted files; or whose stamped
+command rows credit a command to a head or tree state the record does not itself name. Two things it deliberately does
+not claim. It is static: it reads the record and the ledger, never GitHub, so it cannot assert that
 any check-run is still live, and the carrier commit's own status stays a platform read (`gh pr checks 5 --required`).
 And it enforces no immutability: the CD02 rows about dropped observations and untouched receipts were one-time
 observations made during assembly, and they are now labelled as that rather than as protection, because no committed
 check compares receipts across heads. `tests/test_governance.py::HeadRebindingGateTests` exercises the shipped record
 and each refusal above by mutating the real record one claim at a time.
+
+The record names `80dc365fe` as the head its deterministic commands ran against, with `commandsExecutedAtTreeState`
+CLEAN. CD03 first ran that suite at `190b78b9e` with the gate, its tests and this bundle uncommitted on top, and
+`80dc365fe` is that state committed; the clean re-run is the claim this record makes, so a reviewer proves it by
+checking the commit out rather than trusting a working tree that no longer exists. Moving the record from a dirty tree
+to a clean one exposed two tests written against the record's old tree state instead of against the rule, and both now
+derive the contradicting state from the record they mutate. The `Governance` job compiles the tooling, runs the
+validator and runs this suite on every head, so the commit that carries the re-stamped record re-proves it.
 
 `governance_ci` reads `PASS` for the delivery head `bd5aba188` - the check-run for that exact commit is quoted
 in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`, and it
@@ -101,9 +109,9 @@ checks 5 --required` on the pull request is the authority for it.
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
   "capturedAt": "2026-09-24T18:51:31Z",
-  "commandsExecutedAtHead": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-  "commandsExecutedAtTreeState": "WORKING_TREE_DIRTY",
-  "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source ran against the tree of 190b78b9e with the CD03 corrections to scripts/validate_governance.py, tests/test_governance.py and this bundle uncommitted on top of it; the other rows in `tests` bind to their own receipts, and the head that carries this file cannot observe its own run, so its status is read from the platform rather than asserted here",
+  "commandsExecutedAtHead": "80dc365feb7fb221bd39781ad24636c711527181",
+  "commandsExecutedAtTreeState": "CLEAN",
+  "commandsExecutedAtNote": "These ran against the tree of 80dc365fe as committed, with `git status --porcelain=v1` reporting an empty tree: python scripts/validate_governance.py; python -m unittest discover -s tests -p \"test_*.py\"; python -m py_compile over the three scripts and the three test modules; git diff --check and git diff --cached --check; credential pattern sweep over every tracked and untracked file (cd03_secret_sweep.py). Each has its own row in `tests`, and the other rows there bind to their own receipts. The head that carries this file cannot observe its own run, so its status is read from the platform rather than asserted here",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
@@ -113,7 +121,7 @@ checks 5 --required` on the pull request is the authority for it.
   "candidateHeadSha": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
   "deliveryHeadSemantics": "The certified/delivery head is the one commit this record delivers for independent review, named identically by headSha, candidateHeadSha and github.deliveredHeadSha, and it must have exactly one completed, successful Governance check-run in the ledger named by deliveryHeadCiReceipt. commandsExecutedAtHead carries a different role: it names the commit the deterministic commands ran against, and commandsExecutedAtTreeState says whether that tree was CLEAN or carried uncommitted files. The two are separate because a record can only carry a check-run for an older commit; the commit holding this file is declared as a carrier in headRoleTable and its own status stays a platform read. scripts/validate_governance.py enforces this contract in check_head_rebinding(), reading the record and the ledger only, so it never claims a run is still live on the platform.",
   "deliveryHeadCiReceipt": ".engineering/evidence/wo-0002/ci.json",
-  "headRolesNote": "Every SHA in this record holds exactly one declared role. (1) Certified/delivery head: bd5aba188, named by the three certified fields and bound to one completed Governance observation in .engineering/evidence/wo-0002/ci.json. (2) Historical proof heads: the WO-0002 discovery head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c and the CD01 re-read head 24485b1c3. (3) The execution head 190b78b9e, whose tree state is declared beside it. (4) Carrier commits, which hold this file and cannot observe their own check-run: their status is read with `gh pr checks 5 --required`. CD03 moved no execution and altered no receipt; it added the code that enforces role (1) and the wording that separates it from role (3).",
+  "headRolesNote": "Every SHA in this record holds exactly one declared role. (1) Certified/delivery head: bd5aba188, named by the three certified fields and bound to one completed Governance observation in .engineering/evidence/wo-0002/ci.json. (2) Historical proof heads: the WO-0002 discovery head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c and the CD01 re-read head 24485b1c3. (3) The execution head 80dc365fe, whose tree state is declared beside it. (4) Carrier commits, which hold this file and cannot observe their own check-run: their status is read with `gh pr checks 5 --required`. CD03 moved no execution and altered no receipt; it added the code that enforces role (1) and the wording that separates it from role (3).",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "headRoleTable": {
     "74c47fa204a5da79c1418fb9bcc2557603422f88": "BASE_MAIN_UNCHANGED - origin/main at capture; no commit was made on main",
@@ -123,7 +131,8 @@ checks 5 --required` on the pull request is the authority for it.
     "ad4fdf81c0f8cde59671bbe2252eb48f86784eff": "PROOF_HEAD_HISTORICAL - the head the C01 HIVE v1.0.0 read-only MCP proof indexed and inspected",
     "24485b1c3e579a7c1f7be699087c5be069a03a0c": "PROOF_HEAD_HISTORICAL - the head the CD01 bounded context.build re-read ran at",
     "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4": "DELIVERY_HEAD_CURRENT - the head the delivery fields name and whose Governance run ci.json binds",
-    "190b78b9ea1dd5be031d644a4fe888f42b9675f1": "CARRIER_HEAD - the commit that carries CD02's rebinding; no proof ran at it and no proof was moved to it"
+    "190b78b9ea1dd5be031d644a4fe888f42b9675f1": "CARRIER_HEAD - the commit that carries CD02's rebinding; no proof ran at it and no proof was moved to it",
+    "80dc365feb7fb221bd39781ad24636c711527181": "EXECUTION_HEAD - the commit whose tree the CD03 deterministic commands ran against"
   },
   "historicalHeadsDeclared": {
     "previouslyDeliveredOrProvedHeads": [
@@ -162,17 +171,17 @@ checks 5 --required` on the pull request is the authority for it.
   },
   "checkExecutionHeads": {
     "deterministicCommands": {
-      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-      "treeState": "WORKING_TREE_DIRTY",
+      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "treeState": "CLEAN",
       "commands": [
         "python scripts/validate_governance.py",
-        "python -m unittest discover -s tests -v",
-        "python -m py_compile <touched python files>",
-        "git diff --check",
-        "git diff --cached --check",
-        "credential pattern sweep over the changed files"
+        "python -m unittest discover -s tests -p \"test_*.py\"",
+        "python -m py_compile over the three scripts and the three test modules",
+        "git diff --check and git diff --cached --check",
+        "credential pattern sweep over every tracked and untracked file (cd03_secret_sweep.py)",
+        "git status --porcelain=v1"
       ],
-      "howKnown": "executed in this working tree at the commit named here; with the CD03 corrections to scripts/validate_governance.py, tests/test_governance.py and this bundle uncommitted on top of it"
+      "howKnown": "executed in this working tree at the commit named here; as committed, with `git status --porcelain=v1` reporting an empty tree; the receipts are the rows of `tests` that carry this head"
     },
     "governanceCheckRuns": {
       "head": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
@@ -1263,8 +1272,8 @@ checks 5 --required` on the pull request is the authority for it.
     },
     {
       "path": ".engineering/evidence/wo-0002/ci.json",
-      "bytes": 4041,
-      "sha256": "8e9f4682136b3583028503ab10800c82e7c6a0bb21c23cb5cfa6e3807b980c88"
+      "bytes": 4525,
+      "sha256": "854cb162365f69e7a3cf9ee2bcc4c3914ccdcd0af559814ad0b9a81752c7bbaa"
     },
     {
       "path": ".engineering/evidence/wo-0002/context-build-cd01.json",
@@ -1491,38 +1500,38 @@ checks 5 --required` on the pull request is the authority for it.
   "tests": [
     {
       "command": "python -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py; python -m py_compile tests/test_governance.py tests/test_hive_bootstrap.py tests/test_hive_mcp.py",
-      "result": "PASS - exit 0 for both compile commands over the three governance scripts and the three test modules",
-      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-      "treeState": "WORKING_TREE_DIRTY",
-      "observedAt": "2026-09-24T19:41:54Z"
+      "result": "PASS - exit 0 for both compile commands over scripts/validate_governance.py, scripts/hive_bootstrap.py, scripts/hive_mcp.py, tests/test_governance.py, tests/test_hive_bootstrap.py and tests/test_hive_mcp.py",
+      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "treeState": "CLEAN",
+      "observedAt": "2026-09-24T19:52:12Z"
     },
     {
       "command": "python scripts/validate_governance.py",
-      "result": "PASS - ISORYN governance validation: PASS; Required artifacts: 61; Governed MCP tools: 7; head_rebinding_fields_match_governance_observation: ISORYN-WO-0002 certified @ bd5aba188, commands ran @ 190b78b9e",
-      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-      "treeState": "WORKING_TREE_DIRTY",
-      "observedAt": "2026-09-24T19:41:54Z"
+      "result": "PASS - ISORYN governance validation: PASS; GEF: v1.0.0 @ 866fe3af8cccc65c929aaf6a47a924401fa448b3; HIVE: v1.0.0 @ a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf; Required artifacts: 61; Governed MCP tools: 7; head_rebinding_fields_match_governance_observation: ISORYN-WO-0002 certified @ bd5aba188, commands ran @ 190b78b9e; the binding line above names the head the record pointed at before this commit existed, because a commit cannot carry a claim about itself - the re-stamped record is the next commit and its own Governance run is the observation that agrees with it",
+      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "treeState": "CLEAN",
+      "observedAt": "2026-09-24T19:52:12Z"
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 57 tests, OK (34 before CD03 plus 23 HeadRebindingGateTests)",
-      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-      "treeState": "WORKING_TREE_DIRTY",
-      "observedAt": "2026-09-24T19:41:54Z"
+      "result": "PASS - Ran 57 tests in 0.811s; OK; gate classes: HeadRebindingGateTests defines 23 cases",
+      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "treeState": "CLEAN",
+      "observedAt": "2026-09-24T19:52:12Z"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
-      "result": "PASS - no whitespace errors unstaged or staged; git status --porcelain lists the three files CD03 edits",
-      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-      "treeState": "WORKING_TREE_DIRTY",
-      "observedAt": "2026-09-24T19:41:54Z"
+      "result": "PASS - no whitespace or EOF errors unstaged or staged; `git status --porcelain=v1` reports an empty tree",
+      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "treeState": "CLEAN",
+      "observedAt": "2026-09-24T19:52:12Z"
     },
     {
       "command": "repository secret scan (pattern sweep over every tracked and untracked file, plus credential-scanning state read from the GitHub API)",
-      "result": "PASS - the existing pattern sweep re-run by cd03_secret_sweep.py: 133 files listed (tracked and untracked), 129 text scanned, 4 binary files named and excluded, 8 credential patterns, 0 matches",
-      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-      "treeState": "WORKING_TREE_DIRTY",
-      "observedAt": "2026-09-24T19:41:54Z"
+      "result": "PASS - the existing credential pattern sweep over every tracked and untracked file: 133 files listed, 129 text scanned, 4 binary files named and excluded, 8 patterns, 0 matches",
+      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "treeState": "CLEAN",
+      "observedAt": "2026-09-24T19:52:12Z"
     },
     {
       "command": "HIVE health/inspect/index/corpus/retrieval + MCP initialize/tools/list/project.status/checkpoint.read/context.search through scripts/hive_mcp.py",
@@ -1593,14 +1602,10 @@ checks 5 --required` on the pull request is the authority for it.
       ],
       "matches": [],
       "verdict": "PASS",
-      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-      "treeState": "WORKING_TREE_DIRTY",
-      "observedAt": "2026-09-24T19:41:36Z",
-      "dirtyPaths": [
-        ".engineering/evidence/ISORYN-WO-0002-EVIDENCE.md",
-        "scripts/validate_governance.py",
-        "tests/test_governance.py"
-      ],
+      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "treeState": "CLEAN",
+      "observedAt": "2026-09-24T19:52:11Z",
+      "dirtyPaths": [],
       "reRunBy": "cd03_secret_sweep.py, which uses the pattern set and text sniffing the CD02 receipt describes"
     },
     "platformSecretScanning": {
@@ -1836,15 +1841,23 @@ checks 5 --required` on the pull request is the authority for it.
         "test_records_under_a_different_convention_stay_outside_this_gate"
       ]
     },
-    "capturedAt": "2026-09-24T19:41:54Z",
-    "treeState": "WORKING_TREE_DIRTY",
-    "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-    "testsRunAt": {
-      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
-      "treeState": "WORKING_TREE_DIRTY",
-      "observedAt": "2026-09-24T19:41:54Z",
-      "rowsStamped": 6
-    }
+    "capturedAt": "2026-09-24T19:53:54Z",
+    "treeState": "CLEAN",
+    "head": "80dc365feb7fb221bd39781ad24636c711527181",
+    "suiteRunAt": {
+      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "treeState": "CLEAN",
+      "observedAt": "2026-09-24T19:52:12Z",
+      "rowsStamped": 5,
+      "commands": [
+        "python scripts/validate_governance.py",
+        "python -m unittest discover -s tests -p \"test_*.py\"",
+        "python -m py_compile over the three scripts and the three test modules",
+        "git diff --check and git diff --cached --check",
+        "credential pattern sweep over every tracked and untracked file (cd03_secret_sweep.py)"
+      ]
+    },
+    "runLineage": "CD03 first ran this suite at 190b78b9e with the gate, its tests and this bundle uncommitted on top; 80dc365fe is that state committed, and the head named above is the same suite re-run from its clean tree, so a reviewer reproduces the claim by checking that commit out instead of trusting a working tree that no longer exists"
   }
 }
 ```

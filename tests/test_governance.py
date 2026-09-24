@@ -200,8 +200,11 @@ class HeadRebindingGateTests(unittest.TestCase):
         evidence, ledger, receipt = self.record()
         set_path(evidence, "commandsExecutedAtTreeState", "NOT_RECORDED")
         self.assert_refuses(evidence, ledger, receipt, "tree state")
+        # Both directions are written out rather than taken from the shipped record, so the test still says
+        # something when the record moves from a dirty tree to a clean one.
         evidence, ledger, receipt = self.record()
         set_path(evidence, "commandsExecutedAtTreeState", "CLEAN")
+        set_path(evidence, "commandsExecutedAtNote", "ran with uncommitted files on top")
         self.assert_refuses(evidence, ledger, receipt, "while its commandsExecutedAtNote")
         evidence, ledger, receipt = self.record()
         set_path(evidence, "commandsExecutedAtTreeState", "WORKING_TREE_DIRTY")
@@ -214,8 +217,10 @@ class HeadRebindingGateTests(unittest.TestCase):
         self.assert_refuses(evidence, ledger, receipt, "checkExecutionHeads names")
 
     def test_command_rows_cannot_be_credited_to_a_tree_they_did_not_run_on(self):
+        evidence, ledger, receipt = self.record()
+        opposite = ("WORKING_TREE_DIRTY" if evidence["commandsExecutedAtTreeState"] == "CLEAN" else "CLEAN")
         for mutate, fragment in (({"head": "e" * 40}, "commandsExecutedAtHead claims"),
-                                 ({"treeState": "CLEAN"}, "cannot be credited"),
+                                 ({"treeState": opposite}, "cannot be credited"),
                                  ({"head": "not-a-commit"}, "not an exact commit")):
             evidence, ledger, receipt = self.record()
             row = next(r for r in evidence["tests"] if "treeState" in r)
