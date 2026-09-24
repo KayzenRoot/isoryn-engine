@@ -29,14 +29,42 @@ record on the pull request.
   "workOrder": "ISORYN-WO-0002",
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
-  "capturedAt": "2026-09-24T00:04:53Z",
-  "commandsExecutedAtHead": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+  "capturedAt": "2026-09-24T00:15:28Z",
+  "commandsExecutedAtHead": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
   "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
-  "proofHeadSha": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
-  "headSha": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
-  "candidateHeadSha": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+  "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+  "headSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+  "candidateHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+  "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
+  "receiptHeadBinding": {
+    "discoveryReceipts": {
+      "windowUtc": [
+        "2026-09-23T17:50:00Z",
+        "2026-09-23T23:16:16Z"
+      ],
+      "branchHeadAtWindowStart": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
+      "branchHeadAtWindowEnd": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
+      "workingTreeAtCapture": "WO-0002 deliverables present but uncommitted"
+    },
+    "securityAnalysisReceipt": {
+      "capturedAt": "2026-09-23T23:58:49Z",
+      "branchHeadAtCapture": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe"
+    },
+    "hiveMcpProofReceipt": {
+      "capturedAt": "2026-09-24T00:10:58Z",
+      "branchHeadAtCapture": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+      "corroboratedBy": "in-container git rev-parse HEAD"
+    },
+    "engineBuild": {
+      "embeddedVersion": "4.7.2.stable.custom_build.ed1daf0bf",
+      "upstreamCommit": "ed1daf0bf001b61586d9930840f2f1394092c079",
+      "artifactSha256": "7052a3f08be1872418cae83c08c15c5ff46e52950b2fb8d43b19b24587914a18",
+      "note": "A binary is identified by what went into it and by its own hash; the repository head at build time identifies the documents, not the engine."
+    },
+    "gap": "Receipts quote their capture instant and the identity of what they measured, but not `git rev-parse HEAD` at that instant, so the head binding above is reconstructed from the receipts' own timestamps against this branch's commit order. Recording the head inside each receipt is a one-line change to the capture scripts and belongs to the next increment."
+  },
   "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
   "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
   "pr": {
@@ -72,18 +100,23 @@ record on the pull request.
       "status": "ok",
       "version": "1.0.0"
     },
+    "bootstrap": {
+      "command": "python scripts/hive_bootstrap.py --base-url http://127.0.0.1:18199 --relative-path isoryn-engine",
+      "exitCode": 0,
+      "stderr": null
+    },
     "pipeline": {
       "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
       "relative_path": "isoryn-engine",
       "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-      "git_head_sha": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+      "git_head_sha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
       "state": "READY",
       "working_tree_clean": true,
       "index_status": "COMPLETED",
       "corpus_status": "COMPLETED"
     },
     "workingTreeCleanAtProof": true,
-    "inContainerHeadProbe": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+    "inContainerHeadProbe": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
     "note": "Executed at the proof head on the isolated compose project named in the receipt. Derived state only: Git and the canonical checkpoint outrank HIVE, and the container's own `git rev-parse HEAD` is what confirms the index is looking at the head the proofs claim.",
     "receipt": ".engineering/evidence/wo-0002/hive-mcp-proof.json"
   },
@@ -226,7 +259,7 @@ record on the pull request.
       "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
       "relative_path": "isoryn-engine",
       "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-      "git_head_sha": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+      "git_head_sha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
       "state": "READY",
       "working_tree_clean": true,
       "index_status": "COMPLETED",
@@ -261,18 +294,18 @@ record on the pull request.
       }
     },
     "contextSearchTopPaths": [
+      ".engineering/evidence/wo-0002/hive-mcp-proof.json",
       "docs/project-brain/16-DECISIONS-LEDGER.md",
       "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
       "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
-      "docs/adr/ADR-0002-build-toolchain-and-upstream-sync.md",
-      ".engineering/evidence/wo-0002/windowed-output-sink-control.txt"
+      "docs/adr/ADR-0002-build-toolchain-and-upstream-sync.md"
     ],
     "memorySearchReturned": 0,
     "retrievalState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
     "launcherExit": 0,
     "launcherStderr": [],
     "receipt": ".engineering/evidence/wo-0002/hive-mcp-proof.json",
-    "proofHead": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe"
+    "proofHead": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4"
   },
   "architectureDeliverables": {
     "adrs": [
@@ -742,8 +775,8 @@ record on the pull request.
     },
     {
       "path": ".engineering/evidence/wo-0002/hive-mcp-proof.json",
-      "bytes": 7008,
-      "sha256": "09fbd7ad651d68812d8cba8509250f5e35eac6a9552d0534c22372b8b9e5de46"
+      "bytes": 7554,
+      "sha256": "4932eda0ab40940dcbb2f58a99d73e61d619542453aedaa6752d1a1fbfa5eb71"
     },
     {
       "path": ".engineering/evidence/wo-0002/toolchain-inventory.json",
@@ -794,7 +827,7 @@ record on the pull request.
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 0.572s, OK"
+      "result": "PASS - Ran 34 tests in 0.428s, OK"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
@@ -806,7 +839,7 @@ record on the pull request.
     },
     {
       "command": "HIVE health/inspect/index/corpus/retrieval + MCP initialize/tools/list/project.status/checkpoint.read/context.search through scripts/hive_mcp.py",
-      "result": "PASS at proofHead 4fb5cc26357e56cd821f591cc016bd95e3cab0fe; the container's own git rev-parse HEAD matches the proof head"
+      "result": "PASS at proofHead 958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4; the container's own git rev-parse HEAD returned 958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4 and the bootstrap that refreshed the index exited 0 with state READY"
     },
     {
       "command": "official Godot tag/commit verification against refs/tags and a local clone",
@@ -907,6 +940,7 @@ record on the pull request.
     "The governance validator caught 12 CRLF lines introduced by the new readback receipt (engine log bytes carried CR); normalized to LF rather than exempted.",
     "The first version of this bundle failed two gates of the repository's own schema and was rewritten rather than the schema relaxed: it dropped the required hivePreflight field, and it recorded governance_ci as 'PENDING_AT_WRITE', a value outside the documented result vocabulary. The vocabulary has no word for 'not run yet', so the row now reads UNKNOWN until GitHub reports the run for the pushed head, and the binding to that head lives in governanceRun instead of inside a status token.",
     "The independent CR scan first reported four offending files, all of them committed PNG frames: binary data contains CR bytes legitimately. Text is now decided by the same NUL sniff the credential sweep uses and the excluded binaries are named in the record instead of the scan quietly narrowing itself.",
+    "The HIVE/MCP receipt described above was assembled with a hand-written bootstrap summary: the block stated state READY, working_tree_clean true and index/corpus COMPLETED as typed literals next to a real session capture. That is fabricated evidence even when it happens to match what ran, so the assembler now executes `scripts/hive_bootstrap.py` itself, parses the summary out of its stdout, records its exit code, and only then runs the MCP sessions - which is also what re-indexed the tree at the proof head and made the current receipts retrievable through context.search.",
     "Two citation defects: movie_writer.cpp:201 should be :202 for the texture_2d_get call, and a receipt reference needed its full .meta file name to resolve.",
     "context.build was first called with a query argument that the governed schema rejects (additionalProperties false); re-called with schema-valid arguments, which returned resource_not_found because no task is registered for this project on the pinned stack."
   ],
@@ -939,6 +973,7 @@ record on the pull request.
     "The machine still runs a drifted HIVE v1.0.2 on port 8000; only HIVE_COMPOSE_PROJECT plus the -p flag keeps proofs pointed at the pinned v1.0.0 stack.",
     "Seam 3 is proven at configure level only; the compile-and-link proof is open backlog row 9.",
     "Godot 4.8 is pre-release and observation-only; the candidate matrix must be re-verified if a newer stable tag is published before the audit.",
+    "Executed receipts do not record `git rev-parse HEAD` at their own capture instant, so their binding to a repository head is reconstructed from timestamps against the commit order (see receiptHeadBinding.gap). A capture that outlives a commit, or a rebased branch, breaks that reconstruction silently; the fix is one line in the capture scripts and is not applied to receipts that are already closed.",
     "Registry entries (07) are proof obligations, not adopted technology; none may be cited as superiority over upstream."
   ],
   "rollback": "Close PR #5 and delete only the WO-0002 branch artifacts if discovery is abandoned. The engine clone, virtual environment and every build output are operator-local and disposable (ISORYN-D-011); no vendored source, binary or generated media beyond the four evidentiary frames entered the repository, so rollback touches no external state.",
@@ -946,7 +981,7 @@ record on the pull request.
     "baseMainSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
     "pr": "https://github.com/KayzenRoot/isoryn-engine/pull/5",
     "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-    "proofHeadSha": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+    "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
     "deliveredHeadSha": "set by the push this record produces",
     "mergeAttempted": false,
     "note": "Merging is a hard stop for this Work Order; the PR is delivered open, and the exact-head Governance result is in governanceRun."

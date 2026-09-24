@@ -1,8 +1,8 @@
 {
   "schemaVersion": "isoryn-hive-mcp-proof-v1",
   "workOrder": "ISORYN-WO-0002",
-  "capturedAt": "2026-09-23T23:34:43Z",
-  "proofHead": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+  "capturedAt": "2026-09-24T00:10:58Z",
+  "proofHead": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
   "proofBranch": "isoryn-wo-0002-architecture-toolchain-discovery",
   "workingTreeCleanAtProof": true,
   "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
@@ -31,7 +31,7 @@
     "status": "ok",
     "version": "1.0.0",
     "environment": "development",
-    "timestamp": "2026-09-23T23:34:42.797565Z",
+    "timestamp": "2026-09-24T00:09:39.249658Z",
     "data_root": "/var/lib/hive",
     "checks": {
       "postgres": {
@@ -70,23 +70,29 @@
       "HEAD"
     ],
     "returncode": 0,
-    "stdout": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+    "stdout": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
     "stderr": null,
     "matchesProofHead": true
   },
   "bootstrap": {
     "command": "python scripts/hive_bootstrap.py --base-url http://127.0.0.1:18199 --relative-path isoryn-engine",
+    "exitCode": 0,
+    "progress": [
+      "HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-24T00:09:39.824639Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}",
+      "Resolved existing ISORYN registration by exact relative path."
+    ],
     "result": {
       "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
       "relative_path": "isoryn-engine",
       "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-      "git_head_sha": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+      "git_head_sha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
       "state": "READY",
       "working_tree_clean": true,
       "index_status": "COMPLETED",
       "corpus_status": "COMPLETED"
     },
-    "note": "Executed against the same head before the MCP session; HIVE reported the registration it resolved by exact relative path rather than creating a second one."
+    "stderr": null,
+    "note": "Executed by this assembler before the MCP sessions, so the index and corpus HIVE answers from were refreshed at this head rather than inherited from an earlier run."
   },
   "initialize": {
     "protocolVersion": "2025-06-18",
@@ -159,10 +165,10 @@
   "calls": {
     "project.list": {
       "isError": false,
-      "response_sha256": "0de8dc9254bec8c4d9e390c0a9bc34219a513b09f6824fdd1038c29f1e9230db",
+      "response_sha256": "4e9723bc8c68d7445253750ac6506c53f9b8917710262b1eec54626add11b9cf",
       "returned_count": 1,
       "heads": [
-        "4fb5cc26357e56cd821f591cc016bd95e3cab0fe"
+        "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4"
       ],
       "states": [
         "READY"
@@ -170,8 +176,8 @@
     },
     "project.status": {
       "isError": false,
-      "response_sha256": "407f4b3e14dbb11879b805e9b86660353f1003be72e71c3968cde40efec0c84c",
-      "git_head_sha": "4fb5cc26357e56cd821f591cc016bd95e3cab0fe",
+      "response_sha256": "f4d34e079cc65153d2a6bd9fff873ed1c492b4db2ab8a32c3403e18434423c67",
+      "git_head_sha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
       "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
       "state": "READY",
       "working_tree_clean": true,
@@ -179,7 +185,7 @@
     },
     "checkpoint.read": {
       "isError": false,
-      "response_sha256": "cd4f6180120da712b9cb06d9a97ebd60cbf61be8cb3cae2aa8e4f327e6914994",
+      "response_sha256": "bacbeed86033d770011215a112360ad02507781987700071a1c76555fb9cd55f",
       "checkpoint_sha256": "dc567c8e573dd0554b8605ba14b63eb761f2a11f9d825b7d935dbb6367809e0e",
       "checkpoint_lines": 23,
       "status_line": "## STATUS",
@@ -187,18 +193,18 @@
     },
     "context.search": {
       "isError": false,
-      "response_sha256": "adf70f2edb12aa164c35ec67b3ffde4415d334e6217b6f9956be3c6764226ecd",
+      "response_sha256": "f40270d54da560df97f30e5489460a58cef941ed972d0963a1247eaf118cb242",
       "query": "readback gate golden frame baseline",
       "candidate_pool": 5,
       "result_count": 5,
       "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
       "rerank_state": "RERANK_FALLBACK_DISABLED",
       "top_paths": [
+        ".engineering/evidence/wo-0002/hive-mcp-proof.json",
         "docs/project-brain/16-DECISIONS-LEDGER.md",
         "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
         "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
-        "docs/adr/ADR-0002-build-toolchain-and-upstream-sync.md",
-        ".engineering/evidence/wo-0002/windowed-output-sink-control.txt"
+        "docs/adr/ADR-0002-build-toolchain-and-upstream-sync.md"
       ]
     },
     "memory.search": {
