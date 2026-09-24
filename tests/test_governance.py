@@ -1,4 +1,4 @@
-import io, json, re, unittest
+import copy, io, json, re, unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
@@ -9,6 +9,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def load(rel):
     return json.loads((ROOT / rel).read_text(encoding="utf-8"))
+
+
+def set_path(obj, path, value):
+    parts = path.split(".")
+    for part in parts[:-1]:
+        obj = obj[part]
+    obj[parts[-1]] = value
+
+
+def drop_path(obj, path):
+    parts = path.split(".")
+    for part in parts[:-1]:
+        obj = obj[part]
+    del obj[parts[-1]]
 
 
 class ValidatorGateTests(unittest.TestCase):
@@ -51,6 +65,183 @@ class ValidatorGateTests(unittest.TestCase):
                 if vg.section(bridge, heading) != value:
                     vg.fail("checkpoint bridge drift for " + field)
         self.assertIn("drift for status", str(ctx.exception))
+
+
+class HeadRebindingGateTests(unittest.TestCase):
+    """CD03: a record may name a certified head only its own versioned CI ledger proves, and statically.
+
+    The fixtures are the shipped WO-0002 record and ledger, mutated one claim at a time, so every negative
+    exercises the gate's real refusal instead of restating its arithmetic.
+    """
+
+    WO = "ISORYN-WO-0002"
+    BUNDLE = ".engineering/evidence/ISORYN-WO-0002-EVIDENCE.md"
+
+    def record(self):
+        evidence = vg.bundle_payload(self.BUNDLE, self.WO)
+        receipt = evidence["deliveryHeadCiReceipt"]
+        return copy.deepcopy(evidence), load(receipt), receipt
+
+    def assert_refuses(self, evidence, ledger, receipt, fragment):
+        with self.assertRaises(SystemExit) as ctx:
+            vg.verify_delivery_head(evidence, ledger, receipt, self.WO)
+        self.assertIn(fragment, str(ctx.exception))
+
+    def matching(self, ledger, head):
+        return [o for o in ledger["observations"]
+                if o.get("context") == "Governance" and o.get("head") == head]
+
+    def test_shipped_record_passes_the_gate_it_declares(self):
+        evidence, ledger, receipt = self.record()
+        certified, execution = vg.verify_delivery_head(evidence, ledger, receipt, self.WO)
+        self.assertEqual(certified, evidence["headSha"])
+        self.assertEqual(execution, evidence["commandsExecutedAtHead"])
+        self.assertEqual(len(self.matching(ledger, certified)), 1)
+
+    def test_validator_flow_binds_the_declaring_record(self):
+        bound = {wo: (certified, execution) for wo, certified, execution in vg.check_head_rebinding()}
+        self.assertIn(self.WO, bound)
+        evidence, _ledger, _receipt = self.record()
+        self.assertEqual(bound[self.WO], (evidence["headSha"], evidence["commandsExecutedAtHead"]))
+
+    def test_gate_symbol_is_called_from_the_validator_flow(self):
+        source = (ROOT / "scripts/validate_governance.py").read_text(encoding="utf-8")
+        self.assertIn("def check_head_rebinding(", source)
+        self.assertIn("bound = check_head_rebinding()", source.split("def main()")[1])
+
+    def test_every_certified_field_must_name_the_same_head(self):
+        for path in vg.CERTIFIED_HEAD_FIELDS:
+            evidence, ledger, receipt = self.record()
+            set_path(evidence, path, "0" * 40)
+            self.assert_refuses(evidence, ledger, receipt, path + "=" + "0" * 9)
+
+    def test_certified_head_must_be_an_exact_commit(self):
+        evidence, ledger, receipt = self.record()
+        set_path(evidence, "headSha", evidence["headSha"][:9])
+        self.assert_refuses(evidence, ledger, receipt, "headSha is not an exact commit")
+
+    def test_absent_certified_field_fails_closed(self):
+        evidence, ledger, receipt = self.record()
+        drop_path(evidence, "github.deliveredHeadSha")
+        self.assert_refuses(evidence, ledger, receipt, "has no github.deliveredHeadSha")
+
+    def test_contract_must_declare_every_field_it_enforces(self):
+        evidence, ledger, receipt = self.record()
+        evidence["deliveryHeadSemantics"] = evidence["deliveryHeadSemantics"].replace(
+            "commandsExecutedAtHead", "someOtherHeadField")
+        self.assert_refuses(evidence, ledger, receipt, "does not name commandsExecutedAtHead")
+
+    def test_missing_governance_observation_certifies_nothing(self):
+        evidence, ledger, receipt = self.record()
+        head = evidence["headSha"]
+        ledger["observations"] = [o for o in ledger["observations"] if o.get("head") != head]
+        self.assert_refuses(evidence, ledger, receipt, "no Governance observation for that exact commit")
+
+    def test_duplicated_observation_is_ambiguous_not_stronger(self):
+        evidence, ledger, receipt = self.record()
+        ledger["observations"].append(dict(self.matching(ledger, evidence["headSha"])[0]))
+        self.assert_refuses(evidence, ledger, receipt, "an ambiguous ledger certifies nothing")
+
+    def test_unfinished_run_is_not_a_certification(self):
+        evidence, ledger, receipt = self.record()
+        self.matching(ledger, evidence["headSha"])[0]["status"] = "in_progress"
+        self.assert_refuses(evidence, ledger, receipt, "incomplete Governance run")
+
+    def test_failed_run_is_never_reported_as_certified(self):
+        evidence, ledger, receipt = self.record()
+        observed = self.matching(ledger, evidence["headSha"])[0]
+        observed["conclusion"] = "failure"
+        self.assert_refuses(evidence, ledger, receipt, "a failure is never a certification")
+
+    def test_ledger_that_contradicts_its_own_result_fails_closed(self):
+        evidence, ledger, receipt = self.record()
+        self.matching(ledger, evidence["headSha"])[0]["result"] = "FAIL"
+        self.assert_refuses(evidence, ledger, receipt, "the ledger contradicts itself")
+
+    def test_embedded_copy_must_agree_with_the_versioned_ledger(self):
+        evidence, ledger, receipt = self.record()
+        evidence["governanceRun"]["observations"] = [
+            dict(o, run="https://example.invalid/actions/runs/1/job/1")
+            if o.get("head") == evidence["headSha"] else o
+            for o in evidence["governanceRun"]["observations"]]
+        self.assert_refuses(evidence, ledger, receipt, "embeds a different Governance run")
+
+    def test_ledger_from_another_branch_or_work_order_is_rejected(self):
+        evidence, ledger, receipt = self.record()
+        ledger["branch"] = "isoryn-some-other-branch"
+        self.assert_refuses(evidence, ledger, receipt, "declaring branch")
+        evidence, ledger, receipt = self.record()
+        ledger["workOrder"] = "ISORYN-WO-0001"
+        self.assert_refuses(evidence, ledger, receipt, "declaring workOrder")
+
+    def test_malformed_ledgers_fail_closed(self):
+        with self.assertRaises(SystemExit) as bad_json:
+            vg.ci_ledger('{"observations": [', ".engineering/evidence/wo-0002/ci.json")
+        self.assertIn("is not valid JSON", str(bad_json.exception))
+        with self.assertRaises(SystemExit) as empty:
+            vg.ci_ledger('{"observations": []}', ".engineering/evidence/wo-0002/ci.json")
+        self.assertIn("carries no observations list", str(empty.exception))
+
+    def test_a_copy_that_cannot_certify_fails_closed(self):
+        evidence, ledger, receipt = self.record()
+        evidence["governanceRun"] = {"workOrder": self.WO, "branch": evidence["branch"]}
+        self.assert_refuses(evidence, ledger, receipt, "carries no observations list")
+
+    def test_receipt_must_point_inside_the_evidence_tree(self):
+        for escape in ("../../Windows/win.ini", "/etc/passwd", ".engineering/work-orders/x.json"):
+            with self.assertRaises(SystemExit) as ctx:
+                vg.read_ci_ledger(escape, self.WO)
+            self.assertIn("outside .engineering/evidence/", str(ctx.exception))
+        with self.assertRaises(SystemExit) as missing:
+            vg.read_ci_ledger(".engineering/evidence/wo-0002/not-recorded.json", self.WO)
+        self.assertIn("is not in the repository", str(missing.exception))
+
+    def test_execution_head_must_state_the_tree_it_ran_on(self):
+        evidence, ledger, receipt = self.record()
+        set_path(evidence, "commandsExecutedAtTreeState", "NOT_RECORDED")
+        self.assert_refuses(evidence, ledger, receipt, "tree state")
+        evidence, ledger, receipt = self.record()
+        set_path(evidence, "commandsExecutedAtTreeState", "CLEAN")
+        self.assert_refuses(evidence, ledger, receipt, "while its commandsExecutedAtNote")
+        evidence, ledger, receipt = self.record()
+        set_path(evidence, "commandsExecutedAtTreeState", "WORKING_TREE_DIRTY")
+        set_path(evidence, "commandsExecutedAtNote", "ran against a committed tree")
+        self.assert_refuses(evidence, ledger, receipt, "while its commandsExecutedAtNote")
+
+    def test_execution_head_must_match_the_declared_execution_row(self):
+        evidence, ledger, receipt = self.record()
+        set_path(evidence, "checkExecutionHeads.deterministicCommands.head", "f" * 40)
+        self.assert_refuses(evidence, ledger, receipt, "checkExecutionHeads names")
+
+    def test_command_rows_cannot_be_credited_to_a_tree_they_did_not_run_on(self):
+        for mutate, fragment in (({"head": "e" * 40}, "commandsExecutedAtHead claims"),
+                                 ({"treeState": "CLEAN"}, "cannot be credited"),
+                                 ({"head": "not-a-commit"}, "not an exact commit")):
+            evidence, ledger, receipt = self.record()
+            row = next(r for r in evidence["tests"] if "treeState" in r)
+            row.update(mutate)
+            self.assert_refuses(evidence, ledger, receipt, fragment)
+
+    def test_heads_under_the_contract_need_a_declared_role(self):
+        evidence, ledger, receipt = self.record()
+        del evidence["headRoleTable"][evidence["headSha"]]
+        self.assert_refuses(evidence, ledger, receipt, "holds no row in headRoleTable")
+        evidence, ledger, receipt = self.record()
+        del evidence["headRoleTable"][evidence["commandsExecutedAtHead"]]
+        self.assert_refuses(evidence, ledger, receipt, "execution head")
+
+    def test_report_row_must_agree_with_the_validator(self):
+        evidence, ledger, receipt = self.record()
+        set_path(evidence, "checks." + vg.GATE_HEAD_REBINDING, "UNKNOWN")
+        self.assert_refuses(evidence, ledger, receipt, "the report and the code must agree")
+
+    def test_records_under_a_different_convention_stay_outside_this_gate(self):
+        wo1 = vg.bundle_payload(".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md", "ISORYN-WO-0001")
+        self.assertNotIn("deliveryHeadSemantics", wo1)
+        ledger = load(".engineering/evidence/ci.json")
+        self.assertFalse(self.matching(ledger, wo1["headSha"]),
+                         "WO-0001's head is a code head, not a ledger-certified delivery head")
+        self.assertEqual([wo for wo, _c, _e in vg.check_head_rebinding()], [self.WO])
 
 
 class PortableConfigTests(unittest.TestCase):

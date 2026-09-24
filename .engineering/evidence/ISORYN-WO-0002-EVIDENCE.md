@@ -2,8 +2,8 @@
 
 Status: DELIVERED_FOR_INDEPENDENT_REREVIEW (WO-0002 delivery, re-proved for HIVE and re-verified for upstream by
 ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND, with the context.build interpretation corrected by
-ISORYN-WO-0002-C01-CD01 and the HEAD/CI binding reconciled by ISORYN-WO-0002-C01-CD02; supersedes the
-ADMISSION_BASELINE record in place)
+ISORYN-WO-0002-C01-CD01, the HEAD/CI binding reconciled by ISORYN-WO-0002-C01-CD02, and the gate that CD02 claimed
+implemented and tested by ISORYN-WO-0002-C01-CD03; supersedes the ADMISSION_BASELINE record in place)
 
 Everything below was executed against `D:\Hive\Projects\isoryn-engine`, the canonical workspace, on branch
 `isoryn-wo-0002-architecture-toolchain-discovery` against base main `74c47fa`. The Godot baseline is
@@ -62,9 +62,30 @@ described a candidate older than the one under review. The fix is a binding, not
 check-run was read from the GitHub API and appended to `ci.json` with the earlier observations untouched, the delivery
 fields now name exactly the head that observation certifies, and `headRoleTable`, `historicalHeadsDeclared` and
 `checkExecutionHeads` give every other SHA one declared role - base, admission, proof head, or the head a given command
-ran at. Proof heads, receipt `capturedAt` values and raw captures were not modified, no governed HIVE call was issued
-for CD02, and the gate `head_rebinding_fields_match_governance_observation` fails a future regeneration whose delivery
-fields drift from an observed run or which drops an observation while appending one.
+ran at. Proof heads, receipt `capturedAt` values and raw captures were not modified, and no governed HIVE call was
+issued for CD02. CD02 also stated that a gate named `head_rebinding_fields_match_governance_observation` failed a
+future regeneration whose delivery fields drift or which drops an observation while appending one. No such code
+existed: the sentence was written by an assembly script that lives outside this repository, so the versioned record
+claimed a control that no committed tool implemented and no test exercised.
+
+`ISORYN-WO-0002-C01-CD03` resolved that discrepancy by implementing the control rather than deleting the claim,
+because the control is what makes the CD02 binding hold on the next edit. The gate is
+`scripts/validate_governance.py::check_head_rebinding`, which calls `delivery_head_binding` for every bundle that
+declares the contract and `verify_delivery_head` for the arithmetic, and it runs inside the normal validator flow that
+the `Governance` CI job executes. It refuses a record whose certified fields (`headSha`, `candidateHeadSha`,
+`github.deliveredHeadSha`) are absent, inexact or disagree; whose `deliveryHeadCiReceipt` points outside
+`.engineering/evidence/`, is not valid JSON, or carries no observations; whose ledger belongs to another Work Order or
+branch; whose certified head has no Governance observation, more than one, or one that is not
+`completed`/`success`; whose copy embedded in `governanceRun` reports a different run than the versioned ledger; whose
+`commandsExecutedAtHead` disagrees with the execution row or holds no declared role; or whose
+`commandsExecutedAtTreeState` says one thing while `commandsExecutedAtNote` describes uncommitted files; or whose stamped command rows credit a command to a head or tree state the record
+does not itself name. Two things it
+deliberately does not claim. It is static: it reads the record and the ledger, never GitHub, so it cannot assert that
+any check-run is still live, and the carrier commit's own status stays a platform read (`gh pr checks 5 --required`).
+And it enforces no immutability: the CD02 rows about dropped observations and untouched receipts were one-time
+observations made during assembly, and they are now labelled as that rather than as protection, because no committed
+check compares receipts across heads. `tests/test_governance.py::HeadRebindingGateTests` exercises the shipped record
+and each refusal above by mutating the real record one claim at a time.
 
 `governance_ci` reads `PASS` for the delivery head `bd5aba188` - the check-run for that exact commit is quoted
 in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`, and it
@@ -80,8 +101,9 @@ checks 5 --required` on the pull request is the authority for it.
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
   "capturedAt": "2026-09-24T18:51:31Z",
-  "commandsExecutedAtHead": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
-  "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
+  "commandsExecutedAtHead": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+  "commandsExecutedAtTreeState": "WORKING_TREE_DIRTY",
+  "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source ran against the tree of 190b78b9e with the CD03 corrections to scripts/validate_governance.py, tests/test_governance.py and this bundle uncommitted on top of it; the other rows in `tests` bind to their own receipts, and the head that carries this file cannot observe its own run, so its status is read from the platform rather than asserted here",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
@@ -89,17 +111,19 @@ checks 5 --required` on the pull request is the authority for it.
   "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
   "headSha": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
   "candidateHeadSha": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
-  "deliveryHeadSemantics": "The delivery/candidate head is the highest branch head for which .engineering/evidence/wo-0002/ci.json carries a completed Governance check-run read from GitHub. headSha, candidateHeadSha, commandsExecutedAtHead and github.deliveredHeadSha all name that one head, and no proof ran at it beyond the deterministic checks listed in `tests`, which ran against this working tree.",
-  "headRolesNote": "Every SHA in this record holds exactly one of four roles. (1) Delivery/candidate head: bd5aba188, the head the fields above name and whose Governance run is bound in ci.json. (2) Historical proof heads: the WO-0002 discovery proof head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c (the head HIVE inspected and indexed) and the CD01 re-read head 24485b1c3. (3) The head each command ran at, stated per row in `tests` and `checkExecutionHeads`. (4) Carrier commits: this file lives in a descendant of the head it describes, and a commit cannot observe its own check-run, so the carrier's own status is read with `gh pr checks 5 --required` and never asserted here. No proof is attributed to a head it did not run at. CD02 moved no execution and altered no receipt: it changed only which of these fields names which head.",
+  "deliveryHeadSemantics": "The certified/delivery head is the one commit this record delivers for independent review, named identically by headSha, candidateHeadSha and github.deliveredHeadSha, and it must have exactly one completed, successful Governance check-run in the ledger named by deliveryHeadCiReceipt. commandsExecutedAtHead carries a different role: it names the commit the deterministic commands ran against, and commandsExecutedAtTreeState says whether that tree was CLEAN or carried uncommitted files. The two are separate because a record can only carry a check-run for an older commit; the commit holding this file is declared as a carrier in headRoleTable and its own status stays a platform read. scripts/validate_governance.py enforces this contract in check_head_rebinding(), reading the record and the ledger only, so it never claims a run is still live on the platform.",
+  "deliveryHeadCiReceipt": ".engineering/evidence/wo-0002/ci.json",
+  "headRolesNote": "Every SHA in this record holds exactly one declared role. (1) Certified/delivery head: bd5aba188, named by the three certified fields and bound to one completed Governance observation in .engineering/evidence/wo-0002/ci.json. (2) Historical proof heads: the WO-0002 discovery head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c and the CD01 re-read head 24485b1c3. (3) The execution head 190b78b9e, whose tree state is declared beside it. (4) Carrier commits, which hold this file and cannot observe their own check-run: their status is read with `gh pr checks 5 --required`. CD03 moved no execution and altered no receipt; it added the code that enforces role (1) and the wording that separates it from role (3).",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "headRoleTable": {
     "74c47fa204a5da79c1418fb9bcc2557603422f88": "BASE_MAIN_UNCHANGED - origin/main at capture; no commit was made on main",
     "2d567f97d5e3affa32bf190b8393a3e6d20d6327": "ADMISSION_HEAD_HISTORICAL - the head this Work Order was admitted at",
     "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4": "PROOF_HEAD_HISTORICAL - the WO-0002 discovery HIVE/MCP receipt, superseded by the C01 row",
-    "e481b3376c13cdbdfae243d945d10789d39a23fc": "REVIEWER_CORRECTION_HEAD_HISTORICAL - hand-applied review correction, still asserted by gate",
+    "e481b3376c13cdbdfae243d945d10789d39a23fc": "REVIEWER_CORRECTION_HEAD_HISTORICAL - hand-applied review correction, still asserted by the reviewer_correction_preserved row of this record",
     "ad4fdf81c0f8cde59671bbe2252eb48f86784eff": "PROOF_HEAD_HISTORICAL - the head the C01 HIVE v1.0.0 read-only MCP proof indexed and inspected",
     "24485b1c3e579a7c1f7be699087c5be069a03a0c": "PROOF_HEAD_HISTORICAL - the head the CD01 bounded context.build re-read ran at",
-    "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4": "DELIVERY_HEAD_CURRENT - the head the delivery fields name and whose Governance run ci.json binds"
+    "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4": "DELIVERY_HEAD_CURRENT - the head the delivery fields name and whose Governance run ci.json binds",
+    "190b78b9ea1dd5be031d644a4fe888f42b9675f1": "CARRIER_HEAD - the commit that carries CD02's rebinding; no proof ran at it and no proof was moved to it"
   },
   "historicalHeadsDeclared": {
     "previouslyDeliveredOrProvedHeads": [
@@ -138,16 +162,17 @@ checks 5 --required` on the pull request is the authority for it.
   },
   "checkExecutionHeads": {
     "deterministicCommands": {
-      "head": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+      "treeState": "WORKING_TREE_DIRTY",
       "commands": [
         "python scripts/validate_governance.py",
         "python -m unittest discover -s tests -v",
-        "python -m py_compile <governance and evidence scripts>",
+        "python -m py_compile <touched python files>",
         "git diff --check",
         "git diff --cached --check",
-        "credential pattern sweep over the tree"
+        "credential pattern sweep over the changed files"
       ],
-      "howKnown": "executed by the generator against this working tree at the head named here"
+      "howKnown": "executed in this working tree at the commit named here; with the CD03 corrections to scripts/validate_governance.py, tests/test_governance.py and this bundle uncommitted on top of it"
     },
     "governanceCheckRuns": {
       "head": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
@@ -1465,24 +1490,39 @@ checks 5 --required` on the pull request is the authority for it.
   },
   "tests": [
     {
-      "command": "python -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py",
-      "result": "PASS - exit 0"
+      "command": "python -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py; python -m py_compile tests/test_governance.py tests/test_hive_bootstrap.py tests/test_hive_mcp.py",
+      "result": "PASS - exit 0 for both compile commands over the three governance scripts and the three test modules",
+      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+      "treeState": "WORKING_TREE_DIRTY",
+      "observedAt": "2026-09-24T19:41:54Z"
     },
     {
       "command": "python scripts/validate_governance.py",
-      "result": "PASS - ISORYN governance validation: PASS; Required artifacts: 61; Governed MCP tools: 7"
+      "result": "PASS - ISORYN governance validation: PASS; Required artifacts: 61; Governed MCP tools: 7; head_rebinding_fields_match_governance_observation: ISORYN-WO-0002 certified @ bd5aba188, commands ran @ 190b78b9e",
+      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+      "treeState": "WORKING_TREE_DIRTY",
+      "observedAt": "2026-09-24T19:41:54Z"
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 0.880s, OK"
+      "result": "PASS - Ran 57 tests, OK (34 before CD03 plus 23 HeadRebindingGateTests)",
+      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+      "treeState": "WORKING_TREE_DIRTY",
+      "observedAt": "2026-09-24T19:41:54Z"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
-      "result": "PASS - no whitespace errors in either index"
+      "result": "PASS - no whitespace errors unstaged or staged; git status --porcelain lists the three files CD03 edits",
+      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+      "treeState": "WORKING_TREE_DIRTY",
+      "observedAt": "2026-09-24T19:41:54Z"
     },
     {
       "command": "repository secret scan (pattern sweep over every tracked and untracked file, plus credential-scanning state read from the GitHub API)",
-      "result": "PASS - 129 text files and 4 binary files reported by name out of 133 listed, 0 pattern matches; platform side, 0 secret scanning alerts with push protection enabled"
+      "result": "PASS - the existing pattern sweep re-run by cd03_secret_sweep.py: 133 files listed (tracked and untracked), 129 text scanned, 4 binary files named and excluded, 8 credential patterns, 0 matches",
+      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+      "treeState": "WORKING_TREE_DIRTY",
+      "observedAt": "2026-09-24T19:41:54Z"
     },
     {
       "command": "HIVE health/inspect/index/corpus/retrieval + MCP initialize/tools/list/project.status/checkpoint.read/context.search through scripts/hive_mcp.py",
@@ -1501,7 +1541,7 @@ checks 5 --required` on the pull request is the authority for it.
       "result": "PASS - 4.7.2-stable is still the newest published stable tag (noNewerStableTagExists True), the admitted baseline commit matches (True), and the official page reproduces the reviewer's support rows (CONFIRMED)"
     },
     {
-      "command": "git grep -F for each reviewer-corrected sentence at HEAD (the gate against a regeneration quietly reverting a hand-applied review correction)",
+      "command": "git grep -F for each reviewer-corrected sentence at HEAD (executed as a command at capture; the committed rows are its output, not a validator rule)",
       "result": "PASS - 4 of 4 corrected sentences present in the committed files"
     },
     {
@@ -1552,7 +1592,16 @@ checks 5 --required` on the pull request is the authority for it.
         "url-userinfo"
       ],
       "matches": [],
-      "verdict": "PASS"
+      "verdict": "PASS",
+      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+      "treeState": "WORKING_TREE_DIRTY",
+      "observedAt": "2026-09-24T19:41:36Z",
+      "dirtyPaths": [
+        ".engineering/evidence/ISORYN-WO-0002-EVIDENCE.md",
+        "scripts/validate_governance.py",
+        "tests/test_governance.py"
+      ],
+      "reRunBy": "cd03_secret_sweep.py, which uses the pattern set and text sniffing the CD02 receipt describes"
     },
     "platformSecretScanning": {
       "receipt": ".engineering/evidence/wo-0002/github-security-analysis.json",
@@ -1591,7 +1640,7 @@ checks 5 --required` on the pull request is the authority for it.
         ],
         "result": "PASS"
       },
-      "validatorGate": "check_line_endings in scripts/validate_governance.py, run by the generator and by the Governance CI job",
+      "validatorGate": "check_line_endings in scripts/validate_governance.py, which the validator runs on every head and the Governance CI job therefore enforces",
       "history": "the one CRLF this cycle introduced (gpu-readback-golden-frame.txt, 12 lines carried in from engine log bytes) was caught by the gate and normalized rather than exempted"
     }
   },
@@ -1613,7 +1662,8 @@ checks 5 --required` on the pull request is the authority for it.
     "Four of six searches in one C01 session answered database_unavailable ('durable store is unavailable', HIVE v1.0.0 mapping any psycopg error to it) while twelve of twelve identical searches in the next run returned data, so the condition is transient runtime state. Reading those answers as empty results would have produced a receipt claiming the corpus was quiet. The assembler now distinguishes the two, re-runs the session a bounded number of times, and records every attempt with which calls were unavailable.",
     "The pinned stack's indexer failed with git_timeout and then git_status_unavailable because HIVE gives every git call five seconds and the workspace reaches the container over a read-only 9p mount that cannot refresh .git/index, so a cold status re-stats the whole tree. Root-caused with a timed in-container git probe and fixed inside the pinned stack by repacking the host repository's loose objects (299 to 7) and warming the container's cache before the bootstrap, with the cold and warm timings and the failed attempts recorded rather than hidden.",
     "The official release-policy page returns HTTP 403 to urllib's default user agent, so the re-verification fetches it with an identified user agent through curl and records the exact command, the byte count and the SHA-256 of the page it parsed; the support rows quoted in the reviewer correction are read out of that captured page rather than restated.",
-    "CD02 found the delivery fields lagging the delivered head: after the CI-binding commits, headSha, candidateHeadSha, commandsExecutedAtHead and github.deliveredHeadSha still named the head the CD01 correction was pushed at, and ci.json carried no check-run for the head that was current, so nothing in the versioned record tied the checks to the candidate under review. The binding was repaired by capturing the current head's run from the GitHub API and by giving every head in the record exactly one declared role. No receipt was re-dated, no proof head moved, and no check is claimed at a head where it did not run: the deterministic commands in `tests` ran against this working tree at the head recorded in commandsExecutedAtHead."
+    "CD02 found the delivery fields lagging the delivered head: after the CI-binding commits, headSha, candidateHeadSha, commandsExecutedAtHead and github.deliveredHeadSha still named the head the CD01 correction was pushed at, and ci.json carried no check-run for the head that was current, so nothing in the versioned record tied the checks to the candidate under review. The binding was repaired by capturing the current head's run from the GitHub API and by giving every head in the record exactly one declared role. No receipt was re-dated, no proof head moved, and no check is claimed at a head where it did not run: the deterministic commands in `tests` ran against this working tree at the head recorded in commandsExecutedAtHead.",
+    "A delivered control existed only as a sentence. This bundle reported head_rebinding_fields_match_governance_observation as PASS and described it as failing a future regeneration, and cd02HeadRebindingGate listed dropped-observation and untouched-receipt rows that read as guarantees, while no such symbol existed in scripts/validate_governance.py and no such test existed in tests/test_governance.py. The PASS row had been written by an assembly script outside the repository, so nothing versioned could reproduce the claim it attested. CD03 implemented the gate in the validator, gave every refusal a test, and relabelled the CD02 rows that were single-capture observations as that instead of protection. The check row keeps its name because it is now the row the validator enforces rather than the row it only reports."
   ],
   "unsupportedPlatformFeatures": [
     {
@@ -1646,7 +1696,7 @@ checks 5 --required` on the pull request is the authority for it.
     "HIVE v1.0.0 gives every git call five seconds and the canonical workspace reaches the container over a read-only 9p mount, so indexing this tree is fragile on this host class. The mitigation used here (repacked objects plus a warmed container cache) is host state, not a repository guarantee: another machine standing up the same stack can need it too, and the bootstrap attempt counts recorded in the C01 receipt are what make that visible.",
     "context.search returns a truncated window of each matched chunk, so a phrase that exists in a matched file can still be absent from the returned snippet. Absence from a snippet is recorded as absence from the snippet, never as absence from the corpus.",
     "context.build is refused on the pinned stack and neither refusal names the resource it is about. CD01 re-read it once with the source freshly re-indexed and CURRENT at the captured head, and the answer changed from stale/source_not_current to not_found/resource_not_found - which shows the first refusal was a currency guard, not a statement about the task. What stays unknown is the happy path itself: no governed read-only call has produced a built context from this stack, and the registration status of the probe task_id is unknown rather than proven absent. Establishing either would need a write to HIVE, which the read-only boundary forbids without its own admission.",
-    "A record cannot carry the check-run of the commit that carries it, so the delivery head named here is always at least one commit behind the branch tip. CD02 closed the part that was a defect - the fields named a head older than the one under review without saying so - and what remains is the structural limit: the carrier commit's own status is platform state, read with `gh pr checks 5 --required`, and no field in this bundle asserts it. A regeneration whose delivery fields do not agree with a completed Governance observation in ci.json now turns a check red instead of quietly re-labelling a head.",
+    "A record cannot carry the check-run of the commit that carries it, so the delivery head named here is always at least one commit behind the branch tip. CD02 closed the part that was a defect - the fields named a head older than the one under review without saying so - and what remains is the structural limit: the carrier commit's own status is platform state, read with `gh pr checks 5 --required`, and no field in this bundle asserts it. From CD03 the binding is enforced inside this repository: check_head_rebinding() refuses a record whose certified fields do not resolve to exactly one completed, successful Governance observation in the ledger it names, and the Governance job runs that validator on every head, so a drifted rebinding fails the build instead of passing as prose. Two limits stay open and are not claimed as covered: the gate reads receipts and never the platform, and no committed check protects receipt bytes or ledger history across heads.",
     "Seam 3 is proven at configure level only; the compile-and-link proof is open backlog row 9.",
     "Godot 4.8 is pre-release and observation-only; the candidate matrix must be re-verified if a newer stable tag is published before the audit.",
     "Executed receipts do not record `git rev-parse HEAD` at their own capture instant, so their binding to a repository head is reconstructed from timestamps against the commit order (see receiptHeadBinding.gap). A capture that outlives a commit, or a rebased branch, breaks that reconstruction silently; the fix is one line in the capture scripts and is not applied to receipts that are already closed.",
@@ -1704,7 +1754,97 @@ checks 5 --required` on the pull request is the authority for it.
     "receiptsModifiedInWorkingTree": [],
     "proofHeadsStillBoundToTheirReceipts": true,
     "deliveryHeadAlsoClaimedAsProofHead": false,
-    "cd01InterpretationPreserved": true
+    "cd01InterpretationPreserved": true,
+    "nature": "Capture observations made once while CD02 was assembled by a script that is not version-controlled. They describe that capture; they are not repository guarantees.",
+    "notEnforced": [
+      "observationsDropped was computed by comparing one before/after snapshot during assembly; no committed check refuses a ledger that loses a row while gaining one",
+      "receiptsModifiedInWorkingTree was a `git diff` observation of one working tree; no committed check compares HIVE/MCP receipt bytes across heads",
+      "cd01InterpretationPreserved restates what CD01 wrote into the receipts; the receipts themselves are the evidence, and the CD01 gate block beside them is likewise a capture record"
+    ],
+    "enforcedFromCD03": {
+      "gate": "head_rebinding_fields_match_governance_observation",
+      "symbol": "scripts/validate_governance.py::check_head_rebinding",
+      "guarantee": "the certified fields resolve to one head that the named ledger certifies exactly once as completed/success, and the record's own report row agrees with that verdict"
+    }
+  },
+  "cd03GateImplementation": {
+    "finding": "CD02 announced head_rebinding_fields_match_governance_observation as a delivered control that fails a future regeneration whose delivery fields drift or which drops an observation. Independent review found the claim in this bundle and no symbol, call or test behind it: neither scripts/validate_governance.py nor tests/test_governance.py named it, and the assembly script that wrote the PASS row lives outside the repository, so no committed tool could reproduce the record.",
+    "decision": "IMPLEMENT",
+    "decisionReason": "CD03 prefers implementation because the claim is the only mechanism that keeps the CD02 rebinding from decaying on the next edit, and it is enforceable from files already in the repository with no new proof machinery. Deleting the claim instead was rejected: it would leave four delivery fields bound to prose.",
+    "symbols": {
+      "gate": "scripts/validate_governance.py::check_head_rebinding",
+      "perRecord": "scripts/validate_governance.py::delivery_head_binding",
+      "arithmetic": "scripts/validate_governance.py::verify_delivery_head",
+      "helpers": [
+        "bundle_payload",
+        "work_order_bundles",
+        "declared",
+        "ci_ledger",
+        "read_ci_ledger",
+        "certified_observation"
+      ],
+      "calledFrom": "main(), after check_governance_namespaces() and before check_stale_claims()",
+      "reportRow": "checks.head_rebinding_fields_match_governance_observation"
+    },
+    "enforces": [
+      "deliveryHeadSemantics must exist and name every field under the contract",
+      "headSha, candidateHeadSha and github.deliveredHeadSha must be exact commits and agree",
+      "deliveryHeadCiReceipt must point inside .engineering/evidence/, exist, and parse to an object with a non-empty observations list",
+      "the ledger must declare the same workOrder and branch as the record",
+      "the certified head must match exactly one Governance observation, completed and successful, whose declared result cannot contradict its conclusion",
+      "the observation embedded in governanceRun must agree with the versioned ledger on the run it cites",
+      "commandsExecutedAtHead must be exact, must match checkExecutionHeads.deterministicCommands.head, and must hold a declared role in headRoleTable",
+      "commandsExecutedAtTreeState must be CLEAN or WORKING_TREE_DIRTY and agree with commandsExecutedAtNote about uncommitted files",
+      "every tests row that declares a tree state must name that same head and state, so no command is credited to a tree it did not run against",
+      "checks.head_rebinding_fields_match_governance_observation must be PASS because the validator has just enforced it, not merely reported it"
+    ],
+    "doesNotEnforce": [
+      "live platform state: the gate never calls GitHub, so it cannot assert a check-run is still passing",
+      "receipt immutability across heads, and the preservation of ledger history while appending",
+      "SHAs quoted in narrative prose: only the fields named in the contract are bound",
+      "records under a different documented convention, listed in `scope`",
+      "other rows this bundle describes as gates but which were executed as one-off commands, such as reviewer_correction_preserved's git grep: they remain capture records, and CD03 does not widen this gate to cover them"
+    ],
+    "scope": "applies to bundles that declare deliveryHeadSemantics. ISORYN-WO-0001 does not: its headSha names a code head whose bundle commit carries the run, which its own headBindingNote documents, so the gate skips it and a test asserts the skip rather than letting the contract silently widen.",
+    "tests": {
+      "file": "tests/test_governance.py",
+      "class": "HeadRebindingGateTests",
+      "count": 23,
+      "cases": [
+        "test_shipped_record_passes_the_gate_it_declares",
+        "test_validator_flow_binds_the_declaring_record",
+        "test_gate_symbol_is_called_from_the_validator_flow",
+        "test_every_certified_field_must_name_the_same_head",
+        "test_certified_head_must_be_an_exact_commit",
+        "test_absent_certified_field_fails_closed",
+        "test_contract_must_declare_every_field_it_enforces",
+        "test_missing_governance_observation_certifies_nothing",
+        "test_duplicated_observation_is_ambiguous_not_stronger",
+        "test_unfinished_run_is_not_a_certification",
+        "test_failed_run_is_never_reported_as_certified",
+        "test_ledger_that_contradicts_its_own_result_fails_closed",
+        "test_embedded_copy_must_agree_with_the_versioned_ledger",
+        "test_ledger_from_another_branch_or_work_order_is_rejected",
+        "test_malformed_ledgers_fail_closed",
+        "test_a_copy_that_cannot_certify_fails_closed",
+        "test_receipt_must_point_inside_the_evidence_tree",
+        "test_execution_head_must_state_the_tree_it_ran_on",
+        "test_execution_head_must_match_the_declared_execution_row",
+        "test_command_rows_cannot_be_credited_to_a_tree_they_did_not_run_on",
+        "test_heads_under_the_contract_need_a_declared_role",
+        "test_report_row_must_agree_with_the_validator",
+        "test_records_under_a_different_convention_stay_outside_this_gate"
+      ]
+    },
+    "capturedAt": "2026-09-24T19:41:54Z",
+    "treeState": "WORKING_TREE_DIRTY",
+    "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+    "testsRunAt": {
+      "head": "190b78b9ea1dd5be031d644a4fe888f42b9675f1",
+      "treeState": "WORKING_TREE_DIRTY",
+      "observedAt": "2026-09-24T19:41:54Z",
+      "rowsStamped": 6
+    }
   }
 }
 ```

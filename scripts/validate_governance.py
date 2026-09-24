@@ -19,6 +19,15 @@ MCP_TOOLS = ("project.list", "project.status", "context.build", "context.search"
 
 RESULT_VOCABULARY = {"PASS", "FAIL", "NOT_AVAILABLE", "DEFERRED_BY_WO", "UNKNOWN"}
 SHA = re.compile(r"^[0-9a-f]{40}$")
+# The delivery-head contract a record declares for itself: `deliveryHeadSemantics` states what the head
+# fields mean, `deliveryHeadCiReceipt` names the versioned CI ledger, and the named fields have to resolve
+# through it. Enforcing the contract is offline by design — the validator reads the record and the ledger,
+# never GitHub — so this gate cannot claim a check-run is still live. Confirming the carrier head against
+# the API is a separate step whose result is written into the ledger, not asserted here.
+GATE_HEAD_REBINDING = "head_rebinding_fields_match_governance_observation"
+CERTIFIED_HEAD_FIELDS = ("headSha", "candidateHeadSha", "github.deliveredHeadSha")
+EXECUTION_HEAD_FIELD = "commandsExecutedAtHead"
+TREE_STATES = {"CLEAN", "WORKING_TREE_DIRTY"}
 # Drive-letter or foreign-home paths are machine state; they must not live in portable config.
 MACHINE_PATH = re.compile(r"(?<![A-Za-z0-9])[A-Za-z]:[\\/]|/(?:home|Users|mnt|var/folders)/")
 
@@ -89,6 +98,101 @@ def load_json(rel):
         return json.loads(read(rel))
     except json.JSONDecodeError as exc:
         fail(f"{rel} is not valid JSON: {exc}")
+
+
+def bundle_payload(rel, wo_id):
+    """The machine payload of an Evidence Bundle: one fenced json block, parsed or fatal."""
+    bundle = ROOT / rel
+    if not bundle.is_file():
+        fail("missing Evidence Bundle for " + wo_id)
+    block = re.search(r"(?m)^```json\n(.*?)\n```", bundle.read_text(encoding="utf-8"), re.S)
+    if not block:
+        fail(wo_id + " Evidence Bundle carries no machine-readable json payload block")
+    try:
+        payload = json.loads(block.group(1))
+    except json.JSONDecodeError as exc:
+        fail(wo_id + " Evidence Bundle payload is not valid JSON: " + str(exc))
+    if not isinstance(payload, dict):
+        fail(wo_id + " Evidence Bundle payload is not a json object")
+    return payload
+
+
+def work_order_bundles():
+    """(wo_id, work order path, bundle path) for every canonical Work Order in the namespace."""
+    entries = []
+    for order in sorted((ROOT / ".engineering/work-orders").glob("*.md")):
+        match = re.match(r"([A-Z]+-[A-Z]+-\d+)", order.stem)
+        if not match:
+            fail("Work Order filename must start with a stable ID: " + order.name)
+        wo_id = match.group(1)
+        entries.append((wo_id, order.relative_to(ROOT).as_posix(),
+                        ".engineering/evidence/" + wo_id + "-EVIDENCE.md"))
+    if not entries:
+        fail("no canonical Work Order under .engineering/work-orders/")
+    return entries
+
+
+def declared(obj, path, wo_id):
+    """Field lookup by dotted path that fails closed instead of letting an absent claim pass."""
+    value = obj
+    for part in path.split("."):
+        if not isinstance(value, dict) or part not in value:
+            fail(f"{wo_id} declares the delivery-head contract but has no {path}")
+        value = value[part]
+    return value
+
+
+def ci_ledger(text, rel):
+    """Parse a versioned CI ledger: a json object whose observations are a list of objects."""
+    try:
+        ledger = json.loads(text)
+    except json.JSONDecodeError as exc:
+        fail(f"{rel} is not valid JSON: {exc}")
+    if not isinstance(ledger, dict):
+        fail(f"{rel} is not a json object")
+    observations = ledger.get("observations")
+    if not isinstance(observations, list) or not observations:
+        fail(f"{rel} carries no observations list; a ledger with no check-run cannot certify a head")
+    if any(not isinstance(o, dict) for o in observations):
+        fail(f"{rel} carries an observation that is not a json object")
+    return ledger
+
+
+def read_ci_ledger(rel, wo_id):
+    if rel.startswith(("/", "\\")) or ".." in rel.split("/") or not rel.startswith(".engineering/evidence/"):
+        fail(f"{wo_id} points its delivery-head CI receipt outside .engineering/evidence/: {rel}")
+    path = ROOT / rel
+    if not path.is_file():
+        fail(f"{wo_id} names CI receipt {rel} which is not in the repository")
+    return ci_ledger(path.read_text(encoding="utf-8"), rel)
+
+
+def certified_observation(ledger, head, wo_id, source):
+    """The one completed, successful Governance observation for `head`, or a closed failure."""
+    observations = ledger.get("observations")
+    if not isinstance(observations, list) or not observations:
+        fail(f"{source} for {wo_id} carries no observations list; a ledger with no check-run cannot certify a head")
+    if any(not isinstance(o, dict) for o in observations):
+        fail(f"{source} for {wo_id} carries an observation that is not a json object")
+    matches = [o for o in observations
+               if o.get("context") == "Governance" and o.get("head") == head]
+    if not matches:
+        fail(f"{wo_id} names {head[:9]} as its certified head but {source} has no Governance observation "
+             "for that exact commit")
+    if len(matches) > 1:
+        fail(f"{wo_id} certified head {head[:9]} matches {len(matches)} Governance observations in {source}; "
+             "an ambiguous ledger certifies nothing")
+    observed = matches[0]
+    if observed.get("status") != "completed":
+        fail(f"{wo_id} certified head {head[:9]} has an incomplete Governance run in {source}: "
+             f"{observed.get('status')!r}")
+    if observed.get("conclusion") != "success":
+        fail(f"{wo_id} certified head {head[:9]} Governance run concluded {observed.get('conclusion')!r} "
+             f"in {source}; a failure is never a certification")
+    if observed.get("result") not in (None, "PASS"):
+        fail(f"{wo_id} certified head {head[:9]} carries result {observed.get('result')!r} beside a "
+             f"{observed.get('conclusion')!r} conclusion in {source}; the ledger contradicts itself")
+    return observed
 
 
 def section(text, heading):
@@ -298,15 +402,8 @@ def check_desired_state():
 
 
 def check_governance_namespaces():
-    orders = sorted((ROOT / ".engineering/work-orders").glob("*.md"))
-    if not orders:
-        fail("no canonical Work Order under .engineering/work-orders/")
-    for order in orders:
-        wo_id = re.match(r"([A-Z]+-[A-Z]+-\d+)", order.stem)
-        if not wo_id:
-            fail("Work Order filename must start with a stable ID: " + order.name)
-        wo_id = wo_id.group(1)
-        body = order.read_text(encoding="utf-8")
+    for wo_id, order_rel, bundle_rel in work_order_bundles():
+        body = read(order_rel)
         for heading in ("OBJECTIVE", "HIVE PREFLIGHT", "CANONICAL BASIS", "CONTEXT BUDGET", "RISK/ASSURANCE",
                         "SCOPE", "OUT OF SCOPE", "ACCEPTANCE CRITERIA", "TESTS", "EVIDENCE", "DELIVERABLES",
                         "REVIEW FORMAT", "STOP CONDITION"):
@@ -321,16 +418,7 @@ def check_governance_namespaces():
                 fail(f"{wo_id} Context Lock has no {field}")
         if not SHA.match(str(locked["baseSha"])):
             fail(f"{wo_id} Context Lock baseSha is not an exact commit")
-        bundle = ROOT / ".engineering/evidence" / (wo_id + "-EVIDENCE.md")
-        if not bundle.is_file():
-            fail("missing Evidence Bundle for " + wo_id)
-        payload = re.search(r"(?m)^```json\n(.*?)\n```", bundle.read_text(encoding="utf-8"), re.S)
-        if not payload:
-            fail(wo_id + " Evidence Bundle carries no machine-readable json payload block")
-        try:
-            evidence = json.loads(payload.group(1))
-        except json.JSONDecodeError as exc:
-            fail(wo_id + " Evidence Bundle payload is not valid JSON: " + str(exc))
+        evidence = bundle_payload(bundle_rel, wo_id)
         for field in ("schemaVersion", "workOrder", "baseSha", "headSha", "candidateHeadSha", "branch",
                       "hivePreflight", "checks", "unsupportedPlatformFeatures", "residualRisks",
                       "proposedCheckpointDelta", "stopCondition"):
@@ -351,6 +439,106 @@ def check_governance_namespaces():
             fail(wo_id + " proposes a checkpoint delta but the delta file is absent")
         if not str(evidence.get("pr", {}).get("url", "")).startswith("https://github.com/"):
             fail(wo_id + " Evidence Bundle does not name the open pull request it belongs to")
+
+
+def verify_delivery_head(evidence, ledger, ledger_source, wo_id):
+    """Check a record against one parsed CI ledger. Pure so a test can hand it a contradicting pair."""
+    semantics = evidence.get("deliveryHeadSemantics")
+    if not isinstance(semantics, str) or not semantics.strip():
+        fail(f"{wo_id} has delivery-head fields without deliveryHeadSemantics stating what they mean")
+    for path in CERTIFIED_HEAD_FIELDS + (EXECUTION_HEAD_FIELD,):
+        if path not in semantics:
+            fail(f"{wo_id} deliveryHeadSemantics does not name {path}; a field under the contract must be "
+                 "declared with the role it carries")
+
+    heads = {}
+    for path in CERTIFIED_HEAD_FIELDS:
+        value = declared(evidence, path, wo_id)
+        if not SHA.match(str(value)):
+            fail(f"{wo_id} {path} is not an exact commit: {value!r}")
+        heads[path] = str(value)
+    certified = set(heads.values())
+    if len(certified) > 1:
+        fail(f"{wo_id} certified-head fields disagree: "
+             + ", ".join(f"{k}={v[:9]}" for k, v in sorted(heads.items()))
+             + "; the certified head is one commit, so a rebind moves every field or redefines them")
+    certified_head = certified.pop()
+
+    for key in ("workOrder", "branch"):
+        if ledger.get(key) and ledger[key] != evidence.get(key):
+            fail(f"{wo_id} certifies its head through {ledger_source} declaring {key}={ledger[key]!r}, "
+                 f"not {evidence.get(key)!r}")
+    observed = certified_observation(ledger, certified_head, wo_id, ledger_source)
+    embedded = evidence.get("governanceRun")
+    if isinstance(embedded, dict):
+        mirror = certified_observation(embedded, certified_head, wo_id, "the run embedded in the bundle")
+        if mirror.get("run") != observed.get("run"):
+            fail(f"{wo_id} embeds a different Governance run for {certified_head[:9]} than its CI ledger: "
+                 f"{mirror.get('run')!r} against {observed.get('run')!r}")
+
+    execution = str(declared(evidence, EXECUTION_HEAD_FIELD, wo_id))
+    if not SHA.match(execution):
+        fail(f"{wo_id} {EXECUTION_HEAD_FIELD} is not an exact commit: {execution!r}")
+    state = declared(evidence, "commandsExecutedAtTreeState", wo_id)
+    if state not in TREE_STATES:
+        fail(f"{wo_id} {EXECUTION_HEAD_FIELD} tree state {state!r} is not "
+             + " or ".join(sorted(TREE_STATES)))
+    admits_dirty = "uncommitted" in str(declared(evidence, "commandsExecutedAtNote", wo_id)).lower()
+    if (state == "WORKING_TREE_DIRTY") != admits_dirty:
+        fail(f"{wo_id} declares {EXECUTION_HEAD_FIELD} tree state {state!r} while its commandsExecutedAtNote "
+             + ("describes uncommitted files" if admits_dirty else "does not describe the tree it used"))
+    execution_rows = evidence.get("checkExecutionHeads")
+    if isinstance(execution_rows, dict):
+        row = execution_rows.get("deterministicCommands")
+        if isinstance(row, dict) and row.get("head") and str(row["head"]) != execution:
+            fail(f"{wo_id} ran deterministic commands at {execution[:9]} but checkExecutionHeads names "
+                 f"{str(row['head'])[:9]}")
+    for row in evidence.get("tests", []) if isinstance(evidence.get("tests"), list) else []:
+        if not isinstance(row, dict) or "treeState" not in row:
+            continue
+        named = str(row.get("command", "?"))[:48]
+        if not SHA.match(str(row.get("head"))):
+            fail(f"{wo_id} test row {named!r} names a head that is not an exact commit: {row.get('head')!r}")
+        if row["head"] != execution or row["treeState"] != state:
+            fail(f"{wo_id} test row {named!r} claims {str(row.get('head'))[:9]}/{row['treeState']} while "
+                 f"{EXECUTION_HEAD_FIELD} claims {execution[:9]}/{state}; a command cannot be credited to a "
+                 "tree it did not run against")
+    roles = evidence.get("headRoleTable")
+    if isinstance(roles, dict):
+        for label, value in (("execution head", execution), ("certified head", certified_head)):
+            if value not in roles:
+                fail(f"{wo_id} {label} {value[:9]} holds no row in headRoleTable; every SHA in this record "
+                     "must declare exactly one role")
+    reported = declared(evidence, "checks." + GATE_HEAD_REBINDING, wo_id)
+    if reported != "PASS":
+        fail(f"{wo_id} reports {GATE_HEAD_REBINDING} as {reported!r} in a record whose binding this "
+             "validator just enforced; the report and the code must agree")
+    return certified_head, execution
+
+
+def delivery_head_binding(evidence, wo_id):
+    """Enforce a record's delivery-head contract against the CI ledger it names. Reads no network.
+
+    A record that does not declare `deliveryHeadSemantics` is outside this contract: WO-0001's headSha names
+    a code head whose bundle commit carries the run, which is what its own headBindingNote documents. The
+    gate validates the semantics a record declares instead of forcing one shape onto every Work Order, and it
+    keeps the certified head separate from the execution head because those are different commits as soon as
+    evidence-only commits follow the bundle.
+    """
+    receipt = str(declared(evidence, "deliveryHeadCiReceipt", wo_id))
+    return verify_delivery_head(evidence, read_ci_ledger(receipt, wo_id), receipt, wo_id)
+
+
+def check_head_rebinding():
+    """Apply the delivery-head contract to every bundle that declares it. Static receipt check, no API call."""
+    bound = []
+    for wo_id, _order, bundle_rel in work_order_bundles():
+        evidence = bundle_payload(bundle_rel, wo_id)
+        if "deliveryHeadSemantics" not in evidence:
+            continue
+        certified_head, execution_head = delivery_head_binding(evidence, wo_id)
+        bound.append((wo_id, certified_head, execution_head))
+    return bound
 
 
 def check_stale_claims():
@@ -386,12 +574,18 @@ def main() -> int:
     check_workflow()
     check_desired_state()
     check_governance_namespaces()
+    bound = check_head_rebinding()
     check_stale_claims()
     print("ISORYN governance validation: PASS")
     print("GEF: v1.0.0 @ " + GEF_PIN)
     print("HIVE: v1.0.0 @ " + HIVE_PIN)
     print(f"Required artifacts: {len(REQUIRED)}")
     print(f"Governed MCP tools: {len(MCP_TOOLS)}")
+    for wo_id, certified_head, execution_head in bound:
+        print(f"{GATE_HEAD_REBINDING}: {wo_id} certified @ {certified_head[:9]}, "
+              f"commands ran @ {execution_head[:9]}")
+    if not bound:
+        print(f"{GATE_HEAD_REBINDING}: no bundle declares the delivery-head contract")
     return 0
 
 
