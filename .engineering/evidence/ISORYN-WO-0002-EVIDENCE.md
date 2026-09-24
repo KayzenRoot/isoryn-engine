@@ -54,7 +54,7 @@ moved to `not_found` / `resource_not_found`, which locates the C01 refusal in th
 task, and still leaves the happy path unproduced - so the inventory row did not move and the task_id's status is
 recorded as unknown, not as absent.
 
-`governance_ci` reads `PASS` for the delivered head `db613904a` - the check-run for that exact commit is
+`governance_ci` reads `PASS` for the delivered head `81f605c2b` - the check-run for that exact commit is
 quoted in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`.
 The commit that adds this sentence cannot observe its own run, so `gh pr checks 5 --required` on the pull
 request is the authority for it.
@@ -65,16 +65,16 @@ request is the authority for it.
   "workOrder": "ISORYN-WO-0002",
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
-  "capturedAt": "2026-09-24T17:05:53Z",
-  "commandsExecutedAtHead": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+  "capturedAt": "2026-09-24T17:08:23Z",
+  "commandsExecutedAtHead": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
   "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
   "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
   "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
-  "headSha": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
-  "candidateHeadSha": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+  "headSha": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
+  "candidateHeadSha": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
   "headRolesNote": "Four different heads appear in this record and each is named for what it is: the WO-0002 discovery proof head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c (the head HIVE inspected and indexed, and a descendant of the reviewer head), and the head this bundle is committed at, which carries evidence only and is the head the pushed Governance run is read back for. No proof is attributed to a head it did not run at. The CD01 commits in this lineage change derived narrative only - no governed call was re-executed to produce them, so no new head is claimed as a proof head by CD01 unless a receipt in this bundle names it.",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "receiptHeadBinding": {
@@ -845,6 +845,10 @@ request is the authority for it.
       "change": "added"
     },
     {
+      "path": ".engineering/evidence/wo-0002/context-build-cd01.json",
+      "change": "added"
+    },
+    {
       "path": ".engineering/evidence/wo-0002/custom-modules-feasibility.txt",
       "change": "added"
     },
@@ -1113,8 +1117,8 @@ request is the authority for it.
     },
     {
       "path": ".engineering/evidence/wo-0002/ci.json",
-      "bytes": 3070,
-      "sha256": "0ba503ada13b5bcf64c6a0d7357ded71ddd18fdf80ae53aa388bc0fc11a98409"
+      "bytes": 3555,
+      "sha256": "49380a3d4922bf137e5840c22dc42e0cf90e834204539e487ded0650e7bcfab3"
     },
     {
       "path": ".engineering/evidence/wo-0002/context-build-cd01.json",
@@ -1247,11 +1251,11 @@ request is the authority for it.
     "workOrder": "ISORYN-WO-0002",
     "repository": "KayzenRoot/isoryn-engine",
     "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-    "capturedAt": "2026-09-24T15:18:19Z",
-    "localHead": "db613904a2ed9c4f7db36022ca07726a3898aa83",
-    "remoteHead": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+    "capturedAt": "2026-09-24T17:07:33Z",
+    "localHead": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
+    "remoteHead": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
     "requiredChecksCommand": "gh pr checks 5 --required",
-    "requiredChecksOutput": "Governance\tpass\t5s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36019148911/job/107699282758",
+    "requiredChecksOutput": "Governance\tpass\t7s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36032079943/job/107743044652",
     "observations": [
       {
         "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
@@ -1306,10 +1310,22 @@ request is the authority for it.
         "startedAt": "2026-09-24T15:18:03Z",
         "completedAt": "2026-09-24T15:18:08Z",
         "detail": "GitHub check-run for this exact commit, read through the API."
+      },
+      {
+        "head": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
+        "context": "Governance",
+        "status": "completed",
+        "conclusion": "success",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36032079943/job/107743044652",
+        "job": "107743044652",
+        "startedAt": "2026-09-24T17:07:20Z",
+        "completedAt": "2026-09-24T17:07:27Z",
+        "detail": "GitHub check-run for this exact commit, read through the API."
       }
     ],
     "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here.",
-    "observationsAppendedFor": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+    "observationsAppendedFor": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
     "deliveredHeadObservations": 1,
     "governanceCiForDeliveredHead": "PASS"
   },
@@ -1324,7 +1340,7 @@ request is the authority for it.
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 2.602s, OK"
+      "result": "PASS - Ran 34 tests in 0.699s, OK"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
@@ -1508,7 +1524,7 @@ request is the authority for it.
     "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
     "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
     "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
-    "deliveredHeadSha": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+    "deliveredHeadSha": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
     "mergeAttempted": false,
     "promotionAttempted": false,
     "note": "Merging and checkpoint/ADR promotion are hard stops for both WO-0002 and C01; the PR is delivered open, and the exact-head Governance result is in governanceRun."
