@@ -717,7 +717,7 @@
       "response_sha256": "5424a8bbb6fb7a73edab48dc6914f6280d36bd28035bf1fb90a06fbd15712471",
       "returnedCount": 0,
       "status": null,
-      "detail": "Zero memories exist for this project on the pinned stack; recorded as NOT_AVAILABLE rather than as a pass."
+      "detail": "An unfiltered memory.search (project_id and limit 5, no query) returned zero entries without error on the pinned stack. That is recorded as NOT_AVAILABLE for the memory-retrieval capability rather than as a pass: the call shows nothing was returned for this project, and the call shape cannot establish anything about memories it did not surface."
     },
     "memory.get": {
       "verdict": "NOT_AVAILABLE",
@@ -732,7 +732,7 @@
         "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
         "memory_id": "0f4c1a86-2f3b-4f5a-9c1d-7b0e2f1a3d4c"
       },
-      "detail": "Called with a syntactically valid UUID that is not asserted to exist; HIVE answers resource_not_found, which is recorded as NOT_AVAILABLE. Independently, memory.search returns zero entries for this project, so no real memory_id exists to read on the pinned stack."
+      "detail": "Called with a syntactically valid UUID whose existence is not asserted; HIVE answers category not_found, code resource_not_found, which is recorded as NOT_AVAILABLE. Independently, the unfiltered memory.search above returned no entries for this project, so the stack surfaced no real memory_id to read - neither response identifies which resource the not_found refers to."
     },
     "context.build": {
       "verdict": "NOT_AVAILABLE",
@@ -749,7 +749,13 @@
         "top_k": 5,
         "disclosure_level": "L2"
       },
-      "detail": "Schema-valid arguments against a task_id that is not registered on the pinned stack; the answer is a well-formed not_found, which is recorded as NOT_AVAILABLE. Creating a task would mutate HIVE state and is outside a read-only proof."
+      "detail": "Observed literally: category stale, code source_not_current, message 'project source is not current'. HIVE refused the call at its source-currency guard, so this response says nothing about the task_id: it neither establishes that the task is registered nor that it is absent, and it does not demonstrate the happy path either. Recorded as NOT_AVAILABLE and not reclassified. The explanation previously held in this field was inherited from the WO-0002 receipt, whose captured answer was a different one (not_found / resource_not_found), so the inheritance was not supported by the bytes recorded above. Creating a task would mutate HIVE state and is outside a read-only proof.",
+      "detailCorrection": {
+        "correctedBy": "ISORYN-WO-0002-C01-CD01",
+        "reason": "Independent review: the derived explanation claimed a resource_not_found caused by an unregistered task_id, which the captured stale/source_not_current response does not demonstrate.",
+        "supersededDetail": "Schema-valid arguments against a task_id that is not registered on the pinned stack; the answer is a well-formed not_found, which is recorded as NOT_AVAILABLE. Creating a task would mutate HIVE state and is outside a read-only proof.",
+        "rawResponseUnaltered": true
+      }
     }
   },
   "governedSessionAttempts": [

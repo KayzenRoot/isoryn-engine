@@ -1,7 +1,8 @@
 # ISORYN-WO-0002 - Evidence Bundle
 
 Status: DELIVERED_FOR_INDEPENDENT_REREVIEW (WO-0002 delivery, re-proved for HIVE and re-verified for upstream by
-ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND; supersedes the ADMISSION_BASELINE record in place)
+ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND, with the context.build interpretation corrected by
+ISORYN-WO-0002-C01-CD01; supersedes the ADMISSION_BASELINE record in place)
 
 Everything below was executed against `D:\Hive\Projects\isoryn-engine`, the canonical workspace, on branch
 `isoryn-wo-0002-architecture-toolchain-discovery` against base main `74c47fa`. The Godot baseline is
@@ -38,6 +39,17 @@ The support-policy claim is now sourced from Godot's release-policy page, fetche
 recorded, rather than inferred from which branches still carry a version bump. The raw executor receipt keeps its
 original text and is marked historical and superseded, so the correction can be checked against what it replaced.
 
+`ISORYN-WO-0002-C01-CD01` corrected one of those replacements. The C01 receipt's explanation for `context.build` said
+the call was refused because the probe task was not registered on the pinned stack; the bytes the same receipt
+captured say `stale` / `source_not_current` / `project source is not current`, which is a source-currency refusal and
+says nothing about the task. That sentence had been inherited from the WO-0002 receipt, which had genuinely captured a
+different answer (`not_found` / `resource_not_found`) - so the defect was an explanation that outlived the response it
+described, and the same class of drift is why the `memory.search` detail was tightened to what an unfiltered search of
+limit 5 actually shows. No raw capture was edited: the verdict, error object, argument set and response hash are
+compared field-by-field against the committed receipt, and the superseded sentence is kept verbatim under
+`detailCorrection.supersededDetail`. `context.build` stays `NOT_AVAILABLE`, because a corrected reason for a refusal
+still is not a happy path.
+
 `governance_ci` reads `PASS` for the delivered head `db613904a` - the check-run for that exact commit is
 quoted in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`.
 The commit that adds this sentence cannot observe its own run, so `gh pr checks 5 --required` on the pull
@@ -49,17 +61,17 @@ request is the authority for it.
   "workOrder": "ISORYN-WO-0002",
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
-  "capturedAt": "2026-09-24T15:18:47Z",
-  "commandsExecutedAtHead": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+  "capturedAt": "2026-09-24T16:56:37Z",
+  "commandsExecutedAtHead": "9ae892a42446df1405952585a5c11261212b1f70",
   "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
   "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
   "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
-  "headSha": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+  "headSha": "9ae892a42446df1405952585a5c11261212b1f70",
   "candidateHeadSha": "db613904a2ed9c4f7db36022ca07726a3898aa83",
-  "headRolesNote": "Four different heads appear in this record and each is named for what it is: the WO-0002 discovery proof head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c (the head HIVE inspected and indexed, and a descendant of the reviewer head), and the head this bundle is committed at, which carries evidence only and is the head the pushed Governance run is read back for. No proof is attributed to a head it did not run at.",
+  "headRolesNote": "Four different heads appear in this record and each is named for what it is: the WO-0002 discovery proof head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c (the head HIVE inspected and indexed, and a descendant of the reviewer head), and the head this bundle is committed at, which carries evidence only and is the head the pushed Governance run is read back for. No proof is attributed to a head it did not run at. The CD01 commits in this lineage change derived narrative only - no governed call was re-executed to produce them, so no new head is claimed as a proof head by CD01 unless a receipt in this bundle names it.",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "receiptHeadBinding": {
     "discoveryReceipts": {
@@ -620,9 +632,9 @@ request is the authority for it.
       "lexicalFallbackRecorded": "Every query answered with LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE and rerank RERANK_FALLBACK_DISABLED on this stack; the receipt states that as a fact rather than describing the results as semantic."
     },
     "notAvailable": {
-      "memory.search": "Zero memories exist for this project on the pinned stack; recorded as NOT_AVAILABLE rather than as a pass.",
-      "memory.get": "Called with a syntactically valid UUID that is not asserted to exist; HIVE answers resource_not_found, which is recorded as NOT_AVAILABLE. Independently, memory.search returns zero entries for this project, so no real memory_id exists to read on the pinned stack.",
-      "context.build": "Schema-valid arguments against a task_id that is not registered on the pinned stack; the answer is a well-formed not_found, which is recorded as NOT_AVAILABLE. Creating a task would mutate HIVE state and is outside a read-only proof."
+      "memory.search": "An unfiltered memory.search (project_id and limit 5, no query) returned zero entries without error on the pinned stack. That is recorded as NOT_AVAILABLE for the memory-retrieval capability rather than as a pass: the call shows nothing was returned for this project, and the call shape cannot establish anything about memories it did not surface.",
+      "memory.get": "Called with a syntactically valid UUID whose existence is not asserted; HIVE answers category not_found, code resource_not_found, which is recorded as NOT_AVAILABLE. Independently, the unfiltered memory.search above returned no entries for this project, so the stack surfaced no real memory_id to read - neither response identifies which resource the not_found refers to.",
+      "context.build": "Observed literally: category stale, code source_not_current, message 'project source is not current'. HIVE refused the call at its source-currency guard, so this response says nothing about the task_id: it neither establishes that the task is registered nor that it is absent, and it does not demonstrate the happy path either. Recorded as NOT_AVAILABLE and not reclassified. The explanation previously held in this field was inherited from the WO-0002 receipt, whose captured answer was a different one (not_found / resource_not_found), so the inheritance was not supported by the bytes recorded above. Creating a task would mutate HIVE state and is outside a read-only proof."
     },
     "expensiveReceiptsRepeated": false,
     "receipt": ".engineering/evidence/wo-0002/hive-mcp-proof-c01.json",
@@ -1118,8 +1130,8 @@ request is the authority for it.
     },
     {
       "path": ".engineering/evidence/wo-0002/hive-mcp-proof-c01.json",
-      "bytes": 28539,
-      "sha256": "b61e5496db9a2cb0fee215d70bde3c3a9781ba6df7800843806dc37405527604"
+      "bytes": 29924,
+      "sha256": "e360f48da3ddbb457138081be1ecf6f577ff0dcc43cc2223007ff103b749a8b2"
     },
     {
       "path": ".engineering/evidence/wo-0002/hive-mcp-proof.json",
@@ -1163,7 +1175,8 @@ request is the authority for it.
     "editor_smoke_cases": "NOT_AVAILABLE",
     "custom_module_compile_link": "NOT_AVAILABLE",
     "mcp_memory_get": "NOT_AVAILABLE",
-    "mcp_context_build_happy_path": "NOT_AVAILABLE"
+    "mcp_context_build_happy_path": "NOT_AVAILABLE",
+    "context_build_interpretation_matches_raw_response": "PASS"
   },
   "governanceRun": {
     "schemaVersion": "isoryn-gef-evidence-v1",
@@ -1247,7 +1260,7 @@ request is the authority for it.
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 0.427s, OK"
+      "result": "PASS - Ran 34 tests in 1.189s, OK"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
@@ -1374,7 +1387,8 @@ request is the authority for it.
     "The independent CR scan first reported four offending files, all of them committed PNG frames: binary data contains CR bytes legitimately. Text is now decided by the same NUL sniff the credential sweep uses and the excluded binaries are named in the record instead of the scan quietly narrowing itself.",
     "The HIVE/MCP receipt described above was assembled with a hand-written bootstrap summary: the block stated state READY, working_tree_clean true and index/corpus COMPLETED as typed literals next to a real session capture. That is fabricated evidence even when it happens to match what ran, so the assembler now executes `scripts/hive_bootstrap.py` itself, parses the summary out of its stdout, records its exit code, and only then runs the MCP sessions - which is also what re-indexed the tree at the proof head and made the current receipts retrievable through context.search.",
     "Two citation defects: movie_writer.cpp:201 should be :202 for the texture_2d_get call, and a receipt reference needed its full .meta file name to resolve.",
-    "context.build was first called with a query argument that the governed schema rejects (additionalProperties false); re-called with schema-valid arguments, which returned resource_not_found because no task is registered for this project on the pinned stack.",
+    "context.build was first called with a query argument that the governed schema rejects (additionalProperties false) and was re-called with schema-valid arguments. The WO-0002 re-call answered not_found / resource_not_found and the C01 re-call answered stale / source_not_current; neither answer says why, and the claim this record carried - that the refusal proved the task was absent from the stack - was an inference, not an observation.",
+    "CD01 found that inference in three places and removed it. The C01 receipt's derived detail described a not_found answer caused by an unregistered task_id while the bytes it captured were a source-currency refusal, an explanation inherited from the WO-0002 receipt whose captured answer was a different one. The raw JSON of every governed call is untouched (verdict, isError, response_sha256, error and argumentsUsed compared field-by-field against the committed receipt); the detail is corrected, the superseded wording is kept verbatim beside it under detailCorrection.supersededDetail, and context.build stays NOT_AVAILABLE because the happy path is still unproven and the task_id's status is still unknown.",
     "C01's first proof run asserted retrieval quality by matching loose keywords ('release policy', 'platform-support') against whole serialized responses and never checked whether each query reached its intended canonical file. It therefore reported a missed Definition-of-Done target and zero correction markers on the same run that had just returned the reviewer's corrected ADR-0001 bullet and the corrected Evidence Bundle sentence. Fixed by matching the reviewer's own sentences per result snippet with whitespace collapsed, and by redesigning the queries against executed probes: the Definition-of-Done query was rewritten from the literal phrase 'definition of done', which WO-0001's own evidence chunks quote and which therefore captured the candidate pool, to a sentence only that file contains.",
     "The same first run recorded a snippet as absent evidence when it was only truncated. context.search returns a window of each matched chunk, so a corrected phrase deeper than that window is invisible even when the right chunk matched; the receipt now states the window limitation and reports markers per query and per result index instead of inferring absence from one.",
     "Four of six searches in one C01 session answered database_unavailable ('durable store is unavailable', HIVE v1.0.0 mapping any psycopg error to it) while twelve of twelve identical searches in the next run returned data, so the condition is transient runtime state. Reading those answers as empty results would have produced a receipt claiming the corpus was quiet. The assembler now distinguishes the two, re-runs the session a bounded number of times, and records every attempt with which calls were unavailable.",
@@ -1400,7 +1414,7 @@ request is the authority for it.
     {
       "capability": "HIVE memory.get and the context.build happy path on the pinned stack",
       "result": "NOT_AVAILABLE",
-      "detail": "Re-proved in C01 rather than inherited: memory.search returns zero entries for this project, memory.get with a schema-valid UUID answers resource_not_found, and context.build answers resource_not_found because no task is registered for this project. All three were called with schema-valid arguments and none is recorded as a pass. Creating a task or writing a memory would mutate HIVE state, which is outside a read-only proof."
+      "detail": "Read from the C01 receipt rather than inherited: the unfiltered memory.search returned 0 entries without error, memory.get answered not_found / resource_not_found, and context.build answered stale / source_not_current ('project source is not current'). Each is a bounded refusal, so each is NOT_AVAILABLE: none of the three demonstrates the happy path, and none of them identifies which resource the refusal refers to, so the task_id's registration status stays unknown rather than proven absent. All three used schema-valid arguments and none is recorded as a pass. Creating a task or writing a memory would mutate HIVE state, which is outside a read-only proof."
     }
   ],
   "residualRisks": [
@@ -1411,6 +1425,7 @@ request is the authority for it.
     "The pinned v1.0.0 stack intermittently answers governed reads with database_unavailable while its postgres and redis containers report healthy. The condition is reproduced and bounded but not attributed: any future proof has to distinguish it from an empty result set rather than record it as recall, and a proof that cannot do so should be treated as BLOCKED_HIVE_ISOLATION rather than as a pass.",
     "HIVE v1.0.0 gives every git call five seconds and the canonical workspace reaches the container over a read-only 9p mount, so indexing this tree is fragile on this host class. The mitigation used here (repacked objects plus a warmed container cache) is host state, not a repository guarantee: another machine standing up the same stack can need it too, and the bootstrap attempt counts recorded in the C01 receipt are what make that visible.",
     "context.search returns a truncated window of each matched chunk, so a phrase that exists in a matched file can still be absent from the returned snippet. Absence from a snippet is recorded as absence from the snippet, never as absence from the corpus.",
+    "context.build is refused by HIVE's source-currency guard on the pinned stack, and the guard's answer does not say which resource it is talking about. What remains unknown after CD01 is therefore the happy path itself: no governed read-only call has yet produced a built context from this stack, and the registration status of the probe task_id is unknown rather than proven absent. Establishing either would need a write to HIVE, which the read-only boundary forbids without its own admission.",
     "Seam 3 is proven at configure level only; the compile-and-link proof is open backlog row 9.",
     "Godot 4.8 is pre-release and observation-only; the candidate matrix must be re-verified if a newer stable tag is published before the audit.",
     "Executed receipts do not record `git rev-parse HEAD` at their own capture instant, so their binding to a repository head is reconstructed from timestamps against the commit order (see receiptHeadBinding.gap). A capture that outlives a commit, or a rebased branch, breaks that reconstruction silently; the fix is one line in the capture scripts and is not applied to receipts that are already closed.",
@@ -1437,6 +1452,13 @@ request is the authority for it.
   "productionCodeConfirmation": "No engine, runtime, editor or module implementation was written in WO-0002 or in its C01 correction. The only executable content is the committed measurement fixture (.engineering/evidence/wo-0002/bench/, a GDScript harness inside the evidence namespace), the governance validator's two new repository-shape gates, and their tests. C01 added two evidence receipts and this bundle; it changed no canonical decision, no pin and no build input.",
   "wo0002StopCondition": "READY_FOR_ARCHITECTURE_TOOLCHAIN_AUDIT",
   "stopCondition": "READY_FOR_WO0002_C01_INDEPENDENT_REVIEW",
-  "verdict": "DELIVERED_FOR_INDEPENDENT_REREVIEW"
+  "verdict": "DELIVERED_FOR_INDEPENDENT_REREVIEW",
+  "cd01InterpretationGate": {
+    "rawResponseStillInReceipt": true,
+    "supersededWordingKeptBesideCorrection": true,
+    "verdictStillNotAvailable": true,
+    "forbiddenPhrasesFoundInRecord": [],
+    "derivedTextScanned": "c01HiveRebind.notAvailable + unsupportedPlatformFeatures + errorsFoundAndCorrected + checks"
+  }
 }
 ```
