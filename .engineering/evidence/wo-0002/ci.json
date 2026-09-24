@@ -3,11 +3,11 @@
   "workOrder": "ISORYN-WO-0002",
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-  "capturedAt": "2026-09-24T00:19:16Z",
-  "localHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
-  "remoteHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+  "capturedAt": "2026-09-24T15:07:32Z",
+  "localHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+  "remoteHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
   "requiredChecksCommand": "gh pr checks 5 --required",
-  "requiredChecksOutput": "Governance\tpass\t7s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/35937813544/job/107438732251",
+  "requiredChecksOutput": "Governance\tpass\t4s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36017729211/job/107694443843",
   "observations": [
     {
       "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
@@ -38,7 +38,20 @@
       "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894231988/job/107294031650",
       "job": "107294031650",
       "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36017729211/job/107694443843",
+      "job": "107694443843",
+      "startedAt": "2026-09-24T15:06:42Z",
+      "completedAt": "2026-09-24T15:06:46Z",
+      "detail": "GitHub check-run for this exact commit, read through the API."
     }
   ],
-  "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here."
+  "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here.",
+  "observationsAppendedFor": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf"
 }

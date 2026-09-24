@@ -1,6 +1,7 @@
 # ISORYN-WO-0002 - Evidence Bundle
 
-Status: DELIVERED_FOR_AUDIT (supersedes the ADMISSION_BASELINE record in place)
+Status: DELIVERED_FOR_INDEPENDENT_REREVIEW (WO-0002 delivery, re-proved for HIVE and re-verified for upstream by
+ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND; supersedes the ADMISSION_BASELINE record in place)
 
 Everything below was executed against `D:\Hive\Projects\isoryn-engine`, the canonical workspace, on branch
 `isoryn-wo-0002-architecture-toolchain-discovery` against base main `74c47fa`. The Godot baseline is
@@ -18,14 +19,26 @@ does not explain and that gates CI adoption.
 The GPU frame-time baseline is recorded `NOT_AVAILABLE` with its executed controls, including four committed frames
 that are black at all 921,600 pixels.
 
-Independent review on 2026-09-24 found one source-coverage defect in the official-state interpretation: the executor
-consulted the archive/release list and inferred support from active branches, but omitted Godot's official release
-policy. That policy explicitly gives support levels for 4.7, 4.6 and 4.5. The raw executor receipt remains untouched
-as historical evidence; the canonical interpretation is corrected in ADR-0001 and
-`docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md`. The correction does **not** change the selected
-`4.7.2-stable` baseline or the 4.6 compatibility-reference choice.
+Independent review then corrected two things in this record - the support-policy citation and the GPU summary - and
+`ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND` exists only because those canonical edits invalidated the exact-head
+HIVE/MCP proof. C01 re-verified the official Godot state from official sources and confirmed `4.7.2-stable` at
+`ed1daf0bf…` is still current stable, so no build, benchmark or GPU receipt was repeated: the expensive evidence below
+is the same evidence with the same identities. It also re-proved HIVE v1.0.0 and the seven read-only MCP tools at the
+reviewer-corrected head, and that second proof is where the honest difficulty sits. The pinned stack needed a root
+cause rather than a retry: HIVE gives every git call five seconds and this workspace reaches the container read-only
+over 9p, so a cold `git status` inside it blew the budget and the indexer died with git_status_unavailable. Repacking
+the host repository's loose objects and warming the container's cache fixed it, with both the cold timings and the
+failed attempts recorded. Retrieval also had to be measured properly rather than asserted - the first C01 run reported
+no correction markers while returning chunks that contained them, because it matched whole responses instead of each
+result snippet. Four of six searches in one session came back `database_unavailable` against healthy postgres and
+redis containers, which is reproduced but not attributed, and the receipt now distinguishes that from an empty result
+set instead of quietly recording recall.
 
-`governance_ci` reads `PASS` for the delivered head `7a12df924` - the check-run for that exact commit is
+The support-policy claim is now sourced from Godot's release-policy page, fetched with its byte count and SHA-256
+recorded, rather than inferred from which branches still carry a version bump. The raw executor receipt keeps its
+original text and is marked historical and superseded, so the correction can be checked against what it replaced.
+
+`governance_ci` reads `PASS` for the delivered head `3d442fb8f` - the check-run for that exact commit is
 quoted in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`.
 The commit that adds this sentence cannot observe its own run, so `gh pr checks 5 --required` on the pull
 request is the authority for it.
@@ -36,14 +49,17 @@ request is the authority for it.
   "workOrder": "ISORYN-WO-0002",
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
-  "capturedAt": "2026-09-24T00:19:46Z",
-  "commandsExecutedAtHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+  "capturedAt": "2026-09-24T15:13:49Z",
+  "commandsExecutedAtHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
   "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
-  "headSha": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
-  "candidateHeadSha": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+  "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
+  "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+  "headSha": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+  "candidateHeadSha": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+  "headRolesNote": "Four different heads appear in this record and each is named for what it is: the WO-0002 discovery proof head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c (the head HIVE inspected and indexed, and a descendant of the reviewer head), and the head this bundle is committed at, which carries evidence only and is the head the pushed Governance run is read back for. No proof is attributed to a head it did not run at.",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "receiptHeadBinding": {
     "discoveryReceipts": {
@@ -62,7 +78,34 @@ request is the authority for it.
     "hiveMcpProofReceipt": {
       "capturedAt": "2026-09-24T00:10:58Z",
       "branchHeadAtCapture": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
-      "corroboratedBy": "in-container git rev-parse HEAD"
+      "corroboratedBy": "in-container git rev-parse HEAD",
+      "status": "HISTORICAL_SUPERSEDED_BY_C01"
+    },
+    "c01HiveMcpProofReceipt": {
+      "capturedAt": "2026-09-24T14:55:39Z",
+      "branchHeadAtCapture": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+      "corroboratedBy": [
+        [
+          "docker",
+          "exec",
+          "isoryn-c02-v100-api-1",
+          "git",
+          "-c",
+          "safe.directory=*",
+          "-C",
+          "/workspace/projects/isoryn-engine",
+          "rev-parse",
+          "HEAD"
+        ],
+        "/api/v1/projects/cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd/index/status"
+      ],
+      "headRecordedInsideReceipt": true
+    },
+    "c01UpstreamReverificationReceipt": {
+      "capturedAt": "2026-09-24T13:31:18Z",
+      "branchHeadAtCapture": "e481b3376c13cdbdfae243d945d10789d39a23fc",
+      "headRecordedInsideReceipt": false,
+      "note": "This receipt quotes its capture instant and the official sources it read, but not `git rev-parse HEAD` at that instant, so its head binding is the reconstructed one the gap row already describes. It was committed at ad4fdf81c, the head the C01 proof then used, so the corpus HIVE answered from contains it."
     },
     "engineBuild": {
       "embeddedVersion": "4.7.2.stable.custom_build.ed1daf0bf",
@@ -100,7 +143,7 @@ request is the authority for it.
       "apiBaseUrl": "http://127.0.0.1:18199",
       "projectId": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
       "relativePath": "isoryn-engine",
-      "isolationNote": "The machine still exports COMPOSE_PROJECT_NAME for the drifted v1.0.2 stack; only HIVE_COMPOSE_PROJECT makes the launcher pass -p, and the container that answered is the pinned v1.0.0 one whose HEAD matches the proof head below."
+      "isolationNote": "Only HIVE_COMPOSE_PROJECT makes the launcher pass -p; the container that answered is the pinned v1.0.0 proof stack, whose own git rev-parse HEAD is recorded below. The machine's drifted v1.0.2 stack on port 8000 was not addressed by any command here."
     },
     "result": "PASS",
     "health": {
@@ -110,22 +153,26 @@ request is the authority for it.
     "bootstrap": {
       "command": "python scripts/hive_bootstrap.py --base-url http://127.0.0.1:18199 --relative-path isoryn-engine",
       "exitCode": 0,
-      "stderr": null
+      "stderr": null,
+      "attemptsNeeded": 1
     },
     "pipeline": {
       "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
       "relative_path": "isoryn-engine",
       "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-      "git_head_sha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+      "git_head_sha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
       "state": "READY",
       "working_tree_clean": true,
       "index_status": "COMPLETED",
       "corpus_status": "COMPLETED"
     },
     "workingTreeCleanAtProof": true,
-    "inContainerHeadProbe": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
-    "note": "Executed at the proof head on the isolated compose project named in the receipt. Derived state only: Git and the canonical checkpoint outrank HIVE, and the container's own `git rev-parse HEAD` is what confirms the index is looking at the head the proofs claim.",
-    "receipt": ".engineering/evidence/wo-0002/hive-mcp-proof.json"
+    "inContainerHeadProbe": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+    "indexStatus": "COMPLETED",
+    "corpusStatus": "CURRENT",
+    "note": "Executed at the C01 proof head on the isolated compose project named in the receipt, after the reviewer's canonical corrections. Derived state only: Git and the canonical checkpoint outrank HIVE, and the container's own `git rev-parse HEAD` is what confirms the index is looking at the head the proof claims.",
+    "receipt": ".engineering/evidence/wo-0002/hive-mcp-proof-c01.json",
+    "priorReceiptPreserved": ".engineering/evidence/wo-0002/hive-mcp-proof.json"
   },
   "upstreamPins": {
     "godot": {
@@ -138,7 +185,9 @@ request is the authority for it.
       "compatibilityReference": {
         "tag": "4.6.3-stable",
         "commit": "35e80b3a8822a9df9be390814b62f44c0a9c69e8",
-        "why": "Independent review superseded the branch-activity inference with Godot's official release policy: 4.7 and 4.6 receive bug/security/platform fixes, 4.5 receives security/platform fixes only, and 4.4 and older 4.x lines are unsupported. 4.6 remains the immediately previous fully supported minor line and therefore the compatibility reference."
+        "why": "Independent review superseded the branch-activity inference with Godot's official release policy: 4.7 and 4.6 receive bug/security/platform fixes, 4.5 receives security/platform fixes only, and 4.4 and older 4.x lines are unsupported. 4.6 remains the immediately previous fully supported minor line and therefore the compatibility reference.",
+        "historicalExecutorWording": "Two maintenance branches are still version-bumped at execution time: 4.7 is at 4.7.3-rc and 4.6 is at 4.6.4-rc, while 4.5 stopped at 4.5.2 (2026-03-19). 4.6 is therefore the immediately previous supported stable line; 4.5 and older are not maintained.",
+        "historicalWordingStatus": "SUPERSEDED_BY_INDEPENDENT_REVIEW - kept so the reviewer correction can be seen against what it replaced"
       },
       "observationOnly": {
         "branch": "master",
@@ -169,6 +218,28 @@ request is the authority for it.
     },
     "admissionClaimsReverified": "CONFIRMED",
     "supportPolicyReviewerCorrection": "The executor receipt omitted the official Godot release-policy page. Independent review re-verified that page on 2026-09-24: 4.7 and 4.6 receive bug/security/platform-support fixes; 4.5 receives security/platform-support fixes only; 4.4 and older 4.x lines are unsupported. This supersedes the branch-only support inference without changing the 4.7.2 baseline or 4.6 compatibility-reference choice.",
+    "historicalExecutorStatement": {
+      "text": "Neither the release archive nor the release list publishes a numbered support-lifetime or LTS policy. The supported set is therefore inferred from the branches that still carry a version bump at execution time, and that inference is stated as an inference.",
+      "status": "HISTORICAL_SUPERSEDED_BY_INDEPENDENT_REVIEW",
+      "why": "The WO-0002 receipt inferred the supported set from branches that still carry a version bump. That inference is kept so the correction can be checked against what it replaced; the official release policy, not branch activity, is the cited source from here on."
+    },
+    "c01Reverification": {
+      "capturedAt": "2026-09-24T13:31:18Z",
+      "newestFourXStableTag": "4.7.2-stable",
+      "noNewerStableTagExists": true,
+      "currentStableStillAdmitted": true,
+      "compatibilityReferenceStillAdmitted": true,
+      "officialPageReproducesReviewerCorrection": "CONFIRMED",
+      "releasePolicyBytes": 1385229,
+      "releasePolicySha256": "7675fe5fea665594305528307f0eb5b0becd0028621fbd35a357d05ef5c3a69e",
+      "expensiveReceiptsRepeated": false,
+      "decision": {
+        "baselineStillCurrent": "CONFIRMED",
+        "expensiveReceiptsRepeated": false,
+        "stopConditionTriggered": ""
+      },
+      "receipt": ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json"
+    },
     "staleWhenReverified": "If a 4.7.3-stable or newer stable tag is published before the audit, the candidate matrix must be re-verified rather than inherited from this receipt.",
     "receipt": ".engineering/evidence/wo-0002/godot-official-state.json"
   },
@@ -313,7 +384,249 @@ request is the authority for it.
     "launcherExit": 0,
     "launcherStderr": [],
     "receipt": ".engineering/evidence/wo-0002/hive-mcp-proof.json",
-    "proofHead": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4"
+    "proofHead": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+    "historicalRole": "Superseded as the current exact-head proof by the C01 rebind below. Kept byte-for-byte because it is the record of what was proved at its own head; the reviewer edited canonical sources afterwards, so this receipt now describes text that no longer matches the canonical workspace."
+  },
+  "independentReviewCorrection": {
+    "reviewerHead": "e481b3376c13cdbdfae243d945d10789d39a23fc",
+    "reviewerCommit": "docs(review): correct WO-0002 support policy and GPU summary",
+    "whatItCorrected": [
+      "the compatibility-reference justification, which now cites Godot's official release policy instead of inferring support from branch version bumps",
+      "the GPU summary, which now states that upstream's published binary reproduces the host-side shader/device refusal and the OpenGL crash but does NOT reproduce this build's early Vulkan segfault - so the device refusal is host state and the early crash is an unexplained property of the build created here",
+      "the canonical checkpoint, which now reads ARCHITECTURE DISCOVERY CORRECTION REQUIRED and names ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND as the active Work Order"
+    ],
+    "measuredEffectOnEvidence": "Editing ADR-0001, docs/project-brain/08, the checkpoint and this bundle invalidated the exact-head HIVE/MCP proof by the repository's own rule, which is the only thing C01 was for.",
+    "receiptsAddedByC01": [
+      ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+      ".engineering/evidence/wo-0002/hive-mcp-proof-c01.json"
+    ],
+    "correctionSentencesCheckedAtHead": {
+      "adr0001-support-policy": "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+      "brain08-support-policy": "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
+      "checkpoint-correction-status": "docs/project-brain/13-CHECKPOINT.md",
+      "gpu-segfault-distinction": ".engineering/evidence/ISORYN-WO-0002-CHECKPOINT-DELTA.md"
+    },
+    "correctionSentencesMissing": []
+  },
+  "c01HiveRebind": {
+    "workOrder": "ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND",
+    "reviewerCorrectionHead": "e481b3376c13cdbdfae243d945d10789d39a23fc",
+    "proofHead": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+    "proofHeadIsDescendantOfReviewerCorrection": true,
+    "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
+    "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+    "workingTreeCleanAtProof": true,
+    "runtime": {
+      "health": {
+        "status": "ok",
+        "version": "1.0.0",
+        "environment": "development",
+        "timestamp": "2026-09-24T14:52:49.947908Z",
+        "data_root": "/var/lib/hive",
+        "checks": {
+          "postgres": {
+            "status": "ok",
+            "details": {
+              "pgvector": true
+            }
+          },
+          "redis": {
+            "status": "ok",
+            "details": {
+              "canonical": false
+            }
+          },
+          "storage": {
+            "status": "ok",
+            "details": {
+              "configured": true,
+              "writable": true,
+              "canonical_data_root": "/var/lib/hive"
+            }
+          }
+        }
+      },
+      "composeProject": "isoryn-c02-v100",
+      "containerHeadMatchesProofHead": true,
+      "apiContainerStartedAt": "2026-09-24T14:17:21.241636651Z",
+      "isolation": "Only HIVE_COMPOSE_PROJECT makes the launcher pass -p; the container that answered is the pinned v1.0.0 proof stack, whose own git rev-parse HEAD is recorded below. The machine's drifted v1.0.2 stack on port 8000 was not addressed by any command here."
+    },
+    "bootstrap": {
+      "exitCode": 0,
+      "attemptsNeeded": 1,
+      "state": "READY",
+      "gitHeadShaReported": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+      "containerGitSeconds": [
+        {
+          "seconds": 3.3,
+          "returncode": 0,
+          "bytes": 0
+        },
+        {
+          "seconds": 1.7,
+          "returncode": 0,
+          "bytes": 0
+        },
+        {
+          "seconds": 2.75,
+          "returncode": 0,
+          "bytes": 0
+        }
+      ],
+      "attempts": [
+        {
+          "attempt": 1,
+          "startedAt": "2026-09-24T14:53:04Z",
+          "seconds": 82.78,
+          "exitCode": 0,
+          "state": "READY",
+          "indexStatus": "COMPLETED",
+          "corpusStatus": "COMPLETED",
+          "stderr": null
+        }
+      ]
+    },
+    "indexStatus": {
+      "endpoint": "/api/v1/projects/cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd/index/status",
+      "run_id": "c27a2f54-e3d0-48e2-a4cc-93a8bc41821e",
+      "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+      "repository_head_sha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+      "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+      "status": "COMPLETED",
+      "started_at": "2026-09-24T14:53:23.773535Z",
+      "completed_at": "2026-09-24T14:53:24.097680Z",
+      "discovered_file_count": 131,
+      "indexed_file_count": 0,
+      "reused_file_count": 131,
+      "changed_file_count": 0,
+      "added_file_count": 0,
+      "removed_file_count": 0,
+      "unchanged_file_count": 131,
+      "parsed_file_count": 0,
+      "symbol_count": 69,
+      "error": null,
+      "repositoryHeadMatchesProofHead": true
+    },
+    "corpusStatus": {
+      "endpoint": "/api/v1/projects/cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd/retrieval/corpus",
+      "state": "CURRENT",
+      "lastSuccessfulSync": "2026-09-24T14:54:03.423274Z",
+      "latestRunStatus": "COMPLETED"
+    },
+    "mcpSession": {
+      "protocolVersion": "2025-06-18",
+      "serverInfo": {
+        "name": "hive-mcp",
+        "version": "mcp-core-surface-v1"
+      },
+      "tools": [
+        "project.list",
+        "project.status",
+        "context.build",
+        "context.search",
+        "memory.search",
+        "memory.get",
+        "checkpoint.read"
+      ],
+      "toolsAreExactlyTheGovernedSeven": true,
+      "allReadOnly": true,
+      "launcherExit": 0,
+      "sessionAttempts": [
+        {
+          "attempt": 1,
+          "startedAt": "2026-09-24T14:55:39Z",
+          "launcherExit": 0,
+          "unavailableCalls": []
+        }
+      ],
+      "perCallVerdicts": {
+        "project.list": "PASS",
+        "project.status": "PASS",
+        "checkpoint.read": "PASS",
+        "context.search": "PASS",
+        "memory.search": "NOT_AVAILABLE",
+        "memory.get": "NOT_AVAILABLE",
+        "context.build": "NOT_AVAILABLE"
+      }
+    },
+    "retrieval": {
+      "queries": [
+        {
+          "query": "official release policy",
+          "expectedCanonicalFile": "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+          "targetReached": true,
+          "candidatePool": 8,
+          "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "rerankState": "RERANK_FALLBACK_DISABLED"
+        },
+        {
+          "query": "Godot 4.5 security and platform-support fixes only 4.4 no longer supported",
+          "expectedCanonicalFile": "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
+          "targetReached": true,
+          "candidatePool": 3,
+          "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "rerankState": "RERANK_FALLBACK_DISABLED"
+        },
+        {
+          "query": "ISORYN Checkpoint STATUS",
+          "expectedCanonicalFile": "docs/project-brain/13-CHECKPOINT.md",
+          "targetReached": true,
+          "candidatePool": 8,
+          "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "rerankState": "RERANK_FALLBACK_DISABLED"
+        },
+        {
+          "query": "architecture module boundaries",
+          "expectedCanonicalFile": "docs/project-brain/04-ARCHITECTURE.md",
+          "targetReached": true,
+          "candidatePool": 6,
+          "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "rerankState": "RERANK_FALLBACK_DISABLED"
+        },
+        {
+          "query": "Bootstrap completes only when Source Pack passes deterministic validation",
+          "expectedCanonicalFile": "docs/project-brain/15-DEFINITION-OF-DONE.md",
+          "targetReached": true,
+          "candidatePool": 1,
+          "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "rerankState": "RERANK_FALLBACK_DISABLED"
+        },
+        {
+          "query": "reviewerCorrectionReconciliation baselineStillCurrent expensiveReceiptsRepeated",
+          "expectedCanonicalFile": ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+          "targetReached": true,
+          "candidatePool": 1,
+          "hybridState": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "rerankState": "RERANK_FALLBACK_DISABLED"
+        }
+      ],
+      "canonicalFilesReached": [
+        ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+        "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+        "docs/project-brain/04-ARCHITECTURE.md",
+        "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
+        "docs/project-brain/13-CHECKPOINT.md",
+        "docs/project-brain/15-DEFINITION-OF-DONE.md"
+      ],
+      "canonicalFilesMissed": [],
+      "correctedSupportPolicyMaterialSeen": [
+        "adr0001-historical-supersede",
+        "adr0001-support-bullet",
+        "checkpoint-correction-status",
+        "dod-no-defect-promotion",
+        "evidence-bundle-corrected-why"
+      ],
+      "snippetWindowNote": "HIVE returns a truncated window of each matched chunk, so a corrected phrase deeper than that window is invisible in the snippet even when the right chunk matched. Markers are therefore reported per query and per result index, and the full canonical checkpoint text is reported separately under checkpoint.read.",
+      "lexicalFallbackRecorded": "Every query answered with LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE and rerank RERANK_FALLBACK_DISABLED on this stack; the receipt states that as a fact rather than describing the results as semantic."
+    },
+    "notAvailable": {
+      "memory.search": "Zero memories exist for this project on the pinned stack; recorded as NOT_AVAILABLE rather than as a pass.",
+      "memory.get": "Called with a syntactically valid UUID that is not asserted to exist; HIVE answers resource_not_found, which is recorded as NOT_AVAILABLE. Independently, memory.search returns zero entries for this project, so no real memory_id exists to read on the pinned stack.",
+      "context.build": "Schema-valid arguments against a task_id that is not registered on the pinned stack; the answer is a well-formed not_found, which is recorded as NOT_AVAILABLE. Creating a task would mutate HIVE state and is outside a read-only proof."
+    },
+    "expensiveReceiptsRepeated": false,
+    "receipt": ".engineering/evidence/wo-0002/hive-mcp-proof-c01.json",
+    "oneLineSummary": "HIVE v1.0.0 and the seven-tool read-only MCP surface were re-proved against the reviewer-corrected canonical text at head ad4fdf81c, on the pinned isolated stack, with retrieval that returns the corrected support-policy material."
   },
   "architectureDeliverables": {
     "adrs": [
@@ -494,6 +807,10 @@ request is the authority for it.
       "change": "added"
     },
     {
+      "path": ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+      "change": "added"
+    },
+    {
       "path": ".engineering/evidence/wo-0002/godot-official-state.json",
       "change": "added"
     },
@@ -511,6 +828,10 @@ request is the authority for it.
     },
     {
       "path": ".engineering/evidence/wo-0002/gpu-windowed-device-control.txt",
+      "change": "added"
+    },
+    {
+      "path": ".engineering/evidence/wo-0002/hive-mcp-proof-c01.json",
       "change": "added"
     },
     {
@@ -722,8 +1043,8 @@ request is the authority for it.
     },
     {
       "path": ".engineering/evidence/wo-0002/ci.json",
-      "bytes": 2027,
-      "sha256": "95dda64e459e0eece99c7863000be4e0769bb9205cc920e36e91a607cff97f59"
+      "bytes": 2585,
+      "sha256": "10e8d3ac519fd2b7f40a84b402ead9c7803bff42bc7228c1f77c3ee1bdebfa85"
     },
     {
       "path": ".engineering/evidence/wo-0002/custom-modules-feasibility.txt",
@@ -766,6 +1087,11 @@ request is the authority for it.
       "sha256": "a3e73e93c3894d779cd2778042f390ae5ddf3675efe2046b92b514709b757227"
     },
     {
+      "path": ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+      "bytes": 5915,
+      "sha256": "cca54347eef3d154ebe1909a8386357a6deade71d018420bb6b30af0677e686d"
+    },
+    {
       "path": ".engineering/evidence/wo-0002/godot-official-state.json",
       "bytes": 4326,
       "sha256": "5c158175a6a53e0d088c7f6ae96cd3eb6573738984386fbe1be95adb71aca3d3"
@@ -791,6 +1117,11 @@ request is the authority for it.
       "sha256": "594db255bdf68f89bf66455b799e927c5ab6f9638bd826aa2f403d161d7f88ba"
     },
     {
+      "path": ".engineering/evidence/wo-0002/hive-mcp-proof-c01.json",
+      "bytes": 28539,
+      "sha256": "b61e5496db9a2cb0fee215d70bde3c3a9781ba6df7800843806dc37405527604"
+    },
+    {
       "path": ".engineering/evidence/wo-0002/hive-mcp-proof.json",
       "bytes": 7554,
       "sha256": "4932eda0ab40940dcbb2f58a99d73e61d619542453aedaa6752d1a1fbfa5eb71"
@@ -809,7 +1140,12 @@ request is the authority for it.
   "checks": {
     "hive_preflight": "PASS",
     "mcp_proof": "PASS",
+    "mcp_proof_wo0002_historical": "PASS",
     "godot_official_source_verification": "PASS",
+    "c01_official_godot_reverification": "PASS",
+    "c01_hive_rebind_at_reviewer_corrected_head": "PASS",
+    "c01_retrieval_sees_reviewer_correction": "PASS",
+    "reviewer_correction_preserved": "PASS",
     "toolchain_inventory": "PASS",
     "godot_current_stable_build": "PASS",
     "benchmark_baseline": "PASS",
@@ -834,11 +1170,11 @@ request is the authority for it.
     "workOrder": "ISORYN-WO-0002",
     "repository": "KayzenRoot/isoryn-engine",
     "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-    "capturedAt": "2026-09-24T00:19:16Z",
-    "localHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
-    "remoteHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+    "capturedAt": "2026-09-24T15:07:32Z",
+    "localHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+    "remoteHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
     "requiredChecksCommand": "gh pr checks 5 --required",
-    "requiredChecksOutput": "Governance\tpass\t7s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/35937813544/job/107438732251",
+    "requiredChecksOutput": "Governance\tpass\t4s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36017729211/job/107694443843",
     "observations": [
       {
         "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
@@ -869,9 +1205,22 @@ request is the authority for it.
         "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894231988/job/107294031650",
         "job": "107294031650",
         "detail": "GitHub check-run for this exact commit, read through the API."
+      },
+      {
+        "head": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+        "context": "Governance",
+        "status": "completed",
+        "conclusion": "success",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36017729211/job/107694443843",
+        "job": "107694443843",
+        "startedAt": "2026-09-24T15:06:42Z",
+        "completedAt": "2026-09-24T15:06:46Z",
+        "detail": "GitHub check-run for this exact commit, read through the API."
       }
     ],
     "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here.",
+    "observationsAppendedFor": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
     "deliveredHeadObservations": 1,
     "governanceCiForDeliveredHead": "PASS"
   },
@@ -886,7 +1235,7 @@ request is the authority for it.
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 0.489s, OK"
+      "result": "PASS - Ran 34 tests in 0.903s, OK"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
@@ -894,11 +1243,23 @@ request is the authority for it.
     },
     {
       "command": "repository secret scan (pattern sweep over every tracked and untracked file, plus credential-scanning state read from the GitHub API)",
-      "result": "PASS - 126 text files and 4 binary files reported by name out of 130 listed, 0 pattern matches; platform side, 0 secret scanning alerts with push protection enabled"
+      "result": "PASS - 128 text files and 4 binary files reported by name out of 132 listed, 0 pattern matches; platform side, 0 secret scanning alerts with push protection enabled"
     },
     {
       "command": "HIVE health/inspect/index/corpus/retrieval + MCP initialize/tools/list/project.status/checkpoint.read/context.search through scripts/hive_mcp.py",
-      "result": "PASS at proofHead 958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4; the container's own git rev-parse HEAD returned 958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4 and the bootstrap that refreshed the index exited 0 with state READY"
+      "result": "HISTORICAL at proofHead 958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4; superseded as the current proof by the C01 row below. The container's own git rev-parse HEAD returned 958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4 and the bootstrap that refreshed the index exited 0 with state READY"
+    },
+    {
+      "command": "python scripts/hive_bootstrap.py --base-url http://127.0.0.1:18199 --relative-path isoryn-engine, then a governed MCP session (initialize, tools/list, project.list, project.status, checkpoint.read, six context.search queries, memory.search, memory.get, context.build) through scripts/hive_mcp.py with HIVE_COMPOSE_PROJECT=isoryn-c02-v100",
+      "result": "PASS at proofHead ad4fdf81c (reviewer-corrected descendant of e481b3376): bootstrap exit 0 in 1 attempt(s) with state READY, index COMPLETED at the proof head, corpus CURRENT, tools/list exactly the governed seven with readOnlyHint true, launcher exit 0, memory.search/memory.get/context.build NOT_AVAILABLE for their recorded reasons"
+    },
+    {
+      "command": "git ls-remote of refs/tags on the official repository, gh api releases/latest, and curl of the official release-policy page (bytes and sha256 recorded)",
+      "result": "PASS - 4.7.2-stable is still the newest published stable tag (noNewerStableTagExists True), the admitted baseline commit matches (True), and the official page reproduces the reviewer's support rows (CONFIRMED)"
+    },
+    {
+      "command": "git grep -F for each reviewer-corrected sentence at HEAD (the gate against a regeneration quietly reverting a hand-applied review correction)",
+      "result": "PASS - 4 of 4 corrected sentences present in the committed files"
     },
     {
       "command": "official Godot tag/commit verification against refs/tags and a local clone",
@@ -929,8 +1290,8 @@ request is the authority for it.
   ],
   "securityChecks": {
     "credentialPatternSweep": {
-      "filesListed": 130,
-      "textFilesScanned": 126,
+      "filesListed": 132,
+      "textFilesScanned": 128,
       "binaryFilesReportedByName": [
         ".engineering/evidence/wo-0002/frames/gf100000000.png",
         ".engineering/evidence/wo-0002/frames/gf200000000.png",
@@ -1001,7 +1362,12 @@ request is the authority for it.
     "The independent CR scan first reported four offending files, all of them committed PNG frames: binary data contains CR bytes legitimately. Text is now decided by the same NUL sniff the credential sweep uses and the excluded binaries are named in the record instead of the scan quietly narrowing itself.",
     "The HIVE/MCP receipt described above was assembled with a hand-written bootstrap summary: the block stated state READY, working_tree_clean true and index/corpus COMPLETED as typed literals next to a real session capture. That is fabricated evidence even when it happens to match what ran, so the assembler now executes `scripts/hive_bootstrap.py` itself, parses the summary out of its stdout, records its exit code, and only then runs the MCP sessions - which is also what re-indexed the tree at the proof head and made the current receipts retrievable through context.search.",
     "Two citation defects: movie_writer.cpp:201 should be :202 for the texture_2d_get call, and a receipt reference needed its full .meta file name to resolve.",
-    "context.build was first called with a query argument that the governed schema rejects (additionalProperties false); re-called with schema-valid arguments, which returned resource_not_found because no task is registered for this project on the pinned stack."
+    "context.build was first called with a query argument that the governed schema rejects (additionalProperties false); re-called with schema-valid arguments, which returned resource_not_found because no task is registered for this project on the pinned stack.",
+    "C01's first proof run asserted retrieval quality by matching loose keywords ('release policy', 'platform-support') against whole serialized responses and never checked whether each query reached its intended canonical file. It therefore reported a missed Definition-of-Done target and zero correction markers on the same run that had just returned the reviewer's corrected ADR-0001 bullet and the corrected Evidence Bundle sentence. Fixed by matching the reviewer's own sentences per result snippet with whitespace collapsed, and by redesigning the queries against executed probes: the Definition-of-Done query was rewritten from the literal phrase 'definition of done', which WO-0001's own evidence chunks quote and which therefore captured the candidate pool, to a sentence only that file contains.",
+    "The same first run recorded a snippet as absent evidence when it was only truncated. context.search returns a window of each matched chunk, so a corrected phrase deeper than that window is invisible even when the right chunk matched; the receipt now states the window limitation and reports markers per query and per result index instead of inferring absence from one.",
+    "Four of six searches in one C01 session answered database_unavailable ('durable store is unavailable', HIVE v1.0.0 mapping any psycopg error to it) while twelve of twelve identical searches in the next run returned data, so the condition is transient runtime state. Reading those answers as empty results would have produced a receipt claiming the corpus was quiet. The assembler now distinguishes the two, re-runs the session a bounded number of times, and records every attempt with which calls were unavailable.",
+    "The pinned stack's indexer failed with git_timeout and then git_status_unavailable because HIVE gives every git call five seconds and the workspace reaches the container over a read-only 9p mount that cannot refresh .git/index, so a cold status re-stats the whole tree. Root-caused with a timed in-container git probe and fixed inside the pinned stack by repacking the host repository's loose objects (299 to 7) and warming the container's cache before the bootstrap, with the cold and warm timings and the failed attempts recorded rather than hidden.",
+    "The official release-policy page returns HTTP 403 to urllib's default user agent, so the re-verification fetches it with an identified user agent through curl and records the exact command, the byte count and the SHA-256 of the page it parsed; the support rows quoted in the reviewer correction are read out of that captured page rather than restated."
   ],
   "unsupportedPlatformFeatures": [
     {
@@ -1022,7 +1388,7 @@ request is the authority for it.
     {
       "capability": "HIVE memory.get and the context.build happy path on the pinned stack",
       "result": "NOT_AVAILABLE",
-      "detail": "memory.search returned zero entries and no task is registered for this project, so context.build answers resource_not_found. Both were called with schema-valid arguments; neither is recorded as a pass."
+      "detail": "Re-proved in C01 rather than inherited: memory.search returns zero entries for this project, memory.get with a schema-valid UUID answers resource_not_found, and context.build answers resource_not_found because no task is registered for this project. All three were called with schema-valid arguments and none is recorded as a pass. Creating a task or writing a memory would mutate HIVE state, which is outside a read-only proof."
     }
   ],
   "residualRisks": [
@@ -1030,6 +1396,9 @@ request is the authority for it.
     "One mobile-APU Windows host is not a hardware class; every number here is single-host and labelled.",
     "Retrieval on the pinned HIVE stack is lexical (hybrid_state LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE), so HIVE results are keyword recall, not semantic evidence.",
     "The machine still runs a drifted HIVE v1.0.2 on port 8000; only HIVE_COMPOSE_PROJECT plus the -p flag keeps proofs pointed at the pinned v1.0.0 stack.",
+    "The pinned v1.0.0 stack intermittently answers governed reads with database_unavailable while its postgres and redis containers report healthy. The condition is reproduced and bounded but not attributed: any future proof has to distinguish it from an empty result set rather than record it as recall, and a proof that cannot do so should be treated as BLOCKED_HIVE_ISOLATION rather than as a pass.",
+    "HIVE v1.0.0 gives every git call five seconds and the canonical workspace reaches the container over a read-only 9p mount, so indexing this tree is fragile on this host class. The mitigation used here (repacked objects plus a warmed container cache) is host state, not a repository guarantee: another machine standing up the same stack can need it too, and the bootstrap attempt counts recorded in the C01 receipt are what make that visible.",
+    "context.search returns a truncated window of each matched chunk, so a phrase that exists in a matched file can still be absent from the returned snippet. Absence from a snippet is recorded as absence from the snippet, never as absence from the corpus.",
     "Seam 3 is proven at configure level only; the compile-and-link proof is open backlog row 9.",
     "Godot 4.8 is pre-release and observation-only; the candidate matrix must be re-verified if a newer stable tag is published before the audit.",
     "Executed receipts do not record `git rev-parse HEAD` at their own capture instant, so their binding to a repository head is reconstructed from timestamps against the commit order (see receiptHeadBinding.gap). A capture that outlives a commit, or a rebased branch, breaks that reconstruction silently; the fix is one line in the capture scripts and is not applied to receipts that are already closed.",
@@ -1041,17 +1410,21 @@ request is the authority for it.
     "pr": "https://github.com/KayzenRoot/isoryn-engine/pull/5",
     "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
     "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
-    "deliveredHeadSha": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+    "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
+    "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+    "deliveredHeadSha": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
     "mergeAttempted": false,
-    "note": "Merging is a hard stop for this Work Order; the PR is delivered open, and the exact-head Governance result is in governanceRun."
+    "promotionAttempted": false,
+    "note": "Merging and checkpoint/ADR promotion are hard stops for both WO-0002 and C01; the PR is delivered open, and the exact-head Governance result is in governanceRun."
   },
   "proposedCheckpointDelta": {
-    "status": "PROPOSED_ONLY",
+    "status": "PROPOSED_ONLY_CORRECTION_REQUIRED",
     "path": ".engineering/evidence/ISORYN-WO-0002-CHECKPOINT-DELTA.md",
-    "note": "Executor proposes; only the reviewer promotes through the governed flow."
+    "note": "Executor proposes; only the reviewer promotes through the governed flow. C01 does not promote anything: the checkpoint still reads ARCHITECTURE DISCOVERY CORRECTION REQUIRED until the re-review says otherwise."
   },
-  "productionCodeConfirmation": "No engine, runtime, editor or module implementation was written in this Work Order. The only executable content is the committed measurement fixture (.engineering/evidence/wo-0002/bench/, a GDScript harness inside the evidence namespace), the governance validator's two new repository-shape gates, and their tests.",
-  "stopCondition": "READY_FOR_ARCHITECTURE_TOOLCHAIN_AUDIT",
-  "verdict": "DELIVERED_FOR_AUDIT"
+  "productionCodeConfirmation": "No engine, runtime, editor or module implementation was written in WO-0002 or in its C01 correction. The only executable content is the committed measurement fixture (.engineering/evidence/wo-0002/bench/, a GDScript harness inside the evidence namespace), the governance validator's two new repository-shape gates, and their tests. C01 added two evidence receipts and this bundle; it changed no canonical decision, no pin and no build input.",
+  "wo0002StopCondition": "READY_FOR_ARCHITECTURE_TOOLCHAIN_AUDIT",
+  "stopCondition": "READY_FOR_WO0002_C01_INDEPENDENT_REVIEW",
+  "verdict": "DELIVERED_FOR_INDEPENDENT_REREVIEW"
 }
 ```
