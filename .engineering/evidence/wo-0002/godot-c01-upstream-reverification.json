@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "isoryn-wo-0002-c01-upstream-reverification-v1",
+  "workOrder": "ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND",
+  "capturedAt": "2026-09-24T13:31:18Z",
+  "purpose": "Re-verify official Godot stable state and the official support policy after the reviewer correction, without repeating any engine build, benchmark or GPU experiment.",
+  "officialSources": {
+    "upstreamGit": "https://github.com/godotengine/godot.git",
+    "releaseFeed": "https://api.github.com/repos/godotengine/godot/releases (official repository feed)",
+    "releasePolicy": "https://docs.godotengine.org/en/latest/about/release_policy.html",
+    "downloadArchive": "https://godotengine.org/download/archive/"
+  },
+  "commands": [
+    "git ls-remote <upstream> 'refs/tags/*'",
+    "git ls-remote <upstream> refs/tags/4.7.2-stable refs/tags/4.6.3-stable",
+    "git ls-remote <upstream> refs/tags/4.7.2-stable^{}   (empty => the tag is lightweight)",
+    "git ls-remote <upstream> refs/heads/master refs/heads/4.7 refs/heads/4.6 refs/heads/4.5",
+    "gh api repos/godotengine/godot/releases/latest",
+    "gh api repos/godotengine/godot/releases?per_page=15 --jq '.[].tag_name'",
+    "curl -sS -L --fail -A isoryn-c01-evidence/1.0 -o <scratch>/c01_release_policy.html https://docs.godotengine.org/en/latest/about/release_policy.html",
+    "curl -sS -L --fail -A isoryn-c01-evidence/1.0 -o <scratch>/c01_archive.html https://godotengine.org/download/archive/"
+  ],
+  "tagsQueried": 80,
+  "newestFourXStableTag": "4.7.2-stable",
+  "stableTagsFrom4_5Onward": [
+    "4.5-stable",
+    "4.5.1-stable",
+    "4.5.2-stable",
+    "4.6-stable",
+    "4.6.1-stable",
+    "4.6.2-stable",
+    "4.6.3-stable",
+    "4.7-stable",
+    "4.7.1-stable",
+    "4.7.2-stable"
+  ],
+  "noNewerStableTagExists": true,
+  "currentStable": {
+    "expectedTag": "4.7.2-stable",
+    "tagRefSha": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "expectedCommit": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "matchesAdmittedBaseline": true,
+    "peeledObjectSha": null,
+    "tagKindWhenNoPeel": "lightweight (no refs/tags/<tag>^{} entry)"
+  },
+  "compatibilityReference": {
+    "expectedTag": "4.6.3-stable",
+    "tagRefSha": "35e80b3a8822a9df9be390814b62f44c0a9c69e8",
+    "expectedCommit": "35e80b3a8822a9df9be390814b62f44c0a9c69e8",
+    "matchesAdmittedReference": true
+  },
+  "officialReleaseFeed": {
+    "command": "gh api repos/godotengine/godot/releases/latest",
+    "returncode": 0,
+    "raw": "4.7.2-stable|2026-08-18T16:12:28Z|false",
+    "error": null,
+    "recentReleaseTags": [
+      "3.6.3-stable",
+      "4.7.2-stable",
+      "4.7.1-stable",
+      "4.7-stable",
+      "4.6.3-stable",
+      "4.6.2-stable",
+      "4.5.2-stable",
+      "4.6.1-stable",
+      "4.6-stable",
+      "3.6.2-stable",
+      "4.5.1-stable",
+      "4.5-stable",
+      "3.6.1-stable",
+      "4.4.1-stable",
+      "4.4-stable"
+    ]
+  },
+  "branchHeadsNow": {
+    "4.5": "9d9cbe7e97ecdc0639b16d3c88a44d7add849f58",
+    "4.6": "a80a06c3e819d5b77a1737441aec9ccf1d93eda7",
+    "4.7": "83dec14d549108e1f314f57c1ce7e932c65370dd",
+    "master": "ca871ccc9cd8e5c2ce829ec5c0fae1ac32c6269f"
+  },
+  "releasePolicy": {
+    "url": "https://docs.godotengine.org/en/latest/about/release_policy.html",
+    "bytes": 1385229,
+    "sha256": "7675fe5fea665594305528307f0eb5b0becd0028621fbd35a357d05ef5c3a69e",
+    "supportRows": {
+      "Godot 4.8 (master)": {
+        "since": "Q4 2026 (estimate)",
+        "support": "Development. Receives new features, usability and performance improvements, as well as bug fixes, while under development."
+      },
+      "Godot 4.7": {
+        "since": "June 2026",
+        "support": "Receives fixes for bugs and security issues, as well as patches that enable platform support."
+      },
+      "Godot 4.6": {
+        "since": "January 2026",
+        "support": "Receives fixes for bugs and security issues, as well as patches that enable platform support."
+      },
+      "Godot 4.5": {
+        "since": "September 2025",
+        "support": "Receives fixes for security and platform support issues only."
+      },
+      "Godot 4.4": {
+        "since": "March 2025",
+        "support": "No longer supported (last update: 4.4.1)."
+      }
+    },
+    "statements": {
+      "previousStableBecomesLongTermSupported": "Whenever a new major version is released, we make the previous stable branch a long-term supported release, and do our best to provide fixes for issues encountered by users of that branch who cannot port complex projects to the new major version.",
+      "maintenanceWindow": "Stable branches are supported at least until the next stable branch is released and has received its first patch update."
+    }
+  },
+  "reviewerCorrectionReconciliation": {
+    "reviewerClaimAtCorrection": {
+      "Godot 4.7": "bug fixes, security fixes and platform-support patches",
+      "Godot 4.6": "bug fixes, security fixes and platform-support patches",
+      "Godot 4.5": "security and platform-support fixes only",
+      "Godot 4.4 and older 4.x": "unsupported"
+    },
+    "officialPageSaysTheSame": "CONFIRMED",
+    "note": "The reviewer correction quoted the official release policy rather than inferring support from branch version bumps; re-reading the page here reproduces the same per-line support levels, so the correction stands unchanged."
+  },
+  "downloadArchiveStableTags": [
+    "4.6.1-stable",
+    "4.6.2-stable",
+    "4.6.3-stable",
+    "4.7-stable",
+    "4.7.1-stable",
+    "4.7.2-stable"
+  ],
+  "decision": {
+    "baselineStillCurrent": "CONFIRMED",
+    "expensiveReceiptsRepeated": false,
+    "stopConditionTriggered": ""
+  },
+  "masterNote": {
+    "sha": "ca871ccc9cd8e5c2ce829ec5c0fae1ac32c6269f",
+    "adoptable": false,
+    "detail": "The development line moved since WO-0002 recorded it. That changes no ISORYN claim: master is observation-only and no 4.8 stable tag exists, so ADR-0001's admitted baseline is untouched."
+  }
+}
