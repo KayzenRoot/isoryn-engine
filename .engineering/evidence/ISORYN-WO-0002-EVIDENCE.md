@@ -29,14 +29,14 @@ record on the pull request.
   "workOrder": "ISORYN-WO-0002",
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
-  "capturedAt": "2026-09-24T00:15:28Z",
-  "commandsExecutedAtHead": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+  "capturedAt": "2026-09-24T00:17:56Z",
+  "commandsExecutedAtHead": "837b566c80ca4497acf45bf36f67789cafea02ff",
   "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
-  "headSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
-  "candidateHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+  "headSha": "837b566c80ca4497acf45bf36f67789cafea02ff",
+  "candidateHeadSha": "837b566c80ca4497acf45bf36f67789cafea02ff",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "receiptHeadBinding": {
     "discoveryReceipts": {
@@ -827,7 +827,7 @@ record on the pull request.
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 0.428s, OK"
+      "result": "PASS - Ran 34 tests in 0.483s, OK"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
