@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "isoryn-gef-evidence-v1",
+  "workOrder": "ISORYN-WO-0002",
+  "repository": "KayzenRoot/isoryn-engine",
+  "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+  "capturedAt": "2026-09-24T00:19:16Z",
+  "localHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+  "remoteHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+  "requiredChecksCommand": "gh pr checks 5 --required",
+  "requiredChecksOutput": "Governance\tpass\t7s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/35937813544/job/107438732251",
+  "observations": [
+    {
+      "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35937813544/job/107438732251",
+      "job": "107438732251",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894586565/job/107295219344",
+      "job": "107295219344",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "ec1f419ec04be2bc1759a010b86306c63d496500",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894231988/job/107294031650",
+      "job": "107294031650",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    }
+  ],
+  "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here."
+}

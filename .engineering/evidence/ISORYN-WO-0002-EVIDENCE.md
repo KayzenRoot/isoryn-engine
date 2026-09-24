@@ -18,10 +18,10 @@ does not explain and that gates CI adoption.
 The GPU frame-time baseline is recorded `NOT_AVAILABLE` with its executed controls, including four committed frames
 that are black at all 921,600 pixels.
 
-`governance_ci` is `UNKNOWN` in this block because the run for the delivered head does not exist yet at write
-time and a commit cannot carry its own check-run; the exact-head result is captured in
-`.engineering/evidence/wo-0002/ci.json` by the push this delivery produces and is stated in the delivery
-record on the pull request.
+`governance_ci` reads `PASS` for the delivered head `7a12df924` - the check-run for that exact commit is
+quoted in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`.
+The commit that adds this sentence cannot observe its own run, so `gh pr checks 5 --required` on the pull
+request is the authority for it.
 
 ```json
 {
@@ -29,14 +29,14 @@ record on the pull request.
   "workOrder": "ISORYN-WO-0002",
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
-  "capturedAt": "2026-09-24T00:17:56Z",
-  "commandsExecutedAtHead": "837b566c80ca4497acf45bf36f67789cafea02ff",
+  "capturedAt": "2026-09-24T00:19:46Z",
+  "commandsExecutedAtHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
   "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
-  "headSha": "837b566c80ca4497acf45bf36f67789cafea02ff",
-  "candidateHeadSha": "837b566c80ca4497acf45bf36f67789cafea02ff",
+  "headSha": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+  "candidateHeadSha": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "receiptHeadBinding": {
     "discoveryReceipts": {
@@ -450,6 +450,10 @@ record on the pull request.
       "change": "added"
     },
     {
+      "path": ".engineering/evidence/wo-0002/ci.json",
+      "change": "added"
+    },
+    {
       "path": ".engineering/evidence/wo-0002/custom-modules-feasibility.txt",
       "change": "added"
     },
@@ -709,6 +713,11 @@ record on the pull request.
       "sha256": "fe9c9033f2f13ad18e060a4064b9642449aa25061dd0390630d18247f8dfb0af"
     },
     {
+      "path": ".engineering/evidence/wo-0002/ci.json",
+      "bytes": 2027,
+      "sha256": "95dda64e459e0eece99c7863000be4e0769bb9205cc920e36e91a607cff97f59"
+    },
+    {
       "path": ".engineering/evidence/wo-0002/custom-modules-feasibility.txt",
       "bytes": 896,
       "sha256": "58bb814d8d86293a3e494382a18c0dba37ab0c39f3e4aa7971f65c50a57e33bb"
@@ -798,7 +807,7 @@ record on the pull request.
     "benchmark_baseline": "PASS",
     "governance_validator": "PASS",
     "unittest_suite": "PASS",
-    "governance_ci": "UNKNOWN",
+    "governance_ci": "PASS",
     "secret_scan": "PASS",
     "py_compile": "PASS",
     "git_diff_check": "PASS",
@@ -813,8 +822,50 @@ record on the pull request.
     "mcp_context_build_happy_path": "NOT_AVAILABLE"
   },
   "governanceRun": {
-    "status": "PENDING_AT_WRITE",
-    "note": "A commit cannot observe its own check-run. The capture at .engineering/evidence/wo-0002/ci.json names the exact commit GitHub evaluated, and gh pr checks 5 --required is the authority for the head that carries this record."
+    "schemaVersion": "isoryn-gef-evidence-v1",
+    "workOrder": "ISORYN-WO-0002",
+    "repository": "KayzenRoot/isoryn-engine",
+    "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+    "capturedAt": "2026-09-24T00:19:16Z",
+    "localHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+    "remoteHead": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+    "requiredChecksCommand": "gh pr checks 5 --required",
+    "requiredChecksOutput": "Governance\tpass\t7s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/35937813544/job/107438732251",
+    "observations": [
+      {
+        "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+        "context": "Governance",
+        "status": "completed",
+        "conclusion": "success",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35937813544/job/107438732251",
+        "job": "107438732251",
+        "detail": "GitHub check-run for this exact commit, read through the API."
+      },
+      {
+        "head": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
+        "context": "Governance",
+        "status": "completed",
+        "conclusion": "success",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894586565/job/107295219344",
+        "job": "107295219344",
+        "detail": "GitHub check-run for this exact commit, read through the API."
+      },
+      {
+        "head": "ec1f419ec04be2bc1759a010b86306c63d496500",
+        "context": "Governance",
+        "status": "completed",
+        "conclusion": "success",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894231988/job/107294031650",
+        "job": "107294031650",
+        "detail": "GitHub check-run for this exact commit, read through the API."
+      }
+    ],
+    "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here.",
+    "deliveredHeadObservations": 1,
+    "governanceCiForDeliveredHead": "PASS"
   },
   "tests": [
     {
@@ -827,7 +878,7 @@ record on the pull request.
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 0.483s, OK"
+      "result": "PASS - Ran 34 tests in 0.489s, OK"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
@@ -835,7 +886,7 @@ record on the pull request.
     },
     {
       "command": "repository secret scan (pattern sweep over every tracked and untracked file, plus credential-scanning state read from the GitHub API)",
-      "result": "PASS - 125 text files and 4 binary files reported by name out of 129 listed, 0 pattern matches; platform side, 0 secret scanning alerts with push protection enabled"
+      "result": "PASS - 126 text files and 4 binary files reported by name out of 130 listed, 0 pattern matches; platform side, 0 secret scanning alerts with push protection enabled"
     },
     {
       "command": "HIVE health/inspect/index/corpus/retrieval + MCP initialize/tools/list/project.status/checkpoint.read/context.search through scripts/hive_mcp.py",
@@ -865,13 +916,13 @@ record on the pull request.
     },
     {
       "command": "gh pr checks 5 --required",
-      "result": "run after the push this delivery produces; see checks.governance_ci"
+      "result": "PASS - Governance check-run for the pushed head, captured per-commit in .engineering/evidence/wo-0002/ci.json"
     }
   ],
   "securityChecks": {
     "credentialPatternSweep": {
-      "filesListed": 129,
-      "textFilesScanned": 125,
+      "filesListed": 130,
+      "textFilesScanned": 126,
       "binaryFilesReportedByName": [
         ".engineering/evidence/wo-0002/frames/gf100000000.png",
         ".engineering/evidence/wo-0002/frames/gf200000000.png",
@@ -982,7 +1033,7 @@ record on the pull request.
     "pr": "https://github.com/KayzenRoot/isoryn-engine/pull/5",
     "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
     "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
-    "deliveredHeadSha": "set by the push this record produces",
+    "deliveredHeadSha": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
     "mergeAttempted": false,
     "note": "Merging is a hard stop for this Work Order; the PR is delivered open, and the exact-head Governance result is in governanceRun."
   },
