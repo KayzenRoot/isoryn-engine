@@ -38,7 +38,7 @@ The support-policy claim is now sourced from Godot's release-policy page, fetche
 recorded, rather than inferred from which branches still carry a version bump. The raw executor receipt keeps its
 original text and is marked historical and superseded, so the correction can be checked against what it replaced.
 
-`governance_ci` reads `PASS` for the delivered head `3d442fb8f` - the check-run for that exact commit is
+`governance_ci` reads `PASS` for the delivered head `db613904a` - the check-run for that exact commit is
 quoted in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`.
 The commit that adds this sentence cannot observe its own run, so `gh pr checks 5 --required` on the pull
 request is the authority for it.
@@ -49,16 +49,16 @@ request is the authority for it.
   "workOrder": "ISORYN-WO-0002",
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
-  "capturedAt": "2026-09-24T15:13:49Z",
-  "commandsExecutedAtHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+  "capturedAt": "2026-09-24T15:18:47Z",
+  "commandsExecutedAtHead": "db613904a2ed9c4f7db36022ca07726a3898aa83",
   "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
   "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
   "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
-  "headSha": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
-  "candidateHeadSha": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+  "headSha": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+  "candidateHeadSha": "db613904a2ed9c4f7db36022ca07726a3898aa83",
   "headRolesNote": "Four different heads appear in this record and each is named for what it is: the WO-0002 discovery proof head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c (the head HIVE inspected and indexed, and a descendant of the reviewer head), and the head this bundle is committed at, which carries evidence only and is the head the pushed Governance run is read back for. No proof is attributed to a head it did not run at.",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "receiptHeadBinding": {
@@ -1043,8 +1043,8 @@ request is the authority for it.
     },
     {
       "path": ".engineering/evidence/wo-0002/ci.json",
-      "bytes": 2585,
-      "sha256": "10e8d3ac519fd2b7f40a84b402ead9c7803bff42bc7228c1f77c3ee1bdebfa85"
+      "bytes": 3070,
+      "sha256": "0ba503ada13b5bcf64c6a0d7357ded71ddd18fdf80ae53aa388bc0fc11a98409"
     },
     {
       "path": ".engineering/evidence/wo-0002/custom-modules-feasibility.txt",
@@ -1170,11 +1170,11 @@ request is the authority for it.
     "workOrder": "ISORYN-WO-0002",
     "repository": "KayzenRoot/isoryn-engine",
     "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-    "capturedAt": "2026-09-24T15:07:32Z",
-    "localHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
-    "remoteHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+    "capturedAt": "2026-09-24T15:18:19Z",
+    "localHead": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+    "remoteHead": "db613904a2ed9c4f7db36022ca07726a3898aa83",
     "requiredChecksCommand": "gh pr checks 5 --required",
-    "requiredChecksOutput": "Governance\tpass\t4s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36017729211/job/107694443843",
+    "requiredChecksOutput": "Governance\tpass\t5s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36019148911/job/107699282758",
     "observations": [
       {
         "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
@@ -1217,10 +1217,22 @@ request is the authority for it.
         "startedAt": "2026-09-24T15:06:42Z",
         "completedAt": "2026-09-24T15:06:46Z",
         "detail": "GitHub check-run for this exact commit, read through the API."
+      },
+      {
+        "head": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+        "context": "Governance",
+        "status": "completed",
+        "conclusion": "success",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36019148911/job/107699282758",
+        "job": "107699282758",
+        "startedAt": "2026-09-24T15:18:03Z",
+        "completedAt": "2026-09-24T15:18:08Z",
+        "detail": "GitHub check-run for this exact commit, read through the API."
       }
     ],
     "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here.",
-    "observationsAppendedFor": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+    "observationsAppendedFor": "db613904a2ed9c4f7db36022ca07726a3898aa83",
     "deliveredHeadObservations": 1,
     "governanceCiForDeliveredHead": "PASS"
   },
@@ -1235,7 +1247,7 @@ request is the authority for it.
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 0.903s, OK"
+      "result": "PASS - Ran 34 tests in 0.427s, OK"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
@@ -1412,7 +1424,7 @@ request is the authority for it.
     "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
     "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
     "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
-    "deliveredHeadSha": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+    "deliveredHeadSha": "db613904a2ed9c4f7db36022ca07726a3898aa83",
     "mergeAttempted": false,
     "promotionAttempted": false,
     "note": "Merging and checkpoint/ADR promotion are hard stops for both WO-0002 and C01; the PR is delivered open, and the exact-head Governance result is in governanceRun."

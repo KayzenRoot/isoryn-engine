@@ -3,11 +3,11 @@
   "workOrder": "ISORYN-WO-0002",
   "repository": "KayzenRoot/isoryn-engine",
   "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-  "capturedAt": "2026-09-24T15:07:32Z",
-  "localHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
-  "remoteHead": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+  "capturedAt": "2026-09-24T15:18:19Z",
+  "localHead": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+  "remoteHead": "db613904a2ed9c4f7db36022ca07726a3898aa83",
   "requiredChecksCommand": "gh pr checks 5 --required",
-  "requiredChecksOutput": "Governance\tpass\t4s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36017729211/job/107694443843",
+  "requiredChecksOutput": "Governance\tpass\t5s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36019148911/job/107699282758",
   "observations": [
     {
       "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
@@ -50,8 +50,20 @@
       "startedAt": "2026-09-24T15:06:42Z",
       "completedAt": "2026-09-24T15:06:46Z",
       "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36019148911/job/107699282758",
+      "job": "107699282758",
+      "startedAt": "2026-09-24T15:18:03Z",
+      "completedAt": "2026-09-24T15:18:08Z",
+      "detail": "GitHub check-run for this exact commit, read through the API."
     }
   ],
   "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here.",
-  "observationsAppendedFor": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf"
+  "observationsAppendedFor": "db613904a2ed9c4f7db36022ca07726a3898aa83"
 }
