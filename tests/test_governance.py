@@ -1,4 +1,4 @@
-import copy, io, json, re, unittest
+import copy, io, json, os, re, tempfile, unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
@@ -195,6 +195,88 @@ class HeadRebindingGateTests(unittest.TestCase):
         with self.assertRaises(SystemExit) as missing:
             vg.read_ci_ledger(".engineering/evidence/wo-0002/not-recorded.json", self.WO)
         self.assertIn("is not in the repository", str(missing.exception))
+
+    def test_receipt_inside_the_evidence_directory_is_read(self):
+        ledger = vg.read_ci_ledger(".engineering/evidence/wo-0002/ci.json", self.WO)
+        self.assertEqual(ledger["workOrder"], self.WO)
+        self.assertTrue(ledger["observations"])
+
+    def test_receipt_must_use_canonical_separators(self):
+        # A backslash is a separator on Windows and an ordinary character on POSIX, so a guard that only splits on
+        # "/" would read the traversal below as one filename on Linux and walk out of the tree on Windows.
+        for written in (".engineering/evidence\\wo-0002/ci.json",
+                        ".engineering\\evidence/wo-0002/ci.json",
+                        ".engineering/evidence/..\\..\\..\\outside.json",
+                        ".engineering/evidence/wo-0002/../../../../Windows/win.ini"):
+            with self.assertRaises(SystemExit) as ctx:
+                vg.read_ci_ledger(written, self.WO)
+            self.assertIn("separator" if "\\" in written else "climbs out", str(ctx.exception))
+
+    def test_receipt_must_not_be_absolute_a_drive_or_a_network_path(self):
+        for written in ("C:/Windows/win.ini", "C:\\Users\\someone\\ci.json", "\\\\server\\share\\ci.json",
+                        "//server/share/ci.json", "/etc/passwd", "~/ci.json"):
+            with self.assertRaises(SystemExit) as ctx:
+                vg.read_ci_ledger(written, self.WO)
+            self.assertIn("absolute", str(ctx.exception))
+
+    def test_receipt_must_not_climb_out_with_a_parent_segment(self):
+        for written in (".engineering/evidence/../outside.json",
+                        ".engineering/evidence/wo-0002/../../../outside.json"):
+            with self.assertRaises(SystemExit) as ctx:
+                vg.read_ci_ledger(written, self.WO)
+            self.assertIn("climbs out", str(ctx.exception))
+
+    def test_receipt_must_resolve_to_a_regular_file(self):
+        with self.assertRaises(SystemExit) as directory:
+            vg.read_ci_ledger(".engineering/evidence/wo-0002/", self.WO)
+        self.assertIn("regular file", str(directory.exception))
+
+    @unittest.skipUnless(hasattr(os, "symlink"), "this platform offers no symlinks")
+    def test_receipt_symlink_must_not_resolve_outside_the_evidence_directory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            evidence = root / ".engineering" / "evidence"
+            (evidence / "wo-0002").mkdir(parents=True)
+            ledger = json.dumps({"workOrder": "ISORYN-WO-0002",
+                                 "observations": [{"head": "a" * 40, "context": "Governance"}]})
+            (evidence / "wo-0002" / "ci.json").write_text(ledger, encoding="utf-8")
+            (root / "outside.json").write_text(ledger, encoding="utf-8")
+            link = evidence / "escape.json"
+            try:
+                link.symlink_to(root / "outside.json")
+            except OSError as exc:
+                self.skipTest(f"this filesystem refuses symlinks: {exc}")
+            borrowed = vg.ROOT
+            vg.ROOT = root
+            try:
+                self.assertEqual(vg.read_ci_ledger(".engineering/evidence/wo-0002/ci.json", self.WO)
+                                 ["observations"][0]["head"], "a" * 40)
+                with self.assertRaises(SystemExit) as escaping:
+                    vg.read_ci_ledger(".engineering/evidence/escape.json", self.WO)
+                self.assertIn("outside .engineering/evidence/", str(escaping.exception))
+            finally:
+                vg.ROOT = borrowed
+
+    @unittest.skipUnless(hasattr(os, "symlink"), "this platform offers no symlinks")
+    def test_receipt_symlink_loop_fails_closed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            evidence = root / ".engineering" / "evidence"
+            evidence.mkdir(parents=True)
+            first, second = evidence / "first.json", evidence / "second.json"
+            try:
+                first.symlink_to(second)
+                second.symlink_to(first)
+            except OSError as exc:
+                self.skipTest(f"this filesystem refuses symlinks: {exc}")
+            borrowed = vg.ROOT
+            vg.ROOT = root
+            try:
+                with self.assertRaises(SystemExit) as loop:
+                    vg.read_ci_ledger(".engineering/evidence/first.json", self.WO)
+                self.assertIn("cannot resolve", str(loop.exception))
+            finally:
+                vg.ROOT = borrowed
 
     def test_execution_head_must_state_the_tree_it_ran_on(self):
         evidence, ledger, receipt = self.record()

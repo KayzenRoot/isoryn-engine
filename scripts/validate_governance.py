@@ -7,7 +7,7 @@ asserted where an empty or wrong file would let an unproven claim pass.
 """
 from __future__ import annotations
 import json, re, sys
-from pathlib import Path
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 ROOT = Path(__file__).resolve().parents[1]
 GEF_PIN = "866fe3af8cccc65c929aaf6a47a924401fa448b3"
@@ -28,6 +28,9 @@ GATE_HEAD_REBINDING = "head_rebinding_fields_match_governance_observation"
 CERTIFIED_HEAD_FIELDS = ("headSha", "candidateHeadSha", "github.deliveredHeadSha")
 EXECUTION_HEAD_FIELD = "commandsExecutedAtHead"
 TREE_STATES = {"CLEAN", "WORKING_TREE_DIRTY"}
+# The only directory a versioned receipt may live in, so a record can never point the gate at a file the reviewer
+# has not seen.
+EVIDENCE_DIR = ".engineering/evidence"
 # Drive-letter or foreign-home paths are machine state; they must not live in portable config.
 MACHINE_PATH = re.compile(r"(?<![A-Za-z0-9])[A-Za-z]:[\\/]|/(?:home|Users|mnt|var/folders)/")
 
@@ -159,12 +162,46 @@ def ci_ledger(text, rel):
 
 
 def read_ci_ledger(rel, wo_id):
-    if rel.startswith(("/", "\\")) or ".." in rel.split("/") or not rel.startswith(".engineering/evidence/"):
-        fail(f"{wo_id} points its delivery-head CI receipt outside .engineering/evidence/: {rel}")
-    path = ROOT / rel
-    if not path.is_file():
+    """Resolve a `deliveryHeadCiReceipt` to a regular file inside the evidence directory, or fail closed.
+
+    The value is a portable repository path, so it is judged with canonical separators before anything touches the
+    filesystem: a backslash is a separator on Windows and an ordinary character on POSIX, which is precisely the pair
+    of facts a `split("/")` guard cannot see, and a drive or network share resolves over a relative root. Prefix
+    matching alone is still not containment, because a link inside the directory can name a target outside it, so the
+    decision is made on resolved paths and every resolution failure refuses rather than falling through.
+    """
+    posix, windows = PurePosixPath(rel), PureWindowsPath(rel)
+    if windows.drive or windows.is_absolute() or posix.is_absolute() or rel.startswith("~"):
+        fail(f"{wo_id} points its delivery-head CI receipt outside {EVIDENCE_DIR}/: {rel} is an absolute path, a "
+             "drive letter or a network share, and a versioned receipt is always repository-relative")
+    if "\\" in rel:
+        fail(f"{wo_id} names its CI receipt with a Windows separator: {rel}; the contract is a portable path "
+             "written with / separators")
+    if ".." in posix.parts:
+        fail(f"{wo_id} points its delivery-head CI receipt outside {EVIDENCE_DIR}/: {rel} climbs out of it with "
+             "a .. segment")
+    if not rel.startswith(EVIDENCE_DIR + "/"):
+        fail(f"{wo_id} points its delivery-head CI receipt outside {EVIDENCE_DIR}/: {rel}")
+    try:
+        target = (ROOT / rel).resolve(strict=True)
+    except FileNotFoundError:
         fail(f"{wo_id} names CI receipt {rel} which is not in the repository")
-    return ci_ledger(path.read_text(encoding="utf-8"), rel)
+    except (OSError, RuntimeError, ValueError) as exc:
+        # pathlib raises RuntimeError for a symlink loop and ValueError for an unrepresentable path, neither of
+        # which is an OSError, and both of which would otherwise escape as a traceback instead of a refusal.
+        fail(f"{wo_id} cannot resolve CI receipt {rel}: {getattr(exc, 'strerror', None) or type(exc).__name__}")
+    if not target.is_relative_to((ROOT / EVIDENCE_DIR).resolve()):
+        fail(f"{wo_id} points its delivery-head CI receipt outside {EVIDENCE_DIR}/: {rel} resolves to {target}, "
+             "which leaves the directory the contract confines receipts to")
+    if not target.is_file():
+        fail(f"{wo_id} CI receipt {rel} resolves to {target}, which is not a regular file")
+    try:
+        text = target.read_text(encoding="utf-8")
+    except OSError as exc:
+        fail(f"{wo_id} cannot read CI receipt {rel}: {exc.strerror or type(exc).__name__}")
+    except UnicodeDecodeError as exc:
+        fail(f"{wo_id} CI receipt {rel} is not utf-8 text: {exc}")
+    return ci_ledger(text, rel)
 
 
 def certified_observation(ledger, head, wo_id, source):
