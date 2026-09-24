@@ -16,8 +16,8 @@ Facts established at execution time (all from official sources; receipts in
 `.engineering/evidence/wo-0002/godot-official-state.json`):
 
 - `4.7.2-stable` is the current stable release, published 2026-08-18, resolving to commit `ed1daf0bf001b61586d9930840f2f1394092c079`; the pinned clone's `version.py` reports 4.7 / stable and `git describe --tags` reports `4.7.2-stable`.
-- The immediately previous supported line is 4.6 (`4.6.3-stable` @ `35e80b3a8822a9df9be390814b62f44c0a9c69e8`, branch `4.6` head carries 4.6.4-rc); 4.5 stopped receiving bumps on 2026-03-19.
-- Upstream publishes no LTS or numbered support-lifetime policy, so "supported" is an inference from active maintenance branches.
+- The official release policy currently lists Godot 4.7 and 4.6 as supported for bug fixes, security fixes and platform-support patches; Godot 4.5 remains partially supported for security and platform-support fixes only, while 4.4 and older 4.x lines are no longer supported.
+- `4.6.3-stable` @ `35e80b3a8822a9df9be390814b62f44c0a9c69e8` is therefore the immediately previous **fully supported** minor line and remains the compatibility reference. The executor's original inference from branch activity omitted the official support-timeline source and is superseded by this independent-review correction.
 - `4.8-dev6` is a build label, not a tag; the development line is only citable as `master` @ `4e244f2112c687885767fa3c24ce9233a24a1659` (4.8.0-dev).
 - Upstream `SConstruct` exposes `custom_modules` (line 280) and consumes it at lines 446-464, which allows a native module that lives outside the engine tree to be compiled into the engine without editing upstream code.
 
@@ -47,7 +47,8 @@ Facts established at execution time (all from official sources; receipts in
 
 ## Evidence
 
-- `.engineering/evidence/wo-0002/godot-official-state.json` (official tag/commit verification and the commands used).
+- `.engineering/evidence/wo-0002/godot-official-state.json` (official tag/commit verification and the commands used; its branch-activity support inference is preserved as historical executor evidence but superseded by the reviewer correction below).
+- Official Godot release policy: `https://docs.godotengine.org/en/latest/about/release_policy.html` (support timeline and per-branch support levels re-verified by the independent reviewer on 2026-09-24).
 - `docs/project-brain/09-TOOLCHAIN-AND-BENCHMARK-BASELINE.md` and `.engineering/evidence/wo-0002/` build/smoke receipts, which show the adopted baseline actually configures, compiles and runs on the frozen toolchain.
 - WO-0002 Evidence Bundle entries `godot_official_source_verification` and `godot_current_stable_build`.
 
@@ -55,5 +56,5 @@ Facts established at execution time (all from official sources; receipts in
 
 - A stable release newer than `4.7.2-stable` is published and a Work Order has re-run the receipts on it.
 - A proven capability gap requires editing upstream code (seam 4): then this ADR is superseded per subsystem by a new ADR naming the fork, its sync owner and its rebase cadence.
-- Upstream publishes an official support-lifetime policy that invalidates the "supported line" inference.
+- The official Godot release policy changes the support level of 4.7/4.6 in a way that makes the selected compatibility reference inappropriate, or a newer stable baseline is admitted by a Work Order.
 - A second platform or hardware class enters scope and the single-repository overlay stops compiling for it.

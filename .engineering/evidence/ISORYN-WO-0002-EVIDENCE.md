@@ -18,6 +18,13 @@ does not explain and that gates CI adoption.
 The GPU frame-time baseline is recorded `NOT_AVAILABLE` with its executed controls, including four committed frames
 that are black at all 921,600 pixels.
 
+Independent review on 2026-09-24 found one source-coverage defect in the official-state interpretation: the executor
+consulted the archive/release list and inferred support from active branches, but omitted Godot's official release
+policy. That policy explicitly gives support levels for 4.7, 4.6 and 4.5. The raw executor receipt remains untouched
+as historical evidence; the canonical interpretation is corrected in ADR-0001 and
+`docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md`. The correction does **not** change the selected
+`4.7.2-stable` baseline or the 4.6 compatibility-reference choice.
+
 `governance_ci` reads `PASS` for the delivered head `7a12df924` - the check-run for that exact commit is
 quoted in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`.
 The commit that adds this sentence cannot observe its own run, so `gh pr checks 5 --required` on the pull
@@ -131,7 +138,7 @@ request is the authority for it.
       "compatibilityReference": {
         "tag": "4.6.3-stable",
         "commit": "35e80b3a8822a9df9be390814b62f44c0a9c69e8",
-        "why": "Two maintenance branches are still version-bumped at execution time: 4.7 is at 4.7.3-rc and 4.6 is at 4.6.4-rc, while 4.5 stopped at 4.5.2 (2026-03-19). 4.6 is therefore the immediately previous supported stable line; 4.5 and older are not maintained."
+        "why": "Independent review superseded the branch-activity inference with Godot's official release policy: 4.7 and 4.6 receive bug/security/platform fixes, 4.5 receives security/platform fixes only, and 4.4 and older 4.x lines are unsupported. 4.6 remains the immediately previous fully supported minor line and therefore the compatibility reference."
       },
       "observationOnly": {
         "branch": "master",
@@ -157,10 +164,11 @@ request is the authority for it.
     "sources": {
       "repository": "https://github.com/godotengine/godot (upstream, unmodified)",
       "website": "https://godotengine.org/download/archive/",
-      "windowsBuildDocs": "https://docs.godotengine.org/en/latest/engine_details/development/compiling/compiling_for_windows.html"
+      "windowsBuildDocs": "https://docs.godotengine.org/en/latest/engine_details/development/compiling/compiling_for_windows.html",
+      "releasePolicy": "https://docs.godotengine.org/en/latest/about/release_policy.html"
     },
     "admissionClaimsReverified": "CONFIRMED",
-    "noOfficialLtsStatement": "Neither the release archive nor the release list publishes a numbered support-lifetime or LTS policy. The supported set is therefore inferred from the branches that still carry a version bump at execution time, and that inference is stated as an inference.",
+    "supportPolicyReviewerCorrection": "The executor receipt omitted the official Godot release-policy page. Independent review re-verified that page on 2026-09-24: 4.7 and 4.6 receive bug/security/platform-support fixes; 4.5 receives security/platform-support fixes only; 4.4 and older 4.x lines are unsupported. This supersedes the branch-only support inference without changing the 4.7.2 baseline or 4.6 compatibility-reference choice.",
     "staleWhenReverified": "If a 4.7.3-stable or newer stable tag is published before the audit, the candidate matrix must be re-verified rather than inherited from this receipt.",
     "receipt": ".engineering/evidence/wo-0002/godot-official-state.json"
   },

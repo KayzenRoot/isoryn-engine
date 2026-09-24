@@ -21,10 +21,14 @@ is the current stable release and that a `4.8-dev6` pre-release exists. Both sta
 with one correction that matters for citation hygiene: **`4.8-dev6` is a distributed build label, not a git
 tag**. Any claim about the development line must therefore bind to a commit, not to a dev label.
 
-Upstream publishes no numbered support-lifetime or LTS policy in the release archive or release list.
-"Supported" is therefore an inference from the maintenance branches that still carry a version bump at
-execution time (`4.7` at 4.7.3-rc, `4.6` at 4.6.4-rc, while `4.5` stopped at 4.5.2 on 2026-03-19). The
-inference is stated as an inference everywhere it is used.
+Independent review added the official release-policy source that the executor's receipt omitted:
+`https://docs.godotengine.org/en/latest/about/release_policy.html`. At review time it explicitly lists
+Godot 4.7 and 4.6 as receiving bug/security/platform-support fixes, Godot 4.5 as receiving security and
+platform-support fixes only, and Godot 4.4 and older 4.x lines as no longer supported. Therefore 4.6 remains
+the immediately previous **fully supported** minor line for the compatibility reference, but that conclusion
+comes from upstream's support timeline, not from inferring maintenance solely from branch version bumps.
+The raw executor receipt is intentionally not rewritten; this paragraph is the reviewer correction that
+supersedes its support-policy interpretation.
 
 ## 2. Options compared
 

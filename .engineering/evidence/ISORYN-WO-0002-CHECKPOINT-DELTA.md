@@ -1,6 +1,6 @@
 # ISORYN WO-0002 Proposed Checkpoint Delta
 
-Status: PROPOSED_ONLY. This file changes nothing by itself. The checkpoint is promoted only by the independent
+Status: PROPOSED_ONLY_CORRECTION_REQUIRED. Independent review corrected two factual summaries before promotion: the Godot support interpretation now uses the official release policy, and the GPU-control summary no longer claims that upstream reproduced this build's early Vulkan segfault. Because canonical sources changed, the previous HIVE/MCP proof is stale until the corrected head is re-indexed and re-proved. This file changes nothing by itself. The checkpoint is promoted only by the independent
 architecture/toolchain audit of ISORYN-WO-0002, through the governed flow, against the exact head recorded in
 `.engineering/evidence/ISORYN-WO-0002-EVIDENCE.md`. The executor does not promote, and does not merge PR #5.
 
@@ -45,8 +45,10 @@ architecture/toolchain audit of ISORYN-WO-0002, through the governed flow, again
    path that completes the harness on this host is `d3d12`, and its own readback contradicts its numbers: under
    `--write-movie --fixed-fps` it returns frames that are black at every one of 921,600 pixels and byte-identical
    across runs, then dies at `0x887a0005` (`DXGI_ERROR_DEVICE_REMOVED`) while requesting the picture back. The
-   control that establishes the wider fault is upstream's own published binary for the same tag, reproducing every
-   failure (§7). ISORYN-D-016 records the rule that came out of it: a device is admitted by a readback gate whose
+   control separates the failures instead of reproducing them all: upstream's published binary reproduces the
+   host-side shader/device refusal and the OpenGL crash, but it **does not** reproduce this build's early Vulkan
+   segfault; upstream remains alive until the timeout where the local build exits after about 3 seconds (§7).
+   ISORYN-D-016 records the rule that came out of it: a device is admitted by a readback gate whose
    pixels show the scene, not by an exit code and not by a frame file existing.
 6. **The extension seams are real mechanisms with citations, and seam 3 is half-proven.** `custom_modules`
    imports an out-of-tree module into upstream's build with exit 0 and still configures with the module flag off
@@ -74,3 +76,12 @@ architecture/toolchain audit of ISORYN-WO-0002, through the governed flow, again
 receipt inventory, errors corrected, residual risks, rollback). Raw discovery workspace
 `D:\GodotDiscovery\ISORYN-WO-0002\` is operator-local and disposable by design; every claim in the canonical
 sources above points at a committed receipt rather than at that directory.
+
+
+## INDEPENDENT REVIEW CORRECTION GATE
+
+Before this delta can be promoted, the executor must re-run only the invalidated exact-head surfaces on the
+reviewer-corrected branch head: HIVE v1.0.0 inspect/index/corpus/retrieval, the real MCP session, deterministic
+governance/tests/secret-scan as applicable, and exact-head Governance CI. The expensive Godot source build,
+headless benchmark series and GPU control experiments remain valid for the identities they measured and must not
+be repeated unless the official stable tag changed or a correction changes their inputs.
