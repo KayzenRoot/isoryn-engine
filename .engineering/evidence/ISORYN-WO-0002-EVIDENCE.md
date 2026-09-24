@@ -48,7 +48,11 @@ described, and the same class of drift is why the `memory.search` detail was tig
 limit 5 actually shows. No raw capture was edited: the verdict, error object, argument set and response hash are
 compared field-by-field against the committed receipt, and the superseded sentence is kept verbatim under
 `detailCorrection.supersededDetail`. `context.build` stays `NOT_AVAILABLE`, because a corrected reason for a refusal
-still is not a happy path.
+still is not a happy path. CD01 did not stop at re-wording: it re-indexed the source the canonical way at a clean
+committed head, confirmed `COMPLETED`/`CURRENT` against that head, and issued exactly one governed read. That answer
+moved to `not_found` / `resource_not_found`, which locates the C01 refusal in the currency guard rather than in the
+task, and still leaves the happy path unproduced - so the inventory row did not move and the task_id's status is
+recorded as unknown, not as absent.
 
 `governance_ci` reads `PASS` for the delivered head `db613904a` - the check-run for that exact commit is
 quoted in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`.
@@ -61,15 +65,15 @@ request is the authority for it.
   "workOrder": "ISORYN-WO-0002",
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
-  "capturedAt": "2026-09-24T16:56:37Z",
-  "commandsExecutedAtHead": "9ae892a42446df1405952585a5c11261212b1f70",
+  "capturedAt": "2026-09-24T17:05:53Z",
+  "commandsExecutedAtHead": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
   "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
   "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
   "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
-  "headSha": "9ae892a42446df1405952585a5c11261212b1f70",
+  "headSha": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
   "candidateHeadSha": "db613904a2ed9c4f7db36022ca07726a3898aa83",
   "headRolesNote": "Four different heads appear in this record and each is named for what it is: the WO-0002 discovery proof head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c (the head HIVE inspected and indexed, and a descendant of the reviewer head), and the head this bundle is committed at, which carries evidence only and is the head the pushed Governance run is read back for. No proof is attributed to a head it did not run at. The CD01 commits in this lineage change derived narrative only - no governed call was re-executed to produce them, so no new head is claimed as a proof head by CD01 unless a receipt in this bundle names it.",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
@@ -640,6 +644,60 @@ request is the authority for it.
     "receipt": ".engineering/evidence/wo-0002/hive-mcp-proof-c01.json",
     "oneLineSummary": "HIVE v1.0.0 and the seven-tool read-only MCP surface were re-proved against the reviewer-corrected canonical text at head ad4fdf81c, on the pinned isolated stack, with retrieval that returns the corrected support-policy material."
   },
+  "cd01ContextBuildReread": {
+    "purpose": "CD01 corrected the explanation; this re-read establishes what the same arguments answer when the source is demonstrably current, so the record stops leaving the two refusals mixed together.",
+    "head": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+    "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+    "cleanTrackedTreeBeforeCapture": true,
+    "stack": {
+      "baseUrl": "http://127.0.0.1:18199",
+      "composeProject": "isoryn-c02-v100",
+      "healthVersion": "1.0.0"
+    },
+    "containerHeadProbe": {
+      "before": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+      "after": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+      "matchesHead": true
+    },
+    "canonicalRefresh": {
+      "command": "C:\\Users\\csn19\\AppData\\Local\\Programs\\Python\\Python312\\python.exe scripts/hive_bootstrap.py --base-url http://127.0.0.1:18199 --relative-path isoryn-engine",
+      "returncode": 0
+    },
+    "sourceState": {
+      "indexBefore": "COMPLETED",
+      "indexRepositoryHeadSha": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+      "corpusBefore": "CURRENT",
+      "indexAfter": "COMPLETED",
+      "corpusAfter": "CURRENT"
+    },
+    "governedCallsIssued": 1,
+    "request": {
+      "method": "tools/call",
+      "name": "context.build",
+      "arguments": {
+        "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+        "task_id": "0f4c1a86-2f3b-4f5a-9c1d-7b0e2f1a3d4c",
+        "top_k": 5,
+        "disclosure_level": "L2"
+      },
+      "requestSha256": "4b359ef1412d8f8f55d19cada2934e839c0631746e0a9f3a23772278a352f087"
+    },
+    "c01Answer": {
+      "category": "stale",
+      "code": "source_not_current",
+      "message": "project source is not current"
+    },
+    "cd01Answer": {
+      "category": "not_found",
+      "code": "resource_not_found",
+      "message": "resource not found"
+    },
+    "answersTheSameWay": false,
+    "whatThisDemonstrates": "The same schema-valid arguments answered differently once the source had just been re-indexed at a clean committed head, so the C01 refusal was state-dependent.",
+    "whatItDoesNotDemonstrate": "This response is about the call being refused, not about the task. It does not establish that the task_id is registered, and it does not establish that it is absent: proving the second would need a lookup this guard never reaches, and proving the first would need a write to HIVE, which a read-only proof may not perform. The context.build happy path therefore remains NOT_AVAILABLE.",
+    "happyPathResult": "NOT_AVAILABLE",
+    "receipt": ".engineering/evidence/wo-0002/context-build-cd01.json"
+  },
   "architectureDeliverables": {
     "adrs": [
       "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
@@ -1059,6 +1117,11 @@ request is the authority for it.
       "sha256": "0ba503ada13b5bcf64c6a0d7357ded71ddd18fdf80ae53aa388bc0fc11a98409"
     },
     {
+      "path": ".engineering/evidence/wo-0002/context-build-cd01.json",
+      "bytes": 9372,
+      "sha256": "bc55a0853ce0fd40f4dc4e29baa54489a6099e0f7b37b3e7f8b0c3fdcb5ea576"
+    },
+    {
       "path": ".engineering/evidence/wo-0002/custom-modules-feasibility.txt",
       "bytes": 896,
       "sha256": "58bb814d8d86293a3e494382a18c0dba37ab0c39f3e4aa7971f65c50a57e33bb"
@@ -1157,6 +1220,7 @@ request is the authority for it.
     "c01_official_godot_reverification": "PASS",
     "c01_hive_rebind_at_reviewer_corrected_head": "PASS",
     "c01_retrieval_sees_reviewer_correction": "PASS",
+    "cd01_context_build_reread_at_current_source": "PASS",
     "reviewer_correction_preserved": "PASS",
     "toolchain_inventory": "PASS",
     "godot_current_stable_build": "PASS",
@@ -1260,7 +1324,7 @@ request is the authority for it.
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 1.189s, OK"
+      "result": "PASS - Ran 34 tests in 2.602s, OK"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
@@ -1268,7 +1332,7 @@ request is the authority for it.
     },
     {
       "command": "repository secret scan (pattern sweep over every tracked and untracked file, plus credential-scanning state read from the GitHub API)",
-      "result": "PASS - 128 text files and 4 binary files reported by name out of 132 listed, 0 pattern matches; platform side, 0 secret scanning alerts with push protection enabled"
+      "result": "PASS - 129 text files and 4 binary files reported by name out of 133 listed, 0 pattern matches; platform side, 0 secret scanning alerts with push protection enabled"
     },
     {
       "command": "HIVE health/inspect/index/corpus/retrieval + MCP initialize/tools/list/project.status/checkpoint.read/context.search through scripts/hive_mcp.py",
@@ -1277,6 +1341,10 @@ request is the authority for it.
     {
       "command": "python scripts/hive_bootstrap.py --base-url http://127.0.0.1:18199 --relative-path isoryn-engine, then a governed MCP session (initialize, tools/list, project.list, project.status, checkpoint.read, six context.search queries, memory.search, memory.get, context.build) through scripts/hive_mcp.py with HIVE_COMPOSE_PROJECT=isoryn-c02-v100",
       "result": "PASS at proofHead ad4fdf81c (reviewer-corrected descendant of e481b3376): bootstrap exit 0 in 1 attempt(s) with state READY, index COMPLETED at the proof head, corpus CURRENT, tools/list exactly the governed seven with readOnlyHint true, launcher exit 0, memory.search/memory.get/context.build NOT_AVAILABLE for their recorded reasons"
+    },
+    {
+      "command": "CD01 bounded re-read: scripts/hive_bootstrap.py against http://127.0.0.1:18199 at a clean tracked tree, then one governed context.build call with the C01 argument set through scripts/hive_mcp.py",
+      "result": "executed at head 24485b1c3 - bootstrap exit 0, index COMPLETED at that head, corpus CURRENT, container git head 24485b1c3, answer not_found / resource_not_found (was stale / source_not_current at the C01 head), recorded in .engineering/evidence/wo-0002/context-build-cd01.json"
     },
     {
       "command": "git ls-remote of refs/tags on the official repository, gh api releases/latest, and curl of the official release-policy page (bytes and sha256 recorded)",
@@ -1315,8 +1383,8 @@ request is the authority for it.
   ],
   "securityChecks": {
     "credentialPatternSweep": {
-      "filesListed": 132,
-      "textFilesScanned": 128,
+      "filesListed": 133,
+      "textFilesScanned": 129,
       "binaryFilesReportedByName": [
         ".engineering/evidence/wo-0002/frames/gf100000000.png",
         ".engineering/evidence/wo-0002/frames/gf200000000.png",
@@ -1389,6 +1457,7 @@ request is the authority for it.
     "Two citation defects: movie_writer.cpp:201 should be :202 for the texture_2d_get call, and a receipt reference needed its full .meta file name to resolve.",
     "context.build was first called with a query argument that the governed schema rejects (additionalProperties false) and was re-called with schema-valid arguments. The WO-0002 re-call answered not_found / resource_not_found and the C01 re-call answered stale / source_not_current; neither answer says why, and the claim this record carried - that the refusal proved the task was absent from the stack - was an inference, not an observation.",
     "CD01 found that inference in three places and removed it. The C01 receipt's derived detail described a not_found answer caused by an unregistered task_id while the bytes it captured were a source-currency refusal, an explanation inherited from the WO-0002 receipt whose captured answer was a different one. The raw JSON of every governed call is untouched (verdict, isError, response_sha256, error and argumentsUsed compared field-by-field against the committed receipt); the detail is corrected, the superseded wording is kept verbatim beside it under detailCorrection.supersededDetail, and context.build stays NOT_AVAILABLE because the happy path is still unproven and the task_id's status is still unknown.",
+    "CD01 then re-read the same call rather than only re-wording it: canonical bootstrap at a clean tracked tree, index COMPLETED and corpus CURRENT at head 24485b1c3, then exactly one governed read. The answer changed to not_found / resource_not_found, which is evidence that the C01 refusal came from the source-currency guard and not from anything about the task. Recording the second answer is what makes the corrected interpretation measured instead of merely better-phrased; it still does not buy the happy path, so the inventory row did not move.",
     "C01's first proof run asserted retrieval quality by matching loose keywords ('release policy', 'platform-support') against whole serialized responses and never checked whether each query reached its intended canonical file. It therefore reported a missed Definition-of-Done target and zero correction markers on the same run that had just returned the reviewer's corrected ADR-0001 bullet and the corrected Evidence Bundle sentence. Fixed by matching the reviewer's own sentences per result snippet with whitespace collapsed, and by redesigning the queries against executed probes: the Definition-of-Done query was rewritten from the literal phrase 'definition of done', which WO-0001's own evidence chunks quote and which therefore captured the candidate pool, to a sentence only that file contains.",
     "The same first run recorded a snippet as absent evidence when it was only truncated. context.search returns a window of each matched chunk, so a corrected phrase deeper than that window is invisible even when the right chunk matched; the receipt now states the window limitation and reports markers per query and per result index instead of inferring absence from one.",
     "Four of six searches in one C01 session answered database_unavailable ('durable store is unavailable', HIVE v1.0.0 mapping any psycopg error to it) while twelve of twelve identical searches in the next run returned data, so the condition is transient runtime state. Reading those answers as empty results would have produced a receipt claiming the corpus was quiet. The assembler now distinguishes the two, re-runs the session a bounded number of times, and records every attempt with which calls were unavailable.",
@@ -1414,7 +1483,7 @@ request is the authority for it.
     {
       "capability": "HIVE memory.get and the context.build happy path on the pinned stack",
       "result": "NOT_AVAILABLE",
-      "detail": "Read from the C01 receipt rather than inherited: the unfiltered memory.search returned 0 entries without error, memory.get answered not_found / resource_not_found, and context.build answered stale / source_not_current ('project source is not current'). Each is a bounded refusal, so each is NOT_AVAILABLE: none of the three demonstrates the happy path, and none of them identifies which resource the refusal refers to, so the task_id's registration status stays unknown rather than proven absent. All three used schema-valid arguments and none is recorded as a pass. Creating a task or writing a memory would mutate HIVE state, which is outside a read-only proof."
+      "detail": "Read from the C01 receipt rather than inherited: the unfiltered memory.search returned 0 entries without error, memory.get answered not_found / resource_not_found, and context.build answered stale / source_not_current ('project source is not current'). CD01 re-read that call with the source freshly re-indexed and CURRENT at head 24485b1c3 and got not_found / resource_not_found, so the currency guard, not the task, produced the C01 answer. Each row is a bounded refusal, so each is NOT_AVAILABLE: none of them demonstrates the happy path, and none identifies which resource the refusal refers to, so the task_id's registration status stays unknown rather than proven absent. All used schema-valid arguments and none is recorded as a pass. Creating a task or writing a memory would mutate HIVE state, which is outside a read-only proof."
     }
   ],
   "residualRisks": [
@@ -1425,7 +1494,7 @@ request is the authority for it.
     "The pinned v1.0.0 stack intermittently answers governed reads with database_unavailable while its postgres and redis containers report healthy. The condition is reproduced and bounded but not attributed: any future proof has to distinguish it from an empty result set rather than record it as recall, and a proof that cannot do so should be treated as BLOCKED_HIVE_ISOLATION rather than as a pass.",
     "HIVE v1.0.0 gives every git call five seconds and the canonical workspace reaches the container over a read-only 9p mount, so indexing this tree is fragile on this host class. The mitigation used here (repacked objects plus a warmed container cache) is host state, not a repository guarantee: another machine standing up the same stack can need it too, and the bootstrap attempt counts recorded in the C01 receipt are what make that visible.",
     "context.search returns a truncated window of each matched chunk, so a phrase that exists in a matched file can still be absent from the returned snippet. Absence from a snippet is recorded as absence from the snippet, never as absence from the corpus.",
-    "context.build is refused by HIVE's source-currency guard on the pinned stack, and the guard's answer does not say which resource it is talking about. What remains unknown after CD01 is therefore the happy path itself: no governed read-only call has yet produced a built context from this stack, and the registration status of the probe task_id is unknown rather than proven absent. Establishing either would need a write to HIVE, which the read-only boundary forbids without its own admission.",
+    "context.build is refused on the pinned stack and neither refusal names the resource it is about. CD01 re-read it once with the source freshly re-indexed and CURRENT at the captured head, and the answer changed from stale/source_not_current to not_found/resource_not_found - which shows the first refusal was a currency guard, not a statement about the task. What stays unknown is the happy path itself: no governed read-only call has produced a built context from this stack, and the registration status of the probe task_id is unknown rather than proven absent. Establishing either would need a write to HIVE, which the read-only boundary forbids without its own admission.",
     "Seam 3 is proven at configure level only; the compile-and-link proof is open backlog row 9.",
     "Godot 4.8 is pre-release and observation-only; the candidate matrix must be re-verified if a newer stable tag is published before the audit.",
     "Executed receipts do not record `git rev-parse HEAD` at their own capture instant, so their binding to a repository head is reconstructed from timestamps against the commit order (see receiptHeadBinding.gap). A capture that outlives a commit, or a rebased branch, breaks that reconstruction silently; the fix is one line in the capture scripts and is not applied to receipts that are already closed.",
@@ -1458,6 +1527,8 @@ request is the authority for it.
     "supersededWordingKeptBesideCorrection": true,
     "verdictStillNotAvailable": true,
     "forbiddenPhrasesFoundInRecord": [],
+    "rereadReceiptHeadBindsToCapture": true,
+    "happyPathStillNotAvailable": true,
     "derivedTextScanned": "c01HiveRebind.notAvailable + unsupportedPlatformFeatures + errorsFoundAndCorrected + checks"
   }
 }
