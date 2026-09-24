@@ -2,7 +2,8 @@
 
 Status: DELIVERED_FOR_INDEPENDENT_REREVIEW (WO-0002 delivery, re-proved for HIVE and re-verified for upstream by
 ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND, with the context.build interpretation corrected by
-ISORYN-WO-0002-C01-CD01; supersedes the ADMISSION_BASELINE record in place)
+ISORYN-WO-0002-C01-CD01 and the HEAD/CI binding reconciled by ISORYN-WO-0002-C01-CD02; supersedes the
+ADMISSION_BASELINE record in place)
 
 Everything below was executed against `D:\Hive\Projects\isoryn-engine`, the canonical workspace, on branch
 `isoryn-wo-0002-architecture-toolchain-discovery` against base main `74c47fa`. The Godot baseline is
@@ -54,10 +55,23 @@ moved to `not_found` / `resource_not_found`, which locates the C01 refusal in th
 task, and still leaves the happy path unproduced - so the inventory row did not move and the task_id's status is
 recorded as unknown, not as absent.
 
-`governance_ci` reads `PASS` for the delivered head `81f605c2b` - the check-run for that exact commit is
-quoted in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`.
-The commit that adds this sentence cannot observe its own run, so `gh pr checks 5 --required` on the pull
-request is the authority for it.
+`ISORYN-WO-0002-C01-CD02` reconciled which head this record says it delivered. The CI-binding commits left
+`headSha`, `candidateHeadSha`, `commandsExecutedAtHead` and `github.deliveredHeadSha` naming the head the CD01
+correction was pushed at, and `ci.json` had no check-run for the head that was current, so the versioned record
+described a candidate older than the one under review. The fix is a binding, not a re-run: the current head's
+check-run was read from the GitHub API and appended to `ci.json` with the earlier observations untouched, the delivery
+fields now name exactly the head that observation certifies, and `headRoleTable`, `historicalHeadsDeclared` and
+`checkExecutionHeads` give every other SHA one declared role - base, admission, proof head, or the head a given command
+ran at. Proof heads, receipt `capturedAt` values and raw captures were not modified, no governed HIVE call was issued
+for CD02, and the gate `head_rebinding_fields_match_governance_observation` fails a future regeneration whose delivery
+fields drift from an observed run or which drops an observation while appending one.
+
+`governance_ci` reads `PASS` for the delivery head `bd5aba188` - the check-run for that exact commit is quoted
+in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`, and it
+is the only head this record calls delivered. Heads that were the branch tip earlier, including the one the
+CD01 correction was pushed at, are listed under `historicalHeadsDeclared` and keep their own bindings. The
+commit that carries this sentence is a descendant of that head and cannot observe its own run, so `gh pr
+checks 5 --required` on the pull request is the authority for it.
 
 ```json
 {
@@ -65,18 +79,93 @@ request is the authority for it.
   "workOrder": "ISORYN-WO-0002",
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
-  "capturedAt": "2026-09-24T17:08:23Z",
-  "commandsExecutedAtHead": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
+  "capturedAt": "2026-09-24T18:51:31Z",
+  "commandsExecutedAtHead": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
   "commandsExecutedAtNote": "governance_validator, unittest_suite, py_compile, git_diff_check, secret_scan and no_vendored_engine_source were produced by running those commands against this working tree while this record was being written; the other rows bind to proofHeadSha and carry their receipts.",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
   "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
   "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
-  "headSha": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
-  "candidateHeadSha": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
-  "headRolesNote": "Four different heads appear in this record and each is named for what it is: the WO-0002 discovery proof head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c (the head HIVE inspected and indexed, and a descendant of the reviewer head), and the head this bundle is committed at, which carries evidence only and is the head the pushed Governance run is read back for. No proof is attributed to a head it did not run at. The CD01 commits in this lineage change derived narrative only - no governed call was re-executed to produce them, so no new head is claimed as a proof head by CD01 unless a receipt in this bundle names it.",
+  "headSha": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+  "candidateHeadSha": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+  "deliveryHeadSemantics": "The delivery/candidate head is the highest branch head for which .engineering/evidence/wo-0002/ci.json carries a completed Governance check-run read from GitHub. headSha, candidateHeadSha, commandsExecutedAtHead and github.deliveredHeadSha all name that one head, and no proof ran at it beyond the deterministic checks listed in `tests`, which ran against this working tree.",
+  "headRolesNote": "Every SHA in this record holds exactly one of four roles. (1) Delivery/candidate head: bd5aba188, the head the fields above name and whose Governance run is bound in ci.json. (2) Historical proof heads: the WO-0002 discovery proof head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c (the head HIVE inspected and indexed) and the CD01 re-read head 24485b1c3. (3) The head each command ran at, stated per row in `tests` and `checkExecutionHeads`. (4) Carrier commits: this file lives in a descendant of the head it describes, and a commit cannot observe its own check-run, so the carrier's own status is read with `gh pr checks 5 --required` and never asserted here. No proof is attributed to a head it did not run at. CD02 moved no execution and altered no receipt: it changed only which of these fields names which head.",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
+  "headRoleTable": {
+    "74c47fa204a5da79c1418fb9bcc2557603422f88": "BASE_MAIN_UNCHANGED - origin/main at capture; no commit was made on main",
+    "2d567f97d5e3affa32bf190b8393a3e6d20d6327": "ADMISSION_HEAD_HISTORICAL - the head this Work Order was admitted at",
+    "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4": "PROOF_HEAD_HISTORICAL - the WO-0002 discovery HIVE/MCP receipt, superseded by the C01 row",
+    "e481b3376c13cdbdfae243d945d10789d39a23fc": "REVIEWER_CORRECTION_HEAD_HISTORICAL - hand-applied review correction, still asserted by gate",
+    "ad4fdf81c0f8cde59671bbe2252eb48f86784eff": "PROOF_HEAD_HISTORICAL - the head the C01 HIVE v1.0.0 read-only MCP proof indexed and inspected",
+    "24485b1c3e579a7c1f7be699087c5be069a03a0c": "PROOF_HEAD_HISTORICAL - the head the CD01 bounded context.build re-read ran at",
+    "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4": "DELIVERY_HEAD_CURRENT - the head the delivery fields name and whose Governance run ci.json binds"
+  },
+  "historicalHeadsDeclared": {
+    "previouslyDeliveredOrProvedHeads": [
+      {
+        "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+        "result": "PASS",
+        "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35937813544/job/107438732251"
+      },
+      {
+        "head": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
+        "result": "PASS",
+        "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894586565/job/107295219344"
+      },
+      {
+        "head": "ec1f419ec04be2bc1759a010b86306c63d496500",
+        "result": "PASS",
+        "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894231988/job/107294031650"
+      },
+      {
+        "head": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+        "result": "PASS",
+        "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36017729211/job/107694443843"
+      },
+      {
+        "head": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+        "result": "PASS",
+        "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36019148911/job/107699282758"
+      },
+      {
+        "head": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
+        "result": "PASS",
+        "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36032079943/job/107743044652"
+      }
+    ],
+    "note": "Each entry was a branch head that passed Governance when it was captured. None of them is the delivery head of this record, and CD02 re-attributed no proof from one to another: the receipts listed in `receiptHeadBinding` keep their own capture heads."
+  },
+  "checkExecutionHeads": {
+    "deterministicCommands": {
+      "head": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+      "commands": [
+        "python scripts/validate_governance.py",
+        "python -m unittest discover -s tests -v",
+        "python -m py_compile <governance and evidence scripts>",
+        "git diff --check",
+        "git diff --cached --check",
+        "credential pattern sweep over the tree"
+      ],
+      "howKnown": "executed by the generator against this working tree at the head named here"
+    },
+    "governanceCheckRuns": {
+      "head": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+      "howKnown": "check-run read from the GitHub API per commit and stored in ci.json"
+    },
+    "hiveMcpReadOnlyProof": {
+      "head": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+      "howKnown": "receipt plus in-container git rev-parse HEAD"
+    },
+    "contextBuildReread": {
+      "head": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+      "howKnown": "receipt plus index/corpus state at that head"
+    },
+    "upstreamReverification": {
+      "head": "e481b3376c13cdbdfae243d945d10789d39a23fc",
+      "howKnown": "the branch head at the instant the receipt quotes, resolved through git"
+    }
+  },
   "receiptHeadBinding": {
     "discoveryReceipts": {
       "windowUtc": [
@@ -698,6 +787,38 @@ request is the authority for it.
     "happyPathResult": "NOT_AVAILABLE",
     "receipt": ".engineering/evidence/wo-0002/context-build-cd01.json"
   },
+  "cd02HeadRebinding": {
+    "finding": "Independent review of the delivered head found that the record still described the previous delivery head: headSha, candidateHeadSha, commandsExecutedAtHead and github.deliveredHeadSha named the head the CD01 correction was pushed at, and ci.json carried no check-run for the head that was actually current, so the bundle could not be read as covering the candidate.",
+    "corrected": [
+      "The four delivery-semantics fields now name the head whose completed Governance observation ci.json carries, and the prose above the payload uses the same head.",
+      "ci.json gained the check-run for that head, read from the GitHub API, with every earlier observation left byte-identical.",
+      "headRoleTable, historicalHeadsDeclared and checkExecutionHeads separate the delivery head from the historical proof heads and from the head each command ran at."
+    ],
+    "deliberatelyNotChanged": [
+      "proofHeadSha, reviewerCorrectionHeadSha, c01ProofHeadSha and the CD01 re-read head, each still taken from its own receipt.",
+      "capturedAt of every receipt, and the raw HIVE/MCP captures.",
+      "the CD01 interpretation, verdicts and the NOT_AVAILABLE inventory rows."
+    ],
+    "deliveryHead": {
+      "sha": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+      "governanceStatus": "completed",
+      "governanceConclusion": "success",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36032284927/job/107743734657",
+      "capturedAt": "2026-09-24T18:44:36Z",
+      "requiredChecksOutput": "Governance\tpass\t10s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36032284927/job/107743734657"
+    },
+    "observationsCarriedFromBefore": [
+      "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+      "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
+      "ec1f419ec04be2bc1759a010b86306c63d496500",
+      "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+      "db613904a2ed9c4f7db36022ca07726a3898aa83",
+      "81f605c2b7074a8ac403bd000c5aa1010eb89d96"
+    ],
+    "receiptsRewritten": [],
+    "captureCommand": "python D:\\Hive\\scratch\\c01_capture_ci.py bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+    "selfReferenceLimit": "The commit that carries this sentence is a descendant of the head it certifies. Its own check-run is read from GitHub with `gh pr checks 5 --required`; no field in this record claims it."
+  },
   "architectureDeliverables": {
     "adrs": [
       "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
@@ -1117,8 +1238,8 @@ request is the authority for it.
     },
     {
       "path": ".engineering/evidence/wo-0002/ci.json",
-      "bytes": 3555,
-      "sha256": "49380a3d4922bf137e5840c22dc42e0cf90e834204539e487ded0650e7bcfab3"
+      "bytes": 4041,
+      "sha256": "8e9f4682136b3583028503ab10800c82e7c6a0bb21c23cb5cfa6e3807b980c88"
     },
     {
       "path": ".engineering/evidence/wo-0002/context-build-cd01.json",
@@ -1244,18 +1365,19 @@ request is the authority for it.
     "custom_module_compile_link": "NOT_AVAILABLE",
     "mcp_memory_get": "NOT_AVAILABLE",
     "mcp_context_build_happy_path": "NOT_AVAILABLE",
-    "context_build_interpretation_matches_raw_response": "PASS"
+    "context_build_interpretation_matches_raw_response": "PASS",
+    "head_rebinding_fields_match_governance_observation": "PASS"
   },
   "governanceRun": {
     "schemaVersion": "isoryn-gef-evidence-v1",
     "workOrder": "ISORYN-WO-0002",
     "repository": "KayzenRoot/isoryn-engine",
     "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
-    "capturedAt": "2026-09-24T17:07:33Z",
-    "localHead": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
-    "remoteHead": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
+    "capturedAt": "2026-09-24T18:44:36Z",
+    "localHead": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+    "remoteHead": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
     "requiredChecksCommand": "gh pr checks 5 --required",
-    "requiredChecksOutput": "Governance\tpass\t7s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36032079943/job/107743044652",
+    "requiredChecksOutput": "Governance\tpass\t10s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36032284927/job/107743734657",
     "observations": [
       {
         "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
@@ -1322,10 +1444,22 @@ request is the authority for it.
         "startedAt": "2026-09-24T17:07:20Z",
         "completedAt": "2026-09-24T17:07:27Z",
         "detail": "GitHub check-run for this exact commit, read through the API."
+      },
+      {
+        "head": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+        "context": "Governance",
+        "status": "completed",
+        "conclusion": "success",
+        "result": "PASS",
+        "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36032284927/job/107743734657",
+        "job": "107743734657",
+        "startedAt": "2026-09-24T17:09:08Z",
+        "completedAt": "2026-09-24T17:09:18Z",
+        "detail": "GitHub check-run for this exact commit, read through the API."
       }
     ],
     "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here.",
-    "observationsAppendedFor": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
+    "observationsAppendedFor": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
     "deliveredHeadObservations": 1,
     "governanceCiForDeliveredHead": "PASS"
   },
@@ -1340,7 +1474,7 @@ request is the authority for it.
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 34 tests in 0.699s, OK"
+      "result": "PASS - Ran 34 tests in 0.880s, OK"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
@@ -1478,7 +1612,8 @@ request is the authority for it.
     "The same first run recorded a snippet as absent evidence when it was only truncated. context.search returns a window of each matched chunk, so a corrected phrase deeper than that window is invisible even when the right chunk matched; the receipt now states the window limitation and reports markers per query and per result index instead of inferring absence from one.",
     "Four of six searches in one C01 session answered database_unavailable ('durable store is unavailable', HIVE v1.0.0 mapping any psycopg error to it) while twelve of twelve identical searches in the next run returned data, so the condition is transient runtime state. Reading those answers as empty results would have produced a receipt claiming the corpus was quiet. The assembler now distinguishes the two, re-runs the session a bounded number of times, and records every attempt with which calls were unavailable.",
     "The pinned stack's indexer failed with git_timeout and then git_status_unavailable because HIVE gives every git call five seconds and the workspace reaches the container over a read-only 9p mount that cannot refresh .git/index, so a cold status re-stats the whole tree. Root-caused with a timed in-container git probe and fixed inside the pinned stack by repacking the host repository's loose objects (299 to 7) and warming the container's cache before the bootstrap, with the cold and warm timings and the failed attempts recorded rather than hidden.",
-    "The official release-policy page returns HTTP 403 to urllib's default user agent, so the re-verification fetches it with an identified user agent through curl and records the exact command, the byte count and the SHA-256 of the page it parsed; the support rows quoted in the reviewer correction are read out of that captured page rather than restated."
+    "The official release-policy page returns HTTP 403 to urllib's default user agent, so the re-verification fetches it with an identified user agent through curl and records the exact command, the byte count and the SHA-256 of the page it parsed; the support rows quoted in the reviewer correction are read out of that captured page rather than restated.",
+    "CD02 found the delivery fields lagging the delivered head: after the CI-binding commits, headSha, candidateHeadSha, commandsExecutedAtHead and github.deliveredHeadSha still named the head the CD01 correction was pushed at, and ci.json carried no check-run for the head that was current, so nothing in the versioned record tied the checks to the candidate under review. The binding was repaired by capturing the current head's run from the GitHub API and by giving every head in the record exactly one declared role. No receipt was re-dated, no proof head moved, and no check is claimed at a head where it did not run: the deterministic commands in `tests` ran against this working tree at the head recorded in commandsExecutedAtHead."
   ],
   "unsupportedPlatformFeatures": [
     {
@@ -1511,6 +1646,7 @@ request is the authority for it.
     "HIVE v1.0.0 gives every git call five seconds and the canonical workspace reaches the container over a read-only 9p mount, so indexing this tree is fragile on this host class. The mitigation used here (repacked objects plus a warmed container cache) is host state, not a repository guarantee: another machine standing up the same stack can need it too, and the bootstrap attempt counts recorded in the C01 receipt are what make that visible.",
     "context.search returns a truncated window of each matched chunk, so a phrase that exists in a matched file can still be absent from the returned snippet. Absence from a snippet is recorded as absence from the snippet, never as absence from the corpus.",
     "context.build is refused on the pinned stack and neither refusal names the resource it is about. CD01 re-read it once with the source freshly re-indexed and CURRENT at the captured head, and the answer changed from stale/source_not_current to not_found/resource_not_found - which shows the first refusal was a currency guard, not a statement about the task. What stays unknown is the happy path itself: no governed read-only call has produced a built context from this stack, and the registration status of the probe task_id is unknown rather than proven absent. Establishing either would need a write to HIVE, which the read-only boundary forbids without its own admission.",
+    "A record cannot carry the check-run of the commit that carries it, so the delivery head named here is always at least one commit behind the branch tip. CD02 closed the part that was a defect - the fields named a head older than the one under review without saying so - and what remains is the structural limit: the carrier commit's own status is platform state, read with `gh pr checks 5 --required`, and no field in this bundle asserts it. A regeneration whose delivery fields do not agree with a completed Governance observation in ci.json now turns a check red instead of quietly re-labelling a head.",
     "Seam 3 is proven at configure level only; the compile-and-link proof is open backlog row 9.",
     "Godot 4.8 is pre-release and observation-only; the candidate matrix must be re-verified if a newer stable tag is published before the audit.",
     "Executed receipts do not record `git rev-parse HEAD` at their own capture instant, so their binding to a repository head is reconstructed from timestamps against the commit order (see receiptHeadBinding.gap). A capture that outlives a commit, or a rebased branch, breaks that reconstruction silently; the fix is one line in the capture scripts and is not applied to receipts that are already closed.",
@@ -1524,7 +1660,8 @@ request is the authority for it.
     "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
     "reviewerCorrectionHeadSha": "e481b3376c13cdbdfae243d945d10789d39a23fc",
     "c01ProofHeadSha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
-    "deliveredHeadSha": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
+    "deliveredHeadSha": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+    "deliveryHeadBasis": "the head ci.json carries a completed Governance check-run for; see deliveryHeadSemantics and cd02HeadRebinding",
     "mergeAttempted": false,
     "promotionAttempted": false,
     "note": "Merging and checkpoint/ADR promotion are hard stops for both WO-0002 and C01; the PR is delivered open, and the exact-head Governance result is in governanceRun."
@@ -1546,6 +1683,28 @@ request is the authority for it.
     "rereadReceiptHeadBindsToCapture": true,
     "happyPathStillNotAvailable": true,
     "derivedTextScanned": "c01HiveRebind.notAvailable + unsupportedPlatformFeatures + errorsFoundAndCorrected + checks"
+  },
+  "cd02HeadRebindingGate": {
+    "deliveryFieldsAgree": true,
+    "deliveryHead": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+    "deliveryHeadGovernanceObservation": {
+      "status": "completed",
+      "conclusion": "success",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36032284927/job/107743734657"
+    },
+    "observationsPresentBeforeRebinding": [
+      "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+      "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
+      "ec1f419ec04be2bc1759a010b86306c63d496500",
+      "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+      "db613904a2ed9c4f7db36022ca07726a3898aa83",
+      "81f605c2b7074a8ac403bd000c5aa1010eb89d96"
+    ],
+    "observationsDropped": [],
+    "receiptsModifiedInWorkingTree": [],
+    "proofHeadsStillBoundToTheirReceipts": true,
+    "deliveryHeadAlsoClaimedAsProofHead": false,
+    "cd01InterpretationPreserved": true
   }
 }
 ```
