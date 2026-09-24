@@ -2,8 +2,9 @@
 
 Status: DELIVERED_FOR_INDEPENDENT_REREVIEW (WO-0002 delivery, re-proved for HIVE and re-verified for upstream by
 ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND, with the context.build interpretation corrected by
-ISORYN-WO-0002-C01-CD01, the HEAD/CI binding reconciled by ISORYN-WO-0002-C01-CD02, and the gate that CD02 claimed
-implemented and tested by ISORYN-WO-0002-C01-CD03; supersedes the ADMISSION_BASELINE record in place)
+ISORYN-WO-0002-C01-CD01, the HEAD/CI binding reconciled by ISORYN-WO-0002-C01-CD02, the gate that CD02 claimed
+implemented and tested by ISORYN-WO-0002-C01-CD03, and that gate's receipt-path guard confined to the resolved
+evidence directory by ISORYN-WO-0002-C01-CD04; supersedes the ADMISSION_BASELINE record in place)
 
 Everything below was executed against `D:\Hive\Projects\isoryn-engine`, the canonical workspace, on branch
 `isoryn-wo-0002-architecture-toolchain-discovery` against base main `74c47fa`. The Godot baseline is
@@ -87,13 +88,37 @@ observations made during assembly, and they are now labelled as that rather than
 check compares receipts across heads. `tests/test_governance.py::HeadRebindingGateTests` exercises the shipped record
 and each refusal above by mutating the real record one claim at a time.
 
-The record names `80dc365fe` as the head its deterministic commands ran against, with `commandsExecutedAtTreeState`
-CLEAN. CD03 first ran that suite at `190b78b9e` with the gate, its tests and this bundle uncommitted on top, and
-`80dc365fe` is that state committed; the clean re-run is the claim this record makes, so a reviewer proves it by
-checking the commit out rather than trusting a working tree that no longer exists. Moving the record from a dirty tree
-to a clean one exposed two tests written against the record's old tree state instead of against the rule, and both now
-derive the contradicting state from the record they mutate. The `Governance` job compiles the tooling, runs the
-validator and runs this suite on every head, so the commit that carries the re-stamped record re-proves it.
+The record names `a0d32bcf9` as the head its deterministic commands ran against, with `commandsExecutedAtTreeState`
+CLEAN. CD03 first ran its suite at `190b78b9e` with the gate, its tests and this bundle uncommitted on top, and
+`80dc365fe` was that state committed. CD04 repeats that shape one correction later: it first ran the suite at
+`526e88f00` with the receipt fix and its tests uncommitted on top, `a0d32bcf9` is that state committed, and the head
+named above is the same suite re-run from its clean tree, so a reviewer proves it by checking the commit out rather
+than trusting a working tree that no longer exists. Moving the record from a dirty tree to a clean one exposed two
+CD03 tests written against the record's old tree state instead of against the rule, and both now derive the
+contradicting state from the record they mutate. The `Governance` job compiles the tooling, runs the validator and
+runs this suite on every head, so the commit that carries the re-stamped record re-proves it.
+
+`ISORYN-WO-0002-C01-CD04` corrected the one refusal inside that gate that judged a string instead of a file. CD03
+required `deliveryHeadCiReceipt` to start with `.engineering/evidence/`, to have no leading slash, and to have no
+`..` among its `/`-split parts, then asked `is_file()` - which is not the claim the contract needs. On Windows a
+backslash is a separator `split("/")` cannot see and a drive or network path overrides a relative root, so a receipt
+keeping the canonical prefix can still climb out; and a symlink sitting inside the directory names whatever it points
+at, so containment has to be decided on the resolved target. `D:/Hive/scratch/cd04_repro.py` loaded the pre-fix and
+the fixed validator from separate temporary fixture roots and handed each the same five paths: the pre-fix code READ
+the escaping symlink and the backslash traversal, and the fixed code refuses both while still reading the valid
+receipt. The reviewer's literal example was already refused before the fix, but by the prefix test rather than by any
+containment reasoning, and the record says that instead of claiming a stronger rescue. Two more defects surfaced the
+same way: `is_file()` swallows the reason, so a directory and a symlink loop were both reported as "not in the
+repository", and `resolve(strict=True)` raises `RuntimeError` for a loop, which is not an `OSError` and would have
+escaped as a traceback. `read_ci_ledger` now judges the value with `PurePosixPath`/`PureWindowsPath` first, refuses
+any backslash, then resolves strictly and refuses on `FileNotFoundError`, `OSError`, `RuntimeError` and `ValueError`,
+and finally checks containment with `is_relative_to` against the resolved evidence directory and requires a regular
+file, keeping the wording the existing contract tests assert. Seven regressions went into
+`tests/test_governance.py::HeadRebindingGateTests`; running that class against `git show HEAD:scripts/validate_governance.py`
+in an isolated fixture shows six of them failing before the fix and all seven passing with it, and the `Governance`
+job on `ubuntu-latest` at `a0d32bcf9` reports `Ran 64 tests` / `OK` with no skip, so the two symlink cases execute on
+Linux rather than being skippable there. What CD04 does not claim is written beside it: the guard resolves and reads
+once, on the filesystem it runs on, and it still never calls GitHub.
 
 `governance_ci` reads `PASS` for the delivery head `bd5aba188` - the check-run for that exact commit is quoted
 in the `governanceRun` block below and captured per-commit in `.engineering/evidence/wo-0002/ci.json`, and it
@@ -109,9 +134,9 @@ checks 5 --required` on the pull request is the authority for it.
   "role": "DELIVERY",
   "supersedes": "ADMISSION_BASELINE (headSha ec1f419e... recorded at admission, no executed claim)",
   "capturedAt": "2026-09-24T18:51:31Z",
-  "commandsExecutedAtHead": "80dc365feb7fb221bd39781ad24636c711527181",
+  "commandsExecutedAtHead": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
   "commandsExecutedAtTreeState": "CLEAN",
-  "commandsExecutedAtNote": "These ran against the tree of 80dc365fe as committed, with `git status --porcelain=v1` reporting an empty tree: python scripts/validate_governance.py; python -m unittest discover -s tests -p \"test_*.py\"; python -m py_compile over the three scripts and the three test modules; git diff --check and git diff --cached --check; credential pattern sweep over every tracked and untracked file (cd03_secret_sweep.py). Each has its own row in `tests`, and the other rows there bind to their own receipts. The head that carries this file cannot observe its own run, so its status is read from the platform rather than asserted here",
+  "commandsExecutedAtNote": "These ran against the tree of a0d32bcf9 as committed, with `git status --porcelain=v1` reporting an empty tree: python scripts/validate_governance.py; python -m unittest discover -s tests -p \"test_*.py\"; python -m py_compile over the three scripts and the three test modules; git diff --check and git diff --cached --check; credential pattern sweep over every tracked and untracked file (cd03_secret_sweep.py). Each has its own row in `tests`, and the other rows there bind to their own receipts. The head that carries this file cannot observe its own run, so its status is read from the platform rather than asserted here",
   "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
   "admissionHeadSha": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
   "proofHeadSha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
@@ -121,7 +146,7 @@ checks 5 --required` on the pull request is the authority for it.
   "candidateHeadSha": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
   "deliveryHeadSemantics": "The certified/delivery head is the one commit this record delivers for independent review, named identically by headSha, candidateHeadSha and github.deliveredHeadSha, and it must have exactly one completed, successful Governance check-run in the ledger named by deliveryHeadCiReceipt. commandsExecutedAtHead carries a different role: it names the commit the deterministic commands ran against, and commandsExecutedAtTreeState says whether that tree was CLEAN or carried uncommitted files. The two are separate because a record can only carry a check-run for an older commit; the commit holding this file is declared as a carrier in headRoleTable and its own status stays a platform read. scripts/validate_governance.py enforces this contract in check_head_rebinding(), reading the record and the ledger only, so it never claims a run is still live on the platform.",
   "deliveryHeadCiReceipt": ".engineering/evidence/wo-0002/ci.json",
-  "headRolesNote": "Every SHA in this record holds exactly one declared role. (1) Certified/delivery head: bd5aba188, named by the three certified fields and bound to one completed Governance observation in .engineering/evidence/wo-0002/ci.json. (2) Historical proof heads: the WO-0002 discovery head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c and the CD01 re-read head 24485b1c3. (3) The execution head 80dc365fe, whose tree state is declared beside it. (4) Carrier commits, which hold this file and cannot observe their own check-run: their status is read with `gh pr checks 5 --required`. CD03 moved no execution and altered no receipt; it added the code that enforces role (1) and the wording that separates it from role (3).",
+  "headRolesNote": "Every SHA in this record holds exactly one declared role. (1) Certified/delivery head: bd5aba188, named by the three certified fields and bound to one completed Governance observation in .engineering/evidence/wo-0002/ci.json. (2) Historical proof heads: the WO-0002 discovery head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c and the CD01 re-read head 24485b1c3. (3) The execution head a0d32bcf9, whose tree state is declared beside it; CD03's execution head 80dc365fe keeps its own historical row rather than being overwritten. (4) Carrier commits, which hold this file and cannot observe their own check-run: 190b78b9e carried CD02, 526e88f00 carried CD03, and the commit carrying this one is named by the pull request; their status is read with `gh pr checks 5 --required`. CD04 moved no proof, no certified head and no historical capture: it corrected how the guard named in (1) resolves the ledger path.",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "headRoleTable": {
     "74c47fa204a5da79c1418fb9bcc2557603422f88": "BASE_MAIN_UNCHANGED - origin/main at capture; no commit was made on main",
@@ -132,7 +157,9 @@ checks 5 --required` on the pull request is the authority for it.
     "24485b1c3e579a7c1f7be699087c5be069a03a0c": "PROOF_HEAD_HISTORICAL - the head the CD01 bounded context.build re-read ran at",
     "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4": "DELIVERY_HEAD_CURRENT - the head the delivery fields name and whose Governance run ci.json binds",
     "190b78b9ea1dd5be031d644a4fe888f42b9675f1": "CARRIER_HEAD - the commit that carries CD02's rebinding; no proof ran at it and no proof was moved to it",
-    "80dc365feb7fb221bd39781ad24636c711527181": "EXECUTION_HEAD - the commit whose tree the CD03 deterministic commands ran against"
+    "80dc365feb7fb221bd39781ad24636c711527181": "EXECUTION_HEAD_HISTORICAL - the commit whose tree CD03's deterministic commands ran against; CD04 moves that claim to the commit carrying the receipt guard's fix",
+    "526e88f00e73406bbfbf57aca16d1a3883ed1936": "CARRIER_HEAD - the commit that carries CD03's re-stamped record; no proof ran at it and no proof was moved to it",
+    "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567": "EXECUTION_HEAD - the commit whose tree the CD04 deterministic commands ran against"
   },
   "historicalHeadsDeclared": {
     "previouslyDeliveredOrProvedHeads": [
@@ -171,7 +198,7 @@ checks 5 --required` on the pull request is the authority for it.
   },
   "checkExecutionHeads": {
     "deterministicCommands": {
-      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
       "treeState": "CLEAN",
       "commands": [
         "python scripts/validate_governance.py",
@@ -1272,8 +1299,8 @@ checks 5 --required` on the pull request is the authority for it.
     },
     {
       "path": ".engineering/evidence/wo-0002/ci.json",
-      "bytes": 4525,
-      "sha256": "854cb162365f69e7a3cf9ee2bcc4c3914ccdcd0af559814ad0b9a81752c7bbaa"
+      "bytes": 5010,
+      "sha256": "7e826414805ca9feb0da0e699d4710b91d9aed80dc73e78e689eb48e45fd7f1e"
     },
     {
       "path": ".engineering/evidence/wo-0002/context-build-cd01.json",
@@ -1501,37 +1528,37 @@ checks 5 --required` on the pull request is the authority for it.
     {
       "command": "python -m py_compile scripts/validate_governance.py scripts/hive_bootstrap.py scripts/hive_mcp.py; python -m py_compile tests/test_governance.py tests/test_hive_bootstrap.py tests/test_hive_mcp.py",
       "result": "PASS - exit 0 for both compile commands over scripts/validate_governance.py, scripts/hive_bootstrap.py, scripts/hive_mcp.py, tests/test_governance.py, tests/test_hive_bootstrap.py and tests/test_hive_mcp.py",
-      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
       "treeState": "CLEAN",
-      "observedAt": "2026-09-24T19:52:12Z"
+      "observedAt": "2026-09-24T21:14:13Z"
     },
     {
       "command": "python scripts/validate_governance.py",
-      "result": "PASS - ISORYN governance validation: PASS; GEF: v1.0.0 @ 866fe3af8cccc65c929aaf6a47a924401fa448b3; HIVE: v1.0.0 @ a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf; Required artifacts: 61; Governed MCP tools: 7; head_rebinding_fields_match_governance_observation: ISORYN-WO-0002 certified @ bd5aba188, commands ran @ 190b78b9e; the binding line above names the head the record pointed at before this commit existed, because a commit cannot carry a claim about itself - the re-stamped record is the next commit and its own Governance run is the observation that agrees with it",
-      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "result": "PASS - ISORYN governance validation: PASS; GEF: v1.0.0 @ 866fe3af8cccc65c929aaf6a47a924401fa448b3; HIVE: v1.0.0 @ a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf; Required artifacts: 61; Governed MCP tools: 7; head_rebinding_fields_match_governance_observation: ISORYN-WO-0002 certified @ bd5aba188, commands ran @ 80dc365fe; the binding above names the execution head the record declares (80dc365fe), not this commit, because a commit cannot carry a claim about its own run",
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
       "treeState": "CLEAN",
-      "observedAt": "2026-09-24T19:52:12Z"
+      "observedAt": "2026-09-24T21:14:13Z"
     },
     {
       "command": "python -m unittest discover -s tests -p \"test_*.py\"",
-      "result": "PASS - Ran 57 tests in 0.811s; OK; gate classes: HeadRebindingGateTests defines 23 cases",
-      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "result": "PASS - Ran 64 tests in 0.484s; OK; gate classes: HeadRebindingGateTests defines 30 cases",
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
       "treeState": "CLEAN",
-      "observedAt": "2026-09-24T19:52:12Z"
+      "observedAt": "2026-09-24T21:14:13Z"
     },
     {
       "command": "git diff --check (unstaged and staged) + git status --porcelain=v1 empty",
       "result": "PASS - no whitespace or EOF errors unstaged or staged; `git status --porcelain=v1` reports an empty tree",
-      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
       "treeState": "CLEAN",
-      "observedAt": "2026-09-24T19:52:12Z"
+      "observedAt": "2026-09-24T21:14:13Z"
     },
     {
       "command": "repository secret scan (pattern sweep over every tracked and untracked file, plus credential-scanning state read from the GitHub API)",
       "result": "PASS - the existing credential pattern sweep over every tracked and untracked file: 133 files listed, 129 text scanned, 4 binary files named and excluded, 8 patterns, 0 matches",
-      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
       "treeState": "CLEAN",
-      "observedAt": "2026-09-24T19:52:12Z"
+      "observedAt": "2026-09-24T21:14:13Z"
     },
     {
       "command": "HIVE health/inspect/index/corpus/retrieval + MCP initialize/tools/list/project.status/checkpoint.read/context.search through scripts/hive_mcp.py",
@@ -1602,9 +1629,9 @@ checks 5 --required` on the pull request is the authority for it.
       ],
       "matches": [],
       "verdict": "PASS",
-      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
       "treeState": "CLEAN",
-      "observedAt": "2026-09-24T19:52:11Z",
+      "observedAt": "2026-09-24T21:14:13Z",
       "dirtyPaths": [],
       "reRunBy": "cd03_secret_sweep.py, which uses the pattern set and text sniffing the CD02 receipt describes"
     },
@@ -1668,7 +1695,8 @@ checks 5 --required` on the pull request is the authority for it.
     "The pinned stack's indexer failed with git_timeout and then git_status_unavailable because HIVE gives every git call five seconds and the workspace reaches the container over a read-only 9p mount that cannot refresh .git/index, so a cold status re-stats the whole tree. Root-caused with a timed in-container git probe and fixed inside the pinned stack by repacking the host repository's loose objects (299 to 7) and warming the container's cache before the bootstrap, with the cold and warm timings and the failed attempts recorded rather than hidden.",
     "The official release-policy page returns HTTP 403 to urllib's default user agent, so the re-verification fetches it with an identified user agent through curl and records the exact command, the byte count and the SHA-256 of the page it parsed; the support rows quoted in the reviewer correction are read out of that captured page rather than restated.",
     "CD02 found the delivery fields lagging the delivered head: after the CI-binding commits, headSha, candidateHeadSha, commandsExecutedAtHead and github.deliveredHeadSha still named the head the CD01 correction was pushed at, and ci.json carried no check-run for the head that was current, so nothing in the versioned record tied the checks to the candidate under review. The binding was repaired by capturing the current head's run from the GitHub API and by giving every head in the record exactly one declared role. No receipt was re-dated, no proof head moved, and no check is claimed at a head where it did not run: the deterministic commands in `tests` ran against this working tree at the head recorded in commandsExecutedAtHead.",
-    "A delivered control existed only as a sentence. This bundle reported head_rebinding_fields_match_governance_observation as PASS and described it as failing a future regeneration, and cd02HeadRebindingGate listed dropped-observation and untouched-receipt rows that read as guarantees, while no such symbol existed in scripts/validate_governance.py and no such test existed in tests/test_governance.py. The PASS row had been written by an assembly script outside the repository, so nothing versioned could reproduce the claim it attested. CD03 implemented the gate in the validator, gave every refusal a test, and relabelled the CD02 rows that were single-capture observations as that instead of protection. The check row keeps its name because it is now the row the validator enforces rather than the row it only reports."
+    "A delivered control existed only as a sentence. This bundle reported head_rebinding_fields_match_governance_observation as PASS and described it as failing a future regeneration, and cd02HeadRebindingGate listed dropped-observation and untouched-receipt rows that read as guarantees, while no such symbol existed in scripts/validate_governance.py and no such test existed in tests/test_governance.py. The PASS row had been written by an assembly script outside the repository, so nothing versioned could reproduce the claim it attested. CD03 implemented the gate in the validator, gave every refusal a test, and relabelled the CD02 rows that were single-capture observations as that instead of protection. The check row keeps its name because it is now the row the validator enforces rather than the row it only reports.",
+    "A guard that proved the wrong thing. CD03's receipt refusal tested the written string - prefix, leading slash, '..' among the '/' splits - and then asked `is_file()`, which is not the same claim as containment: on Windows a backslash is a separator that `split(\"/\")` cannot see, so a path keeping the canonical prefix could climb out, and a symlink inside the directory naming a target outside it satisfied every test the code had. The reproduction ran both validators in temporary fixtures: the pre-fix code READ the escaping symlink and the backslash traversal, while the reviewer's literal example had already been refused - by the prefix test, for the wrong reason. `is_file()` also swallowed the real cause twice, reporting a directory and a symlink loop as 'not in the repository'. CD04 judges the value with PurePosixPath/PureWindowsPath first, decides containment on the resolved target with is_relative_to, and fails closed on resolution errors, loops, missing paths and non-regular files. Six new negatives each fail against `git show HEAD:scripts/validate_governance.py` in the fixture and pass with the fix, and the Linux Governance job at a0d32bcf9 executes the symlink cases rather than skipping them."
   ],
   "unsupportedPlatformFeatures": [
     {
@@ -1701,11 +1729,12 @@ checks 5 --required` on the pull request is the authority for it.
     "HIVE v1.0.0 gives every git call five seconds and the canonical workspace reaches the container over a read-only 9p mount, so indexing this tree is fragile on this host class. The mitigation used here (repacked objects plus a warmed container cache) is host state, not a repository guarantee: another machine standing up the same stack can need it too, and the bootstrap attempt counts recorded in the C01 receipt are what make that visible.",
     "context.search returns a truncated window of each matched chunk, so a phrase that exists in a matched file can still be absent from the returned snippet. Absence from a snippet is recorded as absence from the snippet, never as absence from the corpus.",
     "context.build is refused on the pinned stack and neither refusal names the resource it is about. CD01 re-read it once with the source freshly re-indexed and CURRENT at the captured head, and the answer changed from stale/source_not_current to not_found/resource_not_found - which shows the first refusal was a currency guard, not a statement about the task. What stays unknown is the happy path itself: no governed read-only call has produced a built context from this stack, and the registration status of the probe task_id is unknown rather than proven absent. Establishing either would need a write to HIVE, which the read-only boundary forbids without its own admission.",
-    "A record cannot carry the check-run of the commit that carries it, so the delivery head named here is always at least one commit behind the branch tip. CD02 closed the part that was a defect - the fields named a head older than the one under review without saying so - and what remains is the structural limit: the carrier commit's own status is platform state, read with `gh pr checks 5 --required`, and no field in this bundle asserts it. From CD03 the binding is enforced inside this repository: check_head_rebinding() refuses a record whose certified fields do not resolve to exactly one completed, successful Governance observation in the ledger it names, and the Governance job runs that validator on every head, so a drifted rebinding fails the build instead of passing as prose. Two limits stay open and are not claimed as covered: the gate reads receipts and never the platform, and no committed check protects receipt bytes or ledger history across heads.",
+    "A record cannot carry the check-run of the commit that carries it, so the delivery head named here is always at least one commit behind the branch tip. CD02 closed the part that was a defect - the fields named a head older than the one under review without saying so - and what remains is the structural limit: the carrier commit's own status is platform state, read with `gh pr checks 5 --required`, and no field in this bundle asserts it. From CD03 the binding is enforced inside this repository: check_head_rebinding() refuses a record whose certified fields do not resolve to exactly one completed, successful Governance observation in the ledger it names, and the Governance job runs that validator on every head, so a drifted rebinding fails the build instead of passing as prose. From CD04 the ledger it names must also resolve to a regular file inside .engineering/evidence/ - a Windows separator, a drive or network path, a parent segment, a link that escapes or an unresolvable path is refused before its bytes are read. Two limits stay open and are not claimed as covered: the gate reads receipts and never the platform, and no committed check protects receipt bytes or ledger history across heads.",
     "Seam 3 is proven at configure level only; the compile-and-link proof is open backlog row 9.",
     "Godot 4.8 is pre-release and observation-only; the candidate matrix must be re-verified if a newer stable tag is published before the audit.",
     "Executed receipts do not record `git rev-parse HEAD` at their own capture instant, so their binding to a repository head is reconstructed from timestamps against the commit order (see receiptHeadBinding.gap). A capture that outlives a commit, or a rebased branch, breaks that reconstruction silently; the fix is one line in the capture scripts and is not applied to receipts that are already closed.",
-    "Registry entries (07) are proof obligations, not adopted technology; none may be cited as superiority over upstream."
+    "Registry entries (07) are proof obligations, not adopted technology; none may be cited as superiority over upstream.",
+    "The receipt guard resolves and reads the ledger once, at the instant the validator runs, on the filesystem it runs on. It confines the path; it does not watch the file afterwards, and it cannot make a symlink that points outside the evidence directory legal by reading it through a different root. That is the remaining shape of this risk, and the CD04 tests are what keep it from reopening as a string-level check."
   ],
   "rollback": "Close PR #5 and delete only the WO-0002 branch artifacts if discovery is abandoned. The engine clone, virtual environment and every build output are operator-local and disposable (ISORYN-D-011); no vendored source, binary or generated media beyond the four evidentiary frames entered the repository, so rollback touches no external state.",
   "github": {
@@ -1769,7 +1798,8 @@ checks 5 --required` on the pull request is the authority for it.
     "enforcedFromCD03": {
       "gate": "head_rebinding_fields_match_governance_observation",
       "symbol": "scripts/validate_governance.py::check_head_rebinding",
-      "guarantee": "the certified fields resolve to one head that the named ledger certifies exactly once as completed/success, and the record's own report row agrees with that verdict"
+      "guarantee": "the certified fields resolve to one head that the named ledger certifies exactly once as completed/success, and the record's own report row agrees with that verdict",
+      "receiptPathHandling": "the ledger must be a repository-relative regular file resolved inside .engineering/evidence/; from CD04 the containment is proved on the resolved target rather than asserted from the written string"
     }
   },
   "cd03GateImplementation": {
@@ -1794,7 +1824,7 @@ checks 5 --required` on the pull request is the authority for it.
     "enforces": [
       "deliveryHeadSemantics must exist and name every field under the contract",
       "headSha, candidateHeadSha and github.deliveredHeadSha must be exact commits and agree",
-      "deliveryHeadCiReceipt must point inside .engineering/evidence/, exist, and parse to an object with a non-empty observations list",
+      "deliveryHeadCiReceipt must be repository-relative and inside .engineering/evidence/, must exist, and must parse to an object with a non-empty observations list. At CD03 this was judged on the written string (prefix, leading slash, '..' among the '/' splits); from CD04 the same refusal is judged on the resolved target as well - see cd04ReceiptContainment",
       "the ledger must declare the same workOrder and branch as the record",
       "the certified head must match exactly one Governance observation, completed and successful, whose declared result cannot contradict its conclusion",
       "the observation embedded in governanceRun must agree with the versioned ledger on the run it cites",
@@ -1808,13 +1838,14 @@ checks 5 --required` on the pull request is the authority for it.
       "receipt immutability across heads, and the preservation of ledger history while appending",
       "SHAs quoted in narrative prose: only the fields named in the contract are bound",
       "records under a different documented convention, listed in `scope`",
-      "other rows this bundle describes as gates but which were executed as one-off commands, such as reviewer_correction_preserved's git grep: they remain capture records, and CD03 does not widen this gate to cover them"
+      "other rows this bundle describes as gates but which were executed as one-off commands, such as reviewer_correction_preserved's git grep: they remain capture records, and CD03 does not widen this gate to cover them",
+      "at CD03 the receipt refusal did not prove the resolved path stayed inside .engineering/evidence/; CD04 corrected that and the correction is recorded in cd04ReceiptContainment rather than by rewriting this list"
     ],
     "scope": "applies to bundles that declare deliveryHeadSemantics. ISORYN-WO-0001 does not: its headSha names a code head whose bundle commit carries the run, which its own headBindingNote documents, so the gate skips it and a test asserts the skip rather than letting the contract silently widen.",
     "tests": {
       "file": "tests/test_governance.py",
       "class": "HeadRebindingGateTests",
-      "count": 23,
+      "count": 30,
       "cases": [
         "test_shipped_record_passes_the_gate_it_declares",
         "test_validator_flow_binds_the_declaring_record",
@@ -1833,21 +1864,38 @@ checks 5 --required` on the pull request is the authority for it.
         "test_malformed_ledgers_fail_closed",
         "test_a_copy_that_cannot_certify_fails_closed",
         "test_receipt_must_point_inside_the_evidence_tree",
+        "test_receipt_inside_the_evidence_directory_is_read",
+        "test_receipt_must_use_canonical_separators",
+        "test_receipt_must_not_be_absolute_a_drive_or_a_network_path",
+        "test_receipt_must_not_climb_out_with_a_parent_segment",
+        "test_receipt_must_resolve_to_a_regular_file",
+        "test_receipt_symlink_must_not_resolve_outside_the_evidence_directory",
+        "test_receipt_symlink_loop_fails_closed",
         "test_execution_head_must_state_the_tree_it_ran_on",
         "test_execution_head_must_match_the_declared_execution_row",
         "test_command_rows_cannot_be_credited_to_a_tree_they_did_not_run_on",
         "test_heads_under_the_contract_need_a_declared_role",
         "test_report_row_must_agree_with_the_validator",
         "test_records_under_a_different_convention_stay_outside_this_gate"
+      ],
+      "receiptGuardCases": [
+        "test_receipt_must_point_inside_the_evidence_tree",
+        "test_receipt_inside_the_evidence_directory_is_read",
+        "test_receipt_must_use_canonical_separators",
+        "test_receipt_must_not_be_absolute_a_drive_or_a_network_path",
+        "test_receipt_must_not_climb_out_with_a_parent_segment",
+        "test_receipt_must_resolve_to_a_regular_file",
+        "test_receipt_symlink_must_not_resolve_outside_the_evidence_directory",
+        "test_receipt_symlink_loop_fails_closed"
       ]
     },
     "capturedAt": "2026-09-24T19:53:54Z",
     "treeState": "CLEAN",
     "head": "80dc365feb7fb221bd39781ad24636c711527181",
     "suiteRunAt": {
-      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
       "treeState": "CLEAN",
-      "observedAt": "2026-09-24T19:52:12Z",
+      "observedAt": "2026-09-24T21:14:13Z",
       "rowsStamped": 5,
       "commands": [
         "python scripts/validate_governance.py",
@@ -1855,9 +1903,200 @@ checks 5 --required` on the pull request is the authority for it.
         "python -m py_compile over the three scripts and the three test modules",
         "git diff --check and git diff --cached --check",
         "credential pattern sweep over every tracked and untracked file (cd03_secret_sweep.py)"
+      ],
+      "suite": "64 unit tests OK on the Linux runner of a0d32bcf9",
+      "gateCasesOnCi": [
+        "test_receipt_inside_the_evidence_directory_is_read",
+        "test_receipt_must_not_be_absolute_a_drive_or_a_network_path",
+        "test_receipt_must_not_climb_out_with_a_parent_segment",
+        "test_receipt_must_point_inside_the_evidence_tree",
+        "test_receipt_must_resolve_to_a_regular_file",
+        "test_receipt_must_use_canonical_separators",
+        "test_receipt_symlink_loop_fails_closed",
+        "test_receipt_symlink_must_not_resolve_outside_the_evidence_directory"
       ]
     },
-    "runLineage": "CD03 first ran this suite at 190b78b9e with the gate, its tests and this bundle uncommitted on top; 80dc365fe is that state committed, and the head named above is the same suite re-run from its clean tree, so a reviewer reproduces the claim by checking that commit out instead of trusting a working tree that no longer exists"
+    "runLineage": "CD04 first ran this suite at 526e88f00 with the fix and its tests uncommitted on top (WORKING_TREE_DIRTY, 2026-09-24T21:12:24Z); a0d32bcf9 is that state committed, and the head named above is the same suite re-run from its clean tree (2026-09-24T21:14:13Z, CLEAN), whose own Governance run is the row appended to the ledger. A reviewer reproduces the claim by checking that commit out, not by trusting a working tree that no longer exists"
+  },
+  "cd04ReceiptContainment": {
+    "finding": "CD03's receipt guard proved a string property and called it containment. Independent review found that scripts/validate_governance.py::read_ci_ledger never showed the path it effectively resolved stayed inside .engineering/evidence/: the old test rejected a value starting with a slash or a backslash, rejected `..` as one of its `\"/\"`-split parts, and required the literal prefix - which cannot see a Windows separator, cannot see a drive or network share overriding a relative root, and cannot see a link inside the directory whose target is outside it.",
+    "defectClass": "path judgement taken on the written string instead of on the resolved target",
+    "reproducedByExecution": {
+      "command": "python D:/Hive/scratch/cd04_repro.py",
+      "observedAt": "2026-09-24T21:09:04Z",
+      "head": "526e88f00e73406bbfbf57aca16d1a3883ed1936",
+      "treeState": "WORKING_TREE_DIRTY",
+      "platform": "win32 / Python 3.12.10",
+      "isolation": "each validator was loaded from its own temporary fixture root, so neither one had the repository as ROOT and no file outside the fixture was read or written",
+      "before": {
+        ".engineering/evidence/wo-0002/ci.json": {
+          "outcome": "READ",
+          "detail": "parsed a ledger with 1 observation(s)"
+        },
+        ".engineering/evidence\\..\\..\\..\\outside.json": {
+          "outcome": "REFUSED",
+          "detail": "GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 points its delivery-head CI receipt outside .engineering/evidence/: .engineering/evidence\\..\\..\\..\\outside.json"
+        },
+        ".engineering/evidence/wo-0002\\..\\..\\outside2.json": {
+          "outcome": "READ",
+          "detail": "parsed a ledger with 1 observation(s)"
+        },
+        ".engineering/evidence/escape.json": {
+          "outcome": "READ",
+          "detail": "parsed a ledger with 1 observation(s)"
+        },
+        "/tmp/cd04-outside.json": {
+          "outcome": "REFUSED",
+          "detail": "GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 points its delivery-head CI receipt outside .engineering/evidence/: /tmp/cd04-outside.json"
+        }
+      },
+      "after": {
+        ".engineering/evidence/wo-0002/ci.json": {
+          "outcome": "READ",
+          "detail": "parsed a ledger with 1 observation(s)"
+        },
+        ".engineering/evidence\\..\\..\\..\\outside.json": {
+          "outcome": "REFUSED",
+          "detail": "GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 names its CI receipt with a Windows separator: .engineering/evidence\\..\\..\\..\\outside.json; the contract is a portable path written with / separators"
+        },
+        ".engineering/evidence/wo-0002\\..\\..\\outside2.json": {
+          "outcome": "REFUSED",
+          "detail": "GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 names its CI receipt with a Windows separator: .engineering/evidence/wo-0002\\..\\..\\outside2.json; the contract is a portable path written with / separators"
+        },
+        ".engineering/evidence/escape.json": {
+          "outcome": "REFUSED",
+          "detail": "GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 points its delivery-head CI receipt outside .engineering/evidence/: .engineering/evidence/escape.json resolves to C:\\Users\\csn19\\AppData\\Local\\Temp\\cd04-repro-0b04uvgm\\outside.json, which leaves the directory the contract confines receipts to"
+        },
+        "/tmp/cd04-outside.json": {
+          "outcome": "REFUSED",
+          "detail": "GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 points its delivery-head CI receipt outside .engineering/evidence/: /tmp/cd04-outside.json is an absolute path, a drive letter or a network share, and a versioned receipt is always repository-relative"
+        }
+      },
+      "whatItShows": "the pre-fix code read a receipt that resolved outside the evidence directory in two ways - a symlink inside the directory naming a file above the repository root, and a path that keeps the canonical prefix and then climbs out with backslash segments - while the fixed code refuses both and still reads the valid path",
+      "statedHonestly": "the reviewer's literal example .engineering/evidence\\..\\..\\..\\outside.json was already refused before the fix, but by the prefix test rather than by any containment reasoning: the string does not start with `.engineering/evidence/` because a backslash follows `evidence`. The escaped variant that does keep the prefix was read. Both are refused now, and both are refused on any platform because the separator rule is decided before the filesystem is touched"
+    },
+    "unitProof": {
+      "command": "python D:/Hive/scratch/cd04_prefix_run.py",
+      "observedAt": "2026-09-24T21:11:27Z",
+      "head": "526e88f00e73406bbfbf57aca16d1a3883ed1936",
+      "treeState": "WORKING_TREE_DIRTY",
+      "method": "the gate class was run twice in a temporary repository-shaped fixture, once with `git show HEAD:scripts/validate_governance.py` and once with the working-tree validator, against the shipped record and ledger copied unchanged; the checkout itself was never mutated",
+      "newTests": [
+        "test_receipt_inside_the_evidence_directory_is_read",
+        "test_receipt_must_use_canonical_separators",
+        "test_receipt_must_not_be_absolute_a_drive_or_a_network_path",
+        "test_receipt_must_not_climb_out_with_a_parent_segment",
+        "test_receipt_must_resolve_to_a_regular_file",
+        "test_receipt_symlink_must_not_resolve_outside_the_evidence_directory",
+        "test_receipt_symlink_loop_fails_closed"
+      ],
+      "preFix": {
+        "test_receipt_inside_the_evidence_directory_is_read": "ok",
+        "test_receipt_must_use_canonical_separators": "FAIL",
+        "test_receipt_must_not_be_absolute_a_drive_or_a_network_path": "FAIL",
+        "test_receipt_must_not_climb_out_with_a_parent_segment": "FAIL",
+        "test_receipt_must_resolve_to_a_regular_file": "FAIL",
+        "test_receipt_symlink_must_not_resolve_outside_the_evidence_directory": "FAIL",
+        "test_receipt_symlink_loop_fails_closed": "FAIL"
+      },
+      "preFixReasons": {
+        "test_receipt_must_not_be_absolute_a_drive_or_a_network_path": "AssertionError: 'absolute' not found in 'GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 points its delivery-head CI receipt outside .engineering/evidence/: C:/Windows/win.ini'",
+        "test_receipt_must_not_climb_out_with_a_parent_segment": "AssertionError: 'climbs out' not found in 'GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 points its delivery-head CI receipt outside .engineering/evidence/: .engineering/evidence/../outside.json'",
+        "test_receipt_must_resolve_to_a_regular_file": "AssertionError: 'regular file' not found in 'GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 names CI receipt .engineering/evidence/wo-0002/ which is not in the repository'",
+        "test_receipt_must_use_canonical_separators": "AssertionError: 'separator' not found in 'GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 points its delivery-head CI receipt outside .engineering/evidence/: .engineering/evidence\\\\wo-0002/ci.json'",
+        "test_receipt_symlink_loop_fails_closed": "AssertionError: 'cannot resolve' not found in 'GOVERNANCE VALIDATION FAILED: ISORYN-WO-0002 names CI receipt .engineering/evidence/first.json which is not in the repository'",
+        "test_receipt_symlink_must_not_resolve_outside_the_evidence_directory": "FAILED (failures=6)"
+      },
+      "withFix": {
+        "test_receipt_inside_the_evidence_directory_is_read": "ok",
+        "test_receipt_must_use_canonical_separators": "ok",
+        "test_receipt_must_not_be_absolute_a_drive_or_a_network_path": "ok",
+        "test_receipt_must_not_climb_out_with_a_parent_segment": "ok",
+        "test_receipt_must_resolve_to_a_regular_file": "ok",
+        "test_receipt_symlink_must_not_resolve_outside_the_evidence_directory": "ok",
+        "test_receipt_symlink_loop_fails_closed": "ok"
+      },
+      "preFixFailingCount": 6,
+      "positiveControl": "test_receipt_inside_the_evidence_directory_is_read reports ok in both runs, so the six failures are refusals the guard must add and not a broken fixture"
+    },
+    "ciLinuxExecution": {
+      "runner": "ubuntu-latest (the Governance job of the pushed execution head)",
+      "job": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36060185054/job/107836990745",
+      "validator": "PASS",
+      "gateRowInValidator": "head_rebinding_fields_match_governance_observation: ISORYN-WO-0002 certified @ bd5aba188, commands ran @ 80dc365fe",
+      "gateRowInValidatorNote": "the row printed at the execution head names the execution head the record carried at that commit, because the re-stamped record is the next commit and a commit cannot carry its own binding",
+      "tests": 64,
+      "unittestVerdict": "OK",
+      "symlinkCasesSkipped": false,
+      "receiptCasesReported": [
+        {
+          "test": "test_receipt_inside_the_evidence_directory_is_read",
+          "result": "ok"
+        },
+        {
+          "test": "test_receipt_must_not_be_absolute_a_drive_or_a_network_path",
+          "result": "ok"
+        },
+        {
+          "test": "test_receipt_must_not_climb_out_with_a_parent_segment",
+          "result": "ok"
+        },
+        {
+          "test": "test_receipt_must_point_inside_the_evidence_tree",
+          "result": "ok"
+        },
+        {
+          "test": "test_receipt_must_resolve_to_a_regular_file",
+          "result": "ok"
+        },
+        {
+          "test": "test_receipt_must_use_canonical_separators",
+          "result": "ok"
+        },
+        {
+          "test": "test_receipt_symlink_loop_fails_closed",
+          "result": "ok"
+        },
+        {
+          "test": "test_receipt_symlink_must_not_resolve_outside_the_evidence_directory",
+          "result": "ok"
+        }
+      ]
+    },
+    "executionHeadRunInLedger": {
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36060185054/job/107836990745",
+      "job": "107836990745"
+    },
+    "fix": {
+      "symbol": "scripts/validate_governance.py::read_ci_ledger",
+      "order": [
+        "PureWindowsPath/PurePosixPath judgement first: a drive letter, any absolute form or a leading ~ is refused before anything touches the filesystem",
+        "any backslash in the value is refused: the contract path is portable and written with / separators, so a Windows separator is a defect rather than a platform detail",
+        "a `..` segment in the canonical POSIX parts is refused",
+        "the value must start with the EVIDENCE_DIR prefix",
+        "the path is resolved strictly, and FileNotFoundError, any OSError, the RuntimeError a symlink loop raises and the ValueError an unrepresentable path raises are each refused with the contract's message rather than falling through",
+        "containment is then decided on the resolved target with Path.is_relative_to against the resolved .engineering/evidence/, which is what a symlink that escapes fails",
+        "the resolved target must be a regular file, and the read and its utf-8 decode are refused rather than allowed to escape as a traceback"
+      ],
+      "messagesPreserved": "each refusal keeps the wording the existing contract tests assert - 'outside .engineering/evidence/', 'is not in the repository' - and adds the reason the reviewer asked for, so a directory and a symlink loop are no longer both reported as a missing file"
+    },
+    "preserved": [
+      "the CD03 gate, its arithmetic and every refusal it already enforced are unchanged",
+      "ISORYN-WO-0001 stays outside the gate: it declares no deliveryHeadSemantics and a test asserts the skip",
+      "the certified head, execution head and carrier head roles keep their separate meanings; the certified head of this record is still bd5aba188 and its ledger row is byte-identical",
+      "no raw MCP/HIVE capture, historical receipt, CD01/CD02/CD03 conclusion or earlier ledger observation was regenerated or edited",
+      "the gate remains static: it reads the record and the ledger and never GitHub, so it still cannot assert that a check-run is live"
+    ],
+    "notClaimed": [
+      "the guard resolves and reads the receipt once; it does not watch the file afterwards, so a checkout that swaps the target between validation and some later read is outside this gate",
+      "containment is judged on the filesystem the validator runs on; a link that resolves inside the directory on one machine and outside it on another is decided by the resolution at that instant",
+      "no committed check protects receipt bytes or ledger history across heads - that row of cd02HeadRebindingGate.notEnforced still stands"
+    ]
   }
 }
 ```
