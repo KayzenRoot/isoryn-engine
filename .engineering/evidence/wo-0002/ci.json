@@ -110,8 +110,28 @@
       "startedAt": "2026-09-24T21:14:36Z",
       "completedAt": "2026-09-24T21:14:44Z",
       "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "1670589477f598ccd542bac533d9bbe38a7a4f6d",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36166961918/job/108176950271",
+      "job": "108176950271",
+      "startedAt": "2026-09-25T17:24:50Z",
+      "completedAt": "2026-09-25T17:25:05Z",
+      "detail": "Exact-head Governance check-run read from the GitHub API during CD04 review follow-up. The review workspace had no local checkout for this head."
     }
   ],
-  "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here.",
-  "observationsAppendedFor": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567"
+  "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here. Top-level capturedAt/localHead/remoteHead/requiredChecksOutput preserve the earlier synchronized local snapshot; later API-only observations are appended with their own exact head and timestamps, without asserting a newly sampled localHead.",
+  "observationsAppendedFor": "1670589477f598ccd542bac533d9bbe38a7a4f6d",
+  "latestPlatformObservation": {
+    "head": "1670589477f598ccd542bac533d9bbe38a7a4f6d",
+    "source": "GitHub Actions API",
+    "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36166961918/job/108176950271",
+    "job": "108176950271",
+    "observedAt": "2026-09-25T17:25:05Z",
+    "localCheckoutState": "NOT_CAPTURED"
+  }
 }

@@ -146,7 +146,7 @@ checks 5 --required` on the pull request is the authority for it.
   "candidateHeadSha": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
   "deliveryHeadSemantics": "The certified/delivery head is the one commit this record delivers for independent review, named identically by headSha, candidateHeadSha and github.deliveredHeadSha, and it must have exactly one completed, successful Governance check-run in the ledger named by deliveryHeadCiReceipt. commandsExecutedAtHead carries a different role: it names the commit the deterministic commands ran against, and commandsExecutedAtTreeState says whether that tree was CLEAN or carried uncommitted files. The two are separate because a record can only carry a check-run for an older commit; the commit holding this file is declared as a carrier in headRoleTable and its own status stays a platform read. scripts/validate_governance.py enforces this contract in check_head_rebinding(), reading the record and the ledger only, so it never claims a run is still live on the platform.",
   "deliveryHeadCiReceipt": ".engineering/evidence/wo-0002/ci.json",
-  "headRolesNote": "Every SHA in this record holds exactly one declared role. (1) Certified/delivery head: bd5aba188, named by the three certified fields and bound to one completed Governance observation in .engineering/evidence/wo-0002/ci.json. (2) Historical proof heads: the WO-0002 discovery head 958d5ed0b, the reviewer correction head e481b3376, the C01 HIVE proof head ad4fdf81c and the CD01 re-read head 24485b1c3. (3) The execution head a0d32bcf9, whose tree state is declared beside it; CD03's execution head 80dc365fe keeps its own historical row rather than being overwritten. (4) Carrier commits, which hold this file and cannot observe their own check-run: 190b78b9e carried CD02, 526e88f00 carried CD03, and the commit carrying this one is named by the pull request; their status is read with `gh pr checks 5 --required`. CD04 moved no proof, no certified head and no historical capture: it corrected how the guard named in (1) resolves the ledger path.",
+  "headRolesNote": "Every SHA in this record holds exactly one declared role. (1) Certified/delivery head: bd5aba188, named by the three certified fields and bound to one completed Governance observation in .engineering/evidence/wo-0002/ci.json. (2) Historical proof heads: the WO-0002 discovery head 958d5ed0b, reviewer correction head e481b3376, C01 HIVE proof head ad4fdf81c and CD01 re-read head 24485b1c3. (3) Deterministic execution head a0d32bcf9, whose tree state is declared with the five recorded commands; CD03's execution head 80dc365fe keeps its historical row. (4) Follow-up validation head 167058947, on which Governance passed with 65 tests including the directory-symlink regression. (5) Carrier commits: 190b78b9e carried CD02, 526e88f00 carried CD03, and 7db715191 carried the original CD04 evidence. Each carrier's own status is a platform read; the commit carrying this follow-up record is identified by the current PR head.",
   "headBindingNote": "Nothing in this record claims a proof ran at a head it did not run at. The executed discovery receipts were captured between 2026-09-23T17:50:00Z and 2026-09-23T23:16:16Z, while the branch head was the admission head and this Work Order's artifacts were still uncommitted in the working tree; the security-analysis receipt was captured at the pre-delivery head; the HIVE/MCP receipt was captured at the proof head and is corroborated by the container's own `git rev-parse HEAD`. The engine build is bound to upstream by the version compiled into the binary, not by a repository head at all.",
   "headRoleTable": {
     "74c47fa204a5da79c1418fb9bcc2557603422f88": "BASE_MAIN_UNCHANGED - origin/main at capture; no commit was made on main",
@@ -159,7 +159,9 @@ checks 5 --required` on the pull request is the authority for it.
     "190b78b9ea1dd5be031d644a4fe888f42b9675f1": "CARRIER_HEAD - the commit that carries CD02's rebinding; no proof ran at it and no proof was moved to it",
     "80dc365feb7fb221bd39781ad24636c711527181": "EXECUTION_HEAD_HISTORICAL - the commit whose tree CD03's deterministic commands ran against; CD04 moves that claim to the commit carrying the receipt guard's fix",
     "526e88f00e73406bbfbf57aca16d1a3883ed1936": "CARRIER_HEAD - the commit that carries CD03's re-stamped record; no proof ran at it and no proof was moved to it",
-    "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567": "EXECUTION_HEAD - the commit whose tree the CD04 deterministic commands ran against"
+    "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567": "EXECUTION_HEAD - the commit whose tree the CD04 deterministic commands ran against",
+    "1670589477f598ccd542bac533d9bbe38a7a4f6d": "FOLLOW_UP_VALIDATION_HEAD - CD04 root-directory symlink guard and regression test; exact-head Governance run 36166961918 passed 65 tests.",
+    "7db71519184f6088b5d29dbb9b1cb5807a484124": "CARRIER_HEAD_HISTORICAL - the first CD04 evidence/ledger carrier; its Governance result was read from the platform."
   },
   "historicalHeadsDeclared": {
     "previouslyDeliveredOrProvedHeads": [
@@ -194,7 +196,15 @@ checks 5 --required` on the pull request is the authority for it.
         "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36032079943/job/107743044652"
       }
     ],
-    "note": "Each entry was a branch head that passed Governance when it was captured. None of them is the delivery head of this record, and CD02 re-attributed no proof from one to another: the receipts listed in `receiptHeadBinding` keep their own capture heads."
+    "note": "Each entry was a branch head that passed Governance when it was captured. None of them is the delivery head of this record, and CD02 re-attributed no proof from one to another: the receipts listed in `receiptHeadBinding` keep their own capture heads.",
+    "reviewValidationHeads": [
+      {
+        "head": "1670589477f598ccd542bac533d9bbe38a7a4f6d",
+        "result": "PASS",
+        "governanceRun": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36166961918/job/108176950271",
+        "note": "Exact-head Governance CI ran the validator and 65 tests, including the root-directory symlink regression."
+      }
+    ]
   },
   "checkExecutionHeads": {
     "deterministicCommands": {
@@ -225,6 +235,11 @@ checks 5 --required` on the pull request is the authority for it.
     "upstreamReverification": {
       "head": "e481b3376c13cdbdfae243d945d10789d39a23fc",
       "howKnown": "the branch head at the instant the receipt quotes, resolved through git"
+    },
+    "cd04RootDirectorySymlinkRegression": {
+      "head": "1670589477f598ccd542bac533d9bbe38a7a4f6d",
+      "treeState": "CLEAN",
+      "howKnown": "Governance job checked out this exact commit and the symlink regression completed without skip."
     }
   },
   "receiptHeadBinding": {
@@ -2096,7 +2111,45 @@ checks 5 --required` on the pull request is the authority for it.
       "the guard resolves and reads the receipt once; it does not watch the file afterwards, so a checkout that swaps the target between validation and some later read is outside this gate",
       "containment is judged on the filesystem the validator runs on; a link that resolves inside the directory on one machine and outside it on another is decided by the resolution at that instant",
       "no committed check protects receipt bytes or ledger history across heads - that row of cd02HeadRebindingGate.notEnforced still stands"
-    ]
+    ],
+    "statedHonestly": "Correction: the prior note mis-transcribed review comment 5821597317. That comment used `.engineering/evidence/..\\\\..\\\\..\\\\outside.json` - it has a forward slash after `evidence`, then Windows separators after the `..` component. It therefore keeps the literal `.engineering/evidence/` prefix, and the pre-CD04 guard accepts it on Windows because `split('/')` sees the `..\\\\..\\\\..\\\\outside.json` tail as one segment. The distinct spelling `.engineering/evidence\\\\..\\\\..\\\\..\\\\outside.json`, with a backslash immediately after `evidence`, is rejected by the old prefix check, but was not the reviewer's example. The prefix-preserving `wo-0002` variant in the pre-fix fixture was read; the new separator checks refuse both variants.",
+    "reviewFollowup": {
+      "finding": "A further boundary case remained: `.engineering/evidence` itself could resolve through a directory symlink outside the repository. The receipt and the base directory would then resolve under the same external root, so the previous containment comparison could accept an external ledger.",
+      "correction": "read_ci_ledger now resolves the repository and evidence directory strictly and rejects the evidence directory if its resolved path differs from the canonical path under the resolved repository root, before resolving and checking the receipt target.",
+      "test": "tests/test_governance.py::HeadRebindingGateTests.test_evidence_directory_symlink_must_not_redirect",
+      "result": "PASS on Governance CI; directory symlink case ran without skip.",
+      "validationHead": "1670589477f598ccd542bac533d9bbe38a7a4f6d",
+      "testSuite": {
+        "total": 65,
+        "headRebindingGateTests": 31,
+        "skipped": 0
+      },
+      "governanceRun": {
+        "runId": 36166961918,
+        "jobId": 108176950271,
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36166961918/job/108176950271",
+        "startedAt": "2026-09-25T17:24:50Z",
+        "completedAt": "2026-09-25T17:25:05Z"
+      },
+      "patchHygiene": {
+        "addedLines": 33,
+        "trailingWhitespace": 0,
+        "credentialPatternMatches": 0,
+        "method": "reviewed exact GitHub commit patch; scanned added lines and changed content"
+      },
+      "localCheckoutState": "NOT_CAPTURED; exact-head Governance CI is the executed validation for this follow-up"
+    }
   }
 }
 ```
+
+
+## C01-CD04 review follow-up
+
+The follow-up closed a second containment case: the `.engineering/evidence` directory itself could be redirected through a directory symlink. The guard now requires that directory to resolve to its canonical location beneath the repository root before it resolves the receipt. Regression `test_evidence_directory_symlink_must_not_redirect` passed on exact code/test HEAD `1670589477f598ccd542bac533d9bbe38a7a4f6d` in Governance run `36166961918` (65 tests; no skips).
+
+This update also corrects the prior CD04 note's transcription of review comment `5821597317`. The comment included `/` after `evidence`, so its Windows traversal preserved the old literal prefix and was accepted by the pre-CD04 guard. The earlier CD04 sentence saying that exact example was blocked by the prefix check was inaccurate. The distinct path with `\\` immediately after `evidence` was blocked by the old prefix check; it was not the example in the review. The prefix-preserving pre-fix fixture read demonstrates the actual bypass.
+
+The five deterministic command rows remain bound to their recorded clean execution head `a0d32bcf9`; this API-only follow-up records the new code/test validation separately and does not claim a local checkout.
