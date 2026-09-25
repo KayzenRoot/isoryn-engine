@@ -183,14 +183,20 @@ def read_ci_ledger(rel, wo_id):
     if not rel.startswith(EVIDENCE_DIR + "/"):
         fail(f"{wo_id} points its delivery-head CI receipt outside {EVIDENCE_DIR}/: {rel}")
     try:
-        target = (ROOT / rel).resolve(strict=True)
+        repo_root = ROOT.resolve(strict=True)
+        evidence_path = repo_root / EVIDENCE_DIR
+        evidence_root = evidence_path.resolve(strict=True)
+        if evidence_root != evidence_path:
+            fail(f"{wo_id} evidence directory {EVIDENCE_DIR}/ resolves through a link to {evidence_root}; "
+                 "receipts must remain in the canonical repository evidence directory")
+        target = (repo_root / rel).resolve(strict=True)
     except FileNotFoundError:
         fail(f"{wo_id} names CI receipt {rel} which is not in the repository")
     except (OSError, RuntimeError, ValueError) as exc:
         # pathlib raises RuntimeError for a symlink loop and ValueError for an unrepresentable path, neither of
         # which is an OSError, and both of which would otherwise escape as a traceback instead of a refusal.
         fail(f"{wo_id} cannot resolve CI receipt {rel}: {getattr(exc, 'strerror', None) or type(exc).__name__}")
-    if not target.is_relative_to((ROOT / EVIDENCE_DIR).resolve()):
+    if not target.is_relative_to(evidence_root):
         fail(f"{wo_id} points its delivery-head CI receipt outside {EVIDENCE_DIR}/: {rel} resolves to {target}, "
              "which leaves the directory the contract confines receipts to")
     if not target.is_file():

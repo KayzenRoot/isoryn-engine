@@ -68,7 +68,7 @@ class ValidatorGateTests(unittest.TestCase):
 
 
 class HeadRebindingGateTests(unittest.TestCase):
-    """CD03: a record may name a certified head only its own versioned CI ledger proves, and statically.
+    """CD03/CD04: a record may name a certified head only its own versioned CI ledger proves, and statically.
 
     The fixtures are the shipped WO-0002 record and ledger, mutated one claim at a time, so every negative
     exercises the gate's real refusal instead of restating its arithmetic.
@@ -254,6 +254,30 @@ class HeadRebindingGateTests(unittest.TestCase):
                 with self.assertRaises(SystemExit) as escaping:
                     vg.read_ci_ledger(".engineering/evidence/escape.json", self.WO)
                 self.assertIn("outside .engineering/evidence/", str(escaping.exception))
+            finally:
+                vg.ROOT = borrowed
+
+    @unittest.skipUnless(hasattr(os, "symlink"), "this platform offers no symlinks")
+    def test_evidence_directory_symlink_must_not_redirect(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            repository = root / "repo"
+            outside = root / "outside" / "evidence"
+            (repository / ".engineering").mkdir(parents=True)
+            outside.mkdir(parents=True)
+            ledger = json.dumps({"workOrder": self.WO, "observations": [{"context": "Governance"}]})
+            (outside / "ci.json").write_text(ledger, encoding="utf-8")
+            link = repository / ".engineering" / "evidence"
+            try:
+                link.symlink_to(outside, target_is_directory=True)
+            except OSError as exc:
+                self.skipTest(f"this filesystem refuses directory symlinks: {exc}")
+            borrowed = vg.ROOT
+            vg.ROOT = repository
+            try:
+                with self.assertRaises(SystemExit) as redirected:
+                    vg.read_ci_ledger(".engineering/evidence/ci.json", self.WO)
+                self.assertIn("resolves through a link", str(redirected.exception))
             finally:
                 vg.ROOT = borrowed
 
