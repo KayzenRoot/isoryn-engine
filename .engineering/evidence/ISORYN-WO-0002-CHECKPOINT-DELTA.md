@@ -54,8 +54,8 @@ architecture/toolchain audit of ISORYN-WO-0002, through the governed flow, again
    imports an out-of-tree module into upstream's build with exit 0 and still configures with the module flag off
    (`custom-modules-feasibility.txt`, ADR-0003); compiling such a module both ways is the remaining half
    (backlog row 9).
-7. **Coverage is enumerated rather than assumed**: `06-MASTER-MODULE-INDEX.md` (30 module rows across every scope
-   family, with dependencies, seam and proof needs) and `07-PROPRIETARY-TECHNOLOGY-REGISTRY.md` (12 entries, each
+7. **Coverage is enumerated rather than assumed**: `06-MASTER-MODULE-INDEX.md` (32 module rows across every scope
+   family, with dependencies, seam and proof needs) and `07-PROPRIETARY-TECHNOLOGY-REGISTRY.md` (10 entries, each
    with a fallback and no unmeasured superiority claim), including eight confirmed upstream absences.
 
 ## WHAT REMAINS OPEN FOR THE AUDIT TO DECIDE
