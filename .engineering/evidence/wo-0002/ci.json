@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "isoryn-gef-evidence-v1",
+  "workOrder": "ISORYN-WO-0002",
+  "repository": "KayzenRoot/isoryn-engine",
+  "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+  "capturedAt": "2026-09-24T21:14:47Z",
+  "localHead": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
+  "remoteHead": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
+  "requiredChecksCommand": "gh pr checks 5 --required",
+  "requiredChecksOutput": "Governance\tpass\t8s\thttps://github.com/KayzenRoot/isoryn-engine/actions/runs/36060185054/job/107836990745",
+  "observations": [
+    {
+      "head": "7a12df9243b54fd9ac5e5dd7dfcf7f2bbb47e1e0",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35937813544/job/107438732251",
+      "job": "107438732251",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "2d567f97d5e3affa32bf190b8393a3e6d20d6327",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894586565/job/107295219344",
+      "job": "107295219344",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "ec1f419ec04be2bc1759a010b86306c63d496500",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/35894231988/job/107294031650",
+      "job": "107294031650",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "3d442fb8f17b0de2079073ea01883c4d3d69dfdf",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36017729211/job/107694443843",
+      "job": "107694443843",
+      "startedAt": "2026-09-24T15:06:42Z",
+      "completedAt": "2026-09-24T15:06:46Z",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "db613904a2ed9c4f7db36022ca07726a3898aa83",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36019148911/job/107699282758",
+      "job": "107699282758",
+      "startedAt": "2026-09-24T15:18:03Z",
+      "completedAt": "2026-09-24T15:18:08Z",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "81f605c2b7074a8ac403bd000c5aa1010eb89d96",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36032079943/job/107743044652",
+      "job": "107743044652",
+      "startedAt": "2026-09-24T17:07:20Z",
+      "completedAt": "2026-09-24T17:07:27Z",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "bd5aba1883daee0a9e1825c2f2f385b7ab401cf4",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36032284927/job/107743734657",
+      "job": "107743734657",
+      "startedAt": "2026-09-24T17:09:08Z",
+      "completedAt": "2026-09-24T17:09:18Z",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "80dc365feb7fb221bd39781ad24636c711527181",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36050266069/job/107803776238",
+      "job": "107803776238",
+      "startedAt": "2026-09-24T19:45:19Z",
+      "completedAt": "2026-09-24T19:45:24Z",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "a0d32bcf94e6a8043d6e3f0bf3020e6421a7f567",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36060185054/job/107836990745",
+      "job": "107836990745",
+      "startedAt": "2026-09-24T21:14:36Z",
+      "completedAt": "2026-09-24T21:14:44Z",
+      "detail": "GitHub check-run for this exact commit, read through the API."
+    },
+    {
+      "head": "1670589477f598ccd542bac533d9bbe38a7a4f6d",
+      "context": "Governance",
+      "status": "completed",
+      "conclusion": "success",
+      "result": "PASS",
+      "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36166961918/job/108176950271",
+      "job": "108176950271",
+      "startedAt": "2026-09-25T17:24:50Z",
+      "completedAt": "2026-09-25T17:25:05Z",
+      "detail": "Exact-head Governance check-run read from the GitHub API during CD04 review follow-up. The review workspace had no local checkout for this head."
+    }
+  ],
+  "note": "Each observation names the commit GitHub evaluated. A record can carry this file only in a later commit than the one it describes, so the delivered head's own run is read back through the API and through `gh pr checks 5 --required` rather than asserted here. Top-level capturedAt/localHead/remoteHead/requiredChecksOutput preserve the earlier synchronized local snapshot; later API-only observations are appended with their own exact head and timestamps, without asserting a newly sampled localHead.",
+  "observationsAppendedFor": "1670589477f598ccd542bac533d9bbe38a7a4f6d",
+  "latestPlatformObservation": {
+    "head": "1670589477f598ccd542bac533d9bbe38a7a4f6d",
+    "source": "GitHub Actions API",
+    "run": "https://github.com/KayzenRoot/isoryn-engine/actions/runs/36166961918/job/108176950271",
+    "job": "108176950271",
+    "observedAt": "2026-09-25T17:25:05Z",
+    "localCheckoutState": "NOT_CAPTURED"
+  }
+}

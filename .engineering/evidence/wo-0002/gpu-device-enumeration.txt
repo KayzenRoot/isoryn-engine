@@ -1,0 +1,23 @@
+# captured_utc=2026-09-23T22:00:16Z
+# Vulkan adapter enumeration on a host that reports three display adapters.
+# command: /d/GodotDiscovery/ISORYN-WO-0002/godot-4.7.2/bin/godot.windows.template_release.x86_64.console.exe --verbose --no-header --path <bench> --quit-after 8
+# raw output stays in /d/GodotDiscovery/ISORYN-WO-0002/runs/device-enum.txt; this receipt keeps the loader decision and device list
+exit=139
+## loader-level driver decisions
+	windows_read_data_files_in_registry: Registry lookup failed to get layer manifest files.
+	terminator_CreateInstance: Received return code -13 from call to vkCreateInstance in ICD C:\WINDOWS\System32\DriverStore\FileRepository\u0201039.inf_amd64_89c3272f19eab06b\B025980\.\amdvlk64.dll. Skipping this driver.
+## devices the loader kept
+Devices:
+  #0: AMD Radeon 535 Series - Supported, Discrete
+Optional Vulkan device extension VK_KHR_fragment_shading_rate not found
+Optional Vulkan device extension VK_EXT_fragment_density_map not found
+## error signature of the same run, counted rather than dumped
+    203 ERROR: Condition "!shader_id" is true. Returning: RID()
+    165 ERROR: Parameter "shader" is null.
+    109 ERROR: Error (-3) creating module for shader stage Compute.
+     94 ERROR: Error (-3) creating module for shader stage Vertex.
+     28 ERROR: Condition "p_shader.is_null()" is true.
+      2 ERROR: Condition "!scene_singleton->sky.sky_shader.shader.version_is_valid(version)" is true.
+      1 ERROR: Parameter "uniform_set" is null.
+      1 ERROR: Parameter "pipeline" is null.
+host_percent_processor_time=3

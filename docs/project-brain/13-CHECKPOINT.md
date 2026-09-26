@@ -1,22 +1,22 @@
 # ISORYN Checkpoint
 
 ## STATUS
-BOOTSTRAP APPROVED
+ARCHITECTURE DISCOVERY CORRECTION REQUIRED
 
 ## VERSION
 ISORYN 0.0 - Clean Foundation
 
 ## PHASE
-0 - GEF/HIVE Repository Foundation
+1 - Architecture / Godot Baseline / Toolchain Discovery
 
 ## OBJECTIVE
-Establish the professional Source Pack, GEF v1.0.0 governance, HIVE v1.0.0 integration, Codex MCP bridge and exact-head governance CI before engine implementation begins.
+Freeze the evidence-backed Godot baseline, repository/fork/upstream strategy, build toolchain, extension seams, benchmark contract, Master Module Index and initial proprietary-technology registry before production engine implementation begins.
 
 ## IN PROGRESS
-NONE. ISORYN-WO-0001 completed the C01, C02 and C03 correction chain and was independently APPROVED at head 4123062a188e740d1e1c1d5a0ca4d839daa190c7; this checkpoint records the reviewer-authorized promotion.
+ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND.
 
 ## BLOCKERS
-NONE. Correction C03 removed the self-locking restrict-updates rule from live main-governance ruleset 23776080 while retaining deletion, non-fast-forward, linear-history, pull-request and strict Governance protections with no bypass actor added. Product/engine implementation remains unauthorized until the next governed discovery Work Order admits it.
+REVIEW_EVIDENCE_DRIFT: independent review found that WO-0002 omitted Godot's official release-policy source and incorrectly described support as a branch-activity inference; it also found one stale checkpoint-summary sentence claiming upstream reproduced every GPU failure even though the evidence shows the local build's early Vulkan segfault is not reproduced upstream. The reviewer corrected those canonical summaries directly. Those canonical edits invalidate the prior exact-head HIVE/MCP proof until the corrected head is re-indexed and re-proved locally.
 
 ## NEXT STEP
-Merge approved PR #2 by squash into main, confirm the resulting main head, then admit ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY from that exact base. Freeze architecture and toolchain decisions only from measured evidence before engine implementation begins.
+Execute `ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND`: preserve the reviewer-corrected Godot support-policy interpretation, re-verify that 4.7.2-stable is still the current stable tag, refresh HIVE v1.0.0 inspection/index/corpus/retrieval and the real read-only MCP session on the corrected exact head, refresh the WO-0002 Evidence Bundle and exact-head Governance/PR checks, then stop for independent re-review. Do not repeat the Godot build/benchmark/GPU experiments unless upstream stable state or their inputs changed.

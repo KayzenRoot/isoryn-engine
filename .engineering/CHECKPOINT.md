@@ -4,13 +4,13 @@ Status: DERIVED_VIEW
 Canonical source: docs/project-brain/13-CHECKPOINT.md
 
 ## STATUS
-BOOTSTRAP APPROVED
+ARCHITECTURE DISCOVERY CORRECTION REQUIRED
 
 ## VERSION
 ISORYN 0.0 - Clean Foundation
 
 ## PHASE
-0 - GEF/HIVE Repository Foundation
+1 - Architecture / Godot Baseline / Toolchain Discovery
 
 ## NEXT STEP
-Merge approved PR #2 by squash into main, confirm the resulting main head, then admit ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY from that exact base. Freeze architecture and toolchain decisions only from measured evidence before engine implementation begins.
+Execute `ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND`: preserve the reviewer-corrected Godot support-policy interpretation, re-verify that 4.7.2-stable is still the current stable tag, refresh HIVE v1.0.0 inspection/index/corpus/retrieval and the real read-only MCP session on the corrected exact head, refresh the WO-0002 Evidence Bundle and exact-head Governance/PR checks, then stop for independent re-review. Do not repeat the Godot build/benchmark/GPU experiments unless upstream stable state or their inputs changed.

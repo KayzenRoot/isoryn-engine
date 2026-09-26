@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "isoryn-wo-0002-godot-official-state-v1",
+  "capturedAt": "2026-09-23T17:50:00Z",
+  "capturedBy": "executor of ISORYN-WO-0002, read-only queries against official sources; no build product involved",
+  "officialSources": {
+    "repository": "https://github.com/godotengine/godot (upstream, unmodified)",
+    "website": "https://godotengine.org/download/archive/",
+    "windowsBuildDocs": "https://docs.godotengine.org/en/latest/engine_details/development/compiling/compiling_for_windows.html"
+  },
+  "admissionClaimsReverified": {
+    "claim": "WO-0002 admission stated 4.7.2-stable current stable and 4.8-dev6 pre-release on 2026-09-23.",
+    "result": "CONFIRMED",
+    "detail": "The official release archive marks '4.7.2-stable / 18 August 2026' as the highest current stable, and the repository's latest non-prerelease release is 4.7.2-stable. The 4.8 development line exists as the master branch version, not as a published git tag."
+  },
+  "currentStable": {
+    "tag": "4.7.2-stable",
+    "tagObjectSha": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "commitShaVerifiedByLocalClone": "ed1daf0bf001b61586d9930840f2f1394092c079",
+    "tagKind": "lightweight (refs/tags/4.7.2-stable resolves directly to the commit)",
+    "publishedAt": "2026-08-18T16:12:28Z",
+    "versionPy": {"name": "Godot Engine", "major": 4, "minor": 7, "patch": 2, "status": "stable", "docs": "4.7"},
+    "commands": [
+      "git ls-remote https://github.com/godotengine/godot.git refs/tags/4.7.2-stable -> ed1daf0bf001b61586d9930840f2f1394092c079",
+      "git clone --depth 1 --branch 4.7.2-stable -> HEAD ed1daf0bf001b61586d9930840f2f1394092c079, git describe --tags -> 4.7.2-stable"
+    ]
+  },
+  "previousSupportedLine": {
+    "tag": "4.6.3-stable",
+    "tagObjectSha": "35e80b3a8822a9df9be390814b62f44c0a9c69e8",
+    "publishedAt": "2026-05-20T20:49:16Z",
+    "branch": "4.6",
+    "branchHead": "a80a06c3e819d5b77a1737441aec9ccf1d93eda7",
+    "branchHeadVersionPy": {"major": 4, "minor": 6, "patch": 4, "status": "rc", "docs": "4.6"},
+    "whyThisIsTheCompatibilityReference": "Two maintenance branches are still version-bumped at execution time: 4.7 is at 4.7.3-rc and 4.6 is at 4.6.4-rc, while 4.5 stopped at 4.5.2 (2026-03-19). 4.6 is therefore the immediately previous supported stable line; 4.5 and older are not maintained."
+  },
+  "developmentLine": {
+    "branch": "master",
+    "headSha": "4e244f2112c687885767fa3c24ce9233a24a1659",
+    "headDate": "2026-09-23T01:10:00Z",
+    "versionPy": {"major": 4, "minor": 8, "patch": 0, "status": "dev", "docs": "latest"},
+    "adoptable": false,
+    "note": "Observation only. '4.8-dev6' is a distributed pre-release build label; no 4.8-dev git tag exists in the official tag list, so any statement about the development line is bound to the master commit above rather than to a tag."
+  },
+  "maintenanceBranchHeads": {
+    "4.7": {"sha": "83dec14d549108e1f314f57c1ce7e932c65370dd", "date": "2026-09-20T16:51:56Z", "version": "4.7.3-rc"},
+    "4.6": {"sha": "a80a06c3e819d5b77a1737441aec9ccf1d93eda7", "date": "2026-08-14T18:19:18Z", "version": "4.6.4-rc"}
+  },
+  "recentOfficialReleases": [
+    {"tag": "4.7.2-stable", "prerelease": false, "publishedAt": "2026-08-18T16:12:28Z"},
+    {"tag": "4.7.1-stable", "prerelease": false, "publishedAt": "2026-07-14T18:03:10Z"},
+    {"tag": "4.7-stable", "prerelease": false, "publishedAt": "2026-06-18T12:06:17Z"},
+    {"tag": "4.6.3-stable", "prerelease": false, "publishedAt": "2026-05-20T20:49:16Z"},
+    {"tag": "4.6.2-stable", "prerelease": false, "publishedAt": "2026-04-01T19:12:33Z"},
+    {"tag": "4.6.1-stable", "prerelease": false, "publishedAt": "2026-02-16T20:26:38Z"},
+    {"tag": "4.6-stable", "prerelease": false, "publishedAt": "2026-01-26T14:05:33Z"},
+    {"tag": "4.5.2-stable", "prerelease": false, "publishedAt": "2026-03-19T14:32:41Z"}
+  ],
+  "noOfficialLtsStatement": "Neither the release archive nor the release list publishes a numbered support-lifetime or LTS policy. The supported set is therefore inferred from the branches that still carry a version bump at execution time, and that inference is stated as an inference.",
+  "staleWhenReverified": "If a 4.7.3-stable or newer stable tag is published before the audit, the candidate matrix must be re-verified rather than inherited from this receipt."
+}

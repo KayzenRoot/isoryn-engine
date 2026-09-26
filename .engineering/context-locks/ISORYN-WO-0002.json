@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "isoryn-gef-context-lock-v1",
+  "workOrder": "ISORYN-WO-0002",
+  "status": "CURRENT",
+  "admittedAt": "2026-09-23",
+  "repository": "KayzenRoot/isoryn-engine",
+  "baseSha": "74c47fa204a5da79c1418fb9bcc2557603422f88",
+  "branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+  "workspaceReference": "canonical local workspace documented in docs/HIVE-INTEGRATION.md",
+  "upstreamPins": {
+    "gef": {
+      "version": "1.0.0",
+      "releaseCommit": "866fe3af8cccc65c929aaf6a47a924401fa448b3",
+      "vendored": false
+    },
+    "hive": {
+      "version": "1.0.0",
+      "releaseCommit": "a53b5b9fcf55c32a5696180fb1b1ef80ccd1edcf",
+      "vendored": false
+    },
+    "godot": {
+      "status": "UNFROZEN_DISCOVERY",
+      "admissionCandidates": [
+        "4.7.2-stable",
+        "4.6.3-stable",
+        "4.8-dev6 observation-only"
+      ],
+      "mustReverifyOfficialState": true
+    }
+  },
+  "canonicalSources": [
+    "AGENTS.md",
+    ".engineering/SOURCE-HIERARCHY.md",
+    ".engineering/work-orders/ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY.md",
+    "docs/project-brain/13-CHECKPOINT.md",
+    "docs/project-brain/16-DECISIONS-LEDGER.md",
+    "docs/project-brain/03-SCOPE.md",
+    "docs/project-brain/15-DEFINITION-OF-DONE.md",
+    "docs/project-brain/04-ARCHITECTURE.md",
+    "docs/project-brain/02-REQUIREMENTS.md",
+    "docs/project-brain/11-TEST-PLAN.md",
+    "docs/project-brain/05-INTEGRATION-CONTRACTS.md",
+    "docs/project-brain/14-BACKLOG.md"
+  ],
+  "inScope": [
+    "HIVE/MCP exact-head reproof",
+    "Godot official release/tag/source verification",
+    "local hardware and build-toolchain inventory",
+    "Godot source-build and smoke baseline outside repository",
+    "benchmark contract and initial deterministic baseline evidence",
+    "architecture surface map and seam policy",
+    "Godot baseline/fork/topology/upstream-sync ADRs",
+    "Master Module Index",
+    "Proprietary Technology Registry",
+    "HIVE/CORE/IRIS integration-boundary refinement",
+    "canonical documentation and evidence updates"
+  ],
+  "outOfScope": [
+    "production engine implementation",
+    "implementation of proprietary technologies",
+    "vendoring Godot/HIVE/CORE/IRIS source into this repository",
+    "merging PR #5",
+    "checkpoint self-promotion",
+    "release publication",
+    "paid or destructive external actions"
+  ],
+  "staleWhen": [
+    "baseSha is no longer an ancestor of the candidate head",
+    "checkpoint, Scope, DoD, Architecture or an applicable accepted decision changes incompatibly",
+    "GEF or HIVE pins change",
+    "official Godot stable/support state changes in a way that invalidates the candidate matrix before measurement",
+    "the canonical workspace or active branch changes unexpectedly"
+  ],
+  "admissionNote": "Godot candidate labels are discovery inputs, not adopted pins. The executor must bind official tags to exact commits before proposing a decision."
+}

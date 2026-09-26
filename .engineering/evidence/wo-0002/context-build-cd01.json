@@ -1,0 +1,241 @@
+{
+  "schemaVersion": "isoryn-gef-evidence-v1",
+  "workOrder": "ISORYN-WO-0002-C01-CD01",
+  "role": "BOUNDED_CONTEXT_BUILD_REREAD_AT_CORRECTED_HEAD",
+  "capturedAt": "2026-09-24T17:02:07Z",
+  "proofHead": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+  "proofBranch": "isoryn-wo-0002-architecture-toolchain-discovery",
+  "workingTreeCleanBeforeCapture": true,
+  "stack": {
+    "baseUrl": "http://127.0.0.1:18199",
+    "composeProject": "isoryn-c02-v100",
+    "container": "isoryn-c02-v100-api-1",
+    "healthVersion": "1.0.0",
+    "healthStatus": "ok",
+    "ambientRuntime": "hive-v102 on 127.0.0.1:8000 was not contacted by this script"
+  },
+  "inContainerHeadBefore": {
+    "argv": [
+      "docker",
+      "exec",
+      "isoryn-c02-v100-api-1",
+      "git",
+      "-c",
+      "safe.directory=*",
+      "-C",
+      "/workspace/projects/isoryn-engine",
+      "rev-parse",
+      "HEAD"
+    ],
+    "returncode": 0,
+    "stdout": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+    "stderr": ""
+  },
+  "inContainerHeadAfter": {
+    "argv": [
+      "docker",
+      "exec",
+      "isoryn-c02-v100-api-1",
+      "git",
+      "-c",
+      "safe.directory=*",
+      "-C",
+      "/workspace/projects/isoryn-engine",
+      "rev-parse",
+      "HEAD"
+    ],
+    "returncode": 0,
+    "stdout": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+    "stderr": ""
+  },
+  "bootstrap": {
+    "argv": [
+      "C:\\Users\\csn19\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+      "scripts/hive_bootstrap.py",
+      "--base-url",
+      "http://127.0.0.1:18199",
+      "--relative-path",
+      "isoryn-engine"
+    ],
+    "returncode": 0,
+    "stdoutTail": "HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-24T17:00:11.857738Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}\nResolved existing ISORYN registration by exact relative path.\n{\n  \"project_id\": \"cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd\",\n  \"relative_path\": \"isoryn-engine\",\n  \"git_branch\": \"isoryn-wo-0002-architecture-toolchain-discovery\",\n  \"git_head_sha\": \"24485b1c3e579a7c1f7be699087c5be069a03a0c\",\n  \"state\": \"READY\",\n  \"working_tree_clean\": true,\n  \"index_status\": \"COMPLETED\",\n  \"corpus_status\": \"COMPLETED\"\n}\n",
+    "stderrTail": ""
+  },
+  "sourceStateNote": "Project/index/corpus state is read from the REST endpoints the governed bootstrap uses, so this re-read issues exactly one governed MCP read call.",
+  "indexBefore": {
+    "run_id": "e2110650-960c-4e0a-b66c-c20872f4b6ee",
+    "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+    "repository_head_sha": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+    "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+    "status": "COMPLETED",
+    "started_at": "2026-09-24T17:00:32.986385Z",
+    "completed_at": "2026-09-24T17:00:33.407508Z",
+    "discovered_file_count": 132,
+    "indexed_file_count": 4,
+    "reused_file_count": 128,
+    "changed_file_count": 3,
+    "added_file_count": 1,
+    "removed_file_count": 0,
+    "unchanged_file_count": 128,
+    "parsed_file_count": 0,
+    "symbol_count": 69,
+    "error": null
+  },
+  "corpusBefore": {
+    "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+    "state": "CURRENT",
+    "last_successful_sync": "2026-09-24T17:01:18.446159Z",
+    "latest_run": {
+      "run_id": "1511b374-d5cd-48b2-a5a0-bddea80f1b53",
+      "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+      "repository_index_run_id": "e2110650-960c-4e0a-b66c-c20872f4b6ee",
+      "repository_source_fingerprint": "ba4bc49abbf88493d821bc3221ea4b677a2ff4bd632549e131773ed175dcecff",
+      "task_source_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_fingerprint": "c9c1f7eadcbdec70e91f22b712a64623448913f8756277c0d30e57387b4ea74f",
+      "status": "COMPLETED",
+      "started_at": "2026-09-24T17:01:02.564458Z",
+      "completed_at": "2026-09-24T17:01:18.446159Z",
+      "repository_source_count": 197,
+      "task_source_count": 0,
+      "chunk_count": 492,
+      "reference_count": 496,
+      "repository_reference_count": 496,
+      "task_reference_count": 0,
+      "new_chunk_count": 39,
+      "reused_chunk_count": 453,
+      "new_reference_count": 39,
+      "reused_reference_count": 457,
+      "removed_reference_count": 19,
+      "current_reference_count": 496,
+      "skipped_binary_count": 4,
+      "skipped_decode_count": 0,
+      "error": null
+    },
+    "chunk_count": 492,
+    "reference_count": 496,
+    "repository_reference_count": 496,
+    "task_reference_count": 0
+  },
+  "indexAfter": {
+    "run_id": "e2110650-960c-4e0a-b66c-c20872f4b6ee",
+    "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+    "repository_head_sha": "24485b1c3e579a7c1f7be699087c5be069a03a0c",
+    "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+    "status": "COMPLETED",
+    "started_at": "2026-09-24T17:00:32.986385Z",
+    "completed_at": "2026-09-24T17:00:33.407508Z",
+    "discovered_file_count": 132,
+    "indexed_file_count": 4,
+    "reused_file_count": 128,
+    "changed_file_count": 3,
+    "added_file_count": 1,
+    "removed_file_count": 0,
+    "unchanged_file_count": 128,
+    "parsed_file_count": 0,
+    "symbol_count": 69,
+    "error": null
+  },
+  "corpusAfter": {
+    "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+    "state": "CURRENT",
+    "last_successful_sync": "2026-09-24T17:01:18.446159Z",
+    "latest_run": {
+      "run_id": "1511b374-d5cd-48b2-a5a0-bddea80f1b53",
+      "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+      "repository_index_run_id": "e2110650-960c-4e0a-b66c-c20872f4b6ee",
+      "repository_source_fingerprint": "ba4bc49abbf88493d821bc3221ea4b677a2ff4bd632549e131773ed175dcecff",
+      "task_source_fingerprint": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_fingerprint": "c9c1f7eadcbdec70e91f22b712a64623448913f8756277c0d30e57387b4ea74f",
+      "status": "COMPLETED",
+      "started_at": "2026-09-24T17:01:02.564458Z",
+      "completed_at": "2026-09-24T17:01:18.446159Z",
+      "repository_source_count": 197,
+      "task_source_count": 0,
+      "chunk_count": 492,
+      "reference_count": 496,
+      "repository_reference_count": 496,
+      "task_reference_count": 0,
+      "new_chunk_count": 39,
+      "reused_chunk_count": 453,
+      "new_reference_count": 39,
+      "reused_reference_count": 457,
+      "removed_reference_count": 19,
+      "current_reference_count": 496,
+      "skipped_binary_count": 4,
+      "skipped_decode_count": 0,
+      "error": null
+    },
+    "chunk_count": 492,
+    "reference_count": 496,
+    "repository_reference_count": 496,
+    "task_reference_count": 0
+  },
+  "request": {
+    "method": "tools/call",
+    "name": "context.build",
+    "arguments": {
+      "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+      "task_id": "0f4c1a86-2f3b-4f5a-9c1d-7b0e2f1a3d4c",
+      "top_k": 5,
+      "disclosure_level": "L2"
+    },
+    "requestSha256": "4b359ef1412d8f8f55d19cada2934e839c0631746e0a9f3a23772278a352f087"
+  },
+  "response": {
+    "raw": {
+      "jsonrpc": "2.0",
+      "id": 2,
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "{\"error\":{\"category\":\"not_found\",\"code\":\"resource_not_found\",\"message\":\"resource not found\"},\"version\":\"mcp-error-v1\"}"
+          }
+        ],
+        "structuredContent": {
+          "version": "mcp-error-v1",
+          "error": {
+            "code": "resource_not_found",
+            "category": "not_found",
+            "message": "resource not found"
+          }
+        },
+        "isError": true
+      }
+    },
+    "parsed": {
+      "error": {
+        "category": "not_found",
+        "code": "resource_not_found",
+        "message": "resource not found"
+      },
+      "version": "mcp-error-v1"
+    },
+    "error": {
+      "category": "not_found",
+      "code": "resource_not_found",
+      "message": "resource not found"
+    },
+    "isError": true,
+    "responseSha256": "6ecab5c0cf2f5ab02abce2e929d31ecb6e04c8ab17a4dc988f976a1d9a7856c8"
+  },
+  "comparableTo": {
+    "receipt": ".engineering/evidence/wo-0002/hive-mcp-proof-c01.json",
+    "c01Error": {
+      "category": "stale",
+      "code": "source_not_current",
+      "message": "project source is not current"
+    },
+    "sameArgumentsAsC01": true
+  },
+  "finding": {
+    "answersTheSameWayAsC01": false,
+    "literalAnswer": {
+      "category": "not_found",
+      "code": "resource_not_found",
+      "message": "resource not found"
+    },
+    "whatThisDemonstrates": "The same schema-valid arguments answered differently once the source had just been re-indexed at a clean committed head, so the C01 refusal was state-dependent.",
+    "whatItDoesNotDemonstrate": "This response is about the call being refused, not about the task. It does not establish that the task_id is registered, and it does not establish that it is absent: proving the second would need a lookup this guard never reaches, and proving the first would need a write to HIVE, which a read-only proof may not perform. The context.build happy path therefore remains NOT_AVAILABLE."
+  }
+}

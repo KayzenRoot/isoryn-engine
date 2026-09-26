@@ -1,0 +1,15 @@
+# captured_utc=2026-09-23T22:00:33Z
+# Deterministic harness repeats (.engineering/evidence/wo-0002/bench/).
+# Execution mode: --headless. Rule 7 of the contract keeps headless and windowed apart, and the
+# windowed series is NOT_AVAILABLE on this host at the frozen configuration - see
+# gpu-windowed-device-blocker.txt for the executed cause and the official-binary control.
+# Headless selects the dummy display server, so these numbers measure GDScript, culling and CPU
+# cost; they are not a frame-time baseline and no GPU metric is claimed from them.
+# flags: --quit-after 999 (the harness quits itself after 90 warm-up + 600 measured frames)
+run=headless-1 exit=0 wall_ms=5814
+ISORYN_BENCH {"display_server":"headless","engine_version":"4.7.2-stable (custom_build)","frame_ms_max":15.711,"frame_ms_p50":6.901,"frame_ms_p95":15.175,"frame_ms_p99":15.59,"frames_drawn":0,"frames_measured":600,"harness":"isoryn-wo-0002-bench","mean_frame_ms":7.37643,"monitors":{"memory_static":0.0,"object_count":2585.0,"object_node_count":1204.0,"object_orphan_node_count":0.0,"object_resource_count":1.0,"render_buffer_mem_used":0.0,"render_texture_mem_used":0.0,"render_total_draw_calls_in_frame":0.0,"render_total_objects_in_frame":0.0,"render_total_primitives_in_frame":0.0,"render_video_mem_used":0.0,"time_fps":128.0,"time_physics_process_ms":0.000267,"time_process_ms":0.002265},"rendering_method":"forward_plus"}
+run=headless-2 exit=0 wall_ms=5700
+ISORYN_BENCH {"display_server":"headless","engine_version":"4.7.2-stable (custom_build)","frame_ms_max":25.513,"frame_ms_p50":6.898,"frame_ms_p95":15.091,"frame_ms_p99":15.555,"frames_drawn":0,"frames_measured":600,"harness":"isoryn-wo-0002-bench","mean_frame_ms":7.40082833333333,"monitors":{"memory_static":0.0,"object_count":2585.0,"object_node_count":1204.0,"object_orphan_node_count":0.0,"object_resource_count":1.0,"render_buffer_mem_used":0.0,"render_texture_mem_used":0.0,"render_total_draw_calls_in_frame":0.0,"render_total_objects_in_frame":0.0,"render_total_primitives_in_frame":0.0,"render_video_mem_used":0.0,"time_fps":128.0,"time_physics_process_ms":0.0002,"time_process_ms":0.003015},"rendering_method":"forward_plus"}
+run=headless-3 exit=0 wall_ms=5640
+ISORYN_BENCH {"display_server":"headless","engine_version":"4.7.2-stable (custom_build)","frame_ms_max":34.791,"frame_ms_p50":6.897,"frame_ms_p95":15.286,"frame_ms_p99":16.091,"frames_drawn":0,"frames_measured":600,"harness":"isoryn-wo-0002-bench","mean_frame_ms":7.41700833333333,"monitors":{"memory_static":0.0,"object_count":2585.0,"object_node_count":1204.0,"object_orphan_node_count":0.0,"object_resource_count":1.0,"render_buffer_mem_used":0.0,"render_texture_mem_used":0.0,"render_total_draw_calls_in_frame":0.0,"render_total_objects_in_frame":0.0,"render_total_primitives_in_frame":0.0,"render_video_mem_used":0.0,"time_fps":128.0,"time_physics_process_ms":0.000307,"time_process_ms":0.001568},"rendering_method":"forward_plus"}
+host_percent_processor_time=6

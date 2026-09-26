@@ -1,0 +1,232 @@
+{
+  "schemaVersion": "isoryn-hive-mcp-proof-v1",
+  "workOrder": "ISORYN-WO-0002",
+  "capturedAt": "2026-09-24T00:10:58Z",
+  "proofHead": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+  "proofBranch": "isoryn-wo-0002-architecture-toolchain-discovery",
+  "workingTreeCleanAtProof": true,
+  "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
+  "target": {
+    "launcher": "python scripts/hive_mcp.py",
+    "composeProjectSelectedByLauncher": "isoryn-c02-v100",
+    "ambientComposeProjectNameDuringProof": "hive-v102",
+    "argv": [
+      "docker",
+      "compose",
+      "-p",
+      "isoryn-c02-v100",
+      "exec",
+      "-T",
+      "api",
+      "python",
+      "-m",
+      "app.mcp_server"
+    ],
+    "apiBaseUrl": "http://127.0.0.1:18199",
+    "projectId": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+    "relativePath": "isoryn-engine",
+    "isolationNote": "The machine still exports COMPOSE_PROJECT_NAME for the drifted v1.0.2 stack; only HIVE_COMPOSE_PROJECT makes the launcher pass -p, and the container that answered is the pinned v1.0.0 one whose HEAD matches the proof head below."
+  },
+  "health": {
+    "status": "ok",
+    "version": "1.0.0",
+    "environment": "development",
+    "timestamp": "2026-09-24T00:09:39.249658Z",
+    "data_root": "/var/lib/hive",
+    "checks": {
+      "postgres": {
+        "status": "ok",
+        "details": {
+          "pgvector": true
+        }
+      },
+      "redis": {
+        "status": "ok",
+        "details": {
+          "canonical": false
+        }
+      },
+      "storage": {
+        "status": "ok",
+        "details": {
+          "configured": true,
+          "writable": true,
+          "canonical_data_root": "/var/lib/hive"
+        }
+      }
+    }
+  },
+  "inContainerHeadProbe": {
+    "argv": [
+      "docker",
+      "exec",
+      "isoryn-c02-v100-api-1",
+      "git",
+      "-c",
+      "safe.directory=*",
+      "-C",
+      "/workspace/projects/isoryn-engine",
+      "rev-parse",
+      "HEAD"
+    ],
+    "returncode": 0,
+    "stdout": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+    "stderr": null,
+    "matchesProofHead": true
+  },
+  "bootstrap": {
+    "command": "python scripts/hive_bootstrap.py --base-url http://127.0.0.1:18199 --relative-path isoryn-engine",
+    "exitCode": 0,
+    "progress": [
+      "HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-24T00:09:39.824639Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}",
+      "Resolved existing ISORYN registration by exact relative path."
+    ],
+    "result": {
+      "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+      "relative_path": "isoryn-engine",
+      "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+      "git_head_sha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+      "state": "READY",
+      "working_tree_clean": true,
+      "index_status": "COMPLETED",
+      "corpus_status": "COMPLETED"
+    },
+    "stderr": null,
+    "note": "Executed by this assembler before the MCP sessions, so the index and corpus HIVE answers from were refreshed at this head rather than inherited from an earlier run."
+  },
+  "initialize": {
+    "protocolVersion": "2025-06-18",
+    "serverInfo": {
+      "name": "hive-mcp",
+      "version": "mcp-core-surface-v1"
+    },
+    "capabilities": {
+      "experimental": {},
+      "tools": {
+        "listChanged": false
+      }
+    }
+  },
+  "tools": [
+    "project.list",
+    "project.status",
+    "context.build",
+    "context.search",
+    "memory.search",
+    "memory.get",
+    "checkpoint.read"
+  ],
+  "toolsAreExactlyTheGovernedSeven": true,
+  "annotations": {
+    "project.list": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "project.status": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "context.build": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "context.search": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "memory.search": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "memory.get": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "checkpoint.read": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  "allReadOnly": true,
+  "calls": {
+    "project.list": {
+      "isError": false,
+      "response_sha256": "4e9723bc8c68d7445253750ac6506c53f9b8917710262b1eec54626add11b9cf",
+      "returned_count": 1,
+      "heads": [
+        "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4"
+      ],
+      "states": [
+        "READY"
+      ]
+    },
+    "project.status": {
+      "isError": false,
+      "response_sha256": "f4d34e079cc65153d2a6bd9fff873ed1c492b4db2ab8a32c3403e18434423c67",
+      "git_head_sha": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+      "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+      "state": "READY",
+      "working_tree_clean": true,
+      "repository_accessible": true
+    },
+    "checkpoint.read": {
+      "isError": false,
+      "response_sha256": "bacbeed86033d770011215a112360ad02507781987700071a1c76555fb9cd55f",
+      "checkpoint_sha256": "dc567c8e573dd0554b8605ba14b63eb761f2a11f9d825b7d935dbb6367809e0e",
+      "checkpoint_lines": 23,
+      "status_line": "## STATUS",
+      "status_value": "ARCHITECTURE DISCOVERY ACTIVE"
+    },
+    "context.search": {
+      "isError": false,
+      "response_sha256": "f40270d54da560df97f30e5489460a58cef941ed972d0963a1247eaf118cb242",
+      "query": "readback gate golden frame baseline",
+      "candidate_pool": 5,
+      "result_count": 5,
+      "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+      "rerank_state": "RERANK_FALLBACK_DISABLED",
+      "top_paths": [
+        ".engineering/evidence/wo-0002/hive-mcp-proof.json",
+        "docs/project-brain/16-DECISIONS-LEDGER.md",
+        "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
+        "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
+        "docs/adr/ADR-0002-build-toolchain-and-upstream-sync.md"
+      ]
+    },
+    "memory.search": {
+      "isError": false,
+      "response_sha256": "5424a8bbb6fb7a73edab48dc6914f6280d36bd28035bf1fb90a06fbd15712471",
+      "returned_count": 0,
+      "statuses": null
+    },
+    "context.build": {
+      "isError": true,
+      "response_sha256": "33c216bb8a4eb304fdad83e9ab5a8789321cc93e0f6a27b223b2dd58c89613b7",
+      "error": {
+        "category": "not_found",
+        "code": "resource_not_found",
+        "message": "resource not found"
+      },
+      "note": "called with a task_id that is not registered in this stack; the governed argument shape was accepted and the answer is a well-formed not_found"
+    }
+  },
+  "notExecuted": {
+    "memory.get": "memory.search returns zero memories for this project on the pinned stack, so there is no memory_id to read; the tool is present in tools/list with its governed annotations."
+  },
+  "launcherExit": 0,
+  "launcherStderr": []
+}

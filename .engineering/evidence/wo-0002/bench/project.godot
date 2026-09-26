@@ -1,0 +1,27 @@
+; ISORYN-WO-0002 deterministic measurement harness (evidence tooling, not engine code).
+; It exists so that benchmark claims in docs/project-brain/09-TOOLCHAIN-AND-BENCHMARK-BASELINE.md
+; can be re-executed against a pinned official Godot build without writing engine code.
+; Runs unmodified against the WO-0002 measured binary, or any build that can load an unpacked project:
+;   godot.windows.template_release.x86_64.console.exe --path <this directory> [engine flags]
+; --path needs the build to carry disable_path_overrides=no (see ADR-0002); an editor build accepts it too.
+
+config_version=5
+
+[application]
+
+config/name="ISORYN WO-0002 Discovery Bench"
+config/description="Deterministic frame-time and Performance-monitor harness for the WO-0002 toolchain baseline."
+run/main_scene="res://bench.tscn"
+config/features=PackedStringArray("4.7")
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+vsync/vsync_mode=0
+
+[rendering]
+
+renderer/rendering_method="forward_plus"
+anti_aliasing/quality/msaa_3d=0
+scaling_3d/screen_space_scale=1.0

@@ -1,0 +1,771 @@
+{
+  "schemaVersion": "isoryn-hive-mcp-proof-v1",
+  "workOrder": "ISORYN-WO-0002-C01-SUPPORT-POLICY-HIVE-REBIND",
+  "role": "C01_EXACT_HEAD_REBIND",
+  "capturedAt": "2026-09-24T14:55:39Z",
+  "proofHead": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+  "proofBranch": "isoryn-wo-0002-architecture-toolchain-discovery",
+  "reviewerCorrectionHead": "e481b3376c13cdbdfae243d945d10789d39a23fc",
+  "proofHeadIsDescendantOfReviewerCorrection": true,
+  "workingTreeCleanAtProof": true,
+  "canonicalWorkspace": "D:\\Hive\\Projects\\isoryn-engine",
+  "supersedes": {
+    "path": ".engineering/evidence/wo-0002/hive-mcp-proof.json",
+    "workOrder": "ISORYN-WO-0002",
+    "proofHead": "958d5ed0bfb74be40eec5f7b3ef0f57fee76b9f4",
+    "capturedAt": "2026-09-24T00:10:58Z",
+    "bytes": 7554,
+    "sha256": "4932eda0ab40940dcbb2f58a99d73e61d619542453aedaa6752d1a1fbfa5eb71",
+    "why": "The reviewer edited ADR-0001, the canonical Godot baseline document, the Evidence Bundle and the checkpoint, so the WO-0002 proof bound to 958d5ed0b describes an index of text that no longer matches the canonical workspace. The old receipt is kept untouched as the historical record of what was proved then."
+  },
+  "target": {
+    "launcher": "python scripts/hive_mcp.py",
+    "composeProjectSelectedByLauncher": "isoryn-c02-v100",
+    "ambientComposeProjectNameDuringProof": "hive-v102",
+    "argv": [
+      "docker",
+      "compose",
+      "-p",
+      "isoryn-c02-v100",
+      "exec",
+      "-T",
+      "api",
+      "python",
+      "-m",
+      "app.mcp_server"
+    ],
+    "apiBaseUrl": "http://127.0.0.1:18199",
+    "projectId": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+    "relativePath": "isoryn-engine",
+    "isolationNote": "Only HIVE_COMPOSE_PROJECT makes the launcher pass -p; the container that answered is the pinned v1.0.0 proof stack, whose own git rev-parse HEAD is recorded below. The machine's drifted v1.0.2 stack on port 8000 was not addressed by any command here."
+  },
+  "health": {
+    "status": "ok",
+    "version": "1.0.0",
+    "environment": "development",
+    "timestamp": "2026-09-24T14:52:49.947908Z",
+    "data_root": "/var/lib/hive",
+    "checks": {
+      "postgres": {
+        "status": "ok",
+        "details": {
+          "pgvector": true
+        }
+      },
+      "redis": {
+        "status": "ok",
+        "details": {
+          "canonical": false
+        }
+      },
+      "storage": {
+        "status": "ok",
+        "details": {
+          "configured": true,
+          "writable": true,
+          "canonical_data_root": "/var/lib/hive"
+        }
+      }
+    }
+  },
+  "inContainerHeadProbe": {
+    "argv": [
+      "docker",
+      "exec",
+      "isoryn-c02-v100-api-1",
+      "git",
+      "-c",
+      "safe.directory=*",
+      "-C",
+      "/workspace/projects/isoryn-engine",
+      "rev-parse",
+      "HEAD"
+    ],
+    "returncode": 0,
+    "stdout": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+    "stderr": null,
+    "matchesProofHead": true
+  },
+  "bootstrap": {
+    "command": "python scripts/hive_bootstrap.py --base-url http://127.0.0.1:18199 --relative-path isoryn-engine",
+    "exitCode": 0,
+    "progress": [
+      "HIVE health: {'status': 'ok', 'version': '1.0.0', 'environment': 'development', 'timestamp': '2026-09-24T14:53:05.546112Z', 'data_root': '/var/lib/hive', 'checks': {'postgres': {'status': 'ok', 'details': {'pgvector': True}}, 'redis': {'status': 'ok', 'details': {'canonical': False}}, 'storage': {'status': 'ok', 'details': {'configured': True, 'writable': True, 'canonical_data_root': '/var/lib/hive'}}}}",
+      "Resolved existing ISORYN registration by exact relative path."
+    ],
+    "result": {
+      "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+      "relative_path": "isoryn-engine",
+      "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+      "git_head_sha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+      "state": "READY",
+      "working_tree_clean": true,
+      "index_status": "COMPLETED",
+      "corpus_status": "COMPLETED"
+    },
+    "stderr": null,
+    "attempts": [
+      {
+        "attempt": 1,
+        "startedAt": "2026-09-24T14:53:04Z",
+        "seconds": 82.78,
+        "exitCode": 0,
+        "state": "READY",
+        "indexStatus": "COMPLETED",
+        "corpusStatus": "COMPLETED",
+        "stderr": null
+      }
+    ],
+    "attemptsNeeded": 1,
+    "gitWarmupSeconds": [
+      [
+        2.49,
+        3.03
+      ]
+    ],
+    "note": "Run by this assembler before the sessions, so the answers below come from an index refreshed at the proof head rather than inherited from WO-0002."
+  },
+  "containerGitProbe": {
+    "argv": [
+      "docker",
+      "exec",
+      "isoryn-c02-v100-api-1",
+      "python",
+      "-c",
+      "<timed git status loop>"
+    ],
+    "commandUnderTest": "git status --porcelain=v1 --untracked-files=no -z --",
+    "seconds": [
+      {
+        "seconds": 3.3,
+        "returncode": 0,
+        "bytes": 0
+      },
+      {
+        "seconds": 1.7,
+        "returncode": 0,
+        "bytes": 0
+      },
+      {
+        "seconds": 2.75,
+        "returncode": 0,
+        "bytes": 0
+      }
+    ],
+    "hiveGitTimeoutSeconds": 5,
+    "stderr": null,
+    "note": "HIVE v1.0.0 hard-codes a five second git timeout. The workspace reaches this container over a read-only 9p mount, so git cannot refresh .git/index and a cold status re-reads the tree; the spread above is that cost, measured rather than described."
+  },
+  "containerState": {
+    "argv": [
+      "docker",
+      "inspect",
+      "isoryn-c02-v100-api-1",
+      "--format",
+      "{{.State.StartedAt}} {{.State.Status}}"
+    ],
+    "startedAt": "2026-09-24T14:17:21.241636651Z",
+    "status": "running",
+    "stderr": null
+  },
+  "indexStatus": {
+    "endpoint": "/api/v1/projects/cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd/index/status",
+    "run_id": "c27a2f54-e3d0-48e2-a4cc-93a8bc41821e",
+    "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+    "repository_head_sha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+    "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+    "status": "COMPLETED",
+    "started_at": "2026-09-24T14:53:23.773535Z",
+    "completed_at": "2026-09-24T14:53:24.097680Z",
+    "discovered_file_count": 131,
+    "indexed_file_count": 0,
+    "reused_file_count": 131,
+    "changed_file_count": 0,
+    "added_file_count": 0,
+    "removed_file_count": 0,
+    "unchanged_file_count": 131,
+    "parsed_file_count": 0,
+    "symbol_count": 69,
+    "error": null,
+    "repositoryHeadMatchesProofHead": true
+  },
+  "corpusStatus": {
+    "endpoint": "/api/v1/projects/cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd/retrieval/corpus",
+    "state": "CURRENT",
+    "lastSuccessfulSync": "2026-09-24T14:54:03.423274Z",
+    "latestRunStatus": "COMPLETED"
+  },
+  "initialize": {
+    "protocolVersion": "2025-06-18",
+    "serverInfo": {
+      "name": "hive-mcp",
+      "version": "mcp-core-surface-v1"
+    },
+    "capabilities": {
+      "experimental": {},
+      "tools": {
+        "listChanged": false
+      }
+    }
+  },
+  "tools": [
+    "project.list",
+    "project.status",
+    "context.build",
+    "context.search",
+    "memory.search",
+    "memory.get",
+    "checkpoint.read"
+  ],
+  "toolsAreExactlyTheGovernedSeven": true,
+  "annotations": {
+    "project.list": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "project.status": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "context.build": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "context.search": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "memory.search": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "memory.get": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    },
+    "checkpoint.read": {
+      "readOnlyHint": true,
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false
+    }
+  },
+  "allReadOnly": true,
+  "calls": {
+    "project.list": {
+      "verdict": "PASS",
+      "isError": false,
+      "response_sha256": "c5b806b797ce4f3c74c155b1161a377a79efad85346337986449896e129285db",
+      "returnedCount": 1,
+      "heads": [
+        "ad4fdf81c0f8cde59671bbe2252eb48f86784eff"
+      ],
+      "states": [
+        "READY"
+      ]
+    },
+    "project.status": {
+      "verdict": "PASS",
+      "isError": false,
+      "response_sha256": "4414a4396902670d4dbc6777a77996de25df1d28f5574f3183934d7ac6b014b7",
+      "git_head_sha": "ad4fdf81c0f8cde59671bbe2252eb48f86784eff",
+      "git_branch": "isoryn-wo-0002-architecture-toolchain-discovery",
+      "state": "READY",
+      "working_tree_clean": true,
+      "repository_accessible": true,
+      "detail": "project.status reports repository identity only on this build of HIVE; index and corpus currency are in the indexStatus and corpusStatus sections, which are read from the same stack after the bootstrap refreshed them."
+    },
+    "checkpoint.read": {
+      "verdict": "PASS",
+      "isError": false,
+      "response_sha256": "15a0eb637b9d55f01287f987c2a43642529967752329d9418ea7ed0bb5b783c7",
+      "checkpoint_sha256": "7b1c90ec569b558dcbae00257bd98165e3b3e655b7cf98770feb21c4e1389715",
+      "checkpointLines": 22,
+      "statusValue": "ARCHITECTURE DISCOVERY CORRECTION REQUIRED",
+      "blockersValue": "REVIEW_EVIDENCE_DRIFT: independent review found that WO-0002 omitted Godot's official release-policy source and incorrectly described support as a branch-activity inference; it also found one stale checkpoint-summary sentence claiming upstream reproduced every GPU failure even though the evidence shows the local build's early Vulkan segfault is not reproduced upstream. The reviewer corrected those"
+    },
+    "context.search": {
+      "verdict": "PASS",
+      "queries": [
+        {
+          "sequence": 1,
+          "query": "official release policy",
+          "expectedCanonicalFile": "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+          "isError": false,
+          "candidate_pool": 8,
+          "result_count": 8,
+          "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "semantic_state": "UNAVAILABLE",
+          "fallback_reason": "rerank_disabled",
+          "rerank_state": "RERANK_FALLBACK_DISABLED",
+          "response_sha256": "79c9ede9b13e88e31e0170026c570012935cc97c9b8fd850f1567b36850410e4",
+          "pathsReturned": [
+            ".engineering/evidence/ISORYN-WO-0002-CHECKPOINT-DELTA.md",
+            ".engineering/evidence/ISORYN-WO-0002-EVIDENCE.md",
+            ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+            "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+            "docs/project-brain/13-CHECKPOINT.md"
+          ],
+          "targetReached": true,
+          "topResults": [
+            {
+              "path": "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+              "hybrid_score": 0.01639344262295082,
+              "lexical_rank": 1,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/ISORYN-WO-0002-EVIDENCE.md",
+              "hybrid_score": 0.016129032258064516,
+              "lexical_rank": 2,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+              "hybrid_score": 0.015873015873015872,
+              "lexical_rank": 3,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/ISORYN-WO-0002-EVIDENCE.md",
+              "hybrid_score": 0.015625,
+              "lexical_rank": 4,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+              "hybrid_score": 0.015384615384615385,
+              "lexical_rank": 5,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/ISORYN-WO-0002-EVIDENCE.md",
+              "hybrid_score": 0.015151515151515152,
+              "lexical_rank": 6,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/ISORYN-WO-0002-CHECKPOINT-DELTA.md",
+              "hybrid_score": 0.014925373134328358,
+              "lexical_rank": 7,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": "docs/project-brain/13-CHECKPOINT.md",
+              "hybrid_score": 0.014705882352941176,
+              "lexical_rank": 8,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            }
+          ],
+          "truncatedSnippets": 8,
+          "correctionMarkersSeenInSnippets": {
+            "adr0001-support-bullet": [
+              {
+                "resultIndex": 0,
+                "path": "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+                "chunkStartLine": 1,
+                "chunkEndLine": 59
+              }
+            ],
+            "adr0001-historical-supersede": [
+              {
+                "resultIndex": 2,
+                "path": "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+                "chunkStartLine": 50,
+                "chunkEndLine": 60
+              }
+            ],
+            "evidence-bundle-corrected-why": [
+              {
+                "resultIndex": 1,
+                "path": ".engineering/evidence/ISORYN-WO-0002-EVIDENCE.md",
+                "chunkStartLine": 141,
+                "chunkEndLine": 220
+              },
+              {
+                "resultIndex": 3,
+                "path": ".engineering/evidence/ISORYN-WO-0002-EVIDENCE.md",
+                "chunkStartLine": 71,
+                "chunkEndLine": 150
+              }
+            ]
+          }
+        },
+        {
+          "sequence": 2,
+          "query": "Godot 4.5 security and platform-support fixes only 4.4 no longer supported",
+          "expectedCanonicalFile": "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
+          "isError": false,
+          "candidate_pool": 3,
+          "result_count": 3,
+          "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "semantic_state": "UNAVAILABLE",
+          "fallback_reason": "rerank_disabled",
+          "rerank_state": "RERANK_FALLBACK_DISABLED",
+          "response_sha256": "2c26262ac4e862f943858ee57c700aa4b18aa96e18a0e6e684bd12ca9c45031a",
+          "pathsReturned": [
+            ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+            "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+            "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md"
+          ],
+          "targetReached": true,
+          "topResults": [
+            {
+              "path": "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
+              "hybrid_score": 0.01639344262295082,
+              "lexical_rank": 1,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+              "hybrid_score": 0.016129032258064516,
+              "lexical_rank": 2,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+              "hybrid_score": 0.015873015873015872,
+              "lexical_rank": 3,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            }
+          ],
+          "truncatedSnippets": 3,
+          "correctionMarkersSeenInSnippets": {}
+        },
+        {
+          "sequence": 3,
+          "query": "ISORYN Checkpoint STATUS",
+          "expectedCanonicalFile": "docs/project-brain/13-CHECKPOINT.md",
+          "isError": false,
+          "candidate_pool": 8,
+          "result_count": 8,
+          "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "semantic_state": "UNAVAILABLE",
+          "fallback_reason": "rerank_disabled",
+          "rerank_state": "RERANK_FALLBACK_DISABLED",
+          "response_sha256": "8f19eafffe5ed40e127fa8ff1bf3fd18c49eb0b01eb56225fad441ec88f88c45",
+          "pathsReturned": [
+            ".engineering/CHECKPOINT.json",
+            ".engineering/CHECKPOINT.md",
+            ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
+            ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+            ".engineering/evidence/mcp-proof.json",
+            "docs/project-brain/13-CHECKPOINT.md"
+          ],
+          "targetReached": true,
+          "topResults": [
+            {
+              "path": "docs/project-brain/13-CHECKPOINT.md",
+              "hybrid_score": 0.01639344262295082,
+              "lexical_rank": 1,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/CHECKPOINT.md",
+              "hybrid_score": 0.016129032258064516,
+              "lexical_rank": 2,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+              "hybrid_score": 0.015873015873015872,
+              "lexical_rank": 3,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/ISORYN-WO-0001-EVIDENCE.md",
+              "hybrid_score": 0.015625,
+              "lexical_rank": 4,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/mcp-proof.json",
+              "hybrid_score": 0.015384615384615385,
+              "lexical_rank": 5,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/mcp-proof.json",
+              "hybrid_score": 0.015151515151515152,
+              "lexical_rank": 6,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/evidence/ISORYN-WO-0001-CHECKPOINT-DELTA.md",
+              "hybrid_score": 0.014925373134328358,
+              "lexical_rank": 7,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/CHECKPOINT.json",
+              "hybrid_score": 0.014705882352941176,
+              "lexical_rank": 8,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            }
+          ],
+          "truncatedSnippets": 8,
+          "correctionMarkersSeenInSnippets": {
+            "checkpoint-correction-status": [
+              {
+                "resultIndex": 0,
+                "path": "docs/project-brain/13-CHECKPOINT.md",
+                "chunkStartLine": 1,
+                "chunkEndLine": 22
+              },
+              {
+                "resultIndex": 1,
+                "path": ".engineering/CHECKPOINT.md",
+                "chunkStartLine": 1,
+                "chunkEndLine": 16
+              },
+              {
+                "resultIndex": 7,
+                "path": ".engineering/CHECKPOINT.json",
+                "chunkStartLine": 1,
+                "chunkEndLine": 9
+              }
+            ]
+          }
+        },
+        {
+          "sequence": 4,
+          "query": "architecture module boundaries",
+          "expectedCanonicalFile": "docs/project-brain/04-ARCHITECTURE.md",
+          "isError": false,
+          "candidate_pool": 6,
+          "result_count": 6,
+          "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "semantic_state": "UNAVAILABLE",
+          "fallback_reason": "rerank_disabled",
+          "rerank_state": "RERANK_FALLBACK_DISABLED",
+          "response_sha256": "7f3dd97ea7c0e0154282d2807241c545b4678bb91d716fb04ef08f6890260a38",
+          "pathsReturned": [
+            ".engineering/work-orders/ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY.md",
+            "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+            "docs/adr/ADR-0003-extension-seam-policy.md",
+            "docs/project-brain/03-SCOPE.md",
+            "docs/project-brain/04-ARCHITECTURE.md",
+            "docs/project-brain/05-INTEGRATION-CONTRACTS.md"
+          ],
+          "targetReached": true,
+          "topResults": [
+            {
+              "path": "docs/project-brain/03-SCOPE.md",
+              "hybrid_score": 0.01639344262295082,
+              "lexical_rank": 1,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": ".engineering/work-orders/ISORYN-WO-0002-ARCHITECTURE-TOOLCHAIN-DISCOVERY.md",
+              "hybrid_score": 0.016129032258064516,
+              "lexical_rank": 2,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": "docs/project-brain/04-ARCHITECTURE.md",
+              "hybrid_score": 0.015873015873015872,
+              "lexical_rank": 3,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": "docs/adr/ADR-0003-extension-seam-policy.md",
+              "hybrid_score": 0.015625,
+              "lexical_rank": 4,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": "docs/project-brain/05-INTEGRATION-CONTRACTS.md",
+              "hybrid_score": 0.015384615384615385,
+              "lexical_rank": 5,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            },
+            {
+              "path": "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+              "hybrid_score": 0.015151515151515152,
+              "lexical_rank": 6,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            }
+          ],
+          "truncatedSnippets": 6,
+          "correctionMarkersSeenInSnippets": {}
+        },
+        {
+          "sequence": 5,
+          "query": "Bootstrap completes only when Source Pack passes deterministic validation",
+          "expectedCanonicalFile": "docs/project-brain/15-DEFINITION-OF-DONE.md",
+          "isError": false,
+          "candidate_pool": 1,
+          "result_count": 1,
+          "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "semantic_state": "UNAVAILABLE",
+          "fallback_reason": "rerank_disabled",
+          "rerank_state": "RERANK_FALLBACK_DISABLED",
+          "response_sha256": "b4f71ebb70a308d515b2d92da0d626074b1525cc5f5e5fce866833ab5c2de15a",
+          "pathsReturned": [
+            "docs/project-brain/15-DEFINITION-OF-DONE.md"
+          ],
+          "targetReached": true,
+          "topResults": [
+            {
+              "path": "docs/project-brain/15-DEFINITION-OF-DONE.md",
+              "hybrid_score": 0.01639344262295082,
+              "lexical_rank": 1,
+              "kind": "REPOSITORY_FILE",
+              "truncated": false
+            }
+          ],
+          "truncatedSnippets": 0,
+          "correctionMarkersSeenInSnippets": {
+            "dod-no-defect-promotion": [
+              {
+                "resultIndex": 0,
+                "path": "docs/project-brain/15-DEFINITION-OF-DONE.md",
+                "chunkStartLine": 1,
+                "chunkEndLine": 5
+              }
+            ]
+          }
+        },
+        {
+          "sequence": 6,
+          "query": "reviewerCorrectionReconciliation baselineStillCurrent expensiveReceiptsRepeated",
+          "expectedCanonicalFile": ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+          "isError": false,
+          "candidate_pool": 1,
+          "result_count": 1,
+          "hybrid_state": "LEXICAL_FALLBACK_SEMANTIC_UNAVAILABLE",
+          "semantic_state": "UNAVAILABLE",
+          "fallback_reason": "rerank_disabled",
+          "rerank_state": "RERANK_FALLBACK_DISABLED",
+          "response_sha256": "0a1bbdff6fdf34caeb66dd2901f5c59bff923ea787746a1371671024a3e741fa",
+          "pathsReturned": [
+            ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json"
+          ],
+          "targetReached": true,
+          "topResults": [
+            {
+              "path": ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+              "hybrid_score": 0.01639344262295082,
+              "lexical_rank": 1,
+              "kind": "REPOSITORY_FILE",
+              "truncated": true
+            }
+          ],
+          "truncatedSnippets": 1,
+          "correctionMarkersSeenInSnippets": {}
+        }
+      ],
+      "canonicalFilesReached": [
+        ".engineering/evidence/wo-0002/godot-c01-upstream-reverification.json",
+        "docs/adr/ADR-0001-godot-baseline-and-repository-topology.md",
+        "docs/project-brain/04-ARCHITECTURE.md",
+        "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
+        "docs/project-brain/13-CHECKPOINT.md",
+        "docs/project-brain/15-DEFINITION-OF-DONE.md"
+      ],
+      "canonicalFilesMissed": [],
+      "correctedSupportPolicyMaterialSeen": [
+        "adr0001-historical-supersede",
+        "adr0001-support-bullet",
+        "checkpoint-correction-status",
+        "dod-no-defect-promotion",
+        "evidence-bundle-corrected-why"
+      ],
+      "snippetWindowNote": "HIVE returns a truncated window of each matched chunk, so a corrected phrase deeper than that window is invisible in the snippet even when the right chunk matched. Markers are therefore reported per query and per result index, and the full canonical checkpoint text is reported separately under checkpoint.read.",
+      "truncatedSnippetCount": 26
+    },
+    "memory.search": {
+      "verdict": "NOT_AVAILABLE",
+      "isError": false,
+      "response_sha256": "5424a8bbb6fb7a73edab48dc6914f6280d36bd28035bf1fb90a06fbd15712471",
+      "returnedCount": 0,
+      "status": null,
+      "detail": "An unfiltered memory.search (project_id and limit 5, no query) returned zero entries without error on the pinned stack. That is recorded as NOT_AVAILABLE for the memory-retrieval capability rather than as a pass: the call shows nothing was returned for this project, and the call shape cannot establish anything about memories it did not surface."
+    },
+    "memory.get": {
+      "verdict": "NOT_AVAILABLE",
+      "isError": true,
+      "response_sha256": "33c216bb8a4eb304fdad83e9ab5a8789321cc93e0f6a27b223b2dd58c89613b7",
+      "error": {
+        "category": "not_found",
+        "code": "resource_not_found",
+        "message": "resource not found"
+      },
+      "argumentsUsed": {
+        "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+        "memory_id": "0f4c1a86-2f3b-4f5a-9c1d-7b0e2f1a3d4c"
+      },
+      "detail": "Called with a syntactically valid UUID whose existence is not asserted; HIVE answers category not_found, code resource_not_found, which is recorded as NOT_AVAILABLE. Independently, the unfiltered memory.search above returned no entries for this project, so the stack surfaced no real memory_id to read - neither response identifies which resource the not_found refers to."
+    },
+    "context.build": {
+      "verdict": "NOT_AVAILABLE",
+      "isError": true,
+      "response_sha256": "a85c54f58ffb2ba684e2a38c81f7191b55b6537f944f81523d227c62cd36aed6",
+      "error": {
+        "category": "stale",
+        "code": "source_not_current",
+        "message": "project source is not current"
+      },
+      "argumentsUsed": {
+        "project_id": "cf0e7dee-bfa4-4f54-b8fa-8391afefbcfd",
+        "task_id": "0f4c1a86-2f3b-4f5a-9c1d-7b0e2f1a3d4c",
+        "top_k": 5,
+        "disclosure_level": "L2"
+      },
+      "detail": "Observed literally: category stale, code source_not_current, message 'project source is not current'. HIVE refused the call at its source-currency guard, so this response says nothing about the task_id: it neither establishes that the task is registered nor that it is absent, and it does not demonstrate the happy path either. Recorded as NOT_AVAILABLE and not reclassified. The explanation previously held in this field was inherited from the WO-0002 receipt, whose captured answer was a different one (not_found / resource_not_found), so the inheritance was not supported by the bytes recorded above. Creating a task would mutate HIVE state and is outside a read-only proof.",
+      "detailCorrection": {
+        "correctedBy": "ISORYN-WO-0002-C01-CD01",
+        "reason": "Independent review: the derived explanation claimed a resource_not_found caused by an unregistered task_id, which the captured stale/source_not_current response does not demonstrate.",
+        "supersededDetail": "Schema-valid arguments against a task_id that is not registered on the pinned stack; the answer is a well-formed not_found, which is recorded as NOT_AVAILABLE. Creating a task would mutate HIVE state and is outside a read-only proof.",
+        "rawResponseUnaltered": true
+      }
+    }
+  },
+  "governedSessionAttempts": [
+    {
+      "attempt": 1,
+      "startedAt": "2026-09-24T14:55:39Z",
+      "launcherExit": 0,
+      "unavailableCalls": []
+    }
+  ],
+  "launcherExit": 0,
+  "launcherStderr": []
+}

@@ -1,0 +1,90 @@
+# captured_utc=2026-09-23T22:13:44Z
+# Windowed device control. Each case runs the FULL harness (no --quit-after below 700), so a
+# series line can only appear after 90 warm-up + 600 measured frames really elapsed.
+# A series is admitted as GPU evidence only if the same path can also read back frames (§ movie cases).
+# control binary sha256=c8f0a6bc45a19b33541501e57f6f7cd972ab18453743266339d495cbbe846643 version=4.7.2.stable.official.ed1daf0bf
+# built binary  sha256=272c53715fd949b61354088717482e974aa47c04ece70acb2ec67fcf87c843b8 version=4.7.2.stable.custom_build.ed1daf0bf
+
+## A. the built binary, on the two device paths it was compiled with
+case=built-vulkan-full exit=139 wall_ms=2963 bytes=98691 error_lines=607
+  series=NO
+  device_removed_hits=0
+  all_error_signatures:
+          203 ERROR: Condition "!shader_id" is true. Returning: RID()
+          165 ERROR: Parameter "shader" is null.
+          109 ERROR: Error (-3) creating module for shader stage Compute.
+           94 ERROR: Error (-3) creating module for shader stage Vertex.
+           28 ERROR: Condition "p_shader.is_null()" is true.
+            2 ERROR: Condition "!scene_singleton->sky.sky_shader.shader.version_is_valid(version)" is true.
+            1 ERROR: Parameter "uniform_set" is null.
+            1 ERROR: Parameter "pipeline" is null.
+            1 ERROR: Condition "shader.is_null()" is true.
+            1 ERROR: Condition "!texture_storage->tex_blit_shader.shader.version_is_valid(version)" is true.
+            1 ERROR: Condition "!particles_storage->particles_shader.shader.version_is_valid(version)" is true.
+            1 ERROR: Condition "!fog_singleton->volumetric_fog.shader.version_is_valid(version)" is true.
+case=built-gl-full exit=139 wall_ms=816 bytes=0 error_lines=0
+  series=NO
+  device_removed_hits=0
+  all_error_signatures:
+
+## B. upstream's published binary for the same tag, same project, same flags
+case=official-vulkan-full exit=124 wall_ms=301273 bytes=657251 error_lines=3759
+  series=NO
+  device_removed_hits=0
+  all_error_signatures:
+         3099 ERROR: Condition "shader_rid.is_null()" is true. Returning: 0
+          217 ERROR: Condition "!shader_id" is true. Returning: RID()
+          170 ERROR: Parameter "shader" is null.
+          109 ERROR: Error (-3) creating module for shader stage Compute.
+          108 ERROR: Error (-3) creating module for shader stage Vertex.
+           28 ERROR: Condition "p_shader.is_null()" is true.
+            3 ERROR: Condition "shader_rid.is_null()" is true.
+            2 ERROR: Condition "!scene_singleton->sky.sky_shader.shader.version_is_valid(version)" is true.
+            1 ERROR: This render pipeline requires (0) bytes of push constant data, supplied: (96)
+            1 ERROR: Parameter "us" is null.
+            1 ERROR: Parameter "uniform_set" is null.
+            1 ERROR: Parameter "pipeline" is null.
+            1 ERROR: Pages in use exist at exit in PagedAllocator: N12VariantPools11BucketLargeE
+            1 ERROR: No render pipeline was set before attempting to draw.
+            1 ERROR: Condition "shader.is_null()" is true.
+            1 ERROR: Condition "!texture_storage->tex_blit_shader.shader.version_is_valid(version)" is true.
+            1 ERROR: Condition "!particles_storage->particles_shader.shader.version_is_valid(version)" is true.
+            1 ERROR: Condition "!fog_singleton->volumetric_fog.shader.version_is_valid(version)" is true.
+            1 ERROR: BUG: Unreferenced static string to 0: sdfgi
+            1 ERROR: BUG: Unreferenced static string to 0: _enter_world
+            1 ERROR: BUG: Unreferenced static string to 0: Variant
+            1 ERROR: BUG: Unreferenced static string to 0: VRS
+            1 ERROR: BUG: Unreferenced static string to 0: ShaderCompilation
+            1 ERROR: BUG: Unreferenced static string to 0: RenderCullInstances
+            1 ERROR: BUG: Unreferenced static string to 0: Physics3DConstraintSolveIslands
+            1 ERROR: BUG: Unreferenced static string to 0: Physics3DConstraintSetup
+            1 ERROR: BUG: Unreferenced static string to 0: Physics2DConstraintSolveIslands
+            1 ERROR: BUG: Unreferenced static string to 0: Physics2DConstraintSetup
+            1 ERROR: BUG: Unreferenced static string to 0: Fog
+            1 ERROR: 7 RID allocations of type '23NavMeshGeometryParser2D' were leaked at exit.
+            1 ERROR: 6 RID allocations of type '23NavMeshGeometryParser3D' were leaked at exit.
+case=official-gl-full exit=139 wall_ms=1154 bytes=0 error_lines=0
+  series=NO
+  device_removed_hits=0
+  all_error_signatures:
+case=official-d3d12-full exit=0 wall_ms=4159 bytes=1036 error_lines=0
+  series=YES ISORYN_BENCH {"display_server":"Windows","engine_version":"4.7.2-stable...
+  frames_drawn="frames_drawn":689
+  render_objects="render_total_objects_in_frame":1953.0
+  device_removed_hits=0
+  all_error_signatures:
+
+## C. the readback gate on the only path that produced a series: --write-movie needs the device to
+## draw, so a healthy device yields frame files and a removed one cannot.
+case=official-d3d12-movie exit=139 frames_written=0
+  first_line=Movie Maker mode enabled, recording movie in 1280×720 @ 60 FPS...
+            1 ERROR: Create(Graphics)PipelineState failed with error 0x887a0005.
+            1 ERROR: Condition "pipeline.is_null()" is true.
+            1 ERROR: Condition "data.is_empty()" is true. Returning: Ref<Image>()
+            1 ERROR: Condition "!tmp_buffer" is true. Returning: Vector<uint8_t>()
+            1 ERROR: Condition "!pipeline.driver_id" is true. Returning: RID()
+            1 ERROR: Can't create buffer of size: 3686400, error 0x887a0005.
+  crash_backtrace_top=ERROR: Can't create buffer of size: 3686400, error 0x887a0005.
+
+## D. the same readback gate on the built binary's default path, for completeness
+case=built-vulkan-movie exit=139 frames_written=0

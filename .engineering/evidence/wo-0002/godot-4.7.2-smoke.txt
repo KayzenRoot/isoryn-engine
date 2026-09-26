@@ -1,0 +1,32 @@
+# captured_utc=2026-09-23T22:00:23Z
+# Smoke set for the measured binary. Every case is executed or stated unavailable - none is omitted.
+# --quiet is never combined with a harness run: upstream defines it as printing only critical
+# messages, which suppresses the print() the harness reports through (observed, then corrected).
+case=version exit=0 expected=0 wall_ms=178 argv=godot --version --quiet --no-header
+  first_line=4.7.2.stable.custom_build.ed1daf0bf
+  error_lines=0
+  bench_config=
+  bench_result=
+case=headless_scene_run exit=0 expected=0 wall_ms=1416 argv=godot --no-header --headless --path /d/Hive/Projects/isoryn-engine/.engineering/evidence/wo-0002/bench --quit-after 120
+  first_line=ERROR: Could not load global script cache.
+  error_lines=1
+  bench_config=ISORYN_BENCH_CONFIG {"display_server":"headless","engine_version":"4.7.2-stable (custom_build)","harness":"isoryn-wo-0002-bench","instances":1200,"measure_frames":600,"ready_us":26117,"rendering_method":"forward_plus","seed":20260923,"warmup_frames":90,"window_size":"(64, 64)"}
+  bench_result=
+case=windowed_vulkan_gpu exit=139 expected=0 wall_ms=3043 argv=godot --no-header --verbose --path /d/Hive/Projects/isoryn-engine/.engineering/evidence/wo-0002/bench --disable-vsync --quit-after 90
+  first_line=WorkerThreadPool: 8 threads, 2 max low-priority.
+  error_lines=607
+  bench_config=
+  bench_result=
+case=windowed_gl_compatibility exit=139 expected=0 wall_ms=1254 argv=godot --no-header --verbose --path /d/Hive/Projects/isoryn-engine/.engineering/evidence/wo-0002/bench --rendering-method gl_compatibility --disable-vsync --quit-after 90
+  first_line=WorkerThreadPool: 8 threads, 2 max low-priority.
+  error_lines=0
+  bench_config=
+  bench_result=
+# case=d3d12 is NOT_AVAILABLE on this binary because the driver was configured out (D-011);
+# upstream's own refusal is part of the receipt:
+#   Unknown rendering driver 'd3d12', aborting.
+#   Valid options are 'vulkan', 'opengl3' and 'dummy'.
+# case=headless_resource_import is NOT_AVAILABLE: --import is editor-only (main/main.cpp:700,
+#   CLI_OPTION_AVAILABILITY_EDITOR) and this host cannot compile the editor target at all (see the
+#   attempt 2/3/4 receipts in docs/project-brain/09-TOOLCHAIN-AND-BENCHMARK-BASELINE.md).
+# case=editor_boot is NOT_AVAILABLE for the same reason.

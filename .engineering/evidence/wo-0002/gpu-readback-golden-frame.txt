@@ -1,0 +1,66 @@
+# captured_utc=2026-09-23T22:54:12Z
+# Readback gate on this host: two executions on the only windowed path that completes a timing series, one
+# on the built binary's default path, then a decode of every frame file the gate has produced on this
+# machine across all of its executions. A series is admissible as GPU evidence only if this gate returns
+# pixels that show the reported objects were drawn (ISORYN-D-016).
+# control binary sha256=c8f0a6bc45a19b33541501e57f6f7cd972ab18453743266339d495cbbe846643
+# built binary  sha256=272c53715fd949b61354088717482e974aa47c04ece70acb2ec67fcf87c843b8
+# frame naming: <base> + 8-digit zero-padded index (servers/movie_writer/movie_writer_pngwav.h:39), so
+#   gf100000000.png is frame 0 of base gf1.
+# The decode section reads every frame this gate has ever produced, including the two preserved from the
+# first, mis-scoped attempt (base names movie.1 and movie.2). Comparing a run against an earlier one is
+# the point: identical bytes across runs would otherwise be indistinguishable from a stale file.
+
+## A. official binary, d3d12, first execution
+case=gf1-official-d3d12 exit=139 cwd_files=0 project_frames=1 project_wavs=1
+  log_first_line=Movie Maker mode enabled, recording movie in 1280×720 @ 60 FPS...
+  frame_files:
+    -rw-r--r-- 1 csn19 197609 4096 Sep 23 19:54 gf1.wav
+    -rw-r--r-- 1 csn19 197609 2772 Sep 23 19:54 gf100000000.png
+  error_signatures:
+            1 ERROR: Condition "data.is_empty()" is true. Returning: Ref<Image>()
+            1 ERROR: Condition "!tmp_buffer" is true. Returning: Vector<uint8_t>()
+            1 ERROR: Can't create buffer of size: 3686400, error 0x887a0005.
+
+## B. official binary, d3d12, second execution (does the gate fail the same way twice?)
+case=gf2-official-d3d12 exit=139 cwd_files=0 project_frames=1 project_wavs=1
+  log_first_line=Movie Maker mode enabled, recording movie in 1280×720 @ 60 FPS...
+  frame_files:
+    -rw-r--r-- 1 csn19 197609 4096 Sep 23 19:54 gf2.wav
+    -rw-r--r-- 1 csn19 197609 2772 Sep 23 19:54 gf200000000.png
+  error_signatures:
+            1 ERROR: Create(Graphics)PipelineState failed with error 0x887a0005.
+            1 ERROR: Condition "pipeline.is_null()" is true.
+            1 ERROR: Condition "data.is_empty()" is true. Returning: Ref<Image>()
+            1 ERROR: Condition "!tmp_buffer" is true. Returning: Vector<uint8_t>()
+            1 ERROR: Condition "!pipeline.driver_id" is true. Returning: RID()
+            1 ERROR: Can't create buffer of size: 3686400, error 0x887a0005.
+
+## C. built binary, its default Vulkan path, same gate
+case=gf3-built-vulkan exit=139 cwd_files=0 project_frames=0 project_wavs=0
+  log_first_line=ERROR: Error (-3) creating module for shader stage Compute.
+  frame_files:
+    none
+  error_signatures:
+          203 ERROR: Condition "!shader_id" is true. Returning: RID()
+          165 ERROR: Parameter "shader" is null.
+          109 ERROR: Error (-3) creating module for shader stage Compute.
+           94 ERROR: Error (-3) creating module for shader stage Vertex.
+           28 ERROR: Condition "p_shader.is_null()" is true.
+            2 ERROR: Condition "!scene_singleton->sky.sky_shader.shader.version_is_valid(version)" is true.
+            1 ERROR: Parameter "uniform_set" is null.
+            1 ERROR: Parameter "pipeline" is null.
+
+## decoded pixels of every frame file this gate produced
+  gf100000000.png bytes=2772 sha256=0b37fe2b760522c6101c70c0322547ae6c9dcca72424fd596870988e00b13196
+    1280x720 channels=3 distinct_colors=1 ['000000']
+    non_black=0/921600 (0.00%) pixel_sha256=822e3a311bc34185394aeb709bb83310f1243089b95cdadc218eee179b1d6f78
+  gf200000000.png bytes=2772 sha256=0b37fe2b760522c6101c70c0322547ae6c9dcca72424fd596870988e00b13196
+    1280x720 channels=3 distinct_colors=1 ['000000']
+    non_black=0/921600 (0.00%) pixel_sha256=822e3a311bc34185394aeb709bb83310f1243089b95cdadc218eee179b1d6f78
+  movie.100000000.png bytes=2772 sha256=0b37fe2b760522c6101c70c0322547ae6c9dcca72424fd596870988e00b13196
+    1280x720 channels=3 distinct_colors=1 ['000000']
+    non_black=0/921600 (0.00%) pixel_sha256=822e3a311bc34185394aeb709bb83310f1243089b95cdadc218eee179b1d6f78
+  movie.200000000.png bytes=2772 sha256=0b37fe2b760522c6101c70c0322547ae6c9dcca72424fd596870988e00b13196
+    1280x720 channels=3 distinct_colors=1 ['000000']
+    non_black=0/921600 (0.00%) pixel_sha256=822e3a311bc34185394aeb709bb83310f1243089b95cdadc218eee179b1d6f78

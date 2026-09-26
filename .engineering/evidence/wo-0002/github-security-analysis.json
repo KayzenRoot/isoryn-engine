@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "isoryn-gef-evidence-v1",
+  "workOrder": "ISORYN-WO-0002",
+  "capturedAt": "2026-09-23T23:58:49Z",
+  "endpoints": [
+    "GET /repos/KayzenRoot/isoryn-engine (.security_and_analysis)",
+    "GET /repos/KayzenRoot/isoryn-engine/secret-scanning/alerts"
+  ],
+  "securityAndAnalysis": {
+    "secret_scanning": {
+      "status": "enabled"
+    },
+    "secret_scanning_push_protection": {
+      "status": "enabled"
+    },
+    "dependabot_security_updates": {
+      "status": "enabled"
+    },
+    "secret_scanning_non_provider_patterns": {
+      "status": "disabled"
+    },
+    "secret_scanning_validity_checks": {
+      "status": "disabled"
+    }
+  },
+  "secretScanningAlerts": {
+    "response": [],
+    "count": 0,
+    "open": []
+  },
+  "note": "Platform-side state only: it says what GitHub is configured to look for and how many alerts it holds against this repository. It is not a substitute for the local sweep of the tree, which the evidence bundle records separately and computes from the working tree."
+}

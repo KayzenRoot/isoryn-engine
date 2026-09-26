@@ -1,0 +1,17 @@
+# captured_utc=2026-09-23T22:00:52Z
+# Reproducibility pair: the same fixed-fps movie written twice (upstream MovieWriterPNGWAV,
+# servers/movie_writer/movie_writer_pngwav.cpp - handles a .png path with no module of its own).
+# 700 iterations cover the harness's 90 warm-up + 600 measured frames, so each run also prints its series.
+# Observed result on this host: writing a movie brings up the real RenderingDevice even with
+# --headless, so the run dies on the same shader-module failure as the windowed cases. The golden-frame
+# gate therefore does not execute here; the executed fallback is the headless repeat series.
+run=movie-1 exit=139 frames=0
+  series=
+  failure_signature= 203 ERROR: Condition "!shader_id" is true. Returning: RID()
+  first_frame_sha256=none - no frame file was written
+  combined_sha256=none - no frame file was written
+run=movie-2 exit=139 frames=0
+  series=
+  failure_signature= 203 ERROR: Condition "!shader_id" is true. Returning: RID()
+  first_frame_sha256=none - no frame file was written
+  combined_sha256=none - no frame file was written
