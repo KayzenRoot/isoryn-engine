@@ -901,8 +901,8 @@ checks 5 --required` on the pull request is the authority for it.
       "docs/adr/ADR-0002-build-toolchain-and-upstream-sync.md",
       "docs/adr/ADR-0003-extension-seam-policy.md"
     ],
-    "masterModuleIndex": "docs/project-brain/06-MASTER-MODULE-INDEX.md (30 module rows, every scope family, with the absent-mechanism list A-D)",
-    "registry": "docs/project-brain/07-PROPRIETARY-TECHNOLOGY-REGISTRY.md (12 entries, each a proof obligation with a documented fallback)",
+    "masterModuleIndex": "docs/project-brain/06-MASTER-MODULE-INDEX.md (32 module rows, every scope family, with the absent-mechanism list A-D)",
+    "registry": "docs/project-brain/07-PROPRIETARY-TECHNOLOGY-REGISTRY.md (10 entries, each a proof obligation with a documented fallback)",
     "baselineTopology": "docs/project-brain/08-GODOT-BASELINE-AND-TOPOLOGY.md",
     "toolchainBenchmark": "docs/project-brain/09-TOOLCHAIN-AND-BENCHMARK-BASELINE.md",
     "seamProbe": "custom_modules out-of-tree import reaches configure with the marker ISORYN_PROBE_MODULE_CONFIGURED and still configures with the flag off (custom-modules-feasibility.txt); compiling and linking it both ways is open backlog row 9",
